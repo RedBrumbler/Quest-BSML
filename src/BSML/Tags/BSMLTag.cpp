@@ -51,11 +51,8 @@ namespace BSML {
         auto fieldInfo = il2cpp_functions::class_get_field_from_name(host->klass, id.c_str());
 
         if (fieldInfo) {
-            // if found, use it to check the type
-            auto fieldKlass = il2cpp_utils::GetFieldClass(fieldInfo);
-
-            // if field klass is the same as value klass, assign
-            if (fieldKlass == value->klass)
+            // if value type is convertible to as field type, assign
+            if (il2cpp_utils::IsConvertibleFrom(fieldInfo->type, &value->klass->byval_arg))
                 il2cpp_functions::field_set_value(host, fieldInfo, value);
         }
     }
@@ -67,5 +64,6 @@ namespace BSML {
     void BSMLTag::parse(const tinyxml2::XMLElement& elem) {
         is_valid = true;
         GET_BSML_STRING("id", id);
+        GET_BSML_STRING("field-name", id);
     }
 }

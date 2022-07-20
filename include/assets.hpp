@@ -38,7 +38,6 @@ struct IncludedAsset {
 
 namespace IncludedAssets {
 
-	DECLARE_FILE(MainView_bsml)
 	DECLARE_FILE(test_xml)
 
 }
