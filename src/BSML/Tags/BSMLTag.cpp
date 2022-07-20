@@ -62,8 +62,8 @@ namespace BSML {
     }
 
     void BSMLTag::parse(const tinyxml2::XMLElement& elem) {
+        DEBUG("Parsing bsml tag");
         is_valid = true;
         GET_BSML_STRING("id", id);
-        GET_BSML_STRING("field-name", id);
     }
 }

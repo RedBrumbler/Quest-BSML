@@ -3,9 +3,10 @@
             <text text="your mom"></text>
             <text text="so fat"></text>
             <horizontal id="layout" pref-height="20" spacing="5" pad="5" bg="round-rect-panel">
-                <text text="she needed"></text>
-                <text text="2 columns"></text>
+                <text text="she needed"/>
+                <text text="2 columns"/>
             </horizontal>
-            <button id="goodButton" on-click="ButtonPressed"></button>
+            <button id="goodButton" on-click="ButtonPressed"/>
+            <toggle-setting text="test" property="testToggle" on-change="OnPropertiesChanged" field-name="someOtherField"/>
         </vertical>
 </bsml>

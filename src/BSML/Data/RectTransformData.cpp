@@ -3,6 +3,7 @@
 #include "logging.hpp"
 
 #include "UnityEngine/GameObject.hpp"
+#include "QuestUI/shared/BeatSaberUI.hpp"
 
 UnityEngine::Vector2 merge(const UnityEngine::Vector2& original, const std::optional<float>& x, const std::optional<float>& y) {
     return {x.value_or(original.x), y.value_or(original.y)};
@@ -38,7 +39,7 @@ namespace BSML {
         if (get_pivot_exists()) rectTransform->set_pivot(merge(rectTransform->get_pivot(), get_pivotX(), get_pivotY()));
 
         if (!hoverHint.empty()) {
-            // TODO: implement
+            QuestUI::BeatSaberUI::AddHoverHint(rectTransform->get_gameObject(), hoverHint);
         }
 
         rectTransform->get_gameObject()->SetActive(active);

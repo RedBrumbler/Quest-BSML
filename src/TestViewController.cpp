@@ -30,4 +30,12 @@ namespace BSML {
     void TestViewController::ButtonPressed() {
         INFO("Button pressed: {}", fmt::ptr(this));
     }
+
+    void TestViewController::OnPropertiesChanged() {
+        INFO("A property changed!");
+    }
+
+    void TestViewController::testToggle_changed(bool value) {
+        INFO("testToggle changed: {}, was: {}", value, bsml_testToggle);
+    }
 }
