@@ -1,0 +1,61 @@
+{
+  "sharedDir": "shared",
+  "dependenciesDir": "extern",
+  "info": {
+    "name": "Beat Saber Markup Language",
+    "id": "bsqml",
+    "version": "0.1.0",
+    "url": "https://github.com/RedBrumbler/BSQML",
+    "additionalData": {
+      "overrideSoName": "libbsqml.so"
+    }
+  },
+  "dependencies": [
+    {
+      "id": "beatsaber-hook",
+      "versionRange": "^3.9.0",
+      "additionalData": {
+        "extraFiles": [
+          "src/inline-hook"
+        ]
+      }
+    },
+    {
+      "id": "codegen",
+      "versionRange": "^0.24.1",
+      "additionalData": {
+        "includeQmod": false
+      }
+    },
+    {
+      "id": "custom-types",
+      "versionRange": "^0.15.13",
+      "additionalData": {
+        "includeQmod": false
+      }
+    },
+    {
+      "id": "questui",
+      "versionRange": "^0.16.1",
+      "additionalData": {
+        "includeQmod": false
+      }
+    },
+    {
+      "id": "modloader",
+      "versionRange": "^1.2.3",
+      "additionalData": {}
+    },
+    {
+      "id": "paper",
+      "versionRange": "^1.2.4",
+      "additionalData": {}
+    },
+    {
+      "id": "tinyxml2",
+      "versionRange": "^9.0.4",
+      "additionalData": {}
+    }
+  ],
+  "additionalData": {}
+}
