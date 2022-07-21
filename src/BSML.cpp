@@ -6,8 +6,4 @@ namespace BSML {
     void Init() {
         load();
     }
-
-    Tree parse(std::string_view str) {
-        return Tree::parse(str);
-    }
 }
