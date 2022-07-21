@@ -36,6 +36,6 @@ namespace BSML {
     }
 
     void TestViewController::testToggle_changed(bool value) {
-        INFO("testToggle changed: {}, was: {}", value, bsml_testToggle);
+        INFO("testToggle changed: {}, was: {}", value, _testToggle);
     }
 }
