@@ -3,7 +3,7 @@
 #include "logging.hpp"
 
 #include "UnityEngine/GameObject.hpp"
-#include "QuestUI/shared/BeatSaberUI.hpp"
+#include "questui/shared/BeatSaberUI.hpp"
 
 UnityEngine::Vector2 merge(const UnityEngine::Vector2& original, const std::optional<float>& x, const std::optional<float>& y) {
     return {x.value_or(original.x), y.value_or(original.y)};
