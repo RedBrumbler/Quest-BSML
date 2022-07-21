@@ -107,7 +107,7 @@ namespace BSML {
             return;
         }
         
-        textMeshProUGUI->set_text(get_text());
+        if (get_text().has_value())textMeshProUGUI->set_text(get_text().value());
         if (get_fontSize().has_value()) textMeshProUGUI->set_fontSize(get_fontSize().value());
         // TODO: colors;
         if (get_fontColor().has_value()) textMeshProUGUI->set_color(get_fontColor().value());
@@ -122,7 +122,7 @@ namespace BSML {
         // TODO: typesetting proper
         if (get_bold().value_or(false))
             textMeshProUGUI->set_text("<b>" + textMeshProUGUI->get_text() + "</b>");
-        if (get_bold().value_or(true))
+        if (get_italics().value_or(true))
             textMeshProUGUI->set_text("<i>" + textMeshProUGUI->get_text() + "</i>");
         if (get_bold().value_or(false))
             textMeshProUGUI->set_text("<u>" + textMeshProUGUI->get_text() + "</u>");

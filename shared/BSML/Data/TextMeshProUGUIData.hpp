@@ -31,7 +31,7 @@ namespace BSML {
 
             void Apply(TMPro::TextMeshProUGUI* textMeshProUGUI) const;
         private:
-            std::string text = "text";
+            std::optional<std::string> text;
             std::optional<float> fontSize;
             std::optional<UnityEngine::Color> fontColor;
             std::optional<UnityEngine::Color32> faceColor;
