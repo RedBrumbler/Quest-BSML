@@ -1,7 +1,7 @@
 <bsml xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
         <vertical pref-height="40" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
-            <text text="your mom"></text>
-            <text text="so fat"></text>
+            <text text="your mom"/>
+            <text text="so fat"/>
             <horizontal id="layout" pref-height="20" spacing="5" pad="5" bg="round-rect-panel">
                 <text text="she needed"/>
                 <text text="2 columns"/>
