@@ -19,6 +19,7 @@ namespace BSML {
     }
 
     UnityEngine::GameObject* ButtonTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating Button");
         auto button = CreateUIButton(parent, "");
         auto gameObject = button->get_gameObject();
         selectableData.Apply(button);

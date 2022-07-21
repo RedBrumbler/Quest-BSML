@@ -16,6 +16,7 @@ namespace BSML {
     }
 
     UnityEngine::GameObject* VerticalTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating Vertical");
         auto vertical = CreateVerticalLayoutGroup(parent);
         auto gameObject = vertical->get_gameObject();
         if (backgroundableData.get_background() != "")

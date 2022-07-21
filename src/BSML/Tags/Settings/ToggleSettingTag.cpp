@@ -17,6 +17,7 @@ namespace BSML {
     }
 
     UnityEngine::GameObject* ToggleSettingTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating ToggleSetting");
         auto toggle = CreateToggle(parent, "");
         auto gameObject = toggle->get_transform()->get_parent()->get_gameObject();
         auto nameText = gameObject->get_transform()->Find("NameText")->get_gameObject();

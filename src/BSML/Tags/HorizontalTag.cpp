@@ -16,6 +16,7 @@ namespace BSML {
     }
 
     UnityEngine::GameObject* HorizontalTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating Horizontal");
         auto horizontal = CreateHorizontalLayoutGroup(parent);
         auto gameObject = horizontal->get_gameObject();
         if (!backgroundableData.get_background().empty())

@@ -43,7 +43,6 @@ namespace BSML {
 
         toggle->onValueChanged = UnityEngine::UI::Toggle::ToggleEvent::New_ctor();
         
-        DEBUG("Getting setter / getter info");
         std::string setterName = "set_" + propertyName;
         std::string getterName = "get_" + propertyName;
         auto setterInfo = il2cpp_functions::class_get_method_from_name(host->klass, setterName.c_str(), 1);
@@ -54,18 +53,15 @@ namespace BSML {
             if (valOpt) startValue = valOpt.value();
         }
 
-        DEBUG("Getting field info");
         auto fieldInfo = il2cpp_functions::class_get_field_from_name(host->klass, fieldName.c_str());
         if (fieldInfo) {
             startValue = il2cpp_utils::GetFieldValue<bool>(host, fieldInfo).value_or(this->startValue);
         }
 
-        DEBUG("Getting on change info");
         auto onChangeInfo = il2cpp_functions::class_get_method_from_name(host->klass, onChange.c_str(), 0);
         toggle->onValueChanged->AddListener(MakeToggleCallback(setterInfo, fieldInfo, onChangeInfo, host));
         toggle->set_isOn(startValue);
 
-        DEBUG("setting on / off text");
         auto transform = toggle->get_transform();
         if (get_onText().has_value()) {
             auto onTextObject = transform->Find("BackgroundImage/OnText")->get_gameObject()->GetComponent<TMPro::TextMeshProUGUI*>();

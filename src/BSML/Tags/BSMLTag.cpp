@@ -13,7 +13,6 @@ namespace BSML {
     BSMLTag::BSMLTag() : is_valid(false), children({}) {}
 
     BSMLTag::~BSMLTag() {
-        INFO("Destruct BSMLTag {}", fmt::ptr(this));
         for (auto child : children) {
             // we can't delete the child if it's the invalid tag
             if (child != invalid)
