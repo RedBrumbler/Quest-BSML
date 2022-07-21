@@ -17,7 +17,9 @@ UnityEngine::Events::UnityAction_1<bool>* MakeToggleCallback(const MethodInfo* s
 namespace BSML {
     ToggleSettingData::ToggleSettingData(const tinyxml2::XMLElement& elem) {
         GET_BSML_STRING("on-text", onText);
+        GET_BSML_STRING("on-label", onText);
         GET_BSML_STRING("off-text", offText);
+        GET_BSML_STRING("off-label", offText);
         
         GET_BSML_STRING("field-name", fieldName);
         GET_BSML_STRING("field", fieldName);
