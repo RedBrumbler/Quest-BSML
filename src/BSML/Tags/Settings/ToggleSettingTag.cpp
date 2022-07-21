@@ -19,9 +19,10 @@ namespace BSML {
     UnityEngine::GameObject* ToggleSettingTag::CreateObject(UnityEngine::Transform* parent) const {
         auto toggle = CreateToggle(parent, "");
         auto gameObject = toggle->get_gameObject();
+        auto nameText = toggle->get_transform()->get_parent()->Find("NameText")->get_gameObject();
 
         // TODO: make it use the correct tmpro, instead of the first one it finds
-        textMeshProUGUIData.Apply(gameObject->GetComponentInChildren<TMPro::TextMeshProUGUI*>());
+        textMeshProUGUIData.Apply(nameText->GetComponent<TMPro::TextMeshProUGUI*>());
         layoutElementData.Apply(gameObject->GetComponent<UnityEngine::UI::LayoutElement*>());
         rectTransformData.Apply(reinterpret_cast<UnityEngine::RectTransform*>(toggle->get_transform()));
 

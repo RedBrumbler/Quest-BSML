@@ -7,6 +7,6 @@
                 <text text="2 columns"/>
             </horizontal>
             <button id="goodButton" on-click="ButtonPressed"/>
-            <toggle-setting text="test" property="testToggle" on-change="OnPropertiesChanged" field-name="someOtherField"/>
+            <toggle-setting text="test" property="testToggle" on-change="OnPropertiesChanged" field-name="someOtherField" off-text="a" on-text="b"/>
         </vertical>
 </bsml>
