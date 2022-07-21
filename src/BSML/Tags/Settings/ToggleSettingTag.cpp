@@ -9,7 +9,7 @@ using namespace QuestUI::BeatSaberUI;
 namespace BSML {
     void ToggleSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
-        auto toggle = go->GetComponent<UnityEngine::UI::Toggle*>();
+        auto toggle = go->GetComponentInChildren<UnityEngine::UI::Toggle*>();
         SetHostField(host, toggle);
         toggleSettingData.Apply(toggle, host);
         
@@ -18,13 +18,13 @@ namespace BSML {
 
     UnityEngine::GameObject* ToggleSettingTag::CreateObject(UnityEngine::Transform* parent) const {
         auto toggle = CreateToggle(parent, "");
-        auto gameObject = toggle->get_gameObject();
-        auto nameText = toggle->get_transform()->get_parent()->Find("NameText")->get_gameObject();
+        auto gameObject = toggle->get_transform()->get_parent()->get_gameObject();
+        auto nameText = gameObject->get_transform()->Find("NameText")->get_gameObject();
 
         // TODO: make it use the correct tmpro, instead of the first one it finds
         textMeshProUGUIData.Apply(nameText->GetComponent<TMPro::TextMeshProUGUI*>());
         layoutElementData.Apply(gameObject->GetComponent<UnityEngine::UI::LayoutElement*>());
-        rectTransformData.Apply(reinterpret_cast<UnityEngine::RectTransform*>(toggle->get_transform()));
+        rectTransformData.Apply(reinterpret_cast<UnityEngine::RectTransform*>(gameObject->get_transform()));
 
         return gameObject;
     }
