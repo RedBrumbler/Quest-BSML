@@ -63,7 +63,7 @@ if (EXISTS ${ASSETS_DIRECTORY})
         # make a copy of the file with 32 bytes added in the build dir
         add_custom_command(
             OUTPUT ${PREPENDED_ASSETS_DIR}/${ASSET}
-            COMMAND powershell -Command \"('                                ' + (Get-Content ${ASSETS_DIRECTORY}/${ASSET} -Raw)) | Set-Content ${PREPENDED_ASSETS_DIR}/${ASSET} -NoNewLine\"
+            COMMAND pwsh -Command \"('                                ' + (Get-Content ${ASSETS_DIRECTORY}/${ASSET} -Raw)) | Set-Content ${PREPENDED_ASSETS_DIR}/${ASSET} -NoNewLine\"
             DEPENDS ${ASSETS_DIRECTORY}/${ASSET}
         )
 
