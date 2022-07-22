@@ -8,6 +8,21 @@
 DEFINE_TYPE(BSML, TestViewController);
 
 namespace BSML {
+    void TestViewController::ctor() {
+        someList = List<StringW>::New_ctor();
+        
+        someList->Add("Hello");
+        someList->Add("I");
+        someList->Add("Think");
+        someList->Add("Pink");
+        someList->Add("Is");
+        someList->Add("Cute");
+
+        someChoice = StringW(someList[3].convert());
+        _myChoice = StringW(someList[0].convert());
+    }
+    
+
     void TestViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if (!firstActivation) return;
         
@@ -37,6 +52,14 @@ namespace BSML {
 
     void TestViewController::testToggle_changed(bool value) {
         INFO("testToggle changed: {}, was: {}", value, _testToggle);
+    }
+
+    void TestViewController::myChoice_changed(StringW value) {
+        if (!_myChoice) {
+            INFO("myChoice changed: {}", value);
+        } else {
+            INFO("myChoice changed: {}, was: {}", value, _myChoice);
+        }
     }
 
     void TestViewController::incdecValue_changed(float value) {

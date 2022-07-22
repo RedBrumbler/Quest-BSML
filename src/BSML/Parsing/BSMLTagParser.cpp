@@ -6,9 +6,6 @@
 namespace BSML {
     BSMLTagParser BSMLTagParser::bsmlTagParser;
 
-    static BSMLTag invalid_value;
-    BSMLTag* invalid = &invalid_value;
-
     BSMLTagParser::BSMLTagParser(std::vector<std::string> aliases) : aliases(aliases) {
         BSMLDocParser::RegisterTag(this);
     }

@@ -30,8 +30,11 @@ namespace BSML {
 
     BSMLTag* BSMLDocParser::parse(std::string_view str) {
         tinyxml2::XMLDocument doc;
-        doc.Parse(str.data());
-
+        auto error = doc.Parse(str.data());
+        if (error != tinyxml2::XML_SUCCESS) {
+            ERROR("Error parsing BSML document: {}", tinyxml2::XMLDocument::ErrorIDToName(error));
+            return new BSMLTag();
+        }
         return parse(doc);
     }
 

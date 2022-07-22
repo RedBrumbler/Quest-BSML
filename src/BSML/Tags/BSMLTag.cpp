@@ -13,11 +13,7 @@ namespace BSML {
     BSMLTag::BSMLTag() : is_valid(false), children({}) {}
 
     BSMLTag::~BSMLTag() {
-        for (auto child : children) {
-            // we can't delete the child if it's the invalid tag
-            if (child != invalid)
-                delete child;
-        }
+        for (auto child : children) delete child;
         children.clear();
     } 
 
@@ -26,6 +22,11 @@ namespace BSML {
     }
 
     void BSMLTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
+        if (!is_valid) {
+            ERROR("Trying to construct an invalid tag, not doing that!");
+            return;
+        }
+
         // BSMLTag construct is just a passthrough to child
         CreateChildren(parent, host);
     }

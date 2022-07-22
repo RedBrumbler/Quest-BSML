@@ -10,7 +10,7 @@
 #include "BSML/Components/Settings/IncDecSetting.hpp"
 
 namespace BSML {
-    class IncDecSettingTagBase : private BSMLTag {
+    class IncDecSettingTagBase : public BSMLTag {
         public:
             IncDecSettingTagBase() : BSMLTag() {}
         
@@ -31,7 +31,7 @@ namespace BSML {
 
     template<typename T>
     requires(std::is_convertible_v<T, ::BSML::IncDecSetting*>)
-    class IncDecSettingTag : private IncDecSettingTagBase {
+    class IncDecSettingTag : public IncDecSettingTagBase {
         public:
             IncDecSettingTag() : IncDecSettingTagBase() {}
             virtual void Construct(UnityEngine::Transform* parent, Il2CppObject* host = nullptr) const override {

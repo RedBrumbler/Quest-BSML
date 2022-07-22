@@ -1,5 +1,5 @@
 <bsml xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-        <vertical pref-height="60" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
+        <vertical pref-height="80" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
             <text text="your mom"/>
             <text text="so fat"/>
             <horizontal id="layout" pref-height="10" spacing="5" pad="5" bg="round-rect-panel">
@@ -10,5 +10,6 @@
             <toggle-setting text="test" property="testToggle" on-change="OnPropertiesChanged" field-name="someOtherField" off-text="a" on-text="b" pref-width="40"/>
             <toggle-setting text="test2" off-text="pink" on-text="cute" pref-width="40"/>
             <increment-setting label="cuteness" property="incdecValue" pref-width="40"/>
+            <list-setting property="myChoice" list-options="someList" list-choice="someChoice"/>
         </vertical>
 </bsml>
