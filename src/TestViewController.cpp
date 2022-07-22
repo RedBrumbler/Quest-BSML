@@ -38,4 +38,8 @@ namespace BSML {
     void TestViewController::testToggle_changed(bool value) {
         INFO("testToggle changed: {}, was: {}", value, _testToggle);
     }
+
+    void TestViewController::incdecValue_changed(float value) {
+        INFO("incdecValue changed: {}, was: {}", value, _incdecValue);
+    }
 }

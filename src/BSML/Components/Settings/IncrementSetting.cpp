@@ -1,10 +1,24 @@
 #include "BSML/Components/Settings/IncrementSetting.hpp"
+#include "logging.hpp"
 #include <limits>
 #include <fmt/core.h>
 
 DEFINE_TYPE(BSML, IncrementSetting);
 
 namespace BSML {
+    float IncrementSetting::get_Value() {
+        ValidateRange();
+        return currentValue;
+    }
+    
+    void IncrementSetting::set_Value(float value) {
+        if (isInt)
+            currentValue = ConvertToInt(value);
+        else 
+            currentValue = value;
+        UpdateState();
+    }
+
     void IncrementSetting::ctor() {
         this->construct();
         minValue = -std::numeric_limits<float>::infinity();
@@ -17,6 +31,7 @@ namespace BSML {
 
     void IncrementSetting::Setup() {
         UpdateState();
+        ReceiveValue();
     }
 
     void IncrementSetting::IncButtonPressed() {
@@ -31,6 +46,26 @@ namespace BSML {
 
     void IncrementSetting::EitherPressed() {
         UpdateState();
+        ApplyValue();
+    }
+
+    void IncrementSetting::ReceiveValue() {
+        if (!associatedValue) return;
+
+        currentValue = associatedValue->GetValue<float>();
+    }
+
+    void IncrementSetting::ApplyValue() {
+        if (!associatedValue) {
+            DEBUG("Can't apply value on nullptr associatedValue");
+            return;
+        }
+
+        if (isInt) {
+            associatedValue->SetValue(ConvertToInt(currentValue));
+        } else {
+            associatedValue->SetValue(currentValue);
+        }
     }
 
     void IncrementSetting::ValidateRange() {
@@ -68,6 +103,4 @@ namespace BSML {
         }
         else return value;
     }
-
-
 }

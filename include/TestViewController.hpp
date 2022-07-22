@@ -14,6 +14,7 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(bool, someOtherField);
 
     BSML_PROPERTY_ONCHANGED(bool, testToggle);
+    BSML_PROPERTY_ONCHANGED(float, incdecValue);
 
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::ViewController::DidActivate>::get(), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 

@@ -18,10 +18,10 @@ namespace BSML {
             
             void Apply(UnityEngine::UI::Toggle* toggle, Il2CppObject* host) const;
         private:
-            // designed to be used in tandem, fieldName should be the name of the field in the host class, onChange a void method on host
             std::optional<std::string> onText;
             std::optional<std::string> offText;
 
+            // designed to be used in tandem, fieldName should be the name of the field in the host class, onChange a void method on host
             std::string fieldName;
             std::string onChange;
 

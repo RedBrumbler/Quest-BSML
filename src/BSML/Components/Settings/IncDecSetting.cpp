@@ -7,6 +7,7 @@ DEFINE_TYPE(BSML, IncDecSetting);
 
 namespace BSML {
     void IncDecSetting::construct() {
+        associatedValue = ValueWrapper::New_ctor();
         interactable = true;
         enableDec = true;
         enableInc = true;
