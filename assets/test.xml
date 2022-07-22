@@ -1,4 +1,4 @@
-<bsml xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+<bsml xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
         <vertical pref-height="60" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
             <text text="your mom"/>
             <text text="so fat"/>
@@ -9,6 +9,6 @@
             <button id="goodButton" on-click="ButtonPressed"/>
             <toggle-setting text="test" property="testToggle" on-change="OnPropertiesChanged" field-name="someOtherField" off-text="a" on-text="b" pref-width="40"/>
             <toggle-setting text="test2" off-text="pink" on-text="cute" pref-width="40"/>
-            <increment-setting/>
+            <increment-setting label="cuteness" property="incdecValue" pref-width="40"/>
         </vertical>
 </bsml>
