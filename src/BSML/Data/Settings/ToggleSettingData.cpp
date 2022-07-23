@@ -1,6 +1,6 @@
 #include "BSML/Data/Settings/ToggleSettingData.hpp"
 #include "logging.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 
 #include "UnityEngine/Transform.hpp"

@@ -3,11 +3,11 @@
 #include "custom-types/shared/macros.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "UnityEngine/UI/Button.hpp"
-#include "BSMLMacros.hpp"
-#include "ValueWrapper.hpp"
+#include "internal_macros.hpp"
+#include "BSML/GenericSettingWrapper.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, IncDecSetting, UnityEngine::MonoBehaviour,
-    DECLARE_INSTANCE_FIELD(ValueWrapper*, associatedValue);
+    DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, text);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, decButton);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, incButton);

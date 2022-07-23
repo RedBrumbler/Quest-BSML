@@ -1,6 +1,6 @@
 #include "BSML/Data/Settings/IncrementSettingData.hpp"
 #include "logging.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 
 namespace BSML {

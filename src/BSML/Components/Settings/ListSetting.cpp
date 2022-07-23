@@ -27,17 +27,21 @@ namespace BSML {
 
     void ListSetting::EitherPressed() {
         UpdateState();
-        ApplyValue();
+
+        if (genericSetting) {
+            genericSetting->OnChange(values[index]);
+            if (genericSetting->applyOnChange) ApplyValue();
+        }
     }
 
     void ListSetting::ReceiveValue() {
-        if (!associatedValue) return;
-        set_Value(associatedValue->GetValue<Il2CppObject*>());
+        if (!genericSetting) return;
+        set_Value(genericSetting->GetValue<Il2CppObject*>());
     }
 
     void ListSetting::ApplyValue() {
-        if (!associatedValue) return;
-        associatedValue->SetValue(get_Value());
+        if (!genericSetting) return;
+        genericSetting->SetValue(get_Value());
     }
 
     void ListSetting::ValidateRange() {
@@ -80,7 +84,7 @@ namespace BSML {
         index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value
-            if ((v == value) || (v && v->Equals(value)))
+            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(v, "Equals", value).value_or(false)))
                 break;
             index++;
         }

@@ -50,21 +50,27 @@ namespace BSML {
     }
 
     void IncrementSetting::ReceiveValue() {
-        if (!associatedValue) return;
+        if (!genericSetting) return;
 
-        currentValue = associatedValue->GetValue<float>();
+        currentValue = genericSetting->GetValue<float>();
     }
 
     void IncrementSetting::ApplyValue() {
-        if (!associatedValue) {
-            DEBUG("Can't apply value on nullptr associatedValue");
+        if (!genericSetting) {
+            DEBUG("Can't apply value on nullptr genericSetting");
             return;
         }
+        
+        if (genericSetting) {
+            if (isInt) {
+                int val = ConvertToInt(currentValue);
 
-        if (isInt) {
-            associatedValue->SetValue(ConvertToInt(currentValue));
-        } else {
-            associatedValue->SetValue(currentValue);
+                genericSetting->OnChange(val);
+                if (genericSetting->applyOnChange) genericSetting->SetValue(val);
+            } else {
+                genericSetting->OnChange(currentValue);
+                if (genericSetting->applyOnChange) genericSetting->SetValue(currentValue);
+            }
         }
     }
 

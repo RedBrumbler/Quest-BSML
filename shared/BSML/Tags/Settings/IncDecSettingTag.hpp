@@ -2,7 +2,7 @@
 
 #include "BSML/Tags/BSMLTag.hpp"
 
-#include "BSML/Data/Settings/ValueWrapperData.hpp"
+#include "BSML/Data/Settings/GenericSettingData.hpp"
 #include "BSML/Data/RectTransformData.hpp"
 #include "BSML/Data/LayoutElementData.hpp"
 #include "BSML/Data/TextMeshProUGUIData.hpp"
@@ -23,7 +23,7 @@ namespace BSML {
             
             virtual System::Type* get_type() const = 0;
 
-            ValueWrapperData valueWrapperData;
+            GenericSettingData genericSettingData;
             LayoutElementData layoutElementData;
             RectTransformData rectTransformData;
             TextMeshProUGUIData textMeshProUGUIData;

@@ -18,7 +18,7 @@ namespace BSML {
     void IncDecSettingTagBase::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto incrementSetting = go->GetComponent<BSML::IncDecSetting*>();
-        valueWrapperData.Apply(incrementSetting->associatedValue, host);
+        genericSettingData.Apply(incrementSetting->genericSetting, host);
         SetHostField(host, incrementSetting);
         
         CreateChildren(go->get_transform(), host);
@@ -78,7 +78,7 @@ namespace BSML {
         DEBUG("Parsing incdecsetting tag");
         this->::BSML::BSMLTag::parse(elem);
 
-        valueWrapperData = ValueWrapperData(elem);
+        genericSettingData = GenericSettingData(elem);
         textMeshProUGUIData = TextMeshProUGUIData(elem);
         layoutElementData = LayoutElementData(elem);
         rectTransformData = RectTransformData(elem);

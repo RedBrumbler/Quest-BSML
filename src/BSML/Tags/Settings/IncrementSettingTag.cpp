@@ -5,11 +5,11 @@
 namespace BSML {
     void IncrementSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
-        auto IncrementSetting = go->GetComponent<BSML::IncrementSetting*>();
-        SetHostField(host, IncrementSetting);
+        auto incrementSetting = go->GetComponent<BSML::IncrementSetting*>();
+        SetHostField(host, incrementSetting);
 
-        valueWrapperData.Apply(IncrementSetting->associatedValue, host);
-        incrementSettingData.Apply(IncrementSetting);
+        genericSettingData.Apply(incrementSetting->genericSetting, host);
+        incrementSettingData.Apply(incrementSetting);
 
         CreateChildren(go->get_transform(), host);
     }

@@ -18,8 +18,7 @@ namespace BSML {
         someList->Add("Is");
         someList->Add("Cute");
 
-        someChoice = StringW(someList[3].convert());
-        _myChoice = StringW(someList[0].convert());
+        _myChoice = StringW(someList[3].convert());
     }
     
 
@@ -47,6 +46,7 @@ namespace BSML {
     }
 
     void TestViewController::OnPropertiesChanged() {
+        INFO("someOtherField: {}", someOtherField);
         INFO("A property changed!");
     }
 
@@ -64,5 +64,9 @@ namespace BSML {
 
     void TestViewController::incdecValue_changed(float value) {
         INFO("incdecValue changed: {}, was: {}", value, _incdecValue);
+    }
+
+    void TestViewController::PinkCuteToggled(bool value) {
+        INFO("PinkCuteToggled: {}", value);
     }
 }

@@ -24,7 +24,7 @@ namespace BSML {
         auto toggle = go->GetComponent<BSML::ToggleSetting*>();
         SetHostField(host, toggle);
         
-        valueWrapperData.Apply(toggle->associatedValue, host);
+        genericSettingData.Apply(toggle->genericSetting, host);
         toggleSettingData.Apply(toggle, host);
         
         CreateChildren(go->get_transform(), host);
@@ -84,7 +84,7 @@ namespace BSML {
         DEBUG("Parsing horizontal tag");
         this->::BSML::BSMLTag::parse(elem);
 
-        valueWrapperData = ValueWrapperData(elem);
+        genericSettingData = GenericSettingData(elem);
         toggleSettingData = ToggleSettingData(elem);
         textMeshProUGUIData = TextMeshProUGUIData(elem);
         layoutElementData = LayoutElementData(elem);

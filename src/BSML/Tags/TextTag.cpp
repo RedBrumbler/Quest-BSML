@@ -1,6 +1,6 @@
 #include "BSML/Tags/TextTag.hpp"
 #include "logging.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 
 #include "questui/shared/BeatSaberUI.hpp"
 

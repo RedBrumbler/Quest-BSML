@@ -7,9 +7,9 @@
                 <text text="2 columns"/>
             </horizontal>
             <button id="goodButton" on-click="ButtonPressed"/>
-            <toggle-setting text="test" property="testToggle" on-change="OnPropertiesChanged" field-name="someOtherField" off-text="a" on-text="b" pref-width="40"/>
-            <toggle-setting text="test2" off-text="pink" on-text="cute" pref-width="40"/>
-            <increment-setting label="cuteness" property="incdecValue" pref-width="40"/>
-            <list-setting property="myChoice" list-options="someList" list-choice="someChoice"/>
+            <toggle-setting text="test" on-change="OnPropertiesChanged" value="someOtherField" off-text="a" on-text="b" pref-width="40" apply-on-change="true"/>
+            <toggle-setting text="test2" on-change="PinkCuteToggled" value="testToggle" off-text="pink" on-text="cute" pref-width="40"  apply-on-change="true"/>
+            <increment-setting label="cuteness" pref-width="40"/>
+            <list-setting list-options="someList" list-choice="_myChoice"/>
         </vertical>
 </bsml>

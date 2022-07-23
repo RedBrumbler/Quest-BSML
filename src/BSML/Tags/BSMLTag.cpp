@@ -1,5 +1,5 @@
 #include "BSML/Tags/BSMLTag.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 #include "logging.hpp"
 
 #include "UnityEngine/GameObject.hpp"

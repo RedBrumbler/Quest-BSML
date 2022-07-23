@@ -1,6 +1,6 @@
 #include "BSML/Tags/VerticalTag.hpp"
 #include "logging.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "questui/shared/BeatSaberUI.hpp"

@@ -7,7 +7,7 @@ DEFINE_TYPE(BSML, ToggleSetting);
 
 namespace BSML {
     void ToggleSetting::ctor() {
-        associatedValue = ValueWrapper::New_ctor();
+        genericSetting = GenericSettingWrapper::New_ctor();
     }
 
     void ToggleSetting::Start() {
@@ -24,19 +24,22 @@ namespace BSML {
     }
 
     void ToggleSetting::ReceiveValue() {
-        if (!associatedValue) return;
-        set_Value(associatedValue->GetValue<bool>());
+        if (!genericSetting) return;
+        set_Value(genericSetting->GetValue<bool>());
     }
 
     void ToggleSetting::ApplyValue() {
-        if (!associatedValue) return;
-        associatedValue->SetValue<bool>(currentValue);
+        if (!genericSetting) return;
+        genericSetting->SetValue<bool>(currentValue);
     }
 
     void ToggleSetting::OnValueChanged(bool value) {
         set_Value(value);
 
-        ApplyValue();
+        if (genericSetting) {
+            genericSetting->OnChange(currentValue);
+            if (genericSetting->applyOnChange) ApplyValue();
+        }
     }
 
     bool ToggleSetting::get_Value() {

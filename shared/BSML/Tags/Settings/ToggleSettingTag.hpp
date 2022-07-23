@@ -3,7 +3,7 @@
 #include "BSML/Tags/BSMLTag.hpp"
 
 #include "BSML/Data/Settings/ToggleSettingData.hpp"
-#include "BSML/Data/Settings/ValueWrapperData.hpp"
+#include "BSML/Data/Settings/GenericSettingData.hpp"
 #include "BSML/Data/RectTransformData.hpp"
 #include "BSML/Data/LayoutElementData.hpp"
 #include "BSML/Data/TextMeshProUGUIData.hpp"
@@ -20,7 +20,7 @@ namespace BSML {
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
             
-            ValueWrapperData valueWrapperData;
+            GenericSettingData genericSettingData;
             ToggleSettingData toggleSettingData;
             LayoutElementData layoutElementData;
             RectTransformData rectTransformData;

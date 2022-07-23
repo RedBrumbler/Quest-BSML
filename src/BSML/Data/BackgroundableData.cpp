@@ -1,5 +1,5 @@
 #include "BSML/Data/BackgroundableData.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 #include "logging.hpp"
 
 #include "HMUI/ImageView.hpp"

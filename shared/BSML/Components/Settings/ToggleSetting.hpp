@@ -3,10 +3,10 @@
 #include "custom-types/shared/macros.hpp"
 #include "UnityEngine/UI/Toggle.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
-#include "ValueWrapper.hpp"
+#include "BSML/GenericSettingWrapper.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, ToggleSetting, UnityEngine::MonoBehaviour,
-    DECLARE_INSTANCE_FIELD(ValueWrapper*, associatedValue);
+    DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Toggle*, toggle);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, text);
     DECLARE_INSTANCE_FIELD(bool, currentValue);

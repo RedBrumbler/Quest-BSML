@@ -1,5 +1,5 @@
 #include "BSML/Data/SelectableData.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 #include "logging.hpp"
 
 namespace BSML {

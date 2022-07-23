@@ -8,12 +8,12 @@ namespace BSML {
         public:
             ListSettingData() {};
             explicit ListSettingData(const tinyxml2::XMLElement& elem);
+
+            auto get_listOptions() const { return listOptions; }
             
             void Apply(BSML::ListSetting* listSetting, Il2CppObject* host) const;
         private:
             /// name of field that contains the list of values
             std::string listOptions;
-            /// name of the field that the choice should go in
-            std::string listChoice;
     };
 }

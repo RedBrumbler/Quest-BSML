@@ -8,7 +8,7 @@ namespace BSML {
         auto listSetting = go->GetComponent<BSML::ListSetting*>();
         SetHostField(host, listSetting);
 
-        valueWrapperData.Apply(listSetting->associatedValue, host);
+        genericSettingData.Apply(listSetting->genericSetting, host);
         listSettingData.Apply(listSetting, host);
 
         CreateChildren(go->get_transform(), host);
