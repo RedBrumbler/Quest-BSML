@@ -13,7 +13,6 @@ namespace BSML {
             auto get_min() const { return min; }
             auto get_max() const { return max; }
             auto get_isInt() const { return isInt; }
-            auto get_showButtons() const { return showButtons; }
             auto get_digits() const { return digits; }
 
             void Apply(BSML::SliderSetting* sliderSetting) const;
@@ -22,7 +21,6 @@ namespace BSML {
             std::optional<float> min;
             std::optional<float> max;
             std::optional<bool> isInt;
-            std::optional<bool> showButtons;
             std::optional<int> digits;
     };
 }

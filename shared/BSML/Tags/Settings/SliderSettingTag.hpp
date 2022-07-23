@@ -4,6 +4,7 @@
 
 #include "BSML/Components/Settings/SliderSetting.hpp"
 #include "BSML/Data/Settings/SliderSettingData.hpp"
+#include "BSML/Data/Settings/SliderSettingBaseData.hpp"
 
 namespace BSML {
     class SliderSettingTag : public GenericSliderSettingTag<BSML::SliderSetting*> {
@@ -21,6 +22,7 @@ namespace BSML {
                 return Base::CreateObject(parent);
             }
             
+            SliderSettingBaseData sliderSettingBaseData;
             SliderSettingData sliderSettingData;
     };
 }

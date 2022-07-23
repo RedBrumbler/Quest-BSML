@@ -2,6 +2,7 @@
 
 #include "tinyxml2/shared/tinyxml2.h"
 #include "BSML/Components/Settings/ListSetting.hpp"
+#include "BSML/Components/Settings/ListSliderSetting.hpp"
 
 namespace BSML {
     class ListSettingData {
@@ -12,6 +13,7 @@ namespace BSML {
             auto get_listOptions() const { return listOptions; }
             
             void Apply(BSML::ListSetting* listSetting, Il2CppObject* host) const;
+            void Apply(BSML::ListSliderSetting* listSetting, Il2CppObject* host) const;
         private:
             /// name of field that contains the list of values
             std::string listOptions;
