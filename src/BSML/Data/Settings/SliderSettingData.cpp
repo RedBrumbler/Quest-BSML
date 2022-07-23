@@ -9,7 +9,6 @@ namespace BSML {
         GET_BSML_FLOAT_OPT("min", min);
         GET_BSML_FLOAT_OPT("max", max);
         GET_BSML_BOOL_OPT("integer-only", isInt);
-        GET_BSML_BOOL_OPT("show-buttons", showButtons);
         GET_BSML_INT_OPT("digits", digits);
     }
 
@@ -23,7 +22,6 @@ namespace BSML {
         if (get_min().has_value()) sliderSetting->slider->set_minValue(get_min().value());
         if (get_max().has_value()) sliderSetting->slider->set_maxValue(get_max().value());
         if (get_isInt().has_value()) sliderSetting->isInt = get_isInt().value();
-        if (get_showButtons().has_value()) sliderSetting->showButtons = get_showButtons().value();
         if (get_digits().has_value()) sliderSetting->digits = get_digits().value();
     }
 }
