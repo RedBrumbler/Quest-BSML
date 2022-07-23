@@ -21,6 +21,14 @@ namespace BSML {
         _myChoice = StringW(someList[3].convert());
 
         set_length(5.0f);
+
+        sliderList = List<StringW>::New_ctor();
+        sliderList->Add("Never");
+        sliderList->Add("Gonna");
+        sliderList->Add("Give");
+        sliderList->Add("You");
+        sliderList->Add("Up");
+        sliderChoice = sliderList[3];
     }
     
 

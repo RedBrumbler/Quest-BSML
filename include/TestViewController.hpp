@@ -13,6 +13,9 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, goodButton);
     DECLARE_INSTANCE_FIELD(bool, someOtherField);
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, someList);
+    DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, sliderList);
+    DECLARE_INSTANCE_FIELD(StringW, sliderChoice);
+
 
     BSML_PROPERTY_ONCHANGED(StringW, myChoice);
     BSML_PROPERTY_ONCHANGED(bool, testToggle);
