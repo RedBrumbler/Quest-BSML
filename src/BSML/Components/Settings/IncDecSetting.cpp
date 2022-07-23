@@ -7,7 +7,7 @@ DEFINE_TYPE(BSML, IncDecSetting);
 
 namespace BSML {
     void IncDecSetting::construct() {
-        base_ctor();
+        genericSetting = GenericSettingWrapper::New_ctor();
         interactable = true;
         enableDec = true;
         enableInc = true;

@@ -9,7 +9,7 @@ DEFINE_TYPE(BSML, SliderSettingBase);
 
 namespace BSML {
     void SliderSettingBase::construct() {
-        this->base_ctor();
+        genericSetting = GenericSettingWrapper::New_ctor();
     }
 
     bool SliderSettingBase::get_interactable() {
