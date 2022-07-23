@@ -90,7 +90,7 @@ namespace BSML {
         }
 
         if (index == values.size())
-            index = 0;
+            index = values.size() - 1;
         
         UpdateState();
     }
