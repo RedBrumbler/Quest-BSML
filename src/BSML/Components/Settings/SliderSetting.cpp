@@ -9,12 +9,17 @@
 DEFINE_TYPE(BSML, SliderSetting);
 
 namespace BSML {
+    std::map<HMUI::RangeValuesTextSlider*, BSML::SliderSetting*> SliderSetting::remappers = {};
+
     void SliderSetting::ctor() {
         SliderSettingBase::construct();
         isInt = false;
         increments = 1;
         lastValue = -std::numeric_limits<float>::infinity();
         digits = 2;
+    }
+    void SliderSetting::OnDestroy() {
+        remappers.erase(slider);
     }
 
     float SliderSetting::get_Value() {
@@ -29,8 +34,9 @@ namespace BSML {
 
     void SliderSetting::Setup() {
         // TODO: custom slider texts things https://github.com/monkeymanboy/BeatSaberMarkupLanguage/blob/3d37242327320c11374c9925e042a7ddca75d1d8/BeatSaberMarkupLanguage/Components/Settings/SliderSetting.cs#L41
-
+        
         if (slider) {
+            remappers[slider] = this;
             text = slider->get_gameObject()->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
             
             // steps is range(max - min) divided by increments;

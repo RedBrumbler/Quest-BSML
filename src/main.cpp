@@ -1,6 +1,7 @@
 #include "modloader/shared/modloader.hpp"
 #include "beatsaber-hook/shared/utils/typedefs.h"
 #include "logging.hpp"
+#include "hooking.hpp"
 
 #include "assets.hpp"
 #include "BSML/Parsing/BSMLDocParser.hpp"
@@ -24,5 +25,7 @@ extern "C" void load() {
     isLoaded = true;
     custom_types::Register::AutoRegister();
     
+    Hooks::InstallHooks(BSML::Logging::getLogger());
+
     QuestUI::Register::RegisterAllModSettingsViewController<BSML::TestViewController*>(modInfo, "BSMLTest");
 }

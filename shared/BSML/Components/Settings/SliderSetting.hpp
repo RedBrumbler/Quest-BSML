@@ -1,6 +1,8 @@
 #pragma once
 
 #include "BSML/Components/Settings/SliderSettingBase.hpp"
+#include "HMUI/CustomFormatRangeValuesSlider.hpp"
+#include <map>
 
 DECLARE_CLASS_CUSTOM(BSML, SliderSetting, BSML::SliderSettingBase,
     DECLARE_INSTANCE_FIELD(bool, isInt);        /* default: false;                                      */
@@ -12,6 +14,7 @@ DECLARE_CLASS_CUSTOM(BSML, SliderSetting, BSML::SliderSettingBase,
     DECLARE_INSTANCE_METHOD(void, set_Value, float value);
 
     DECLARE_INSTANCE_METHOD(void, Setup);
+    DECLARE_INSTANCE_METHOD(void, OnDestroy);
     DECLARE_INSTANCE_METHOD(void, OnChange, HMUI::RangeValuesTextSlider* _, float value);
     DECLARE_INSTANCE_METHOD(void, ApplyValue);
     DECLARE_INSTANCE_METHOD(void, ReceiveValue);
@@ -19,5 +22,7 @@ DECLARE_CLASS_CUSTOM(BSML, SliderSetting, BSML::SliderSettingBase,
 
     DECLARE_CTOR(ctor);
     public:
+        static std::map<HMUI::RangeValuesTextSlider*, BSML::SliderSetting*> remappers;
+
         std::function<StringW(float)> formatter = nullptr;
 )

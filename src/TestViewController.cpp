@@ -19,6 +19,8 @@ namespace BSML {
         someList->Add("Cute");
 
         _myChoice = StringW(someList[3].convert());
+
+        set_length(5.0f);
     }
     
 
@@ -68,5 +70,13 @@ namespace BSML {
 
     void TestViewController::PinkCuteToggled(bool value) {
         INFO("PinkCuteToggled: {}", value);
+    }
+
+    float TestViewController::get_length() { return _length; }
+    void TestViewController::set_length(float value) { _length = value; INFO("length set"); }
+
+
+    void TestViewController::ChangeLength(float value) {
+        INFO("Length changed: {}\nBacking Value: {}", value, _length);
     }
 }
