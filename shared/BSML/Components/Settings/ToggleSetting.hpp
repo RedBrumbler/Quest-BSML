@@ -4,12 +4,12 @@
 #include "UnityEngine/UI/Toggle.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "BSML/GenericSettingWrapper.hpp"
+#include "BSML/Components/Settings/BaseSetting.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, ToggleSetting, UnityEngine::MonoBehaviour,
-    DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
+DECLARE_CLASS_CUSTOM(BSML, ToggleSetting, BSML::BaseSetting,
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Toggle*, toggle);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, text);
-    DECLARE_INSTANCE_FIELD(bool, currentValue);
+    DECLARE_INSTANCE_FIELD(bool, currentValue); /* default: false; */
 
     DECLARE_INSTANCE_METHOD(bool, get_Value);
     DECLARE_INSTANCE_METHOD(void, set_Value, bool value);

@@ -1,18 +1,21 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
-#include "TMPro/TextMeshProUGUI.hpp"
+#include "UnityEngine/MonoBehaviour.hpp"
 #include "UnityEngine/UI/Button.hpp"
-#include "internal_macros.hpp"
+#include "TMPro/TextMeshProUGUI.hpp"
+#include "HMUI/RangeValuesTextSlider.hpp"
 #include "BSML/GenericSettingWrapper.hpp"
 #include "BSML/Components/Settings/BaseSetting.hpp"
 
-DECLARE_CLASS_CUSTOM(BSML, IncDecSetting, BSML::BaseSetting,
+DECLARE_CLASS_CUSTOM(BSML, SliderSettingBase, BSML::BaseSetting,
+    DECLARE_INSTANCE_FIELD(HMUI::RangeValuesTextSlider*, slider);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, text);
-    DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, decButton);
-    DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, incButton);
+    DECLARE_INSTANCE_FIELD(bool, showButtons);
 
-    DECLARE_INSTANCE_FIELD(bool, interactable);
+    DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, incButton);
+    DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, decButton);
+
     DECLARE_INSTANCE_FIELD(bool, enableDec);
     DECLARE_INSTANCE_FIELD(bool, enableInc);
 
@@ -22,9 +25,6 @@ DECLARE_CLASS_CUSTOM(BSML, IncDecSetting, BSML::BaseSetting,
     DECLARE_INSTANCE_METHOD(void, set_enableDec, bool value);
     DECLARE_INSTANCE_METHOD(void, set_enableInc, bool value);
 
-    DECLARE_INSTANCE_METHOD(void, set_text, StringW value);
-
     DECLARE_INSTANCE_METHOD(void, Start);
-
     DECLARE_CTOR(construct);
 )

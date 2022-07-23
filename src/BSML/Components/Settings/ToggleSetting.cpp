@@ -7,7 +7,8 @@ DEFINE_TYPE(BSML, ToggleSetting);
 
 namespace BSML {
     void ToggleSetting::ctor() {
-        genericSetting = GenericSettingWrapper::New_ctor();
+        this->base_ctor();
+        currentValue = false;
     }
 
     void ToggleSetting::Start() {

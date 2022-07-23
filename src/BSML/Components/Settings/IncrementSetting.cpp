@@ -46,7 +46,17 @@ namespace BSML {
 
     void IncrementSetting::EitherPressed() {
         UpdateState();
-        ApplyValue();
+
+        if (genericSetting) {
+            
+            if (isInt) {
+                genericSetting->OnChange(ConvertToInt(currentValue));
+            } else {
+                genericSetting->OnChange(currentValue);
+            }
+            if (genericSetting->applyOnChange) ApplyValue();
+        }
+        
     }
 
     void IncrementSetting::ReceiveValue() {
@@ -61,16 +71,10 @@ namespace BSML {
             return;
         }
         
-        if (genericSetting) {
-            if (isInt) {
-                int val = ConvertToInt(currentValue);
-
-                genericSetting->OnChange(val);
-                if (genericSetting->applyOnChange) genericSetting->SetValue(val);
-            } else {
-                genericSetting->OnChange(currentValue);
-                if (genericSetting->applyOnChange) genericSetting->SetValue(currentValue);
-            }
+        if (isInt) {
+            genericSetting->SetValue(ConvertToInt(currentValue));
+        } else {
+            genericSetting->SetValue(currentValue);
         }
     }
 
