@@ -36,6 +36,9 @@ inline List<Il2CppObject*>* initializer_list_to_List(std::initializer_list<std::
     return result;
 }
 
+// to be used with the various lists in BSML, pass the options as a list of strings, e.g. BSML_OPTIONS_LIST(lyrics, "Never", "Gonna", "Give", "You", "Up");
+// the id of the list is the same as what you use for options="listid" in BSML, make sure your IDs are valid c++ identifiers!
 #define BSML_OPTIONS_LIST(choices_id, ...) \
+public: \
 List<Il2CppObject*>* get_##choices_id() { return initializer_list_to_List({__VA_ARGS__}); };\
 ___CREATE_INSTANCE_METHOD(get_ ##choices_id, "get_" #choices_id, METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_HIDE_BY_SIG, nullptr)
