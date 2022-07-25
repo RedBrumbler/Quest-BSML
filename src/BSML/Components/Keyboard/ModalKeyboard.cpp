@@ -20,8 +20,7 @@ namespace BSML {
 
     void ModalKeyboard::OnEnter(StringW value) {
         if (genericSetting) {
-            genericSetting->OnChange(value);
-            if (genericSetting->applyOnChange) genericSetting->SetValue(value);
+            genericSetting->SetValue(value);
         }
 
         if (onEnter) onEnter(value);

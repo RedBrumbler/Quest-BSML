@@ -22,6 +22,6 @@
                 </vertical>
             </modal>
             <button label="Wanna type?" on-click="show_mykb"/>
-            <modal-keyboard id="mykb" click-off-closes="true" move-to-center="true"/>
+            <modal-keyboard id="mykb" click-off-closes="true" move-to-center="true" on-enter="KeyboardValueEntered"/>
         </vertical>
 </bsml>

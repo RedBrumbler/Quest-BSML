@@ -20,10 +20,12 @@ using namespace VRUIControls;
 namespace BSML {
     void ModalKeyboardTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
-        auto modal = go->GetComponent<BSML::ModalView*>();
-        SetHostField(host, modal);
+        auto keyboard = go->GetComponent<BSML::ModalKeyboard*>();
+        SetHostField(host, keyboard);
         
-        modalData.Apply(modal, host);
+        modalData.Apply(keyboard->modalView, host);
+        modalKeyboardData.Apply(keyboard, host);
+
         CreateChildren(go->get_transform(), host);
     }
 
@@ -49,5 +51,7 @@ namespace BSML {
     void ModalKeyboardTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing modal tag");
         this->::BSML::ModalTag::parse(elem);
+
+        modalKeyboardData = ModalKeyboardData(elem);
     }
 }
