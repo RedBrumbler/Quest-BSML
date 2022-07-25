@@ -21,6 +21,7 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     BSML_PROPERTY_ONCHANGED(float, incdecValue);
     
     BSML_MODAL_METHOD(scare);
+    BSML_MODAL_METHOD(mykb);
     DECLARE_INSTANCE_FIELD(float, _length);
     DECLARE_INSTANCE_METHOD(float, get_length);
     DECLARE_INSTANCE_METHOD(void, set_length, float value);

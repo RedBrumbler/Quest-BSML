@@ -1,23 +1,17 @@
 #pragma once
 
-#include "BSML/Tags/BSMLTag.hpp"
-
-#include "BSML/Data/RectTransformData.hpp"
-#include "BSML/Data/ModalData.hpp"
+#include "BSML/Tags/ModalTag.hpp"
 
 namespace BSML {
-    class ModalTag : public BSMLTag {
+    class ModalKeyboardTag : public ModalTag {
         public:
-            ModalTag() : BSMLTag() {}
+            ModalKeyboardTag() : ModalTag() {}
         
             virtual void Construct(UnityEngine::Transform* parent, Il2CppObject* host = nullptr) const override;
         protected:
-            friend class ModalTagParser;
+            friend class ModalKeyboardTagParser;
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
-            
-            ModalData modalData;
-            RectTransformData rectTransformData;
     };
 }

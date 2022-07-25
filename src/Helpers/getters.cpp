@@ -8,6 +8,7 @@
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 #include "HMUI/TextSegmentedControl.hpp"
 
+using namespace TMPro;
 using namespace HMUI;
 using namespace UnityEngine;
 using namespace VRUIControls;
@@ -35,5 +36,33 @@ namespace BSML::Helpers {
         if(!diContainer)
             CacheNotFoundWarningLog(DiContainer);
         return diContainer;
+    }
+
+    HoverHintController* hoverHintController;
+    HoverHintController* GetHoverHintController() 
+    {
+        if(!hoverHintController || !Object::IsNativeObjectAlive(hoverHintController))
+            hoverHintController = Resources::FindObjectsOfTypeAll<HoverHintController*>().FirstOrDefault();
+        if(!hoverHintController)
+            CacheNotFoundWarningLog(HoverHintController);
+        return hoverHintController;
+    }
+
+    TMP_FontAsset* mainTextFont = nullptr;
+    TMP_FontAsset* GetMainTextFont() {
+        if (!mainTextFont || !Object::IsNativeObjectAlive(mainTextFont))
+                    mainTextFont = Resources::FindObjectsOfTypeAll<TMP_FontAsset*>().FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF"; });
+        if(!mainTextFont)
+            CacheNotFoundWarningLog(TMP_FontAsset);
+        return mainTextFont;
+    }
+
+    Material* mainUIFontMaterial = nullptr;
+    Material* GetMainUIFontMaterial() {
+        if (!mainUIFontMaterial || !Object::IsNativeObjectAlive(mainUIFontMaterial))
+            mainUIFontMaterial = Resources::FindObjectsOfTypeAll<Material*>().FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF Curved Softer"; });
+        if(!mainUIFontMaterial)
+            CacheNotFoundWarningLog(Material);
+        return mainUIFontMaterial;
     }
 }
