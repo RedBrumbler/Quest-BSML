@@ -5,6 +5,7 @@
 #include "Zenject/DiContainer.hpp"
 #include "HMUI/HoverHintController.hpp"
 #include "TMPro/TMP_FontAsset.hpp"
+#include "GlobalNamespace/IVRPlatformHelper.hpp"
 
 namespace BSML::Helpers {
     VRUIControls::PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache();
@@ -13,4 +14,5 @@ namespace BSML::Helpers {
 
     TMPro::TMP_FontAsset* GetMainTextFont();
     UnityEngine::Material* GetMainUIFontMaterial();
+    GlobalNamespace::IVRPlatformHelper* GetIVRPlatformHelper();
 }

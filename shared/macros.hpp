@@ -1,6 +1,7 @@
 #pragma once
 #include "BSML/Components/ModalView.hpp"
 
+
 // Use this macro in combination with BSML settings to declare the proper setters and getters, make sure that the id of the setting is the same as what you pass as name
 #define BSML_PROPERTY(type, name)                                                                              \
 DECLARE_INSTANCE_FIELD(type, _##name);                                                                              \
@@ -26,3 +27,15 @@ DECLARE_INSTANCE_FIELD(BSML::ModalView*, modal_id);     \
 public:                                                 \
 void show_##modal_id() { if (modal_id && UnityEngine::Object::IsNativeObjectAlive(modal_id)) modal_id->Show(); } \
 ___CREATE_INSTANCE_METHOD(show_##modal_id, "show_" #modal_id, METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_HIDE_BY_SIG, nullptr)
+
+/// method to be used by BSML_OPTIONS_LIST to convert the given options into an on demand getter for options
+inline List<Il2CppObject*>* initializer_list_to_List(std::initializer_list<std::string> list) {
+    auto result = List<Il2CppObject*>::New_ctor();
+    result->EnsureCapacity(list.size());
+    for (auto& v : list) result->Add(StringW(v));
+    return result;
+}
+
+#define BSML_OPTIONS_LIST(choices_id, ...) \
+List<Il2CppObject*>* get_##choices_id() { return initializer_list_to_List({__VA_ARGS__}); };\
+___CREATE_INSTANCE_METHOD(get_ ##choices_id, "get_" #choices_id, METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_HIDE_BY_SIG, nullptr)

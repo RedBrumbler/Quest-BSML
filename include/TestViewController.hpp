@@ -14,6 +14,8 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(bool, someOtherField);
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, someList);
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, sliderList);
+
+    BSML_OPTIONS_LIST(lyrics, "Never", "Gonna", "Give", "You", "Up");
     DECLARE_INSTANCE_FIELD(StringW, sliderChoice);
 
     BSML_PROPERTY_ONCHANGED(StringW, myChoice);

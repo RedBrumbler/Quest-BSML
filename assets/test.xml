@@ -27,7 +27,7 @@
             </vertical>
             <vertical>
                 <string-setting label="password" on-change="GibString"/>
-
+                <dropdown-list-setting label="dropit" options="lyrics"/>
             </vertical>
         </horizontal>
 </bsml>

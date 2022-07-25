@@ -18,7 +18,7 @@ namespace BSML {
         someList->Add("Is");
         someList->Add("Cute");
 
-        _myChoice = StringW(someList[3].convert());
+        _myChoice = StringW(someList[3]);
 
         set_length(5.0f);
 

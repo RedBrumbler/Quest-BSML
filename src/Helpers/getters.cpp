@@ -5,8 +5,10 @@
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "GlobalNamespace/MainMenuViewController.hpp"
+#include "GlobalNamespace/LevelCollectionTableView.hpp"
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 #include "HMUI/TextSegmentedControl.hpp"
+#include "HMUI/ScrollView.hpp"
 
 using namespace TMPro;
 using namespace HMUI;
@@ -46,6 +48,16 @@ namespace BSML::Helpers {
         if(!hoverHintController)
             CacheNotFoundWarningLog(HoverHintController);
         return hoverHintController;
+    }
+
+    IVRPlatformHelper* platformHelper = nullptr;
+    IVRPlatformHelper* GetIVRPlatformHelper()
+    {
+        if (!platformHelper)
+            platformHelper = Resources::FindObjectsOfTypeAll<LevelCollectionTableView*>().First()->GetComponentInChildren<ScrollView*>()->platformHelper;
+        if (!platformHelper)
+            CacheNotFoundWarningLog(IVRPlatformHelper);
+        return platformHelper;
     }
 
     TMP_FontAsset* mainTextFont = nullptr;
