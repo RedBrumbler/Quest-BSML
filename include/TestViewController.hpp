@@ -16,11 +16,11 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, sliderList);
     DECLARE_INSTANCE_FIELD(StringW, sliderChoice);
 
-
     BSML_PROPERTY_ONCHANGED(StringW, myChoice);
     BSML_PROPERTY_ONCHANGED(bool, testToggle);
     BSML_PROPERTY_ONCHANGED(float, incdecValue);
     
+    BSML_MODAL_METHOD(scare);
     DECLARE_INSTANCE_FIELD(float, _length);
     DECLARE_INSTANCE_METHOD(float, get_length);
     DECLARE_INSTANCE_METHOD(void, set_length, float value);

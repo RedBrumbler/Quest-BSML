@@ -41,6 +41,7 @@ namespace BSML {
     BSMLTag* BSMLDocParser::parse(const tinyxml2::XMLDocument& doc) {
         INFO("Parsing BSML doc");
         auto parentTag = new BSMLTag();
+        parentTag->root = parentTag;
         parentTag->is_valid = true;
 
         auto handle = tinyxml2::XMLConstHandle(doc).FirstChildElement();

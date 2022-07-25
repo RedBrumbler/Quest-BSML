@@ -13,5 +13,13 @@
             <list-setting list-options="someList" list-choice="_myChoice"/>
             <slider-setting label="length" min="2" max="6" increment="0.05" show-buttons="true" digits="3" value="length" on-change="ChangeLength"/>
             <list-slider-setting label="object slider" show-buttons="false" options="sliderList" value="sliderChoice"/>
+            <button label="feeling brave?" on-click="show_scare"/>
+            <modal id="scare" click-off-closes="true" move-to-center="true" size-delta-x="20" size-delta-y="20">
+                <vertical pref-height="20" vertical-fit="PreferredSize">
+                    <horizontal pad="5">
+                        <text text="BOO!"/>
+                    </horizontal>
+                </vertical>
+            </modal>
         </vertical>
 </bsml>

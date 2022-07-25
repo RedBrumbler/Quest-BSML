@@ -47,6 +47,6 @@ namespace BSML {
             std::optional<float> pivotY;
 
             std::string hoverHint;
-            bool active = true;
+            std::optional<bool> active;
     };
 }

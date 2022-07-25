@@ -58,6 +58,8 @@ namespace BSML {
     }
     
     void BSMLTag::AddChild(BSMLTag* child) {
+        child->root = root;
+        child->parent = this;
         children.emplace_back(child);
     }
 

@@ -36,11 +36,8 @@ namespace BSML {
         if (!toggleTemplate || !Object::IsNativeObjectAlive(toggleTemplate)) {
             auto foundToggle = Resources::FindObjectsOfTypeAll<Toggle*>().FirstOrDefault([](auto x){
                 if (!x) return false;
-                DEBUG("Valid Object");
                 auto parent = x->get_transform()->get_parent();
-                DEBUG("Got parent");
                 if (!parent) return false;
-                DEBUG("Valid parent");
                 return parent->get_gameObject()->get_name() == "Fullscreen";
             });
             toggleTemplate = foundToggle ? foundToggle->get_transform()->get_parent()->get_gameObject() : nullptr;

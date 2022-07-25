@@ -23,7 +23,7 @@ namespace BSML {
         GET_BSML_FLOAT_OPT("pivot-y", pivotY);
 
         GET_BSML_STRING("hover-hint", hoverHint);
-        GET_BSML_BOOL("active", active);
+        GET_BSML_BOOL_OPT("active", active);
     }
 
     void RectTransformData::Apply(UnityEngine::RectTransform* rectTransform) const {
@@ -39,9 +39,10 @@ namespace BSML {
         if (get_pivot_exists()) rectTransform->set_pivot(merge(rectTransform->get_pivot(), get_pivotX(), get_pivotY()));
 
         if (!hoverHint.empty()) {
+            // TODO: remove dependency on questui
             QuestUI::BeatSaberUI::AddHoverHint(rectTransform->get_gameObject(), hoverHint);
         }
 
-        rectTransform->get_gameObject()->SetActive(active);
+        if (get_active().has_value()) rectTransform->get_gameObject()->SetActive(get_active().value());
     }
 }
