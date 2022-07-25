@@ -1,5 +1,6 @@
 #include "BSML/Tags/ModalTag.hpp"
 #include "BSML/Components/ModalView.hpp"
+#include "BSML/Components/ExternalComponents.hpp"
 
 #include "Helpers/getters.hpp"
 #include "logging.hpp"
@@ -24,9 +25,13 @@ namespace BSML {
     void ModalTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto modal = go->GetComponent<BSML::ModalView*>();
-        SetHostField(host, modal);
+        auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
+        auto rectTransform = externalComponents->Get<RectTransform*>();
         
         modalData.Apply(modal, host);
+        rectTransformData.Apply(rectTransform);
+        SetHostField(host, modal);
+        
         CreateChildren(go->get_transform(), host);
     }
 
@@ -77,7 +82,10 @@ namespace BSML {
         rectTransform->set_anchorMax({.5f, .5f});
         rectTransform->set_sizeDelta({0, 0});
 
-        rectTransformData.Apply(rectTransform);
+        auto externalComponents = gameObject->AddComponent<BSML::ExternalComponents*>();
+        externalComponents->Add(rectTransform);
+        externalComponents->Add(modalView);
+
         return gameObject;
     }
 

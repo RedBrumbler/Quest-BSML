@@ -87,4 +87,8 @@ namespace BSML {
     void TestViewController::ChangeLength(float value) {
         INFO("Length changed: {}\nBacking Value: {}", value, _length);
     }
+
+    void TestViewController::GibString(StringW value) {
+        INFO("GibString: {}", value);
+    }
 }

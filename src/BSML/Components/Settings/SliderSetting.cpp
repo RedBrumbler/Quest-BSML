@@ -1,4 +1,5 @@
 #include "BSML/Components/Settings/SliderSetting.hpp"
+#include "logging.hpp"
 
 #include "System/Action_2.hpp"
 #include "UnityEngine/GameObject.hpp"

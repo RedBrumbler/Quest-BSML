@@ -25,6 +25,7 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(float, _length);
     DECLARE_INSTANCE_METHOD(float, get_length);
     DECLARE_INSTANCE_METHOD(void, set_length, float value);
+    DECLARE_INSTANCE_METHOD(void, GibString, StringW value);
 
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::ViewController::DidActivate>::get(), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 

@@ -1,5 +1,7 @@
 #include "BSML/Tags/ModalKeyboardTag.hpp"
 #include "BSML/Components/ModalView.hpp"
+#include "BSML/Components/ExternalComponents.hpp"
+#include "logging.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Resources.hpp"
@@ -22,7 +24,9 @@ namespace BSML {
         auto go = CreateObject(parent);
         auto keyboard = go->GetComponent<BSML::ModalKeyboard*>();
         SetHostField(host, keyboard);
+        auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
         
+        rectTransformData.Apply(externalComponents->Get<RectTransform*>());
         modalData.Apply(keyboard->modalView, host);
         modalKeyboardData.Apply(keyboard, host);
 
@@ -45,6 +49,10 @@ namespace BSML {
         modalKeyboard->keyboard = keyboard;
         modalKeyboard->modalView = gameObject->GetComponent<BSML::ModalView*>();
         keyboard->enterPressed = std::bind(&ModalKeyboard::OnEnter, modalKeyboard, std::placeholders::_1);
+
+        auto externalComponents = gameObject->GetComponent<ExternalComponents*>();
+        externalComponents->Add(modalKeyboard);
+
         return gameObject;
     }
 

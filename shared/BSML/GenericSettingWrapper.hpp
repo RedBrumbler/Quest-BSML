@@ -1,7 +1,6 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
-#include "logging.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
     DECLARE_INSTANCE_FIELD(Il2CppObject*, host);
@@ -9,10 +8,10 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
     DECLARE_CTOR(ctor);
 
     public:
-        FieldInfo* valueInfo = nullptr;
-        const MethodInfo* setterInfo = nullptr;
-        const MethodInfo* getterInfo = nullptr;
-        const MethodInfo* onChangeInfo = nullptr;
+        FieldInfo* valueInfo;
+        const MethodInfo* setterInfo;
+        const MethodInfo* getterInfo;
+        const MethodInfo* onChangeInfo;
         
         template<typename T>
         void SetValue(const T& value) {
@@ -68,8 +67,8 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
             if (onChangeInfo && onChangeInfo->parameters_count < 1) {
                 OnChange();
                 return;
+            } else if (onChangeInfo){
+                il2cpp_utils::RunMethod(host, onChangeInfo, value);
             }
-
-            if (onChangeInfo) il2cpp_utils::RunMethod(host, onChangeInfo, value);
         }
 )

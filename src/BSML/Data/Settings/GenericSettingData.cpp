@@ -1,5 +1,7 @@
 #include "BSML/Data/Settings/GenericSettingData.hpp"
 #include "internal_macros.hpp"
+#include "logging.hpp"
+
 namespace BSML {
     GenericSettingData::GenericSettingData(const tinyxml2::XMLElement& elem) {
         GET_BSML_STRING("on-change", onChange);
