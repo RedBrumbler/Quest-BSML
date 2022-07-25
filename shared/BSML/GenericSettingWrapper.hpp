@@ -14,7 +14,7 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
         const MethodInfo* onChangeInfo;
         
         template<typename T>
-        void SetValue(const T& value) {
+        void SetValue(T value) {
             if (valueInfo) {
                 SetField<T>(value);
             } else if (setterInfo) {
@@ -23,12 +23,12 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
         }
 
         template<typename T>
-        void SetField(const T& value) {
+        void SetField(T value) {
             il2cpp_utils::SetFieldValue(host, valueInfo, value);
         }
 
         template<typename T>
-        void SetProperty(const T& value) {
+        void SetProperty(T value) {
             il2cpp_utils::RunMethod(host, setterInfo, value);
         }
 
@@ -62,7 +62,7 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
         }
 
         template<typename T>
-        void OnChange(const T& value) {
+        void OnChange(T value) {
             // ìf the given onchange info only has 1 parameter (implicit this ptr) we just use the OnChange(void) method
             if (onChangeInfo && onChangeInfo->parameters_count < 1) {
                 OnChange();

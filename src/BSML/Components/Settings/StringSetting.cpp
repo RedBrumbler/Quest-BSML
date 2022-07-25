@@ -57,14 +57,14 @@ namespace BSML {
         set_text(value);
         if (genericSetting) {
             auto val = get_text();
-            genericSetting->OnChange<Il2CppString*>(val);
+            genericSetting->OnChange(val);
             if (genericSetting->applyOnChange) ApplyValue();
         }
     }
 
     void StringSetting::ApplyValue() {
         if (genericSetting) 
-            genericSetting->SetValue<Il2CppString*>(get_text());
+            genericSetting->SetValue(get_text());
     }
 
     void StringSetting::ReceiveValue() {
