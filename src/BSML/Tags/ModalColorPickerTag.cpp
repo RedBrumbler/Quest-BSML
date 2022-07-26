@@ -1,5 +1,5 @@
 #include "BSML/Tags/ModalColorPickerTag.hpp"
-#include "BSML/Parsing/BSMLDocParser.hpp"
+#include "BSML.hpp"
 #include "BSML/Components/ModalColorPicker.hpp"
 #include "BSML/Components/ExternalComponents.hpp"
 #include "logging.hpp"
@@ -98,8 +98,7 @@ namespace BSML {
         colorTransform->set_anchorMax({0.5, 0.5f});
         colorPicker->colorImage = colorImage;
 
-        auto tag = BSMLDocParser::parse(buttonXML);
-        tag->Construct(gameObject->get_transform(), colorPicker);
+        BSML::parse_and_construct(buttonXML, gameObject->get_transform(), colorPicker);
 
         externalComponents->Add(colorPicker);
         return gameObject;

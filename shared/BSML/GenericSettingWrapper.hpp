@@ -57,6 +57,27 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
             return getterInfo ? il2cpp_utils::RunMethod<T>(host, getterInfo).value_or(T{}) : T{};
         }
 
+        template<typename T>
+        std::optional<T> GetValueOpt() {
+            if (valueInfo) {
+                return GetFieldOpt<T>();
+            }
+            if (getterInfo) {
+                return GetPropertyOpt<T>();
+            }
+            return std::nullopt;
+        }
+
+        template<typename T>
+        std::optional<T> GetFieldOpt() {
+            return valueInfo ? il2cpp_utils::GetFieldValue<T>(host, valueInfo) : std::nullopt;
+        }
+
+        template<typename T>
+        std::optional<T> GetPropertyOpt()  {
+            return getterInfo ? il2cpp_utils::RunMethod<T>(host, getterInfo) : std::nullopt;
+        }
+
         void OnChange() {
             if (onChangeInfo) il2cpp_utils::RunMethod(host, onChangeInfo);
         }

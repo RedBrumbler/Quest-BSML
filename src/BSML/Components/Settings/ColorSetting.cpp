@@ -78,7 +78,7 @@ namespace BSML {
 
     void ColorSetting::ReceiveValue() {
         if (!genericSetting) return;
-        set_currentColor(genericSetting->GetValue<UnityEngine::Color>());
+        set_currentColor(genericSetting->GetValueOpt<UnityEngine::Color>().value_or(currentColor));
     }
 
 }

@@ -5,6 +5,7 @@ DEFINE_TYPE(BSML, ModalColorPicker);
 namespace BSML {
     void ModalColorPicker::ctor() {
         genericSetting = GenericSettingWrapper::New_ctor();
+        currentColor = {1.0f, 1.0f, 1.0f, 1.0f};
     }
 
     UnityEngine::Color ModalColorPicker::get_currentColor() {
@@ -23,7 +24,7 @@ namespace BSML {
 
     void ModalColorPicker::OnEnable() {
         if (genericSetting)
-            set_currentColor(genericSetting->GetValue<UnityEngine::Color>());
+            set_currentColor(genericSetting->GetValueOpt<UnityEngine::Color>().value_or(currentColor));
     }
 
     void ModalColorPicker::CancelPressed() {
