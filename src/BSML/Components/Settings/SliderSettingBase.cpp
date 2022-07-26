@@ -46,7 +46,6 @@ namespace BSML {
         decButton = slider->decButton;
         
         if (!showButtons) {
-            // TODO: Check if this now works
             slider->get_image()->set_sprite(Utilities::FindSpriteCached("RoundRect10"));
             UnityEngine::Object::Destroy(incButton->get_gameObject());
             UnityEngine::Object::Destroy(decButton->get_gameObject());
