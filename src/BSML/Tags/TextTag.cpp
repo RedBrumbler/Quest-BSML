@@ -1,6 +1,6 @@
 #include "BSML/Tags/TextTag.hpp"
 #include "logging.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 
 #include "questui/shared/BeatSaberUI.hpp"
 
@@ -15,7 +15,8 @@ namespace BSML {
     }
 
     UnityEngine::GameObject* TextTag::CreateObject(UnityEngine::Transform* parent) const {
-        auto text = CreateText(parent, textMeshProUGUIData.get_text(), textMeshProUGUIData.get_italics().value_or(true));
+        DEBUG("Creating Text");
+        auto text = CreateText(parent, textMeshProUGUIData.get_text().value_or("BSMLText"), textMeshProUGUIData.get_italics().value_or(true));
         textMeshProUGUIData.Apply(text);
         rectTransformData.Apply(text->get_rectTransform());
 

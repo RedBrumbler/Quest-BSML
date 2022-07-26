@@ -6,9 +6,6 @@
 namespace BSML {
     BSMLTagParser BSMLTagParser::bsmlTagParser;
 
-    static BSMLTag invalid_value;
-    BSMLTag* invalid = &invalid_value;
-
     BSMLTagParser::BSMLTagParser(std::vector<std::string> aliases) : aliases(aliases) {
         BSMLDocParser::RegisterTag(this);
     }
@@ -32,7 +29,6 @@ namespace BSML {
 
     void BSMLTagParser::ParseChildren(const tinyxml2::XMLElement& elem, BSMLTag* parentTag) {
         auto handle = tinyxml2::XMLConstHandle(elem).FirstChildElement();
-        // TODO: does this work?
         for (
             const tinyxml2::XMLElement* element = nullptr;
             (element = handle.ToElement()) != nullptr;

@@ -1,6 +1,6 @@
 #include "BSML/Tags/HorizontalTag.hpp"
 #include "logging.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
@@ -16,10 +16,12 @@ namespace BSML {
     }
 
     UnityEngine::GameObject* HorizontalTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating Horizontal");
         auto horizontal = CreateHorizontalLayoutGroup(parent);
         auto gameObject = horizontal->get_gameObject();
-        if (!backgroundableData.get_background().empty())
-            backgroundableData.Apply(gameObject->GetComponent<QuestUI::Backgroundable*>());
+        
+        gameObject->AddComponent<BSML::Backgroundable*>();
+        backgroundableData.Apply(gameObject->GetComponent<BSML::Backgroundable*>());
         
         contentSizeFitterData.Apply(gameObject->GetComponent<UnityEngine::UI::ContentSizeFitter*>());
         horizontalOrVerticalLayoutGroupData.Apply(horizontal);

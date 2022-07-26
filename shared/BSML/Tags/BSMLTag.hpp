@@ -27,6 +27,8 @@ namespace BSML {
             void SetHostField(Il2CppObject* host, Il2CppObject* value) const;
             void CreateChildren(UnityEngine::Transform* parent, Il2CppObject* host) const;
             
+            BSMLTag* root;
+            BSMLTag* parent;
             bool is_valid = false;
             std::string id;
             std::vector<BSMLTag*> children;

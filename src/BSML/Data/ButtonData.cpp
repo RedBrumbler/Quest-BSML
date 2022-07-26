@@ -1,5 +1,5 @@
 #include "BSML/Data/ButtonData.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 #include "logging.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 

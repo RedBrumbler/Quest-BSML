@@ -6,18 +6,37 @@
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
-#include "BSMLSettingMacros.hpp"
+#include "macros.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::HorizontalLayoutGroup*, layout);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, goodButton);
     DECLARE_INSTANCE_FIELD(bool, someOtherField);
+    DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, someList);
+    DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, sliderList);
 
-    BSML_SETTINGS_PROPERTY_ONCHANGED(bool, testToggle);
+    BSML_OPTIONS_LIST(lyrics, "Never", "Gonna", "Give", "You", "Up");
+    DECLARE_INSTANCE_FIELD(StringW, sliderChoice);
+
+    BSML_PROPERTY_ONCHANGED(StringW, myChoice);
+    BSML_PROPERTY_ONCHANGED(bool, testToggle);
+    BSML_PROPERTY_ONCHANGED(float, incdecValue);
+    
+    BSML_MODAL_METHOD(scare);
+    BSML_MODAL_METHOD(mykb);
+    DECLARE_INSTANCE_FIELD(float, _length);
+    DECLARE_INSTANCE_METHOD(float, get_length);
+    DECLARE_INSTANCE_METHOD(void, set_length, float value);
+    DECLARE_INSTANCE_METHOD(void, GibString, StringW value);
 
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::ViewController::DidActivate>::get(), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 
     DECLARE_INSTANCE_METHOD(void, ButtonPressed);
     DECLARE_INSTANCE_METHOD(void, OnPropertiesChanged);
+    DECLARE_INSTANCE_METHOD(void, PinkCuteToggled, bool value);
+    DECLARE_INSTANCE_METHOD(void, ChangeLength, float value);
+    DECLARE_INSTANCE_METHOD(void, GibColor, UnityEngine::Color value);
+
+    DECLARE_CTOR(ctor);
     
 )

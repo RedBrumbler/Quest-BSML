@@ -1,5 +1,5 @@
 #include "BSML/Tags/BSMLTag.hpp"
-#include "BSMLMacros.hpp"
+#include "internal_macros.hpp"
 #include "logging.hpp"
 
 #include "UnityEngine/GameObject.hpp"
@@ -13,12 +13,7 @@ namespace BSML {
     BSMLTag::BSMLTag() : is_valid(false), children({}) {}
 
     BSMLTag::~BSMLTag() {
-        INFO("Destruct BSMLTag {}", fmt::ptr(this));
-        for (auto child : children) {
-            // we can't delete the child if it's the invalid tag
-            if (child != invalid)
-                delete child;
-        }
+        for (auto child : children) delete child;
         children.clear();
     } 
 
@@ -27,6 +22,11 @@ namespace BSML {
     }
 
     void BSMLTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
+        if (!is_valid) {
+            ERROR("Trying to construct an invalid tag, not doing that!");
+            return;
+        }
+
         // BSMLTag construct is just a passthrough to child
         CreateChildren(parent, host);
     }
@@ -58,6 +58,8 @@ namespace BSML {
     }
     
     void BSMLTag::AddChild(BSMLTag* child) {
+        child->root = root;
+        child->parent = this;
         children.emplace_back(child);
     }
 

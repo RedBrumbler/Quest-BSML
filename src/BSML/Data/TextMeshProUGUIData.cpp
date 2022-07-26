@@ -1,5 +1,6 @@
 #include "BSML/Data/TextMeshProUGUIData.hpp"
-#include "BSMLMacros.hpp"
+#include "Helpers/utilities.hpp"
+#include "internal_macros.hpp"
 #include "logging.hpp"
 
 #include <map>
@@ -77,11 +78,13 @@ namespace BSML {
 
         std::string fontColorStringTemp;
         GET_BSML_STRING("font-color", fontColorStringTemp);
+        fontColor = Utilities::ParseHTMLColorOpt(fontColorStringTemp);
         std::string faceColorStringTemp;
         GET_BSML_STRING("face-color", faceColorStringTemp);
+        faceColor = Utilities::ParseHTMLColor32Opt(faceColorStringTemp);
         std::string outlineColorStringTemp;
         GET_BSML_STRING("outline-color", outlineColorStringTemp);
-
+        faceColor = Utilities::ParseHTMLColor32Opt(outlineColorStringTemp);
         GET_BSML_FLOAT_OPT("outline-width", outlineWidth);
         GET_BSML_BOOL("rich-text", richText);
         
@@ -107,9 +110,8 @@ namespace BSML {
             return;
         }
         
-        textMeshProUGUI->set_text(get_text());
+        if (get_text().has_value())textMeshProUGUI->set_text(get_text().value());
         if (get_fontSize().has_value()) textMeshProUGUI->set_fontSize(get_fontSize().value());
-        // TODO: colors;
         if (get_fontColor().has_value()) textMeshProUGUI->set_color(get_fontColor().value());
         if (get_faceColor().has_value()) textMeshProUGUI->set_faceColor(get_faceColor().value());
         if (get_outlineColor().has_value()) textMeshProUGUI->set_outlineColor(get_outlineColor().value());
@@ -119,14 +121,25 @@ namespace BSML {
         if (get_overflowMode().has_value()) textMeshProUGUI->set_overflowMode(get_overflowMode().value());
         if (get_wordWrapping().has_value()) textMeshProUGUI->set_enableWordWrapping(get_wordWrapping().value());
 
-        // TODO: typesetting proper
-        if (get_bold().value_or(false))
-            textMeshProUGUI->set_text("<b>" + textMeshProUGUI->get_text() + "</b>");
-        if (get_bold().value_or(true))
-            textMeshProUGUI->set_text("<i>" + textMeshProUGUI->get_text() + "</i>");
-        if (get_bold().value_or(false))
-            textMeshProUGUI->set_text("<u>" + textMeshProUGUI->get_text() + "</u>");
-        if (get_bold().value_or(false))
-            textMeshProUGUI->set_text("<s>" + textMeshProUGUI->get_text() + "</s>");
+        std::string pre;
+        std::string post;
+        if (get_bold().value_or(false)) {
+            pre += "<b>";
+            post = "</b>" + post;
+        }
+        if (get_italics().value_or(true)) {
+            pre += "<i>";
+            post = "</i>" + post;
+        }
+        if (get_underlined().value_or(false)) {
+            pre += "<u>";
+            post = "</u>" + post;
+        }
+        if (get_strikeThrough().value_or(false)) {
+            pre += "<s>";
+            post = "</s>" + post;
+        }
+        if (!pre.empty())
+            textMeshProUGUI->set_text(StringW(pre) + textMeshProUGUI->get_text() + StringW(post));
     }
 }
