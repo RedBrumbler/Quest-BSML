@@ -1,5 +1,7 @@
 #include "BSML/Components/Settings/SliderSettingBase.hpp"
+#include "Helpers/utilities.hpp"
 
+#include "UnityEngine/UI/Image.hpp"
 #include "UnityEngine/Object.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
@@ -44,8 +46,8 @@ namespace BSML {
         decButton = slider->decButton;
         
         if (!showButtons) {
-            // TODO: Sprite finding stuff
-            //slider.image.sprite = Utilities.FindSpriteCached("RoundRect10");
+            // TODO: Check if this now works
+            slider->get_image()->set_sprite(Utilities::FindSpriteCached("RoundRect10"));
             UnityEngine::Object::Destroy(incButton->get_gameObject());
             UnityEngine::Object::Destroy(decButton->get_gameObject());
             auto transform = reinterpret_cast<UnityEngine::RectTransform*>(slider->get_transform());

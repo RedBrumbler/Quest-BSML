@@ -34,8 +34,6 @@ namespace BSML {
     }
 
     void SliderSetting::Setup() {
-        // TODO: custom slider texts things https://github.com/monkeymanboy/BeatSaberMarkupLanguage/blob/3d37242327320c11374c9925e042a7ddca75d1d8/BeatSaberMarkupLanguage/Components/Settings/SliderSetting.cs#L41
-        
         if (slider) {
             remappers[slider] = this;
             text = slider->get_gameObject()->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
