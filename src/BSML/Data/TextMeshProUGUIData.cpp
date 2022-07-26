@@ -78,13 +78,13 @@ namespace BSML {
 
         std::string fontColorStringTemp;
         GET_BSML_STRING("font-color", fontColorStringTemp);
-        fontColor = Utilities::ParseHMTMLColorOpt(fontColorStringTemp);
+        fontColor = Utilities::ParseHTMLColorOpt(fontColorStringTemp);
         std::string faceColorStringTemp;
         GET_BSML_STRING("face-color", faceColorStringTemp);
-        faceColor = Utilities::ParseHMTMLColor32Opt(faceColorStringTemp);
+        faceColor = Utilities::ParseHTMLColor32Opt(faceColorStringTemp);
         std::string outlineColorStringTemp;
         GET_BSML_STRING("outline-color", outlineColorStringTemp);
-        faceColor = Utilities::ParseHMTMLColor32Opt(outlineColorStringTemp);
+        faceColor = Utilities::ParseHTMLColor32Opt(outlineColorStringTemp);
         GET_BSML_FLOAT_OPT("outline-width", outlineWidth);
         GET_BSML_BOOL("rich-text", richText);
         

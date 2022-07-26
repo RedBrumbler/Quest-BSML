@@ -39,7 +39,7 @@ namespace BSML::Utilities {
         return sprite;
     }
 
-    std::optional<UnityEngine::Color> ParseHMTMLColorOpt(std::string_view str) {
+    std::optional<UnityEngine::Color> ParseHTMLColorOpt(std::string_view str) {
         std::string val{str};
         auto colorOpt = CSSColorParser::parse(val);
         if (!colorOpt.has_value()) return std::nullopt;
@@ -53,10 +53,10 @@ namespace BSML::Utilities {
     }
 
     UnityEngine::Color ParseHMTMLColor(std::string_view str) {
-        return ParseHMTMLColorOpt(str).value_or(UnityEngine::Color{1.0, 1.0, 1.0, 1.0});
+        return ParseHTMLColorOpt(str).value_or(UnityEngine::Color{1.0, 1.0, 1.0, 1.0});
     }
 
-    std::optional<UnityEngine::Color32> ParseHMTMLColor32Opt(std::string_view str) {
+    std::optional<UnityEngine::Color32> ParseHTMLColor32Opt(std::string_view str) {
         std::string val{str};
         auto colorOpt = CSSColorParser::parse(val);
         if (!colorOpt.has_value()) return std::nullopt;
@@ -69,7 +69,7 @@ namespace BSML::Utilities {
         };
     }
 
-    UnityEngine::Color32 ParseHMTMLColor32(std::string_view str) {
-        return ParseHMTMLColor32Opt(str).value_or(UnityEngine::Color32{255, 255, 255, 255});
+    UnityEngine::Color32 ParseHTMLColor32(std::string_view str) {
+        return ParseHTMLColor32Opt(str).value_or(UnityEngine::Color32{255, 255, 255, 255});
     }
 }

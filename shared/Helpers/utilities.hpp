@@ -11,7 +11,7 @@ namespace BSML::Utilities {
     /// @brief parses a HTML color from given string view
     /// @param str the string view
     /// @return the color, or nullopt
-    std::optional<UnityEngine::Color> ParseHMTMLColorOpt(std::string_view str);
+    std::optional<UnityEngine::Color> ParseHTMLColorOpt(std::string_view str);
 
     /// @brief parses a HTML color from given string view
     /// @param str the string view
@@ -21,10 +21,10 @@ namespace BSML::Utilities {
     /// @brief parses a HTML color from given string view
     /// @param str the string view
     /// @return the color32, or nullopt
-    std::optional<UnityEngine::Color32> ParseHMTMLColor32Opt(std::string_view str);
+    std::optional<UnityEngine::Color32> ParseHTMLColor32Opt(std::string_view str);
 
     /// @brief parses a HTML color from given string view
     /// @param str the string view
     /// @return the color32, or white if invalid
-    UnityEngine::Color32 ParseHMTMLColor32(std::string_view str);
+    UnityEngine::Color32 ParseHTMLColor32(std::string_view str);
 }

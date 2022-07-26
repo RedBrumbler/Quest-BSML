@@ -1,4 +1,5 @@
 #include "BSML/Data/BackgroundableData.hpp"
+#include "Helpers/utilities.hpp"
 #include "internal_macros.hpp"
 #include "logging.hpp"
 
@@ -14,7 +15,7 @@ namespace BSML {
         GET_BSML_STRING("background-color", tempString);
         GET_BSML_STRING("bg-color", tempString);
 
-        //backgroundColor = parseColor(tempString);
+        backgroundColor = Utilities::ParseHTMLColorOpt(tempString);
     }
 
     void BackgroundableData::Apply(QuestUI::Backgroundable* backgroundable) const {
