@@ -1,4 +1,5 @@
 #include "BSML/Tags/Settings/StringSettingTag.hpp"
+#include "Helpers/utilities.hpp"
 #include "logging.hpp"
 
 #include "BSML/Components/Settings/StringSetting.hpp"
@@ -87,8 +88,7 @@ namespace BSML {
 
         auto icon = stringSetting->editButton->get_transform()->Find("Icon")->GetComponent<Image*>();
         icon->set_name("EditIcon");
-        // TODO: load icon from memory or somethign idk
-        // icon->set_sprite();
+        icon->set_sprite(Utilities::FindSpriteCached("EditIcon"));
         icon->get_rectTransform()->set_sizeDelta({4, 4});
         stringSetting->editButton->set_interactable(true);
         reinterpret_cast<RectTransform*>(stringSetting->editButton->get_transform())->set_anchorMin({0, 0});
