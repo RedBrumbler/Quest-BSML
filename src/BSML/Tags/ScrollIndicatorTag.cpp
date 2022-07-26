@@ -6,6 +6,8 @@
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/Object.hpp"
 #include "HMUI/VerticalScrollIndicator.hpp"
+#include "BSML/Components/ScrollIndicator.hpp"
+#include "UnityEngine/RectTransform.hpp"
 
 namespace BSML
 {
@@ -14,32 +16,38 @@ namespace BSML
     void ScrollIndicatorTag::Construct(UnityEngine::Transform *parent, Il2CppObject *host) const
     {
         auto obj = CreateObject(parent);
-
-        ConstructChildren(parent, host);
     }
 
-    UnityEngine::GameObject *ScrollIndicatorTag::CreateObject() const
+    UnityEngine::GameObject *ScrollIndicatorTag::CreateObject(UnityEngine::Transform *parent) const
     {
         DEBUG("making ScrollIndicator");
-        if (!ScrollIndicator || !Object::IsNativeObjectAlive(ScrollIndicator))
+        if (!ScrollIndicator || !UnityEngine::Object::IsNativeObjectAlive(ScrollIndicator))
         {
-            ScrollIndicator = Resources::FindObjectsOfTypeAll<VerticalScrollIndicator *>().FirstOrDefault([](auto x)
-                                                                                                          { return x->get_name() == "VerticalScrollIndicator" });
+            ScrollIndicator = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::VerticalScrollIndicator *>().FirstOrDefault([](auto x)
+                                                                                                                             { return x->get_name() == "VerticalScrollIndicator"; });
         }
 
-        auto baseObj = Object::Instantiate(ScrollIndicator);
+        auto baseObj = UnityEngine::Object::Instantiate(ScrollIndicator, parent, false);
         auto gameObj = baseObj->get_gameObject();
 
         gameObj->SetActive(false);
+        gameObj->set_name("BSMLVerticalScrollIndicator");
 
-        return obj;
+        auto transform = gameObj->GetComponent<UnityEngine::RectTransform *>();
+        transform->SetParent(parent, false);
+
+        UnityEngine::Object::DestroyImmediate(gameObj->GetComponent<HMUI::VerticalScrollIndicator*>());
+        auto indicator = gameObj->AddComponent<BSML::ScrollIndicator*>();
+        indicator->set_Handle(transform->GetChild(0)->GetComponent<UnityEngine::RectTransform*>());
+
+        gameObj->SetActive(true);
+
+        return gameObj;
     }
 
     void ScrollIndicatorTag::parse(const tinyxml2::XMLElement &elem)
     {
         DEBUG("Parsing ScrollIndicator tag.");
-        this->Base::parse(elem);
-
-        base
+        this->::BSML::BSMLTag::parse(elem);
     }
 }

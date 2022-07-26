@@ -9,17 +9,17 @@
 
 namespace BSML
 {
-    class ScrollIndicatorTag() : public BSMLTag
+    class ScrollIndicatorTag : public BSMLTag
     {
     public:
         ScrollIndicatorTag() : BSMLTag() {}
 
-        virtual void Construct(UnityEnging::Transform * parent, Il2CppObject *host = nullptr) const override;
+        virtual void Construct(UnityEngine::Transform *parent, Il2CppObject *host = nullptr) const override;
 
     protected:
         friend class ScrollIndicatorTagParser;
         virtual void parse(const tinyxml2::XMLElement &elem) override;
 
-        virtual UnityEngine::GameObject *CreateObject(UnityEngine::Transform * parent) const override;
+        virtual UnityEngine::GameObject *CreateObject(UnityEngine::Transform *parent) const override;
     };
 }
