@@ -119,14 +119,25 @@ namespace BSML {
         if (get_overflowMode().has_value()) textMeshProUGUI->set_overflowMode(get_overflowMode().value());
         if (get_wordWrapping().has_value()) textMeshProUGUI->set_enableWordWrapping(get_wordWrapping().value());
 
-        // TODO: typesetting proper
-        if (get_bold().value_or(false))
-            textMeshProUGUI->set_text("<b>" + textMeshProUGUI->get_text() + "</b>");
-        if (get_italics().value_or(true))
-            textMeshProUGUI->set_text("<i>" + textMeshProUGUI->get_text() + "</i>");
-        if (get_bold().value_or(false))
-            textMeshProUGUI->set_text("<u>" + textMeshProUGUI->get_text() + "</u>");
-        if (get_bold().value_or(false))
-            textMeshProUGUI->set_text("<s>" + textMeshProUGUI->get_text() + "</s>");
+        std::string pre;
+        std::string post;
+        if (get_bold().value_or(false)) {
+            pre += "<b>";
+            post = "</b>" + post;
+        }
+        if (get_italics().value_or(true)) {
+            pre += "<i>";
+            post = "</i>" + post;
+        }
+        if (get_underlined().value_or(false)) {
+            pre += "<u>";
+            post = "</u>" + post;
+        }
+        if (get_strikeThrough().value_or(false)) {
+            pre += "<s>";
+            post = "</s>" + post;
+        }
+        if (!pre.empty())
+            textMeshProUGUI->set_text(pre + textMeshProUGUI->get_text() + post);
     }
 }
