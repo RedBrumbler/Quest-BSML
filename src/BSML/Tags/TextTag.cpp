@@ -1,26 +1,44 @@
 #include "BSML/Tags/TextTag.hpp"
+#include "Helpers/getters.hpp"
+#include "Helpers/creation.hpp"
 #include "logging.hpp"
 #include "internal_macros.hpp"
 
-#include "questui/shared/BeatSaberUI.hpp"
+#include "HMUI/CurvedTextMeshPro.hpp"
+#include "UnityEngine/GameObject.hpp"
 
-using namespace QuestUI::BeatSaberUI;
+using namespace UnityEngine;
 
 namespace BSML {
     void TextTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
-        SetHostField(host, go->GetComponent<TMPro::TextMeshProUGUI*>());
+        auto text = go->GetComponent<TMPro::TextMeshProUGUI*>();
+        SetHostField(host, text);
+
+        textMeshProUGUIData.Apply(text);
+        rectTransformData.Apply(text->get_rectTransform());
         
         CreateChildren(go->get_transform(), host);
     }
 
     UnityEngine::GameObject* TextTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Text");
-        auto text = CreateText(parent, textMeshProUGUIData.get_text().value_or("BSMLText"), textMeshProUGUIData.get_italics().value_or(true));
-        textMeshProUGUIData.Apply(text);
-        rectTransformData.Apply(text->get_rectTransform());
+        auto gameObject = GameObject::New_ctor("BSMLText");
+        gameObject->get_transform()->SetParent(parent, false);
 
-        return text->get_gameObject();
+        // on PC this is a FormattableText, but we're skipping that for now at least
+        auto textMesh = gameObject->AddComponent<HMUI::CurvedTextMeshPro*>();
+        textMesh->set_font(Helpers::GetMainTextFont());
+        textMesh->set_fontSharedMaterial(Helpers::GetMainUIFontMaterial());
+        textMesh->set_fontSize(4);
+        textMesh->set_color({1.0f, 1.0f, 1.0f, 1.0f});
+        textMesh->set_text("BSMLText");
+
+        auto rectTransform = textMesh->get_rectTransform();
+        rectTransform->set_anchorMin({0.5f, 0.5f});
+        rectTransform->set_anchorMax({0.5f, 0.5f});
+        
+        return gameObject;
     }
 
     void TextTag::parse(const tinyxml2::XMLElement& elem) {

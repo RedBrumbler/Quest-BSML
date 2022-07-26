@@ -21,6 +21,7 @@ namespace BSML {
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
+            virtual std::string get_PrefabButton() const;
             
             SelectableData selectableData;
             ButtonData buttonData; 
