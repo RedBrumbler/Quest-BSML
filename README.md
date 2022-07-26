@@ -9,7 +9,7 @@ also I was wondering how difficult it would be to make it work and turns out not
 Clone the repo
 
 ```bash
-git clone https://github.com/RedBrumbler/Quest-BSML.git &&
+git clone https://github.com/RedBrumbler/Quest-BSML.git --recursive &&
 cd Quest-BSML &&
 qpm-rust restore &&
 pwsh ./build.ps1

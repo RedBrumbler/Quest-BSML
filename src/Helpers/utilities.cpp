@@ -41,14 +41,14 @@ namespace BSML::Utilities {
 
     std::optional<UnityEngine::Color> ParseHTMLColorOpt(std::string_view str) {
         std::string val{str};
-        auto colorOpt = CSSColorParser::parse(val);
-        if (!colorOpt.has_value()) return std::nullopt;
-        auto value = colorOpt.value();
+        bool valid = false;
+        auto color = CSSColorParser::parse(val);
+        if (!valid) return std::nullopt;
         return UnityEngine::Color{
-            (float)value.r / 255.0f,
-            (float)value.g / 255.0f,
-            (float)value.b / 255.0f,
-            value.a
+            (float)color.r / 255.0f,
+            (float)color.g / 255.0f,
+            (float)color.b / 255.0f,
+            color.a
         };
     }
 
@@ -58,14 +58,14 @@ namespace BSML::Utilities {
 
     std::optional<UnityEngine::Color32> ParseHTMLColor32Opt(std::string_view str) {
         std::string val{str};
-        auto colorOpt = CSSColorParser::parse(val);
-        if (!colorOpt.has_value()) return std::nullopt;
-        auto value = colorOpt.value();
+        bool valid = false;
+        auto color = CSSColorParser::parse(val, valid);
+        if (!valid) return std::nullopt;
         return UnityEngine::Color32{
-            value.r,
-            value.g,
-            value.b,
-            static_cast<uint8_t>(value.a * 255)
+            color.r,
+            color.g,
+            color.b,
+            static_cast<uint8_t>(color.a * 255)
         };
     }
 
