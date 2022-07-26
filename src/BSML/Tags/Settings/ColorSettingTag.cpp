@@ -1,4 +1,5 @@
 #include "BSML/Tags/Settings/ColorSettingTag.hpp"
+#include "Helpers/utilities.hpp"
 #include "logging.hpp"
 
 #include "BSML/Components/ExternalComponents.hpp"
@@ -93,8 +94,7 @@ namespace BSML {
 
         auto icon = colorSetting->editButton->get_transform()->Find("Icon")->GetComponent<Image*>();
         icon->set_name("EditIcon");
-        // TODO: make sure icons work (see string setting as well)
-        //icon->set_sprite();
+        icon->set_sprite(Utilities::FindSpriteCached("EditIcon"));
         icon->get_rectTransform()->set_sizeDelta({4, 4});
         colorSetting->editButton->set_interactable(true);
 
