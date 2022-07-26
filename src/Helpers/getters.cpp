@@ -77,4 +77,14 @@ namespace BSML::Helpers {
             CacheNotFoundWarningLog(Material);
         return mainUIFontMaterial;
     }
+
+    MainFlowCoordinator* mainFlowCoordinator = nullptr;
+    MainFlowCoordinator* GetMainFlowCoordinator()
+    {
+        if (!mainFlowCoordinator || !Object::IsNativeObjectAlive(mainFlowCoordinator))
+            mainFlowCoordinator = Resources::FindObjectsOfTypeAll<MainFlowCoordinator*>().FirstOrDefault();
+        if(!mainFlowCoordinator)
+            CacheNotFoundWarningLog(MainFlowCoordinator);
+        return mainFlowCoordinator;
+    }
 }
