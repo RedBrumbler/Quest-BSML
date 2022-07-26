@@ -19,8 +19,9 @@ namespace BSML {
         DEBUG("Creating Vertical");
         auto vertical = CreateVerticalLayoutGroup(parent);
         auto gameObject = vertical->get_gameObject();
-        if (backgroundableData.get_background() != "")
-            backgroundableData.Apply(gameObject->GetComponent<QuestUI::Backgroundable*>());
+        
+        gameObject->AddComponent<BSML::Backgroundable*>();
+        backgroundableData.Apply(gameObject->GetComponent<BSML::Backgroundable*>());
         
         contentSizeFitterData.Apply(gameObject->GetComponent<UnityEngine::UI::ContentSizeFitter*>());
         horizontalOrVerticalLayoutGroupData.Apply(vertical);

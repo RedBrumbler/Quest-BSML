@@ -14,24 +14,34 @@ namespace BSML {
         std::string tempString;
         GET_BSML_STRING("background-color", tempString);
         GET_BSML_STRING("bg-color", tempString);
-
         backgroundColor = Utilities::ParseHTMLColorOpt(tempString);
+
+        GET_BSML_STRING("background-color0", tempString);
+        GET_BSML_STRING("bg-color0", tempString);
+        backgroundColor0 = Utilities::ParseHTMLColorOpt(tempString);
+
+        GET_BSML_STRING("background-color1", tempString);
+        GET_BSML_STRING("bg-color1", tempString);
+        backgroundColor1 = Utilities::ParseHTMLColorOpt(tempString);
+
     }
 
-    void BackgroundableData::Apply(QuestUI::Backgroundable* backgroundable) const {
+    void BackgroundableData::Apply(BSML::Backgroundable* backgroundable) const {
         if (!backgroundable) {
             ERROR("nullptr passed to BackgroundableData::Apply");
             return;
         }
 
-        if (get_backgroundColor().has_value()) {
-            auto color = get_backgroundColor().value();
-            backgroundable->ApplyBackgroundWithAlpha(get_background(), color.a);
-
-            auto imageView = backgroundable->get_gameObject()->GetComponentInChildren<HMUI::ImageView*>();
-            if (imageView) imageView->set_color(color);
-        } else {
+        if (!get_background().empty()) {
             backgroundable->ApplyBackground(get_background());
+        } else {
+            return;
+        }
+
+        if (get_backgroundColor().has_value()) {
+            backgroundable->ApplyColor(get_backgroundColor().value());
+        } else if (get_backgroundColor0().has_value() && get_backgroundColor1().has_value()) {
+            backgroundable->ApplyGradient(get_backgroundColor0().value(), get_backgroundColor1().value());
         }
     }
 }
