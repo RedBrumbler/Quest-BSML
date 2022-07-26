@@ -29,7 +29,6 @@ namespace BSML {
 
     void BSMLTagParser::ParseChildren(const tinyxml2::XMLElement& elem, BSMLTag* parentTag) {
         auto handle = tinyxml2::XMLConstHandle(elem).FirstChildElement();
-        // TODO: does this work?
         for (
             const tinyxml2::XMLElement* element = nullptr;
             (element = handle.ToElement()) != nullptr;
