@@ -1,9 +1,9 @@
 #include "BSML/Data/RectTransformData.hpp"
+#include "Helpers/creation.hpp"
 #include "internal_macros.hpp"
 #include "logging.hpp"
 
 #include "UnityEngine/GameObject.hpp"
-#include "questui/shared/BeatSaberUI.hpp"
 
 UnityEngine::Vector2 merge(const UnityEngine::Vector2& original, const std::optional<float>& x, const std::optional<float>& y) {
     return {x.value_or(original.x), y.value_or(original.y)};
@@ -39,8 +39,7 @@ namespace BSML {
         if (get_pivot_exists()) rectTransform->set_pivot(merge(rectTransform->get_pivot(), get_pivotX(), get_pivotY()));
 
         if (!hoverHint.empty()) {
-            // TODO: remove dependency on questui
-            QuestUI::BeatSaberUI::AddHoverHint(rectTransform->get_gameObject(), hoverHint);
+            Helpers::AddHoverHint(rectTransform, hoverHint);
         }
 
         if (get_active().has_value()) rectTransform->get_gameObject()->SetActive(get_active().value());

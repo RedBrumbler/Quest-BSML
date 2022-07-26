@@ -71,4 +71,11 @@ namespace BSML::Helpers {
         flow->baseInputModule = GetMainFlowCoordinator()->baseInputModule;
         return flow;
     }
+
+    HMUI::HoverHint* AddHoverHint(UnityEngine::GameObject* object, StringW text) {
+        auto hintText = object->AddComponent<HMUI::HoverHint*>();
+        hintText->set_text(text);
+        hintText->hoverHintController = GetHoverHintController();
+        return hintText;
+    }
 }
