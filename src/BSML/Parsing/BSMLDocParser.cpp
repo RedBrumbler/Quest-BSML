@@ -28,20 +28,26 @@ namespace BSML {
         }
     }
 
-    BSMLTag* BSMLDocParser::parse(std::string_view str) {
+    std::shared_ptr<BSMLTag> BSMLDocParser::parse(std::string_view str) {
         tinyxml2::XMLDocument doc;
         auto error = doc.Parse(str.data());
         if (error != tinyxml2::XML_SUCCESS) {
             ERROR("Error parsing BSML document: {}", tinyxml2::XMLDocument::ErrorIDToName(error));
-            return new BSMLTag();
+            std::string validString = fmt::format("<vertical bg='round-rect-panel' pad='5' spacing='4' pref-height='20' vertical-fit='PreferredSize'><text font-size='6' text='ERROR PARSING BSML FILE' align='Center'/><text text='{}' align='Center'/></vertical>", tinyxml2::XMLDocument::ErrorIDToName(error));
+            doc.Parse(validString.c_str());
+            return parse(doc);
         }
         return parse(doc);
     }
 
-    BSMLTag* BSMLDocParser::parse(const tinyxml2::XMLDocument& doc) {
+    std::shared_ptr<BSMLTag> BSMLDocParser::parse(const tinyxml2::XMLDocument& doc) {
         INFO("Parsing BSML doc");
-        auto parentTag = new BSMLTag();
-        parentTag->root = parentTag;
+        auto parentTag = std::make_shared<BSMLTag>();
+        // is this unsafe?
+        // sort of
+        // does it matter?
+        // not if you're using the library as intended
+        parentTag->root = parentTag.get();
         parentTag->is_valid = true;
 
         auto handle = tinyxml2::XMLConstHandle(doc).FirstChildElement();

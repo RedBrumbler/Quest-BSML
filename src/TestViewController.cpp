@@ -39,9 +39,6 @@ namespace BSML {
         if (parsed->valid()) {
             INFO("Constructing bsml view");
             parsed->Construct(get_transform(), this);
-
-            INFO("Deleting parsed file pointer");
-            delete parsed;
         } else {
             ERROR("Invalid BSML file");
         }
@@ -90,5 +87,9 @@ namespace BSML {
 
     void TestViewController::GibString(StringW value) {
         INFO("GibString: {}", value);
+    }
+
+    void TestViewController::GibColor(UnityEngine::Color value) {
+        INFO("Got color: (r:{}, g:{}, b:{}, a:{})", value.r, value.g, value.b, value.a);
     }
 }
