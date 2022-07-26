@@ -1,13 +1,12 @@
 #include "BSML/Tags/Settings/IncDecSettingTag.hpp"
 #include "logging.hpp"
 
-
+#include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/Transform.hpp"
+#include "UnityEngine/Resources.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
 #include "UnityEngine/UI/Button.hpp"
-#include "questui/shared/BeatSaberUI.hpp"
-
-using namespace QuestUI::BeatSaberUI;
 
 GlobalNamespace::FormattedFloatListSettingsValueController* valueControllerTemplate = nullptr;
 
