@@ -1,18 +1,21 @@
 #include "Helpers/creation.hpp"
 #include "Helpers/getters.hpp"
 
+#include "UnityEngine/Transform.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Canvas.hpp"
 #include "UnityEngine/CanvasGroup.hpp"
 #include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/AdditionalCanvasShaderChannels.hpp"
+#include "UnityEngine/RenderMode.hpp"
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 
 using namespace UnityEngine;
 using namespace TMPro;
 
 namespace BSML::Helpers {
-    TMP_Text* CreateText(System::Type* type, Transform* parent, StringW text, Vector2 anchoredPosition, Vector2 sizeDelta) {
+    TMP_Text* CreateText(System::Type* type, UnityEngine::Transform* parent, StringW text, Vector2 anchoredPosition, Vector2 sizeDelta) {
         auto gameObj = GameObject::New_ctor("CustomUIText");
         gameObj->SetActive(false);
 

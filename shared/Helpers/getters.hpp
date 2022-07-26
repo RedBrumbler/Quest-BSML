@@ -16,5 +16,5 @@ namespace BSML::Helpers {
     TMPro::TMP_FontAsset* GetMainTextFont();
     UnityEngine::Material* GetMainUIFontMaterial();
     GlobalNamespace::IVRPlatformHelper* GetIVRPlatformHelper();
-    GlobalNamespace::MainFlowCoordinator* GetMainFlowCoordinator()
+    GlobalNamespace::MainFlowCoordinator* GetMainFlowCoordinator();
 }
