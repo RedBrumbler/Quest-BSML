@@ -9,3 +9,4 @@ mod.json
 mod.json
 *.qmod
 *.psd
+.vscode/
