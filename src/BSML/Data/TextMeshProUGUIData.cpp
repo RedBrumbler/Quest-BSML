@@ -1,4 +1,5 @@
 #include "BSML/Data/TextMeshProUGUIData.hpp"
+#include "Helpers/utilities.hpp"
 #include "internal_macros.hpp"
 #include "logging.hpp"
 
@@ -77,11 +78,13 @@ namespace BSML {
 
         std::string fontColorStringTemp;
         GET_BSML_STRING("font-color", fontColorStringTemp);
+        fontColor = Utilities::ParseHMTMLColorOpt(fontColorStringTemp);
         std::string faceColorStringTemp;
         GET_BSML_STRING("face-color", faceColorStringTemp);
+        faceColor = Utilities::ParseHMTMLColor32Opt(faceColorStringTemp);
         std::string outlineColorStringTemp;
         GET_BSML_STRING("outline-color", outlineColorStringTemp);
-
+        faceColor = Utilities::ParseHMTMLColor32Opt(outlineColorStringTemp);
         GET_BSML_FLOAT_OPT("outline-width", outlineWidth);
         GET_BSML_BOOL("rich-text", richText);
         
@@ -109,7 +112,6 @@ namespace BSML {
         
         if (get_text().has_value())textMeshProUGUI->set_text(get_text().value());
         if (get_fontSize().has_value()) textMeshProUGUI->set_fontSize(get_fontSize().value());
-        // TODO: colors;
         if (get_fontColor().has_value()) textMeshProUGUI->set_color(get_fontColor().value());
         if (get_faceColor().has_value()) textMeshProUGUI->set_faceColor(get_faceColor().value());
         if (get_outlineColor().has_value()) textMeshProUGUI->set_outlineColor(get_outlineColor().value());
@@ -138,6 +140,6 @@ namespace BSML {
             post = "</s>" + post;
         }
         if (!pre.empty())
-            textMeshProUGUI->set_text(pre + textMeshProUGUI->get_text() + post);
+            textMeshProUGUI->set_text(StringW(pre) + textMeshProUGUI->get_text() + StringW(post));
     }
 }
