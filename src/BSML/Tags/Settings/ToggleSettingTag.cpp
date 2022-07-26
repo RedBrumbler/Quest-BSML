@@ -66,7 +66,6 @@ namespace BSML {
         toggleSetting->text->set_richText(true);
         toggleSetting->text->set_overflowMode(TMPro::TextOverflowModes::Ellipsis);
 
-        // TODO: make it use the correct tmpro, instead of the first one it finds
         auto layoutElement = go->GetComponent<UnityEngine::UI::LayoutElement*>();
         layoutElement->set_preferredWidth(90.0f);
         go->SetActive(true);
