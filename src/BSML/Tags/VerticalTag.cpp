@@ -3,32 +3,44 @@
 #include "internal_macros.hpp"
 
 #include "UnityEngine/GameObject.hpp"
-#include "questui/shared/BeatSaberUI.hpp"
+#include "UnityEngine/UI/VerticalLayoutGroup.hpp"
+#include "UnityEngine/UI/ContentSizeFitter.hpp"
 
-using namespace QuestUI::BeatSaberUI;
+using namespace UnityEngine;
+using namespace UnityEngine::UI;
 
 namespace BSML {
     void VerticalTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
-        SetHostField(host, go->GetComponent<UnityEngine::UI::VerticalLayoutGroup*>());
+        auto vertical = go->GetComponent<UnityEngine::UI::VerticalLayoutGroup*>();
+        SetHostField(host, vertical);
+        
+        backgroundableData.Apply(go->GetComponent<BSML::Backgroundable*>());
+        contentSizeFitterData.Apply(go->GetComponent<UnityEngine::UI::ContentSizeFitter*>());
+        horizontalOrVerticalLayoutGroupData.Apply(vertical);
+        layoutElementData.Apply(go->GetComponent<UnityEngine::UI::LayoutElement*>());
+        layoutGroupData.Apply(vertical);
+        rectTransformData.Apply(vertical->get_rectTransform());
         
         CreateChildren(go->get_transform(), host);
     }
 
     UnityEngine::GameObject* VerticalTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Vertical");
-        auto vertical = CreateVerticalLayoutGroup(parent);
-        auto gameObject = vertical->get_gameObject();
-        
-        gameObject->AddComponent<BSML::Backgroundable*>();
-        backgroundableData.Apply(gameObject->GetComponent<BSML::Backgroundable*>());
-        
-        contentSizeFitterData.Apply(gameObject->GetComponent<UnityEngine::UI::ContentSizeFitter*>());
-        horizontalOrVerticalLayoutGroupData.Apply(vertical);
-        layoutElementData.Apply(gameObject->GetComponent<UnityEngine::UI::LayoutElement*>());
-        layoutGroupData.Apply(vertical);
-        rectTransformData.Apply(vertical->get_rectTransform());
+        auto gameObject = GameObject::New_ctor("BSMLVerticalLayoutGroup");
+        gameObject->get_transform()->SetParent(parent, false);
+        auto horizontal = gameObject->AddComponent<VerticalLayoutGroup*>();
 
+        auto contentSizeFitter = gameObject->AddComponent<ContentSizeFitter*>();
+        contentSizeFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
+        gameObject->AddComponent<Backgroundable*>();
+
+        auto rectTransform = horizontal->get_rectTransform();
+        rectTransform->set_anchorMin({0, 0});
+        rectTransform->set_anchorMax({1, 1});
+        rectTransform->set_sizeDelta({0, 0});
+
+        gameObject->AddComponent<LayoutElement*>();
         return gameObject;
     }
     
