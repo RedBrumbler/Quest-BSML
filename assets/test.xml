@@ -31,6 +31,12 @@
                 <color-setting label="gay" on-change="GibColor" pref-width="60"/>
                 <icon-button/>
                 <icon-button icon="#ClockIcon"/>
+                <horizontal pref-height="10" bg="round-rect-panel" bg-color="#ffffff44">
+                    <page-button dir="Up"/>
+                    <page-button dir="Down"/>
+                    <page-button dir="Left"/>
+                    <page-button dir="Right"/>
+                </horizontal>
             </vertical>
         </horizontal>
 </bsml>
