@@ -14,6 +14,7 @@ namespace BSML {
             auto get_backgroundColor() const { return backgroundColor; }
             auto get_backgroundColor0() const { return backgroundColor0; }
             auto get_backgroundColor1() const { return backgroundColor1; }
+            auto get_alpha() const { return alpha; }
 
             void Apply(BSML::Backgroundable* backgroundable) const;
         private:
@@ -21,5 +22,6 @@ namespace BSML {
             std::optional<UnityEngine::Color> backgroundColor;
             std::optional<UnityEngine::Color> backgroundColor0;
             std::optional<UnityEngine::Color> backgroundColor1;
+            std::optional<float> alpha;
     };
 }
