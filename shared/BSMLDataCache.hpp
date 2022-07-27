@@ -34,7 +34,7 @@ namespace BSML::DataCache {
 #define BSML_DATACACHE(key)\
 class BSMLDataCacheEntry_##key : public BSML::DataCache::Entry {\
     public:\
-        DataCacheEntry_##key() : BSML::DataCache::Entry(MOD_ID "_" #key) {}\
+        BSMLDataCacheEntry_##key() : BSML::DataCache::Entry(MOD_ID "_" #key) {}\
         ArrayW<uint8_t> get_data() const override;\
 };\
 static const BSMLDataCacheEntry_##key BSMLDataCacheEntry_##key##_instance{};\
