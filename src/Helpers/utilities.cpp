@@ -62,7 +62,7 @@ namespace BSML::Utilities {
     std::optional<UnityEngine::Color> ParseHTMLColorOpt(std::string_view str) {
         std::string val{str};
         bool valid = false;
-        auto color = CSSColorParser::parse(val);
+        auto color = CSSColorParser::parse(val, valid);
         if (!valid) return std::nullopt;
         return UnityEngine::Color{
             (float)color.r / 255.0f,
