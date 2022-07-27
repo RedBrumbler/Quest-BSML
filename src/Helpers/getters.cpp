@@ -78,6 +78,16 @@ namespace BSML::Helpers {
         return mainUIFontMaterial;
     }
 
+    Material* noGlowUIMat = nullptr;
+    Material* GetUINoGlowMat() {
+        if (!noGlowUIMat || !Object::IsNativeObjectAlive(noGlowUIMat)) {
+            noGlowUIMat = Resources::FindObjectsOfTypeAll<Material*>().FirstOrDefault([](auto x){ return x->get_name() == "UINoGlow"; });
+        }
+        if(!noGlowUIMat)
+            CacheNotFoundWarningLog(Material);
+        return noGlowUIMat;
+    }
+
     MainFlowCoordinator* mainFlowCoordinator = nullptr;
     MainFlowCoordinator* GetMainFlowCoordinator()
     {

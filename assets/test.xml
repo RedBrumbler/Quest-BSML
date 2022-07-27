@@ -29,6 +29,8 @@
                 <string-setting label="password" on-change="GibString" pref-width="60"/>
                 <dropdown-list-setting label="dropit" options="lyrics" pref-width="60"/>
                 <color-setting label="gay" on-change="GibColor" pref-width="60"/>
+                <icon-button/>
+                <icon-button icon="#ClockIcon"/>
             </vertical>
         </horizontal>
 </bsml>

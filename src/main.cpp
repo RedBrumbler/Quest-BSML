@@ -4,6 +4,7 @@
 #include "hooking.hpp"
 
 #include "assets.hpp"
+#include "BSMLDataCache.hpp"
 #include "BSML/Parsing/BSMLDocParser.hpp"
 #include "BSML/Tags/BSMLTag.hpp"
 
