@@ -82,7 +82,7 @@ namespace BSML {
 
         auto layoutElement = gameObject->AddComponent<LayoutElement*>();
         layoutElement->set_preferredHeight(8.0f);
-        layoutElement->set_preferredHeight(90.0f);
+        layoutElement->set_preferredWidth(90.0f);
         externalComponents->Add(layoutElement);
 
         auto dropdownListSetting = dropdown->get_gameObject()->AddComponent<BSML::DropdownListSetting*>();
