@@ -22,7 +22,7 @@ namespace BSML {
         "\
         <horizontal anchor-pos-y='-30' spacing='2' horizontal-fit='PreferredSize'>\
             <button text='Cancel' on-click='CancelPressed' pref-width='30'/>\
-            <button text='Done' on-click='DonePressed' pref-width='30'/>\
+            <action-button text='Done' on-click='DonePressed' pref-width='30'/>\
         </horizontal>\
         "    
     };
