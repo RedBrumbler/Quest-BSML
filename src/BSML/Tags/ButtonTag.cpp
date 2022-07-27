@@ -17,10 +17,12 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    Button* buttonPrefab;
-
-    std::string ButtonTag::get_PrefabButton() const {
-        return "PracticeButton";
+    Button* buttonPrefab = nullptr;
+    Button* ButtonTag::get_buttonPrefab() const {
+        if (!buttonPrefab || !Object::IsNativeObjectAlive(buttonPrefab)) {
+            buttonPrefab = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
+        }
+        return buttonPrefab;
     }
 
     void ButtonTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
@@ -44,11 +46,7 @@ namespace BSML {
     UnityEngine::GameObject* ButtonTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Button");
 
-        if (!buttonPrefab || !Object::IsNativeObjectAlive(buttonPrefab)) {
-            buttonPrefab = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == get_PrefabButton(); });
-        }
-
-        auto button = Object::Instantiate(buttonPrefab, parent, false);
+        auto button = Object::Instantiate(get_buttonPrefab(), parent, false);
         button->set_name("BSMLButton");
         button->set_interactable(true);
 
