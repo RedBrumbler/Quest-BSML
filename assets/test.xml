@@ -37,6 +37,13 @@
                     <page-button dir="Left"/>
                     <page-button dir="Right"/>
                 </horizontal>
+                <grid spacing-x="5" spacing-y="2" cell-size-x="10" cell-size-y="6" pad="2" pref-height="20">
+                    <button label="u" font-size="3" pref-width="10" pref-height="6"/>
+                    <button label="r" font-size="3" pref-width="10" pref-height="6"/>
+                    <button label="m" font-size="3" pref-width="10" pref-height="6"/>
+                    <button label="o" font-size="3" pref-width="10" pref-height="6"/>
+                    <button label="m" font-size="3" pref-width="10" pref-height="6"/>
+                </grid>
             </vertical>
         </horizontal>
 </bsml>
