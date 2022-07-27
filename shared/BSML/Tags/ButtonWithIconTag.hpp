@@ -9,7 +9,6 @@
 #include "BSML/Data/LayoutGroupData.hpp"
 #include "BSML/Data/ContentSizeFitterData.hpp"
 #include "BSML/Data/LayoutElementData.hpp"
-#include "BSML/Data/TextMeshProUGUIData.hpp"
 
 namespace BSML {
     class ButtonWithIconTag : public BSMLTag {
