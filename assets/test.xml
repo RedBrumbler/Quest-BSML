@@ -25,13 +25,16 @@
                 <button label="Wanna type?" on-click="show_mykb"  pref-width="60"/>
                 <modal-keyboard id="mykb" click-off-closes="true" move-to-center="true" on-enter="KeyboardValueEntered" pref-width="60"/>
             </vertical>
-            <vertical pref-height="80" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
+            <vertical pref-height="80" bg="round-rect-panel" bg-alpha="0.8" pad="2" vertical-fit="PreferredSize">
                 <string-setting label="password" on-change="GibString" pref-width="60"/>
                 <dropdown-list-setting label="dropit" options="lyrics" pref-width="60"/>
                 <color-setting label="gay" on-change="GibColor" pref-width="60"/>
                 <icon-button/>
                 <icon-button icon="#ClockIcon"/>
-                <horizontal pref-height="10" bg="round-rect-panel" bg-color="#ffffff44">
+                <background bg="panel-top" bg-color="#ff00ff">
+                    <text text="yomama"/>
+                </background>
+                <horizontal pref-height="10" bg="panel-fade-gradient" bg-color="#ffffff">
                     <page-button dir="Up"/>
                     <page-button dir="Down"/>
                     <page-button dir="Left"/>
