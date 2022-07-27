@@ -7,7 +7,7 @@
                     <text text="she needed"/>
                     <text text="2 columns"/>
                 </horizontal>
-                <button id="goodButton" on-click="ButtonPressed"/>
+                <primary-button id="goodButton" on-click="ButtonPressed"/>
                 <toggle-setting text="test" on-change="OnPropertiesChanged" value="someOtherField" off-text="a" on-text="b" pref-width="60" apply-on-change="true"/>
                 <toggle-setting text="test2" on-change="PinkCuteToggled" value="testToggle" off-text="pink" on-text="cute" pref-width="60"  apply-on-change="true"/>
                 <increment-setting label="cuteness" pref-width="60"/>
@@ -29,6 +29,14 @@
                 <string-setting label="password" on-change="GibString" pref-width="60"/>
                 <dropdown-list-setting label="dropit" options="lyrics" pref-width="60"/>
                 <color-setting label="gay" on-change="GibColor" pref-width="60"/>
+                <icon-button/>
+                <icon-button icon="#ClockIcon"/>
+                <horizontal pref-height="10" bg="round-rect-panel" bg-color="#ffffff44">
+                    <page-button dir="Up"/>
+                    <page-button dir="Down"/>
+                    <page-button dir="Left"/>
+                    <page-button dir="Right"/>
+                </horizontal>
             </vertical>
         </horizontal>
 </bsml>

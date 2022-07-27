@@ -1,5 +1,8 @@
-#include "BSML/Tags/ButtonTag.hpp"
+#include "BSML/Tags/ButtonWithIconTag.hpp"
 #include "BSML/Components/ExternalComponents.hpp"
+#include "BSML/Components/ButtonIconImage.hpp"
+#include "Helpers/getters.hpp"
+#include "Helpers/utilities.hpp"
 #include "logging.hpp"
 
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
@@ -12,27 +15,24 @@
 #include "UnityEngine/UI/LayoutGroup.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
+#include "HMUI/HoverHint.hpp"
+#include "HMUI/ImageView.hpp"
+#include "GlobalNamespace/LocalizedHoverHint.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    Button* buttonPrefab = nullptr;
-    Button* ButtonTag::get_buttonPrefab() const {
-        if (!buttonPrefab || !Object::IsNativeObjectAlive(buttonPrefab)) {
-            buttonPrefab = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
-        }
-        return buttonPrefab;
-    }
+    Button* buttonWithIconTemplate = nullptr;
 
-    void ButtonTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
+    void ButtonWithIconTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto externalComponents = go->GetComponent<ExternalComponents*>();
         auto button = externalComponents->Get<Button*>();
 
         buttonData.Apply(button, host);
         selectableData.Apply(button);
-        textMeshProUGUIData.Apply(externalComponents->Get<TMPro::TextMeshProUGUI*>());
+        buttonIconImageData.Apply(externalComponents->Get<ButtonIconImage*>());
         contentSizeFitterData.Apply(externalComponents->Get<ContentSizeFitter*>());
         layoutElementData.Apply(externalComponents->Get<LayoutElement*>());
         layoutGroupData.Apply(externalComponents->Get<LayoutGroup*>());
@@ -43,30 +43,48 @@ namespace BSML {
 
     }
 
-    UnityEngine::GameObject* ButtonTag::CreateObject(UnityEngine::Transform* parent) const {
-        DEBUG("Creating Button");
+    UnityEngine::GameObject* ButtonWithIconTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating Button with icon");
+        if (!buttonWithIconTemplate || !Object::IsNativeObjectAlive(buttonWithIconTemplate)) {
+            buttonWithIconTemplate = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
+        }
 
-        auto button = Object::Instantiate(get_buttonPrefab(), parent, false);
-        button->set_name("BSMLButton");
+        auto button = Object::Instantiate(buttonWithIconTemplate, parent, false);
+        button->set_name("BSMLIconButton");
         button->set_interactable(true);
-
         auto transform = reinterpret_cast<RectTransform*>(button->get_transform());
         auto gameObject = button->get_gameObject();
-        gameObject->SetActive(true);
+
+        Object::Destroy(button->GetComponent<HMUI::HoverHint*>());
+        Object::Destroy(button->GetComponent<GlobalNamespace::LocalizedHoverHint*>());
+
         auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
         externalComponents->Add(button);
         externalComponents->Add(transform);
 
-        auto textObject = button->get_transform()->Find("Content/Text")->get_gameObject();
-        Object::Destroy(textObject->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        auto contentTransform = transform->Find("Content");
+        Object::Destroy(contentTransform->GetComponent<LayoutElement*>());
         
-        auto textMesh = textObject->GetComponent<TMPro::TextMeshProUGUI*>();
-        textMesh->set_text("BSMLButton");
-        textMesh->set_richText(true);
-        externalComponents->Add(textMesh);
+        Object::Destroy(contentTransform->Find("Text")->get_gameObject());
+        
+        auto iconImage = GameObject::New_ctor("Icon")->AddComponent<HMUI::ImageView*>();
+        DEBUG("Iconimage: {}", fmt::ptr(iconImage));
+        auto mat = Helpers::GetUINoGlowMat();
+        DEBUG("Material: {}", fmt::ptr(mat));
+        iconImage->set_material(mat);
+        auto iconRectTransform = iconImage->get_rectTransform();
+        iconRectTransform->SetParent(contentTransform, false);
+        iconRectTransform->set_anchoredPosition({0, 0});
+        iconRectTransform->set_sizeDelta({20, 20});
+        iconRectTransform->set_anchorMin({0.5f, 0.f});
+        iconRectTransform->set_anchorMax({0.5f, 0.5f});
+        iconImage->set_preserveAspect(true);
+        iconImage->set_sprite(Utilities::FindSpriteCached("EditIcon"));
 
-        Object::Destroy(transform->Find("Content")->GetComponent<LayoutElement*>());
-        
+        auto btnIcon = button->get_gameObject()->AddComponent<ButtonIconImage*>();
+        btnIcon->image = iconImage;
+        externalComponents->Add(btnIcon);
+
         auto buttonSizeFitter = gameObject->AddComponent<ContentSizeFitter*>();
         buttonSizeFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
         buttonSizeFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
@@ -80,16 +98,17 @@ namespace BSML {
         layoutElement->set_preferredWidth(30.0f);
         externalComponents->Add(layoutElement);
 
+        gameObject->SetActive(true);
         return gameObject;
     }
 
-    void ButtonTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing button tag");
+    void ButtonWithIconTag::parse(const tinyxml2::XMLElement& elem) {
+        DEBUG("Parsing button with icon tag");
         this->::BSML::BSMLTag::parse(elem);
 
         buttonData = ButtonData(elem);
         selectableData = SelectableData(elem);
-        textMeshProUGUIData = TextMeshProUGUIData(elem);
+        buttonIconImageData = ButtonIconImageData(elem);
         contentSizeFitterData = ContentSizeFitterData(elem);
         layoutElementData = LayoutElementData(elem);
         layoutGroupData = LayoutGroupData(elem);

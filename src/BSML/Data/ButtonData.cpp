@@ -21,6 +21,11 @@ namespace BSML {
             return;
         }
         
+        if (get_onClick().empty()) {
+            ERROR("No on-click given for button");
+            return;
+        }
+
         auto methodInfo = il2cpp_functions::class_get_method_from_name(host->klass, onClick.c_str(), 0);
         if (!methodInfo) {
             ERROR("Could not find method '{}' in klass '{}::{}'", onClick, host->klass->namespaze, host->klass->name);
