@@ -11,7 +11,7 @@
 #include "BSML/Data/TextMeshProUGUIData.hpp"
 
 namespace BSML {
-    class ButtonTag : private BSMLTag {
+    class ButtonTag : public BSMLTag {
         public:
             ButtonTag() : BSMLTag() {}
         

@@ -7,7 +7,7 @@
                     <text text="she needed"/>
                     <text text="2 columns"/>
                 </horizontal>
-                <button id="goodButton" on-click="ButtonPressed"/>
+                <primary-button id="goodButton" on-click="ButtonPressed"/>
                 <toggle-setting text="test" on-change="OnPropertiesChanged" value="someOtherField" off-text="a" on-text="b" pref-width="60" apply-on-change="true"/>
                 <toggle-setting text="test2" on-change="PinkCuteToggled" value="testToggle" off-text="pink" on-text="cute" pref-width="60"  apply-on-change="true"/>
                 <increment-setting label="cuteness" pref-width="60"/>
