@@ -32,7 +32,7 @@ namespace BSML
 
         gameObj->SetActive(false);
         gameObj->set_name("BSMLVerticalScrollIndicator");
-
+        
         auto transform = gameObj->GetComponent<UnityEngine::RectTransform *>();
         transform->SetParent(parent, false);
 
