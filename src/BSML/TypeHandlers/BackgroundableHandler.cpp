@@ -5,28 +5,18 @@ namespace BSML {
     static BackgroundableHandler backgroundableHandler{};
 
     BackgroundableHandler::Base::PropMap BackgroundableHandler::get_props() const {
-        auto props = Base::PropMap();
-        props["background"] = std::vector<std::string>({"bg", "background"});
-        props["backgroundColor"] = std::vector<std::string>({"bg-color", "background-color"});
-        props["backgroundAlpha"] = std::vector<std::string>({"bg-alpha"});
-        return props;
+        return {
+            {"background", {"bg", "background"}},
+            {"backgroundColor", {"bg-color", "background-color"}},
+            {"backgroundAlpha", {"bg-alpha"}}
+        };
     }
 
     BackgroundableHandler::Base::SetterMap BackgroundableHandler::get_setters() const {
-        auto setters = Base::SetterMap();
-        setters["background"] = [](auto component, auto str) { 
-            component->ApplyBackground(str); 
+        return {
+            {"background", [](auto component, auto value){ component->ApplyBackground(value); }},
+            {"backgroundColor", [](auto component, auto value){ component->ApplyColor(value); }},
+            {"backgroundAlpha", [](auto component, auto value){ component->ApplyAlpha(value); }}
         };
-        setters["backgroundColor"] = [](auto component, auto str) { 
-            auto col = Utilities::ParseHTMLColorOpt(str);
-            if (col.has_value()) component->ApplyColor(col.value());
-        };
-        setters["backgroundAlpha"] = [](auto component, auto str) {
-            float v = 0;
-            if (System::Single::TryParse(str, byref(v))) {
-                component->ApplyAlpha(v);
-            }
-        };
-        return setters;
     }
 }
