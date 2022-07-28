@@ -10,13 +10,12 @@
 #include "BSML/Data/HorizontalOrVerticalLayoutGroupData.hpp"
 
 namespace BSML {
-    class HorizontalTag : private BSMLTag {
+    class HorizontalTag : public BSMLTag {
         public:
             HorizontalTag() : BSMLTag() {}
         
             virtual void Construct(UnityEngine::Transform* parent, Il2CppObject* host = nullptr) const override;
         protected:
-            friend class HorizontalTagParser;
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;

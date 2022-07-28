@@ -24,6 +24,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<PageButtonTag> pageButtonTagParser({"page-button", "pg-button"});
     Button* pageButtonTemplate = nullptr;
 
     void PageButtonTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {

@@ -3,9 +3,10 @@
 #include <vector>
 #include "tinyxml2/shared/tinyxml2.h"
 #include "UnityEngine/Transform.hpp"
+#include "BSML/Parsing/BSMLTagParser.hpp"
 
 namespace BSML {
-    class BSMLTagParser;
+    class BSMLTagParserBase;
     class BSMLDocParser;
 
     class BSMLTag {
@@ -19,8 +20,8 @@ namespace BSML {
             void AddChild(BSMLTag* child);
             
         protected:
-            friend class ::BSML::BSMLTagParser;
             friend class ::BSML::BSMLDocParser;
+            friend class ::BSML::BSMLTagParserBase;
             virtual void parse(const tinyxml2::XMLElement& elem);
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const;

@@ -23,6 +23,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<ButtonWithIconTag> buttonWithIconTagParser({"button-with-icon", "icon-button"});
     Button* buttonWithIconTemplate = nullptr;
 
     void ButtonWithIconTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {

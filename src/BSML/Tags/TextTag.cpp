@@ -10,6 +10,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
+    static BSMLTagParser<TextTag> textTagParser({"text", "label"});
     void TextTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto text = go->GetComponent<TMPro::TextMeshProUGUI*>();

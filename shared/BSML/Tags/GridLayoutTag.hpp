@@ -10,13 +10,12 @@
 #include "BSML/Data/GridLayoutGroupData.hpp"
 
 namespace BSML {
-    class GridLayoutTag : private BSMLTag {
+    class GridLayoutTag : public BSMLTag {
         public:
             GridLayoutTag() : BSMLTag() {}
         
             virtual void Construct(UnityEngine::Transform* parent, Il2CppObject* host = nullptr) const override;
         protected:
-            friend class GridLayoutTagParser;
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
