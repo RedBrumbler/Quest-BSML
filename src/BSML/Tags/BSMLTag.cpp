@@ -1,4 +1,5 @@
 #include "BSML/Tags/BSMLTag.hpp"
+
 #include "internal_macros.hpp"
 #include "logging.hpp"
 
@@ -8,8 +9,7 @@
 #include "System/Object.hpp"
 
 namespace BSML {
-    extern BSMLTag* invalid;
-
+    static BSMLTagParser<BSMLTag> bsmlTagParser({"bsml"});
     BSMLTag::BSMLTag() : is_valid(false), children({}) {}
 
     BSMLTag::~BSMLTag() {

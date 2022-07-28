@@ -11,6 +11,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<HorizontalTag> horizontalTagParser({"horizontal"});
     void HorizontalTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto horizontal = go->GetComponent<UnityEngine::UI::HorizontalLayoutGroup*>();

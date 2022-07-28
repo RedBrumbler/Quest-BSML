@@ -11,6 +11,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<GridLayoutTag> gridLayoutTagParser({"grid"});
     void GridLayoutTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto grid = go->GetComponent<UnityEngine::UI::GridLayoutGroup*>();

@@ -3,22 +3,21 @@
 #include "BSML/Tags/BSMLTag.hpp"
 #include "logging.hpp"
 
-namespace BSML {
-    BSMLTagParser BSMLTagParser::bsmlTagParser;
 
-    BSMLTagParser::BSMLTagParser(std::vector<std::string> aliases) : aliases(aliases) {
+namespace BSML {
+    BSMLTagParserBase::BSMLTagParserBase(const std::vector<std::string>& aliases) : aliases(aliases) {
         BSMLDocParser::RegisterTag(this);
     }
 
-    BSMLTagParser::~BSMLTagParser() {
+    BSMLTagParserBase::~BSMLTagParserBase() {
         BSMLDocParser::UnRegisterTag(this);
     }
     
-    BSMLTag* BSMLTagParser::newTag() {
+    BSMLTag* BSMLTagParserBase::newTag() const {
         return new BSMLTag();
     }
 
-    BSMLTag* BSMLTagParser::parse(const tinyxml2::XMLElement& elem) {
+    BSMLTag* BSMLTagParserBase::parse(const tinyxml2::XMLElement& elem) const {
         auto tag = newTag();
         tag->parse(elem);
         
@@ -27,7 +26,7 @@ namespace BSML {
         return tag;
     }
 
-    void BSMLTagParser::ParseChildren(const tinyxml2::XMLElement& elem, BSMLTag* parentTag) {
+    void BSMLTagParserBase::ParseChildren(const tinyxml2::XMLElement& elem, BSMLTag* parentTag) const {
         auto handle = tinyxml2::XMLConstHandle(elem).FirstChildElement();
         for (
             const tinyxml2::XMLElement* element = nullptr;

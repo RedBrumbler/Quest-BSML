@@ -17,6 +17,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<ToggleSettingTag> toggleSettingTagParser({"toggle-setting"});
     GameObject* toggleTemplate = nullptr;
     
     void ToggleSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {

@@ -1,4 +1,5 @@
 #include "BSML/Tags/ButtonTag.hpp"
+
 #include "BSML/Components/ExternalComponents.hpp"
 #include "logging.hpp"
 
@@ -17,6 +18,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<ButtonTag> buttonTagParser({"button"});
     Button* buttonPrefab = nullptr;
     Button* ButtonTag::get_buttonPrefab() const {
         if (!buttonPrefab || !Object::IsNativeObjectAlive(buttonPrefab)) {

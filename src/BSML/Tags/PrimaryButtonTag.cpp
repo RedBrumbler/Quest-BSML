@@ -6,6 +6,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<PrimaryButtonTag> primaryButtonTagParser({"action-button", "primary-button"});
     Button* playButtonPrefab = nullptr;
     Button* PrimaryButtonTag::get_buttonPrefab() const {
         if (!playButtonPrefab || !Object::IsNativeObjectAlive(playButtonPrefab)) {
