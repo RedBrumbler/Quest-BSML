@@ -13,6 +13,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
+    static BSMLTagParser<ClickableTextTag> clickableTextTagParser({"clickable-text"});
     void ClickableTextTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto text = go->GetComponent<ClickableText*>();
