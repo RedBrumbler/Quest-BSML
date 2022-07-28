@@ -36,6 +36,7 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_METHOD(void, PinkCuteToggled, bool value);
     DECLARE_INSTANCE_METHOD(void, ChangeLength, float value);
     DECLARE_INSTANCE_METHOD(void, GibColor, UnityEngine::Color value);
+    DECLARE_INSTANCE_METHOD(void, TextClick);
 
     DECLARE_CTOR(ctor);
     
