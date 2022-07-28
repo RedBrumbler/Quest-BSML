@@ -20,6 +20,7 @@ using namespace UnityEngine::UI;
 using namespace VRUIControls;
 
 namespace BSML {
+    static BSMLTagParser<ModalKeyboardTag> modalKeyboardTagParser({"modal-keyboard"});
     void ModalKeyboardTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto keyboard = go->GetComponent<BSML::ModalKeyboard*>();

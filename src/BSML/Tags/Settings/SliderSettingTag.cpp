@@ -9,6 +9,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<SliderSettingTag> sliderSettingTagParser({"slider-setting"});
     void SliderSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto slider = go->GetComponent<BSML::SliderSetting*>();

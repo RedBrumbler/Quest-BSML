@@ -9,13 +9,12 @@
 #include "BSML/Data/TextMeshProUGUIData.hpp"
 
 namespace BSML {
-    class DropdownListSettingTag : private BSMLTag {
+    class DropdownListSettingTag : public BSMLTag {
         public:
             DropdownListSettingTag() : BSMLTag() {}
         
             virtual void Construct(UnityEngine::Transform* parent, Il2CppObject* host = nullptr) const override;
         protected:
-            friend class DropdownListSettingTagParser;
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;

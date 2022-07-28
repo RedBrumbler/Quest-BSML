@@ -3,6 +3,7 @@
 #include "UnityEngine/GameObject.hpp"
 
 namespace BSML {
+    static BSMLTagParser<IncrementSettingTag> incrementSettingTagParser({"increment-setting"});
     void IncrementSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto incrementSetting = go->GetComponent<BSML::IncrementSetting*>();

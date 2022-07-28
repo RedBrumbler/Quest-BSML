@@ -10,6 +10,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<VerticalTag> verticalTagParser({"vertical"});
     void VerticalTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto vertical = go->GetComponent<UnityEngine::UI::VerticalLayoutGroup*>();

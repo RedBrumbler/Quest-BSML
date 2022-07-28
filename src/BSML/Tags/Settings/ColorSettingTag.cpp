@@ -20,6 +20,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<ColorSettingTag> colorSettingTagParser({"color-setting"});
     GlobalNamespace::FormattedFloatListSettingsValueController* baseSettings = nullptr;
     Image* colorImage = nullptr;
 
