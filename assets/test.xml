@@ -1,53 +1,53 @@
 <bsml xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-        <horizontal>
-            <vertical pref-height="80" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
-                <text text="your mom" font-color="#ffff00"/>
-                <text text="so fat"/>
-                <horizontal id="layout" pref-height="10" spacing="5" pad="5" bg="round-rect-panel">
-                    <text text="she needed"/>
-                    <text text="2 columns"/>
-                </horizontal>
-                <primary-button id="goodButton" on-click="ButtonPressed"/>
-                <toggle-setting text="test" on-change="OnPropertiesChanged" value="someOtherField" off-text="a" on-text="b" pref-width="60" apply-on-change="true"/>
-                <toggle-setting text="test2" on-change="PinkCuteToggled" value="testToggle" off-text="pink" on-text="cute" pref-width="60"  apply-on-change="true"/>
-                <increment-setting label="cuteness" pref-width="60"/>
-                <list-setting list-options="someList" list-choice="_myChoice"  pref-width="60"/>
-                <slider-setting label="length" min="2" max="6" increment="0.05" show-buttons="true" digits="3" value="length" on-change="ChangeLength"  pref-width="60"/>
-                <list-slider-setting label="object slider" show-buttons="false" options="sliderList" value="sliderChoice"  pref-width="60"/>
-                <button label="feeling brave?" on-click="show_scare" pref-width="60"/>
-                <modal id="scare" click-off-closes="true" move-to-center="true" size-delta-x="20" size-delta-y="20">
-                    <vertical pref-height="20" vertical-fit="PreferredSize">
-                        <horizontal pad="5">
-                            <text text="BOO!"/>
-                        </horizontal>
-                    </vertical>
-                </modal>
-                <button label="Wanna type?" on-click="show_mykb"  pref-width="60"/>
-                <modal-keyboard id="mykb" click-off-closes="true" move-to-center="true" on-enter="KeyboardValueEntered" pref-width="60"/>
-            </vertical>
-            <vertical pref-height="80" bg="round-rect-panel" bg-alpha="0.8" pad="2" vertical-fit="PreferredSize">
-                <string-setting label="password" on-change="GibString" pref-width="60"/>
-                <dropdown-list-setting label="dropit" options="lyrics" pref-width="60"/>
-                <color-setting label="gay" on-change="GibColor" pref-width="60"/>
-                <icon-button pref-width="60"/>
-                <icon-button icon="#ClockIcon" pref-width="60"/>
-                <text text="yomama" pref-width="60" pref-height="10"><background bg="panel-top" bg-color="#ff00ff"/></text>
-                <horizontal pref-height="10" bg="panel-fade-gradient" bg-color="#ffffff" pref-width="60">
-                    <page-button dir="Up" pref-width="15" pref-height="10"/>
-                    <page-button dir="Down" pref-width="15" pref-height="10"/>
-                    <page-button dir="Left" pref-width="15" pref-height="10"/>
-                    <page-button dir="Right" pref-width="15" pref-height="10"/>
-                </horizontal>
-                <grid spacing-x="5" spacing-y="2" cell-size-x="10" cell-size-y="6" pad="2" pref-height="20">
-                    <button label="u" font-size="3" pref-width="10" pref-height="6"/>
-                    <button label="r" font-size="3" pref-width="10" pref-height="6"/>
-                    <button label="m" font-size="3" pref-width="10" pref-height="6"/>
-                    <button label="o" font-size="3" pref-width="10" pref-height="6"/>
-                    <button label="m" font-size="3" pref-width="10" pref-height="6"/>
-                </grid>
-            </vertical>
-            <vertical pref-height="80" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
-                <clickable-text label="click me!" on-click="TextClick" pref-height="4"/>
-            </vertical>
-        </horizontal>
+    <horizontal>
+        <vertical pref-height="80" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
+            <text text="your mom" font-color="#ffff00"/>
+            <text text="so fat"/>
+            <horizontal id="layout" pref-height="10" spacing="5" pad="5" bg="round-rect-panel">
+                <text text="she needed"/>
+                <text text="2 columns"/>
+            </horizontal>
+            <primary-button id="goodButton" on-click="ButtonPressed"/>
+            <toggle-setting text="test" on-change="OnPropertiesChanged" value="someOtherField" off-text="a" on-text="b" pref-width="60" apply-on-change="true"/>
+            <toggle-setting text="test2" on-change="PinkCuteToggled" value="testToggle" off-text="pink" on-text="cute" pref-width="60"  apply-on-change="true"/>
+            <increment-setting label="cuteness" pref-width="60"/>
+            <list-setting list-options="someList" list-choice="_myChoice"  pref-width="60"/>
+            <slider-setting label="length" min="2" max="6" increment="0.05" show-buttons="true" digits="3" value="length" on-change="ChangeLength"  pref-width="60"/>
+            <list-slider-setting label="object slider" show-buttons="false" options="sliderList" value="sliderChoice"  pref-width="60"/>
+            <button label="feeling brave?" on-click="show_scare" pref-width="60"/>
+            <modal id="scare" click-off-closes="true" move-to-center="true" size-delta-x="20" size-delta-y="20">
+                <vertical pref-height="20" vertical-fit="PreferredSize">
+                    <horizontal pad="5">
+                        <text text="BOO!"/>
+                    </horizontal>
+                </vertical>
+            </modal>
+            <button label="Wanna type?" on-click="show_mykb"  pref-width="60"/>
+            <modal-keyboard id="mykb" click-off-closes="true" move-to-center="true" on-enter="KeyboardValueEntered" pref-width="60"/>
+        </vertical>
+        <vertical pref-height="80" bg="round-rect-panel" bg-alpha="0.8" pad="2" vertical-fit="PreferredSize">
+            <string-setting label="password" on-change="GibString" pref-width="60"/>
+            <dropdown-list-setting label="dropit" options="lyrics" pref-width="60"/>
+            <color-setting label="gay" on-change="GibColor" pref-width="60"/>
+            <icon-button pref-width="60"/>
+            <icon-button icon="#ClockIcon" pref-width="60"/>
+            <text text="yomama" pref-width="60" pref-height="10"><background bg="panel-top" bg-color="#ff00ff"/></text>
+            <horizontal pref-height="10" bg="panel-fade-gradient" bg-color="#ffffff" pref-width="60">
+                <page-button dir="Up" pref-width="15" pref-height="10"/>
+                <page-button dir="Down" pref-width="15" pref-height="10"/>
+                <page-button dir="Left" pref-width="15" pref-height="10"/>
+                <page-button dir="Right" pref-width="15" pref-height="10"/>
+            </horizontal>
+            <grid spacing-x="5" spacing-y="2" cell-size-x="10" cell-size-y="6" pad="2" pref-height="20">
+                <button label="u" font-size="3" pref-width="10" pref-height="6"/>
+                <button label="r" font-size="3" pref-width="10" pref-height="6"/>
+                <button label="m" font-size="3" pref-width="10" pref-height="6"/>
+                <button label="o" font-size="3" pref-width="10" pref-height="6"/>
+                <button label="m" font-size="3" pref-width="10" pref-height="6"/>
+            </grid>
+        </vertical>
+        <vertical pref-height="80" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
+            <clickable-text label="click me!" on-click="TextClick" pref-height="4"/>
+        </vertical>
+    </horizontal>
 </bsml>

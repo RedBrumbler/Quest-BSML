@@ -4,6 +4,8 @@
 #include "tinyxml2/shared/tinyxml2.h"
 #include "UnityEngine/Transform.hpp"
 #include "BSML/Parsing/BSMLTagParser.hpp"
+#include "BSML/ComponentTypeWithData.hpp"
+#include "BSML/Parsing/BSMLParserParams.hpp"
 
 namespace BSML {
     class BSMLTagParserBase;
@@ -16,6 +18,7 @@ namespace BSML {
 
             bool valid() const;
 
+            void Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const;
             virtual void Construct(UnityEngine::Transform* parent, Il2CppObject* host) const;
             void AddChild(BSMLTag* child);
             
@@ -33,5 +36,6 @@ namespace BSML {
             bool is_valid = false;
             std::string id;
             std::vector<BSMLTag*> children;
+            std::map<std::string, std::string> attributes = {};
     };
 }

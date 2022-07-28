@@ -11,6 +11,10 @@ namespace BSML {
         components->Add(component);
     }
 
+    UnityEngine::Component* ExternalComponents::GetByType(System::Type* type) const {
+        return GetByType(reinterpret_cast<Il2CppReflectionType*>(type));
+    }
+    
     UnityEngine::Component* ExternalComponents::GetByType(Il2CppReflectionType* type) const {
         if (!type) {
             return nullptr;
