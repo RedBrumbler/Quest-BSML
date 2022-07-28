@@ -27,6 +27,8 @@ namespace BSML {
         auto host = parserParams.host;
         if (buttonOpt.has_value()) {
             auto button = buttonOpt.value();
+            auto event = Button::ButtonClickedEvent::New_ctor();
+
             // it was a button!
             auto onClickItr = componentType.data.find("onClick");
             if (onClickItr != componentType.data.end() && !onClickItr->second.empty()) {
@@ -34,8 +36,7 @@ namespace BSML {
                 if (onClickMethodInfo) {
                     std::function<void()> fun = [host, onClickMethodInfo](){ il2cpp_utils::RunMethod(host, onClickMethodInfo); };
                     auto delegate = il2cpp_utils::MakeDelegate<UnityAction*>(fun);
-                    button->set_onClick(Button::ButtonClickedEvent::New_ctor());
-                    button->get_onClick()->AddListener(delegate);
+                    event->AddListener(delegate);
                 } else {
                     ERROR("Method '{}' could not be found in class {}::{}", onClickItr->second, host->klass->namespaze, host->klass->name);
                 }
@@ -47,12 +48,12 @@ namespace BSML {
                 if (clickEventMethodInfo) {
                     std::function<void()> fun = [host, clickEventMethodInfo](){ il2cpp_utils::RunMethod(host, clickEventMethodInfo); };
                     auto delegate = il2cpp_utils::MakeDelegate<UnityAction*>(fun);
-                    button->set_onClick(Button::ButtonClickedEvent::New_ctor());
-                    button->get_onClick()->AddListener(delegate);
+                    event->AddListener(delegate);
                 } else {
                     ERROR("Method '{}' could not be found in class {}::{}", clickEventItr->second, host->klass->namespaze, host->klass->name);
                 }
             }
+            button->set_onClick(event);
         }
 
         Base::HandleType(componentType, parserParams);
