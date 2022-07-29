@@ -48,7 +48,7 @@ namespace BSML {
 
         auto padItr = data.find("pad");
         if (padItr != data.end()) {
-            int pad = TypeHandlerArgument(padItr->second);
+            int pad = StringParseHelper(padItr->second);
             layoutGroup->set_padding(UnityEngine::RectOffset::New_ctor(pad, pad, pad, pad));
         }
 
@@ -60,10 +60,10 @@ namespace BSML {
 
         // if any padding values are found, override them
         layoutGroup->set_padding(UnityEngine::RectOffset::New_ctor(
-            padTopItr == data.end()     ? originalPadding->get_left()   : TypeHandlerArgument(padTopItr->second), 
-            padBottomItr == data.end()  ? originalPadding->get_right()  : TypeHandlerArgument(padBottomItr->second),
-            padLeftItr == data.end()    ? originalPadding->get_top()    : TypeHandlerArgument(padLeftItr->second), 
-            padRightItr == data.end()   ? originalPadding->get_bottom() : TypeHandlerArgument(padRightItr->second) 
+            padTopItr == data.end()     ? originalPadding->get_left()   : StringParseHelper(padTopItr->second), 
+            padBottomItr == data.end()  ? originalPadding->get_right()  : StringParseHelper(padBottomItr->second),
+            padLeftItr == data.end()    ? originalPadding->get_top()    : StringParseHelper(padLeftItr->second), 
+            padRightItr == data.end()   ? originalPadding->get_bottom() : StringParseHelper(padRightItr->second) 
         ));
 
         auto childAlignItr = data.find("childAlign");

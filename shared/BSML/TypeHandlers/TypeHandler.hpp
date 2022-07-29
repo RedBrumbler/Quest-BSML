@@ -1,10 +1,9 @@
 #pragma once
 
+#include "StringParseHelper.hpp"
 #include "BSML/ComponentTypeWithData.hpp"
 #include "BSML/Parsing/BSMLParserParams.hpp"
 #include "UnityEngine/Component.hpp"
-#include "UnityEngine/Color.hpp"
-#include "UnityEngine/Color32.hpp"
 #include "System/Type.hpp"
 #include <string>
 #include <vector>
@@ -35,43 +34,13 @@ namespace BSML {
             static void UnRegisterTypeHandler(TypeHandlerBase* typeHandler);
     };
 
-    struct TypeHandlerArgument : std::string_view {
-        /// pass the normal constructors through to the base, these are the only ones we need
-        TypeHandlerArgument(const char* str) : std::string_view(str) {}
-        TypeHandlerArgument(const std::string& str) : std::string_view(str) {}
-
-        // we go to StringW enough times that an operator cuts out a step
-        operator StringW() const;
-        // string view -> string doesn't normally exist
-        operator std::string() const;
-        operator bool() const;
-        operator int() const;
-        operator float() const;
-        operator double() const;
-        operator UnityEngine::Color() const;
-        operator UnityEngine::Color32() const;
-        
-        std::optional<bool> tryParseBool() const;
-        std::optional<int> tryParseInt() const;
-        std::optional<float> tryParseFloat() const;
-        std::optional<double> tryParseDouble() const;
-        std::optional<UnityEngine::Color> tryParseColor() const;
-        std::optional<UnityEngine::Color32> tryParseColor32() const;
-
-        const MethodInfo* TypeHandlerArgument::asMethodInfo(Il2CppObject* host, int argCount = 0) const;
-        const MethodInfo* TypeHandlerArgument::asSetter(Il2CppObject* host) const;
-        const MethodInfo* TypeHandlerArgument::asGetter(Il2CppObject* host) const;
-        FieldInfo* TypeHandlerArgument::asFieldInfo(Il2CppObject* host) const;
-
-    };
-
     template<typename T>
     requires(std::is_convertible_v<T, UnityEngine::Component*>)
     class TypeHandler : public TypeHandlerBase {
         public:
             TypeHandler() : TypeHandlerBase() {};
 
-            using Setter = std::function<void(T, const TypeHandlerArgument&)>;
+            using Setter = std::function<void(T, const StringParseHelper&)>;
             using SetterMap = std::map<std::string, Setter>;
             using PropMap = TypeHandlerBase::PropMap;
 

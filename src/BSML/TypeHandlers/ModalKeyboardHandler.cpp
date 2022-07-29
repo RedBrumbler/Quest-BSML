@@ -25,7 +25,7 @@ namespace BSML {
         auto valueItr = data.find("value");
         if (valueItr != data.end() && !valueItr->second.empty()) {
             auto genericSetting = modalKeyboard->genericSetting;
-            auto arg = TypeHandlerArgument(valueItr->second);
+            auto arg = StringParseHelper(valueItr->second);
 
             auto fieldInfo = arg.asFieldInfo(host);
             if (fieldInfo) {
@@ -38,7 +38,7 @@ namespace BSML {
 
         auto onEnterItr = data.find("onEnter");
         if (onEnterItr != data.end() && !onEnterItr->second.empty()) {
-            auto arg = TypeHandlerArgument(onEnterItr->second);
+            auto arg = StringParseHelper(onEnterItr->second);
             auto onEnterInfo = arg.asMethodInfo(host, 1);
             if (onEnterInfo)
                 modalKeyboard->onEnter = [host, onEnterInfo](auto value){ il2cpp_utils::RunMethod(host, onEnterInfo, value); };
