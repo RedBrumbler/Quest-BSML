@@ -3,8 +3,8 @@ name: NDK build
 on:
   workflow_dispatch:
   push:
-    ignore-branches: 
-      - 'version-**'
+    branches: 
+      - 'master'
     paths-ignore:
       - '**.yml'
       - '!.github/workflows/build-ndk.yml'
