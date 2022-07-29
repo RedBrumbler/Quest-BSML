@@ -1,7 +1,7 @@
 #include "BSML/TypeHandlers/Settings/ListSliderSettingHandler.hpp"
 
 namespace BSML {
-    static ListSliderSettingHandler listSettingHandler{};
+    static ListSliderSettingHandler listSliderSettingHandler{};
 
     ListSliderSettingHandler::Base::PropMap ListSliderSettingHandler::get_props() const {
         return {
