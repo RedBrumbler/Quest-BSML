@@ -13,7 +13,7 @@ namespace BSML {
         enableInc = true;
     }
 
-    void IncDecSetting::Start() {
+    void IncDecSetting::BaseSetup() {
         // we use reflection since we can't do proper virtual methods
         auto increaseInfo = il2cpp_functions::class_get_method_from_name(this->klass, "IncButtonPressed", 0);
         if (increaseInfo) {
@@ -31,10 +31,6 @@ namespace BSML {
             auto delegate = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(classof(UnityEngine::Events::UnityAction*), fun);
             onClick->AddListener(delegate);
         }
-
-        // run setup method if needed
-        auto setupInfo = il2cpp_functions::class_get_method_from_name(this->klass, "Setup", 0);
-        if (setupInfo) il2cpp_utils::RunMethod(this, setupInfo);
     }
 
     bool IncDecSetting::get_interactable() {

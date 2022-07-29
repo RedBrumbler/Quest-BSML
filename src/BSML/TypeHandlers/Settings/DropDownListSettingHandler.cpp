@@ -23,13 +23,18 @@ namespace BSML {
             auto arg = StringParseHelper(optionsItr->second);
             auto fieldInfo = arg.asFieldInfo(host);
             if (fieldInfo) {
+                INFO("Using field");
                 component->values = il2cpp_functions::field_get_value_object(fieldInfo, host);
             } else {
                 auto getterInfo = arg.asGetter(host);
+                INFO("Using Getter");
                 if (getterInfo) {
+                    INFO("Found Getter");
                     auto list = il2cpp_utils::RunMethod<List<Il2CppObject*>*>(host, getterInfo);
-                    if (list.has_value())
+                    if (list.has_value()) {
+                        INFO("Had Value");
                         component->values = list.value();
+                    }
                 }
             }
         }

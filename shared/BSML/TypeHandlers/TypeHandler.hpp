@@ -28,6 +28,7 @@ namespace BSML {
             virtual System::Type* get_type() = 0;
             static std::vector<TypeHandlerBase*>& get_typeHandlers();
 
+            virtual int get_priority() const { return 100; }
         private:
             PropMap cachedProps;
             static void RegisterTypeHandler(TypeHandlerBase* typeHandler);

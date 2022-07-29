@@ -15,20 +15,23 @@ namespace BSML {
     }
 
     void TypeHandlerBase::RegisterTypeHandler(TypeHandlerBase* typeHandler) {
-        auto itr = std::find(get_typeHandlers().begin(), get_typeHandlers().end(), typeHandler);
-        if (itr == get_typeHandlers().end()) {
+        auto& typeHandlers = get_typeHandlers();
+        auto itr = std::find(typeHandlers.begin(), typeHandlers.end(), typeHandler);
+        if (itr == typeHandlers.end()) {
             INFO("Registered type handler");
-            get_typeHandlers().emplace_back(typeHandler);
+            typeHandlers.emplace_back(typeHandler);
         }
-        INFO("type handler count: {}", get_typeHandlers().size());
+        std::sort(typeHandlers.begin(), typeHandlers.end(), [](auto lhs, auto rhs) { return lhs->get_priority() < rhs->get_priority(); });
+        INFO("type handler count: {}", typeHandlers.size());
     }
 
     void TypeHandlerBase::UnRegisterTypeHandler(TypeHandlerBase* typeHandler) {
-        auto itr = std::find(get_typeHandlers().begin(), get_typeHandlers().end(), typeHandler);
-        if (itr != get_typeHandlers().end()) {
+        auto& typeHandlers = get_typeHandlers();
+        auto itr = std::find(typeHandlers.begin(), typeHandlers.end(), typeHandler);
+        if (itr != typeHandlers.end()) {
             INFO("UnRegistered type handler");
-            get_typeHandlers().erase(itr, itr++);
+            typeHandlers.erase(itr, itr++);
         }
-        INFO("type handler count: {}", get_typeHandlers().size());
+        INFO("type handler count: {}", typeHandlers.size());
     }
 }

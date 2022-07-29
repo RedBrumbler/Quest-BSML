@@ -68,7 +68,7 @@ namespace BSML {
                 componentTypeWithData->typeHandler = typeHandler;
                 componentTypeWithData->component = component;
                 componentTypeWithData->data = ComponentTypeWithData::GetParameters(attributes, typeHandler->get_cachedProps());
-                localComponentInfo.push_back(componentTypeWithData);
+                localComponentInfo.emplace_back(componentTypeWithData);
             }
         }
 

@@ -4,6 +4,7 @@
 namespace BSML {
     static BaseSettingHandler baseSettingHandler{};
 
+    int BaseSettingHandler::get_priority() const { return 10; }
     BaseSettingHandler::Base::PropMap BaseSettingHandler::get_props() const {
         return {
             {"onChange", {"on-change"}},
@@ -21,12 +22,14 @@ namespace BSML {
         auto& data = componentType.data;
         auto host = parserParams.host;
 
-        auto genericSettings = il2cpp_utils::GetFieldValue<GenericSettingWrapper*>(component, "genericSettings").value_or(nullptr);
+        auto genericSettings = il2cpp_utils::GetFieldValue<GenericSettingWrapper*>(component, "genericSetting").value_or(nullptr);
         if (!genericSettings) {
-            ERROR("Type {}::{} did not have a genericSettingsField", component->klass->namespaze, component->klass->name);
+            ERROR("Type {}::{} did not have a 'genericSetting' field", component->klass->namespaze, component->klass->name);
             return;
         }
 
+        genericSettings->host = host;
+        
         auto applyOnChangeItr = data.find("applyOnChange");
         if (applyOnChangeItr != data.end()) {
             auto arg = StringParseHelper(applyOnChangeItr->second);
@@ -52,4 +55,15 @@ namespace BSML {
 
         Base::HandleType(componentType, parserParams);
     }
+
+    void BaseSettingHandler::HandleTypeAfterChildren(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
+        auto baseSetupMethodInfo = StringParseHelper("BaseSetup").asMethodInfo(componentType.component, 0);
+        if (baseSetupMethodInfo) il2cpp_utils::RunMethod(componentType.component, baseSetupMethodInfo);
+        
+        auto setupMethodInfo = StringParseHelper("Setup").asMethodInfo(componentType.component, 0);
+        if (setupMethodInfo) il2cpp_utils::RunMethod(componentType.component, setupMethodInfo);
+        
+        Base::HandleTypeAfterChildren(componentType, parserParams);
+    }
+
 }

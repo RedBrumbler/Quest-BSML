@@ -41,7 +41,7 @@ namespace BSML {
         }
     }
 
-    void SliderSettingBase::Start() {
+    void SliderSettingBase::BaseSetup() {
         incButton = slider->incButton;
         decButton = slider->decButton;
         
@@ -56,8 +56,5 @@ namespace BSML {
             auto slidingAreaRect = reinterpret_cast<UnityEngine::RectTransform*>(transform->Find("SlidingArea"));
             slidingAreaRect->set_sizeDelta({-4, -4});
         }
-
-        auto setupInfo = il2cpp_functions::class_get_method_from_name(this->klass, "Setup", 0);
-        if (setupInfo) il2cpp_utils::RunMethod(this, setupInfo);
     }
 }

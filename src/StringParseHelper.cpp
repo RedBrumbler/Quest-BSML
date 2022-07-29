@@ -54,7 +54,7 @@ const MethodInfo* StringParseHelper::asSetter(Il2CppObject* host) const {
 }
 const MethodInfo* StringParseHelper::asGetter(Il2CppObject* host) const {
     auto name = "get_" + this->operator std::string();
-    return il2cpp_functions::class_get_method_from_name(host->klass, name.c_str(), 1);
+    return il2cpp_functions::class_get_method_from_name(host->klass, name.c_str(), 0);
 }
 FieldInfo* StringParseHelper::asFieldInfo(Il2CppObject* host) const {
     return il2cpp_functions::class_get_field_from_name(host->klass, data());

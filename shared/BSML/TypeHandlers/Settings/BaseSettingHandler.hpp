@@ -14,9 +14,12 @@ namespace BSML {
             using Base = TypeHandler<BSML::BaseSetting*>;
             BaseSettingHandler() : Base() {}
 
+            virtual int get_priority() const override;
+            
             virtual Base::PropMap get_props() const override;
             virtual Base::SetterMap get_setters() const override;
 
             virtual void HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) override;
+            virtual void HandleTypeAfterChildren(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) override;
     };
 }

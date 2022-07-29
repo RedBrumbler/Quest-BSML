@@ -33,8 +33,7 @@ namespace BSML {
             text->set_text(formatter ? formatter(value) : value);
     }
 
-    void StringSetting::Start() {
-        Setup();
+    void StringSetting::BaseSetup() {
         modalKeyboard->onEnter = std::bind(&StringSetting::EnterPressed, this, std::placeholders::_1);
 
         editButton->set_onClick(Button::ButtonClickedEvent::New_ctor());
