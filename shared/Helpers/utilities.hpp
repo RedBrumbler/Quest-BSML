@@ -11,6 +11,9 @@ namespace BSML::Utilities {
     /// @brief Finds a sprite by name.
     UnityEngine::Sprite* FindSpriteCached(StringW name);
 
+    /// @brief Finds a texture by name.
+    UnityEngine::Texture* FindTextureCached(StringW name);
+
     /// @brief parses a HTML color from given string view
     /// @param str the string view
     /// @return the color, or nullopt
