@@ -80,26 +80,56 @@ namespace BSML {
     }
 
     TypeHandlerArgument::operator bool() {
-        return tryParseBool().value_or(false);
+        auto result = tryParseBool();
+        if (!result.has_value()) {
+            ERROR("Could not parse bool from input '{}'", *this);
+            return false;
+        }
+        return result.value();
     }
     
     TypeHandlerArgument::operator int() {
-        return tryParseInt().value_or(0);
+        auto result = tryParseInt();
+        if (!result.has_value()) {
+            ERROR("Could not parse int from input '{}'", *this);
+            return 0;
+        }
+        return result.value();
     }
 
     TypeHandlerArgument::operator float() {
-        return tryParseFloat().value_or(0);
+        auto result = tryParseFloat();
+        if (!result.has_value()) {
+            ERROR("Could not parse float from input '{}'", *this);
+            return 0;
+        }
+        return result.value();
     }
 
     TypeHandlerArgument::operator double() {
-        return tryParseDouble().value_or(0);
+        auto result = tryParseDouble();
+        if (!result.has_value()) {
+            ERROR("Could not parse double from input '{}'", *this);
+            return 0;
+        }
+        return result.value();
     }
 
     TypeHandlerArgument::operator UnityEngine::Color() {
-        return tryParseColor().value_or(UnityEngine::Color(1.0, 1.0, 1.0, 1.0));
+        auto result = tryParseColor();
+        if (!result.has_value()) {
+            ERROR("Could not parse color from input '{}'", *this);
+            return {1.0, 1.0, 1.0, 1.0};
+        }
+        return result.value();
     }
 
     TypeHandlerArgument::operator UnityEngine::Color32() {
-        return tryParseColor32().value_or(UnityEngine::Color32(255, 255, 255, 255));
+        auto result = tryParseColor32();
+        if (!result.has_value()) {
+            ERROR("Could not parse color from input '{}'", *this);
+            return {255, 255, 255, 255};
+        }
+        return result.value();
     }
 }
