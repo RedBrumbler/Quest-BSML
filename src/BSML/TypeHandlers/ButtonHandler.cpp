@@ -32,7 +32,8 @@ namespace BSML {
             // it was a button!
             auto onClickItr = componentType.data.find("onClick");
             if (onClickItr != componentType.data.end() && !onClickItr->second.empty()) {
-                auto onClickMethodInfo = il2cpp_functions::class_get_method_from_name(host->klass, onClickItr->second.c_str(), 0);
+                auto arg = StringParseHelper(onClickItr->second);
+                auto onClickMethodInfo = arg.asMethodInfo(host, 0);
                 if (onClickMethodInfo) {
                     std::function<void()> fun = [host, onClickMethodInfo](){ il2cpp_utils::RunMethod(host, onClickMethodInfo); };
                     auto delegate = il2cpp_utils::MakeDelegate<UnityAction*>(fun);
@@ -44,7 +45,8 @@ namespace BSML {
 
             auto clickEventItr = componentType.data.find("click-event");
             if (clickEventItr != componentType.data.end() && !clickEventItr->second.empty()) {
-                auto clickEventMethodInfo = il2cpp_functions::class_get_method_from_name(host->klass, clickEventItr->second.c_str(), 0);
+                auto arg = StringParseHelper(clickEventItr->second);
+                auto clickEventMethodInfo = arg.asMethodInfo(host, 0);
                 if (clickEventMethodInfo) {
                     std::function<void()> fun = [host, clickEventMethodInfo](){ il2cpp_utils::RunMethod(host, clickEventMethodInfo); };
                     auto delegate = il2cpp_utils::MakeDelegate<UnityAction*>(fun);

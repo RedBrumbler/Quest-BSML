@@ -25,30 +25,28 @@ namespace BSML {
         auto valueItr = data.find("value");
         if (valueItr != data.end()) {
             auto genericSetting = colorPicker->genericSetting;
-            auto fieldInfo = il2cpp_functions::class_get_field_from_name(host->klass, valueItr->second.c_str());
+            auto arg = StringParseHelper(valueItr->second);
+            auto fieldInfo = arg.asFieldInfo(host);
 
             if (fieldInfo) {
                 genericSetting->valueInfo = fieldInfo;
             } else {
-                std::string getterName = "get_" + valueItr->second;
-                std::string setterName = "set_" + valueItr->second;
-
-                genericSetting->getterInfo = il2cpp_functions::class_get_method_from_name(host->klass, getterName.c_str(), 0);
-                genericSetting->setterInfo = il2cpp_functions::class_get_method_from_name(host->klass, setterName.c_str(), 1);
+                genericSetting->getterInfo = arg.asGetter(host);
+                genericSetting->setterInfo = arg.asSetter(host);
             }
         }
 
         auto onCancelItr = data.find("onCancel");
-        if (onCancelItr != data.end()) {
-            colorPicker->onCancelInfo = il2cpp_functions::class_get_method_from_name(host->klass, onCancelItr->second.c_str(), 0);
+        if (onCancelItr != data.end() && !onCancelItr->second.empty()) {
+            colorPicker->onCancelInfo = StringParseHelper(onCancelItr->second).asMethodInfo(host, 0);
         }
         auto onDoneItr = data.find("onDone");
-        if (onDoneItr != data.end()) {
-            colorPicker->onDoneInfo = il2cpp_functions::class_get_method_from_name(host->klass, onDoneItr->second.c_str(), 1);
+        if (onDoneItr != data.end() && !onDoneItr->second.empty()) {
+            colorPicker->onDoneInfo = StringParseHelper(onDoneItr->second).asMethodInfo(host, 1);
         }
         auto onChangeItr = data.find("onChange");
-        if (onChangeItr != data.end()) {
-            colorPicker->colorChangeInfo = il2cpp_functions::class_get_method_from_name(host->klass, onChangeItr->second.c_str(), 1);        
+        if (onChangeItr != data.end() && !onChangeItr->second.empty()) {
+            colorPicker->colorChangeInfo = StringParseHelper(onChangeItr->second).asMethodInfo(host, 1);
         }
 
         Base::HandleType(componentType, parserParams);
