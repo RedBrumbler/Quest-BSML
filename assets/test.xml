@@ -48,6 +48,7 @@
         </vertical>
         <vertical pref-height="80" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
             <clickable-text label="click me!" on-click="TextClick" pref-height="4"/>
+            <modifier text="modifier"/>
         </vertical>
     </horizontal>
 </bsml>
