@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma once
-
 #include "BSML/TypeHandlers/TypeHandler.hpp"
 #include "BSML/Components/Settings/DropdownListSetting.hpp"
 
