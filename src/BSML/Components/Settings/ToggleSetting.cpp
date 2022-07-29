@@ -11,16 +11,11 @@ namespace BSML {
         currentValue = false;
     }
 
-    void ToggleSetting::Start() {
-        Setup();
-
+    void ToggleSetting::Setup() {
         std::function<void(bool)> fun = std::bind(&ToggleSetting::OnValueChanged, this, std::placeholders::_1);
         auto delegate = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(classof(UnityEngine::Events::UnityAction_1<bool>*), fun);
-
         toggle->onValueChanged->AddListener(delegate);
-    }
 
-    void ToggleSetting::Setup() {
         ReceiveValue();
     }
 

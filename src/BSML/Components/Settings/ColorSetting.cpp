@@ -33,10 +33,6 @@ namespace BSML {
         if (editButton) editButton->set_interactable(value);
     }
 
-    void ColorSetting::Start() {
-        Setup();
-    }
-
     void ColorSetting::Setup() {
         if (modalColorPicker) {
             modalColorPicker->host = this;

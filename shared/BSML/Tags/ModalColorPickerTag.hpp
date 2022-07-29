@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BSML/Tags/ModalTag.hpp"
-#include "BSML/Data/ModalColorPickerData.hpp"
 
 namespace BSML {
     class ModalColorPickerTag : public ModalTag {
@@ -15,7 +14,5 @@ namespace BSML {
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
-            
-            ModalColorPickerData modalColorPickerData;
     };
 }

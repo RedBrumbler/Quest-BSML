@@ -14,18 +14,11 @@ namespace BSML {
         auto go = CreateObject(parent);
         auto slider = go->GetComponent<BSML::SliderSetting*>();
         SetHostField(host, slider);
-        
-        genericSettingData.Apply(slider->genericSetting, host);
-        sliderSettingBaseData.Apply(slider);
-        sliderSettingData.Apply(slider);
-        
         CreateChildren(go->get_transform(), host);
     }
 
     void SliderSettingTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing slider-setting tag");
         this->Base::parse(elem);
-        sliderSettingBaseData = SliderSettingBaseData(elem);
-        sliderSettingData = SliderSettingData(elem);
     }
 }

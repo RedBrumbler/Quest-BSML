@@ -2,7 +2,6 @@
 
 #include "BSML/Tags/Settings/IncDecSettingTag.hpp"
 #include "BSML/Components/Settings/IncrementSetting.hpp"
-#include "BSML/Data/Settings/IncrementSettingData.hpp"
 
 namespace BSML {
     class IncrementSettingTag : public IncDecSettingTag<BSML::IncrementSetting*> {
@@ -18,7 +17,5 @@ namespace BSML {
         virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override {
             return Base::CreateObject(parent);
         }
-
-        IncrementSettingData incrementSettingData; 
     };
 }

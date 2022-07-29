@@ -7,6 +7,7 @@
 
 #include "HMUI/Touchable.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 
@@ -19,10 +20,6 @@ namespace BSML {
         auto text = go->GetComponent<ClickableText*>();
         SetHostField(host, text);
 
-        textMeshProUGUIData.Apply(text);
-        clickableTextData.Apply(text, host);
-        rectTransformData.Apply(text->get_rectTransform());
-        
         CreateChildren(go->get_transform(), host);
     }
 
@@ -54,9 +51,5 @@ namespace BSML {
     void ClickableTextTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing clickable text tag");
         this->::BSML::BSMLTag::parse(elem);
-        
-        textMeshProUGUIData = TextMeshProUGUIData(elem);
-        clickableTextData = ClickableTextData();
-        rectTransformData = RectTransformData(elem);
     }
 }

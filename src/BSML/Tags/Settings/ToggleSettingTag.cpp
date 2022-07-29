@@ -6,7 +6,9 @@
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Object.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/Toggle.hpp"
 #include "UnityEngine/UI/Toggle_ToggleEvent.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
@@ -24,10 +26,6 @@ namespace BSML {
         auto go = CreateObject(parent);
         auto toggle = go->GetComponent<BSML::ToggleSetting*>();
         SetHostField(host, toggle);
-        
-        genericSettingData.Apply(toggle->genericSetting, host);
-        toggleSettingData.Apply(toggle, host);
-        
         CreateChildren(go->get_transform(), host);
     }
 
@@ -67,24 +65,15 @@ namespace BSML {
         toggleSetting->text->set_richText(true);
         toggleSetting->text->set_overflowMode(TMPro::TextOverflowModes::Ellipsis);
 
-        auto layoutElement = go->GetComponent<UnityEngine::UI::LayoutElement*>();
+        auto layoutElement = go->GetComponent<LayoutElement*>();
         layoutElement->set_preferredWidth(90.0f);
         go->SetActive(true);
 
-        textMeshProUGUIData.Apply(toggleSetting->text);
-        layoutElementData.Apply(layoutElement);
-        rectTransformData.Apply(transform);
         return go;
     }
 
     void ToggleSettingTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing horizontal tag");
         this->::BSML::BSMLTag::parse(elem);
-
-        genericSettingData = GenericSettingData(elem);
-        toggleSettingData = ToggleSettingData(elem);
-        textMeshProUGUIData = TextMeshProUGUIData(elem);
-        layoutElementData = LayoutElementData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }

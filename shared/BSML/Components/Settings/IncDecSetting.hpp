@@ -25,7 +25,7 @@ DECLARE_CLASS_CUSTOM(BSML, IncDecSetting, BSML::BaseSetting,
 
     DECLARE_INSTANCE_METHOD(void, set_text, StringW value);
 
-    DECLARE_INSTANCE_METHOD(void, Start);
+    DECLARE_INSTANCE_METHOD(void, BaseSetup);
 
     DECLARE_CTOR(construct);
 )

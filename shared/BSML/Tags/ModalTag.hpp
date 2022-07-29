@@ -2,9 +2,6 @@
 
 #include "BSML/Tags/BSMLTag.hpp"
 
-#include "BSML/Data/RectTransformData.hpp"
-#include "BSML/Data/ModalData.hpp"
-
 namespace BSML {
     class ModalTag : public BSMLTag {
         public:
@@ -15,8 +12,5 @@ namespace BSML {
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
-            
-            ModalData modalData;
-            RectTransformData rectTransformData;
     };
 }

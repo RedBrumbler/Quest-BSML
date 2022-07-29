@@ -29,8 +29,6 @@ namespace BSML {
         auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
         auto rectTransform = externalComponents->Get<RectTransform*>();
         
-        modalData.Apply(modal, host);
-        rectTransformData.Apply(rectTransform);
         SetHostField(host, modal);
         
         CreateChildren(go->get_transform(), host);
@@ -93,8 +91,5 @@ namespace BSML {
     void ModalTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing modal tag");
         this->::BSML::BSMLTag::parse(elem);
-        
-        modalData = ModalData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }

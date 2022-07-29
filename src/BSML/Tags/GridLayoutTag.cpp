@@ -4,6 +4,8 @@
 #include "internal_macros.hpp"
 
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/GridLayoutGroup.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 
@@ -17,13 +19,6 @@ namespace BSML {
         auto grid = go->GetComponent<UnityEngine::UI::GridLayoutGroup*>();
         SetHostField(host, grid);
         
-        backgroundableData.Apply(go->GetComponent<BSML::Backgroundable*>());
-        contentSizeFitterData.Apply(go->GetComponent<UnityEngine::UI::ContentSizeFitter*>());
-        gridLayoutGroupData.Apply(grid);
-        layoutElementData.Apply(go->GetComponent<UnityEngine::UI::LayoutElement*>());
-        layoutGroupData.Apply(grid);
-        rectTransformData.Apply(grid->get_rectTransform());
-
         CreateChildren(go->get_transform(), host);
     }
 
@@ -49,12 +44,5 @@ namespace BSML {
     void GridLayoutTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing grid tag");
         this->::BSML::BSMLTag::parse(elem);
-        
-        backgroundableData = BackgroundableData(elem);
-        contentSizeFitterData = ContentSizeFitterData(elem);
-        gridLayoutGroupData = GridLayoutGroupData(elem);
-        layoutElementData = LayoutElementData(elem);
-        layoutGroupData = LayoutGroupData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }
