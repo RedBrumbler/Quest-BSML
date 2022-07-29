@@ -60,11 +60,10 @@ namespace BSML {
         // get the type handlers for the components on currentObject
         for (auto typeHandler : typeHandlers) {
             auto type = typeHandler->get_type();
-            INFO("typeHandler for type {}", type->get_FullName());
             auto component = GetExternalComponent(currentObject, externalComponents, type);
-
             if (component)
             {
+                INFO("Found component {}", type->get_FullName());
                 auto componentTypeWithData = new ComponentTypeWithData();
                 componentTypeWithData->typeHandler = typeHandler;
                 componentTypeWithData->component = component;

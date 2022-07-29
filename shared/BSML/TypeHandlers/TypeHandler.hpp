@@ -83,12 +83,13 @@ namespace BSML {
             virtual SetterMap get_setters() const = 0;
 
             virtual void HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) override {
-                if (il2cpp_utils::IsConvertibleFrom(&classof(T)->byval_arg, &componentType.component->klass->byval_arg)) {
+                auto klass = classof(T);
+                if (il2cpp_functions::class_is_assignable_from(klass, componentType.component->klass)) {
                     auto& cachedSetters = get_cachedSetters();
                     auto& cachedProps = get_cachedProps();
                     // for each key value pair
                     for (const auto &[key, value] : componentType.data) {
-                        INFO("data pair: {}, {}", key, value);
+                        INFO("data pair: '{}', '{}'", key, value);
                         // try to find the setter
                         auto itr = cachedSetters.find(key);
                         if (itr != cachedSetters.end()) {
@@ -97,6 +98,8 @@ namespace BSML {
                             itr->second(reinterpret_cast<T>(componentType.component), value);
                         }
                     }
+                } else {
+                    ERROR("klass {}::{} was not assignable from {}::{}", klass->namespaze, klass->name, componentType.component->klass->namespaze, componentType.component->klass->name);
                 }
             }
         private:

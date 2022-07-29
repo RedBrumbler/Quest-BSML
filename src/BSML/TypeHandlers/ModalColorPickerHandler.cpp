@@ -30,8 +30,8 @@ namespace BSML {
             if (fieldInfo) {
                 genericSetting->valueInfo = fieldInfo;
             } else {
-                std::string getterName = "get_" + get_value();
-                std::string setterName = "set_" + get_value();
+                std::string getterName = "get_" + valueItr->second;
+                std::string setterName = "set_" + valueItr->second;
 
                 genericSetting->getterInfo = il2cpp_functions::class_get_method_from_name(host->klass, getterName.c_str(), 0);
                 genericSetting->setterInfo = il2cpp_functions::class_get_method_from_name(host->klass, setterName.c_str(), 1);
@@ -50,5 +50,7 @@ namespace BSML {
         if (onChangeItr != data.end()) {
             colorPicker->colorChangeInfo = il2cpp_functions::class_get_method_from_name(host->klass, onChangeItr->second.c_str(), 1);        
         }
+
+        Base::HandleType(componentType, parserParams);
     }
 }

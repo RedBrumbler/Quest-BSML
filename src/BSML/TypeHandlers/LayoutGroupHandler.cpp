@@ -71,5 +71,7 @@ namespace BSML {
             auto childAlign = stringToTextAnchor(childAlignItr->second);
             if (childAlign.has_value()) layoutGroup->set_childAlignment(childAlign.value());
         }
+
+        Base::HandleType(componentType, parserParams);
     }
 }
