@@ -48,6 +48,15 @@
         </vertical>
         <vertical pref-height="80" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
             <clickable-text label="click me!" on-click="TextClick" pref-height="4"/>
+            <stack>
+                <text label="a"/>
+                <text label="b"/>
+                <text label="c"/>
+                <text label="d"/>
+                <text label="e"/>
+                <text label="f"/>
+                <text label="u"/>
+            </stack>
         </vertical>
     </horizontal>
 </bsml>
