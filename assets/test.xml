@@ -46,8 +46,14 @@
                 <button label="m" font-size="3" pref-width="10" pref-height="6"/>
             </grid>
         </vertical>
-        <vertical pref-height="80" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
+        <vertical pref-height="80" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize" child-expand-height="false">
             <clickable-text label="click me!" on-click="TextClick" pref-height="4"/>
+            <!-- I hate how this is required for it to get the right dimensions -->
+            <horizontal pref-height="5" pref-width="5">
+                <vertical pref-height="5" pref-width="5">
+                    <loading pref-height="5" pref-width="5"/>
+                </vertical>
+            </horizontal>
         </vertical>
     </horizontal>
 </bsml>
