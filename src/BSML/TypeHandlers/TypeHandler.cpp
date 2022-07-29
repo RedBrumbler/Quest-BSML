@@ -79,6 +79,24 @@ namespace BSML {
         return Utilities::ParseHTMLColor32Opt(*this);
     }
 
+    const MethodInfo* TypeHandlerArgument::asMethodInfo(Il2CppObject* host, int argCount) const {
+        return il2cpp_functions::class_get_method_from_name(host->klass, data(), argCount);
+    }
+
+    const MethodInfo* TypeHandlerArgument::asSetter(Il2CppObject* host) const {
+        auto name = "set_" + this->operator std::string();
+        return il2cpp_functions::class_get_method_from_name(host->klass, name.c_str(), 1);
+    }
+
+    const MethodInfo* TypeHandlerArgument::asGetter(Il2CppObject* host) const {
+        auto name = "get_" + this->operator std::string();
+        return il2cpp_functions::class_get_method_from_name(host->klass, name.c_str(), 1);
+    }
+
+    FieldInfo* TypeHandlerArgument::asFieldInfo(Il2CppObject* host) const {
+        return il2cpp_functions::class_get_field_from_name(host->klass, data());
+    }
+
     TypeHandlerArgument::operator StringW() const {
         return StringW(*this);
     }

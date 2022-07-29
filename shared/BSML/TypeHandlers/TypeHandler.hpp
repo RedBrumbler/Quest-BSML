@@ -57,6 +57,12 @@ namespace BSML {
         std::optional<double> tryParseDouble() const;
         std::optional<UnityEngine::Color> tryParseColor() const;
         std::optional<UnityEngine::Color32> tryParseColor32() const;
+
+        const MethodInfo* TypeHandlerArgument::asMethodInfo(Il2CppObject* host, int argCount = 0) const;
+        const MethodInfo* TypeHandlerArgument::asSetter(Il2CppObject* host) const;
+        const MethodInfo* TypeHandlerArgument::asGetter(Il2CppObject* host) const;
+        FieldInfo* TypeHandlerArgument::asFieldInfo(Il2CppObject* host) const;
+
     };
 
     template<typename T>
