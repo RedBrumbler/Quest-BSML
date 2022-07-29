@@ -83,40 +83,40 @@ namespace BSML {
     TextHandler::Base::PropMap TextHandler::get_props() const {
         return {
             {"text", {"text", "label"}},
-            {"font-size", {"font-size"}},
-            {"font-color", {"font-color"}},
-            {"face-color", {"face-color"}},
-            {"outline-color", {"outline-color"}},
-            {"outline-width", {"outline-width"}},
-            {"rich-text", {"rich-text"}},
-            {"font-align", {"font-align", "align"}},
-            {"overflow-mode", {"overflow-mode"}},
-            {"word-wrapping", {"word-wrapping"}},
+            {"fontSize", {"font-size"}},
+            {"fontColor", {"font-color"}},
+            {"faceColor", {"face-color"}},
+            {"outlineColor", {"outline-color"}},
+            {"outlineWidth", {"outline-width"}},
+            {"richText", {"rich-text"}},
+            {"fontAlign", {"font-align", "align"}},
+            {"overflowMode", {"overflow-mode"}},
+            {"wordWrapping", {"word-wrapping"}},
             {"bold", {"bold"}},
             {"italics", {"italics"}},
             {"underlined", {"underlined"}},
             {"strikethrough", {"strikethrough"}},
-            {"all-uppercase", {"all-uppercase"}}
+            {"allUppercase", {"all-uppercase"}}
         };
     }
 
     TextHandler::Base::SetterMap TextHandler::get_setters() const {
         return {
             {"text",            [](auto component, auto value){ component->set_text(value); }},
-            {"font-size",       [](auto component, auto value){ component->set_fontSize(value); }},
-            {"font-color",      [](auto component, auto value){ component->set_color(value); }},
-            {"face-color",      [](auto component, auto value){ component->set_faceColor(value); }},
-            {"outline-color",   [](auto component, auto value){ component->set_outlineColor(value); }},
-            {"outline-width",   [](auto component, auto value){ component->set_outlineWidth(value); }},
-            {"rich-text",       [](auto component, auto value){ component->set_richText(value); }},
-            {"font-align",      [](auto component, auto value){ auto v = stringToTextAlignmentOption(value); if (v.has_value()) component->set_alignment(v.value()); }},
-            {"overflow-mode",   [](auto component, auto value){ auto v = stringToOverflowMode(value); if (v.has_value()) component->set_overflowMode(v.value()); }},
-            {"word-wrapping",   [](auto component, auto value){ component->set_enableWordWrapping(value); }},
+            {"fontSize",       [](auto component, auto value){ component->set_fontSize(value); }},
+            {"fontColor",      [](auto component, auto value){ component->set_color(value); }},
+            {"faceColor",      [](auto component, auto value){ component->set_faceColor(value); }},
+            {"outlineColor",   [](auto component, auto value){ component->set_outlineColor(value); }},
+            {"outlineWidth",   [](auto component, auto value){ component->set_outlineWidth(value); }},
+            {"richText",       [](auto component, auto value){ component->set_richText(value); }},
+            {"fontAlign",      [](auto component, auto value){ auto v = stringToTextAlignmentOption(value); if (v.has_value()) component->set_alignment(v.value()); }},
+            {"overflowMode",   [](auto component, auto value){ auto v = stringToOverflowMode(value); if (v.has_value()) component->set_overflowMode(v.value()); }},
+            {"wordWrapping",   [](auto component, auto value){ component->set_enableWordWrapping(value); }},
             {"bold",            [](auto component, auto value){ component->set_fontStyle(SetStyle(component->get_fontStyle(), TMPro::FontStyles::Bold, value)); }},
             {"italics",         [](auto component, auto value){ component->set_fontStyle(SetStyle(component->get_fontStyle(), TMPro::FontStyles::Italic, value)); }},
             {"underlined",      [](auto component, auto value){ component->set_fontStyle(SetStyle(component->get_fontStyle(), TMPro::FontStyles::Underline, value)); }},
             {"strikethrough",   [](auto component, auto value){ component->set_fontStyle(SetStyle(component->get_fontStyle(), TMPro::FontStyles::Strikethrough, value)); }},
-            {"all-uppercase",   [](auto component, auto value){ component->set_fontStyle(SetStyle(component->get_fontStyle(), TMPro::FontStyles::UpperCase, value)); }}
+            {"allUppercase",   [](auto component, auto value){ component->set_fontStyle(SetStyle(component->get_fontStyle(), TMPro::FontStyles::UpperCase, value)); }}
         };
     }
 }
