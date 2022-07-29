@@ -2,11 +2,6 @@
 
 #include "BSML/Tags/ModalKeyboardTag.hpp"
 
-#include "BSML/Data/Settings/GenericSettingData.hpp"
-#include "BSML/Data/RectTransformData.hpp"
-#include "BSML/Data/LayoutElementData.hpp"
-#include "BSML/Data/TextMeshProUGUIData.hpp"
-
 namespace BSML {
     class StringSettingTag : public ModalKeyboardTag {
         private:
@@ -19,9 +14,5 @@ namespace BSML {
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
-            
-            GenericSettingData genericSettingData;
-            LayoutElementData layoutElementData;
-            TextMeshProUGUIData textMeshProUGUIData;
     };
 }

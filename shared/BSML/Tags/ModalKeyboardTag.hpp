@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BSML/Tags/ModalTag.hpp"
-#include "BSML/Data/ModalKeyboardData.hpp"
 
 namespace BSML {
     class ModalKeyboardTag : public ModalTag {
@@ -13,7 +12,5 @@ namespace BSML {
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
-
-            ModalKeyboardData modalKeyboardData;
     };
 }

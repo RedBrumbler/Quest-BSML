@@ -2,11 +2,6 @@
 
 #include "BSML/Tags/BSMLTag.hpp"
 
-#include "BSML/Data/Settings/GenericSettingData.hpp"
-#include "BSML/Data/RectTransformData.hpp"
-#include "BSML/Data/LayoutElementData.hpp"
-#include "BSML/Data/TextMeshProUGUIData.hpp"
-
 #include "BSML/Components/Settings/IncDecSetting.hpp"
 
 namespace BSML {
@@ -21,11 +16,6 @@ namespace BSML {
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
             
             virtual System::Type* get_type() const = 0;
-
-            GenericSettingData genericSettingData;
-            LayoutElementData layoutElementData;
-            RectTransformData rectTransformData;
-            TextMeshProUGUIData textMeshProUGUIData;
     };
 
     template<typename T>

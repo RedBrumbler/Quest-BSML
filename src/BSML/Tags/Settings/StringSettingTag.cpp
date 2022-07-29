@@ -6,6 +6,7 @@
 #include "BSML/Components/ExternalComponents.hpp"
 
 #include "UnityEngine/UI/Image.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
@@ -35,11 +36,6 @@ namespace BSML {
         keyboard->genericSetting->Finalize();
         keyboard->genericSetting = nullptr;
         
-        genericSettingData.Apply(stringSetting->genericSetting, host);
-        rectTransformData.Apply(externalComponents->Get<RectTransform*>());
-        textMeshProUGUIData.Apply(externalComponents->Get<TMPro::TextMeshProUGUI*>());
-        layoutElementData.Apply(externalComponents->Get<LayoutElement*>());
-
         SetHostField(host, stringSetting);
         
         CreateChildren(go->get_transform(), host);
@@ -111,9 +107,5 @@ namespace BSML {
     void StringSettingTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing string setting tag");
         this->Base::parse(elem);
-
-        genericSettingData = GenericSettingData(elem);
-        textMeshProUGUIData = TextMeshProUGUIData(elem);
-        layoutElementData = LayoutElementData(elem);
     }
 }

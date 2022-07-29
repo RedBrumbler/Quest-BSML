@@ -3,7 +3,6 @@
 
 #include "BSML/Tags/Settings/IncDecSettingTag.hpp"
 #include "BSML/Components/Settings/ListSetting.hpp"
-#include "BSML/Data/Settings/ListSettingData.hpp"
 
 namespace BSML {
     class ListSettingTag : public IncDecSettingTag<BSML::ListSetting*> {
@@ -19,7 +18,5 @@ namespace BSML {
         virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override {
             return Base::CreateObject(parent);
         }
-
-        ListSettingData listSettingData; 
     };
 }

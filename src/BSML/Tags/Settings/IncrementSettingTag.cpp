@@ -9,15 +9,10 @@ namespace BSML {
         auto incrementSetting = go->GetComponent<BSML::IncrementSetting*>();
         SetHostField(host, incrementSetting);
 
-        genericSettingData.Apply(incrementSetting->genericSetting, host);
-        incrementSettingData.Apply(incrementSetting);
-
         CreateChildren(go->get_transform(), host);
     }
 
     void IncrementSettingTag::parse(const tinyxml2::XMLElement& elem) {
         Base::parse(elem);
-
-        incrementSettingData = IncrementSettingData(elem);
     }
 }

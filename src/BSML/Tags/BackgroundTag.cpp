@@ -2,7 +2,9 @@
 #include "logging.hpp"
 #include "internal_macros.hpp"
 
+#include "BSML/Components/Backgroundable.hpp"
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 
 using namespace UnityEngine;
@@ -13,10 +15,6 @@ namespace BSML {
         auto go = CreateObject(parent);
         auto background = go->GetComponent<Backgroundable*>();
         SetHostField(host, background);
-        
-        backgroundableData.Apply(go->GetComponent<BSML::Backgroundable*>());
-        contentSizeFitterData.Apply(go->GetComponent<UnityEngine::UI::ContentSizeFitter*>());
-        rectTransformData.Apply(reinterpret_cast<RectTransform*>(background->get_transform()));
         
         CreateChildren(go->get_transform(), host);
     }
@@ -39,9 +37,5 @@ namespace BSML {
     void BackgroundTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing background tag");
         this->::BSML::BSMLTag::parse(elem);
-
-        backgroundableData = BackgroundableData(elem);
-        contentSizeFitterData = ContentSizeFitterData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }

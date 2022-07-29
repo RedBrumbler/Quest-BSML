@@ -2,10 +2,6 @@
 
 #include "BSML/Tags/BSMLTag.hpp"
 
-#include "BSML/Data/ClickableTextData.hpp"
-#include "BSML/Data/RectTransformData.hpp"
-#include "BSML/Data/TextMeshProUGUIData.hpp"
-
 namespace BSML {
     class ClickableTextTag : public BSMLTag {
         public:
@@ -15,9 +11,5 @@ namespace BSML {
             virtual void parse(const tinyxml2::XMLElement& elem) override;
             
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
-
-            RectTransformData rectTransformData;
-            ClickableTextData clickableTextData;
-            TextMeshProUGUIData textMeshProUGUIData;
     };
 }
