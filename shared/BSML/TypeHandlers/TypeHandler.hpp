@@ -35,20 +35,28 @@ namespace BSML {
             static void UnRegisterTypeHandler(TypeHandlerBase* typeHandler);
     };
 
-    struct TypeHandlerArgument : std::string {
-        operator bool();
-        operator int();
-        operator float();
-        operator double();
-        operator UnityEngine::Color();
-        operator UnityEngine::Color32();
+    struct TypeHandlerArgument : std::string_view {
+        /// pass the normal constructors through to the base, these are the only ones we need
+        TypeHandlerArgument(const char* str) : std::string_view(str) {}
+        TypeHandlerArgument(const std::string& str) : std::string_view(str) {}
+
+        // we go to StringW enough times that an operator cuts out a step
+        operator StringW() const;
+        // string view -> string doesn't normally exist
+        operator std::string() const;
+        operator bool() const;
+        operator int() const;
+        operator float() const;
+        operator double() const;
+        operator UnityEngine::Color() const;
+        operator UnityEngine::Color32() const;
         
-        std::optional<bool> tryParseBool();
-        std::optional<int> tryParseInt();
-        std::optional<float> tryParseFloat();
-        std::optional<double> tryParseDouble();
-        std::optional<UnityEngine::Color> tryParseColor();
-        std::optional<UnityEngine::Color32> tryParseColor32();
+        std::optional<bool> tryParseBool() const;
+        std::optional<int> tryParseInt() const;
+        std::optional<float> tryParseFloat() const;
+        std::optional<double> tryParseDouble() const;
+        std::optional<UnityEngine::Color> tryParseColor() const;
+        std::optional<UnityEngine::Color32> tryParseColor32() const;
     };
 
     template<typename T>
@@ -86,8 +94,7 @@ namespace BSML {
                         if (itr != cachedSetters.end()) {
                             INFO("got a setter!");
                             // execute the setter!
-                            const std::string& val = value;
-                            itr->second(reinterpret_cast<T>(componentType.component), *reinterpret_cast<const TypeHandlerArgument*>(&val));
+                            itr->second(reinterpret_cast<T>(componentType.component), value);
                         }
                     }
                 }

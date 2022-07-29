@@ -39,7 +39,7 @@ namespace BSML {
         return ret;
     }
     /// parsess a bool from a string
-    std::optional<bool> TypeHandlerArgument::tryParseBool() {
+    std::optional<bool> TypeHandlerArgument::tryParseBool() const {
         auto lower = toLower(*this);
         if (lower == "true")
             return true;
@@ -48,8 +48,8 @@ namespace BSML {
         return std::nullopt;
     }
     
-    std::optional<int> TypeHandlerArgument::tryParseInt() {
-        const char* begin = c_str();
+    std::optional<int> TypeHandlerArgument::tryParseInt() const {
+        const char* begin = data();
         char* end = nullptr;
         int result = strtol(begin, &end, 10);
         if (*begin == '\0') return std::nullopt;
@@ -57,13 +57,13 @@ namespace BSML {
         return result;
     }
 
-    std::optional<float> TypeHandlerArgument::tryParseFloat() {
+    std::optional<float> TypeHandlerArgument::tryParseFloat() const {
         auto d = tryParseDouble();
         return d.has_value() ? std::make_optional<float>(d.value()) : std::nullopt;
     }
     
-    std::optional<double> TypeHandlerArgument::tryParseDouble() {
-        const char* begin = c_str();
+    std::optional<double> TypeHandlerArgument::tryParseDouble() const {
+        const char* begin = data();
         char* end = nullptr;
         double result = strtod(begin, &end);
         if (*begin == '\0') return std::nullopt;
@@ -71,15 +71,23 @@ namespace BSML {
         return result;
     }
 
-    std::optional<UnityEngine::Color> TypeHandlerArgument::tryParseColor() {
+    std::optional<UnityEngine::Color> TypeHandlerArgument::tryParseColor() const {
         return Utilities::ParseHTMLColorOpt(*this);
     }
 
-    std::optional<UnityEngine::Color32> TypeHandlerArgument::tryParseColor32() {
+    std::optional<UnityEngine::Color32> TypeHandlerArgument::tryParseColor32() const {
         return Utilities::ParseHTMLColor32Opt(*this);
     }
 
-    TypeHandlerArgument::operator bool() {
+    TypeHandlerArgument::operator StringW() const {
+        return StringW(*this);
+    }
+
+    TypeHandlerArgument::operator std::string() const {
+        return {data(), size()};
+    }
+    
+    TypeHandlerArgument::operator bool() const {
         auto result = tryParseBool();
         if (!result.has_value()) {
             ERROR("Could not parse bool from input '{}'", *this);
@@ -88,7 +96,7 @@ namespace BSML {
         return result.value();
     }
     
-    TypeHandlerArgument::operator int() {
+    TypeHandlerArgument::operator int() const {
         auto result = tryParseInt();
         if (!result.has_value()) {
             ERROR("Could not parse int from input '{}'", *this);
@@ -97,7 +105,7 @@ namespace BSML {
         return result.value();
     }
 
-    TypeHandlerArgument::operator float() {
+    TypeHandlerArgument::operator float() const {
         auto result = tryParseFloat();
         if (!result.has_value()) {
             ERROR("Could not parse float from input '{}'", *this);
@@ -106,7 +114,7 @@ namespace BSML {
         return result.value();
     }
 
-    TypeHandlerArgument::operator double() {
+    TypeHandlerArgument::operator double() const {
         auto result = tryParseDouble();
         if (!result.has_value()) {
             ERROR("Could not parse double from input '{}'", *this);
@@ -115,7 +123,7 @@ namespace BSML {
         return result.value();
     }
 
-    TypeHandlerArgument::operator UnityEngine::Color() {
+    TypeHandlerArgument::operator UnityEngine::Color() const {
         auto result = tryParseColor();
         if (!result.has_value()) {
             ERROR("Could not parse color from input '{}'", *this);
@@ -124,7 +132,7 @@ namespace BSML {
         return result.value();
     }
 
-    TypeHandlerArgument::operator UnityEngine::Color32() {
+    TypeHandlerArgument::operator UnityEngine::Color32() const {
         auto result = tryParseColor32();
         if (!result.has_value()) {
             ERROR("Could not parse color from input '{}'", *this);
