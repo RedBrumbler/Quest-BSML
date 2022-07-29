@@ -3,7 +3,7 @@
 namespace BSML {
     static ModalKeyboardHandler modalKeyboardHandler{};
 
-    ModalKeyboardHandler::Base::PropMap ModalKeyboardHandler::get_props() {
+    ModalKeyboardHandler::Base::PropMap ModalKeyboardHandler::get_props() const {
         return {
             { "value", {"value"}},
             { "onEnter", {"on-enter"}},
@@ -11,7 +11,7 @@ namespace BSML {
         };
     }
 
-    ModalKeyboardHandler::Base::SetterMap ModalKeyboardHandler::get_setters() {
+    ModalKeyboardHandler::Base::SetterMap ModalKeyboardHandler::get_setters() const {
         return {
             {"clearOnOpen", [](auto component, auto value){ component->clearOnOpen = value; }}
         };
