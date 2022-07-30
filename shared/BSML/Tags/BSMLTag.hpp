@@ -36,6 +36,7 @@ namespace BSML {
             bool is_valid = false;
             std::string id;
             std::vector<BSMLTag*> children;
+            std::vector<std::string> tags;
             std::map<std::string, std::string> attributes = {};
     };
 }
