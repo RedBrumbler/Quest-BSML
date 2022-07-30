@@ -9,6 +9,7 @@
 #include "UnityEngine/Transform.hpp"
 
 #include "System/Object.hpp"
+#include <string.h>
 
 UnityEngine::Component* GetExternalComponent(UnityEngine::GameObject* obj, BSML::ExternalComponents* externalComponents, System::Type* type) {
     UnityEngine::Component* result = nullptr;
@@ -37,16 +38,20 @@ namespace BSML {
             return;
         }
 
-        BSMLParserParams parserParams;
-        parserParams.host = host;
-        parserParams.root = this;
+        BSMLParserParams parserParams(host, this);
         std::vector<ComponentTypeWithData*> componentInfo;
 
         Handle(parent, parserParams, componentInfo);
+
+        for (auto info : componentInfo) {
+            info->typeHandler->HandleTypeAfterParse(*info, parserParams);
+        }
+
         // gotta clean up, or it's a memory leak
         for (auto info : componentInfo) {
             delete info;
         }
+        
         componentInfo.clear();
     }
 
@@ -86,7 +91,11 @@ namespace BSML {
                 SetHostField(parserParams.host, component);
             }
         }
-
+        
+        // add object to tags on parserParams
+        if (!tags.empty()) {
+            parserParams.AddObjectWithTags(currentObject, tags);
+        }
         // handle children
         for (auto child : children) {
             child->Handle(currentObject->get_transform(), parserParams, componentInfo);
@@ -137,6 +146,15 @@ namespace BSML {
 
         for (const tinyxml2::XMLAttribute* a = elem.FirstAttribute(); a; a = a->Next()) {
             attributes[a->Name()] = a->Value();
+        }
+        std::string tagString;
+        GET_BSML_STRING("tags", tagString);
+        if (!tagString.empty()) {
+            char* split = strtok(tagString.data(), ",");
+            while (split) {
+                tags.emplace_back(split);
+                split = strtok(nullptr, ",");
+            }
         }
     }
 }
