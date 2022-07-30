@@ -16,6 +16,7 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, sliderList);
 
     BSML_OPTIONS_LIST(lyrics, "Never", "Gonna", "Give", "You", "Up");
+    BSML_OPTIONS_LIST(textSegments, "Modded", "Vanilla", "Chocolate", "Strawberry", "Gasoline");
     DECLARE_INSTANCE_FIELD(StringW, sliderChoice);
 
     BSML_PROPERTY_ONCHANGED(StringW, myChoice);
@@ -37,6 +38,7 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_METHOD(void, ChangeLength, float value);
     DECLARE_INSTANCE_METHOD(void, GibColor, UnityEngine::Color value);
     DECLARE_INSTANCE_METHOD(void, TextClick);
+    DECLARE_INSTANCE_METHOD(void, SegmentedControlSelect, Il2CppObject* segmentedControl, int index);
 
     DECLARE_CTOR(ctor);
     
