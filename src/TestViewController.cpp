@@ -99,4 +99,9 @@ namespace BSML {
     void TestViewController::TextClick() {
         INFO("Text was clicked!");
     }
+
+    void TestViewController::SegmentedControlSelect(Il2CppObject* segmentedControl, int index) {
+        INFO("SegmentedControlSelect: {}", index);
+    }
+
 }
