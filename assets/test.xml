@@ -1,8 +1,9 @@
 <bsml xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
     <bg bg="round-rect-panel" bg-alpha="0.3">
+        <text-segments data="textSegments" anchor-pos-y='10' select-cell="SegmentedControlSelect" child-expand-width='true' child-control-width='true' size-delta-y='6' size-delta-x='-60'/>
         <tab-selector tab-tag="main" anchor-pos-y='0' size-delta-y='6' size-delta-x='-60' child-expand-width='true' child-control-width='true'/>
         <tab tags="main" tab-name="first">
-            <vertical pref-height="74" anchor-pos-y="-3" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize">
+            <vertical pref-height="74" anchor-pos-y="-3" bg="round-rect-panel" bg-alpha="0.5" pad="2" vertical-fit="PreferredSize">
                 <text text="your mom" font-color="#ffff00"/>
                 <text text="so fat"/>
                 <horizontal id="layout" pref-height="10" spacing="5" pad="5" bg="round-rect-panel">
@@ -29,7 +30,7 @@
             </vertical>
         </tab>
         <tab tags="main" tab-name="second">
-            <vertical pref-height="74" anchor-pos-y="-3" bg="round-rect-panel" bg-alpha="0.8" pad="2" vertical-fit="PreferredSize">
+            <vertical pref-height="74" anchor-pos-y="-3" bg="round-rect-panel" bg-alpha="0.5" pad="2" vertical-fit="PreferredSize">
                 <string-setting label="password" on-change="GibString" pref-width="60"/>
                 <dropdown-list-setting label="dropit" options="lyrics" pref-width="60"/>
                 <color-setting label="gay" on-change="GibColor" pref-width="60"/>
@@ -52,7 +53,7 @@
             </vertical>
         </tab>
         <tab tags="main" tab-name="third">
-            <vertical pref-height="74" anchor-pos-y="-3" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize" child-expand-height="false">
+            <vertical pref-height="74" anchor-pos-y="-3" bg="round-rect-panel" bg-alpha="0.5" pad="2" vertical-fit="PreferredSize" child-expand-height="false">
                 <clickable-text label="click me!" on-click="TextClick" pref-height="4"/>
             </vertical>
         </tab>
