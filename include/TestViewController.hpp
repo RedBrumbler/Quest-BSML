@@ -3,6 +3,7 @@
 #include "custom-types/shared/macros.hpp"
 #include "HMUI/ViewController.hpp"
 
+#include "BSML/Components/CustomListTableData.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
@@ -14,7 +15,8 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(bool, someOtherField);
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, someList);
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, sliderList);
-
+    DECLARE_INSTANCE_FIELD(ListWrapper<CustomCellInfo*>, listData);
+    
     BSML_OPTIONS_LIST(lyrics, "Never", "Gonna", "Give", "You", "Up");
     DECLARE_INSTANCE_FIELD(StringW, sliderChoice);
 

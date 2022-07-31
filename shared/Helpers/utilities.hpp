@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UnityEngine/Texture2D.hpp"
+#include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Sprite.hpp"
 #include "UnityEngine/Color.hpp"
 #include "UnityEngine/Color32.hpp"
@@ -87,4 +88,32 @@ namespace BSML::Utilities {
     /// @param data the data to load the texture from
     /// @return created texture
     UnityEngine::Texture2D* LoadTextureRaw(ArrayW<uint8_t> data);
+
+    /// @brief function to copy the values from other to comp
+    /// @param comp the component to copy to
+    /// @param other the component to copy from
+    /// @return comp, or nullptr if types are different
+    UnityEngine::Component* GetCopyOfComponent(UnityEngine::Component* comp, UnityEngine::Component* other);
+
+    /// @brief function to copy the values from other to comp, casted to the correct type
+    /// @tparam T the type of the component
+    /// @param comp the component to copy to
+    /// @param other the component to copy from
+    /// @return comp, or nullptr if types are different
+    template<typename T>
+    requires(std::is_convertible_v<T, UnityEngine::Component*>)
+    T GetCopyOf(UnityEngine::Component* comp, T other) {
+        return reinterpret_cast<T>(GetCopyOfComponent(comp, other));
+    }
+
+    /// @brief function to copy a component onto gameObject
+    /// @tparam T the type of the component
+    /// @param gameObject the gameObject to add the component to
+    /// @param original the component to copy from
+    /// @return newly added component
+    template<typename T>
+    requires(std::is_convertible_v<T, UnityEngine::Component*>)
+    T AddComponent(UnityEngine::GameObject* gameObject, T original) {
+        return GetCopyOf<T>(gameObject->AddComponent<T>(), original);
+    }
 }

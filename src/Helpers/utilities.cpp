@@ -23,6 +23,9 @@
 
 #include "custom-types/shared/coroutine.hpp"
 
+#include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
+#include "beatsaber-hook/shared/utils/il2cpp-functions.hpp"
+
 #define coro(coroutine) GlobalNamespace::SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(coroutine))
 
 using namespace UnityEngine;
@@ -239,4 +242,31 @@ namespace BSML::Utilities {
         }
         return Sprite::Create(texture, Rect(0.0f, 0.0f, texture->get_width(), texture->get_height()), Vector2(0.5f, 0.5f), pixelsPerUnit, 1u, SpriteMeshType::FullRect, Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
     }
+    
+    /// based on https://answers.unity.com/questions/530178/how-to-get-a-component-from-an-object-and-add-it-t.html
+    UnityEngine::Component* GetCopyOfComponent(UnityEngine::Component* comp, UnityEngine::Component* other) {
+        auto klass = comp->klass;
+        if (klass != other->klass) {
+            ERROR("Type Mismatch!");
+            return nullptr;
+        }
+
+        // TODO: ask sc2ad to help with this lol
+        void* myIter;
+        const PropertyInfo* prop;
+        while((prop = il2cpp_functions::class_get_properties(klass, &myIter))) {
+            if (prop->set) {
+                auto value = il2cpp_utils::GetPropertyValue(other, prop);
+                if (value.has_value()) il2cpp_utils::SetPropertyValue(other, prop, value.value());
+            }
+        }
+
+        ::FieldInfo* field;
+        while((field = il2cpp_functions::class_get_fields(klass, &myIter))) {
+            auto value = il2cpp_utils::GetFieldValue(other, field);
+            if (value.has_value()) il2cpp_utils::SetFieldValue(other, field, value.value());
+        }
+        return comp;
+    }
+    /// end of based on thing
 }

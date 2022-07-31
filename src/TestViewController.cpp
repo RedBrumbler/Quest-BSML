@@ -31,6 +31,15 @@ namespace BSML {
         sliderList->Add("You");
         sliderList->Add("Up");
         sliderChoice = sliderList[3];
+
+        listData = List<CustomCellInfo*>::New_ctor();
+        listData->EnsureCapacity(26);
+
+        std::string str = "A";
+        for (int i = 0; i < 26; i++) {
+            listData->Add(CustomCellInfo::construct(str));
+            str[0]++;
+        }
     }
     
 

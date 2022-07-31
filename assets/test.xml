@@ -54,6 +54,7 @@
         <tab tags="main" tab-name="third">
             <vertical pref-height="74" anchor-pos-y="-3" bg="round-rect-panel" pad="2" vertical-fit="PreferredSize" child-expand-height="false">
                 <clickable-text label="click me!" on-click="TextClick" pref-height="4"/>
+                <list visibleCells="4" data="listData"/>
             </vertical>
         </tab>
     </bg>
