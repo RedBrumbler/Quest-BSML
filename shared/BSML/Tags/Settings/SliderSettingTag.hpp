@@ -3,8 +3,6 @@
 #include "BSML/Tags/Settings/GenericSliderSettingTag.hpp"
 
 #include "BSML/Components/Settings/SliderSetting.hpp"
-#include "BSML/Data/Settings/SliderSettingData.hpp"
-#include "BSML/Data/Settings/SliderSettingBaseData.hpp"
 
 namespace BSML {
     class SliderSettingTag : public GenericSliderSettingTag<BSML::SliderSetting*> {
@@ -15,14 +13,9 @@ namespace BSML {
 
             virtual void Construct(UnityEngine::Transform* parent, Il2CppObject* host = nullptr) const override;
         private:
-
-            friend class SliderSettingTagParser;
             virtual void parse(const tinyxml2::XMLElement& elem) override;
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override {
                 return Base::CreateObject(parent);
             }
-            
-            SliderSettingBaseData sliderSettingBaseData;
-            SliderSettingData sliderSettingData;
     };
 }

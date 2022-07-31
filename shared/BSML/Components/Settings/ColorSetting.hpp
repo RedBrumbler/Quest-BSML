@@ -19,7 +19,6 @@ DECLARE_CLASS_CUSTOM(BSML, ColorSetting, BSML::BaseSetting,
     DECLARE_INSTANCE_METHOD(bool, get_interactable);
     DECLARE_INSTANCE_METHOD(void, set_interactable, bool value);
 
-    DECLARE_INSTANCE_METHOD(void, Start);
     DECLARE_INSTANCE_METHOD(void, Setup);
     DECLARE_INSTANCE_METHOD(void, EditButtonPressed);
     DECLARE_INSTANCE_METHOD(void, DonePressed, UnityEngine::Color color);

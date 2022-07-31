@@ -100,26 +100,40 @@ namespace BSML {
     }
 
     void Backgroundable::ApplyColor(UnityEngine::Color color) {
+        if (!background) {
+            ERROR("No background exists yet!");
+            return;
+        }
         UnityEngine::Color color0{1.0, 1.0, 1.0, background->get_color0().a};
         UnityEngine::Color color1{1.0, 1.0, 1.0, background->get_color1().a};
         color.a = background->get_color().a;
 
+        background->set_gradient(false);
         background->set_color0(color0);
         background->set_color1(color1);
         background->set_color(color);
     }
 
     void Backgroundable::ApplyGradient(UnityEngine::Color color0, UnityEngine::Color color1) {
+        if (!background) {
+            ERROR("No background exists yet!");
+            return;
+        }
         UnityEngine::Color color = {1.0, 1.0, 1.0, background->get_color().a};
+        background->set_gradient(true);
         background->set_color(color);
         background->set_color0(color0);
         background->set_color1(color1);
     }
 
     void Backgroundable::ApplyAlpha(float alpha) {
+        if (!background) {
+            ERROR("No background exists yet!");
+            return;
+        }
         auto col = background->get_color();
         col.a = alpha;
-        background->set_color(alpha);
+        background->set_color(col);
     }
 
     HMUI::ImageView* Backgroundable::FindTemplate(StringW name, StringW backgroundName) {

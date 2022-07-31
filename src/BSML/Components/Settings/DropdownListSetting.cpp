@@ -24,10 +24,6 @@ namespace BSML {
         if (dropdown) dropdown->button->set_interactable(value);
     }
 
-    void DropdownListSetting::Start() {
-        Setup();
-    }
-
     void DropdownListSetting::Setup() {
         if (dropdown) {
             std::function<void(HMUI::DropdownWithTableView*, int)> fun = std::bind(&DropdownListSetting::OnSelectIndex, this, std::placeholders::_1, std::placeholders::_2);

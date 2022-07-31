@@ -26,6 +26,6 @@ DECLARE_CLASS_CUSTOM(BSML, SliderSettingBase, BSML::BaseSetting,
     DECLARE_INSTANCE_METHOD(void, set_enableDec, bool value);
     DECLARE_INSTANCE_METHOD(void, set_enableInc, bool value);
 
-    DECLARE_INSTANCE_METHOD(void, Start);
+    DECLARE_INSTANCE_METHOD(void, BaseSetup);
     DECLARE_CTOR(construct);
 )

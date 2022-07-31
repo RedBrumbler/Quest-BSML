@@ -2,7 +2,10 @@
 #include "logging.hpp"
 #include "internal_macros.hpp"
 
+#include "BSML/Components/Backgroundable.hpp"
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/VerticalLayoutGroup.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 
@@ -10,17 +13,11 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<VerticalTag> verticalTagParser({"vertical"});
     void VerticalTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto vertical = go->GetComponent<UnityEngine::UI::VerticalLayoutGroup*>();
         SetHostField(host, vertical);
-        
-        backgroundableData.Apply(go->GetComponent<BSML::Backgroundable*>());
-        contentSizeFitterData.Apply(go->GetComponent<UnityEngine::UI::ContentSizeFitter*>());
-        horizontalOrVerticalLayoutGroupData.Apply(vertical);
-        layoutElementData.Apply(go->GetComponent<UnityEngine::UI::LayoutElement*>());
-        layoutGroupData.Apply(vertical);
-        rectTransformData.Apply(vertical->get_rectTransform());
         
         CreateChildren(go->get_transform(), host);
     }
@@ -47,12 +44,5 @@ namespace BSML {
     void VerticalTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing vertical tag");
         this->::BSML::BSMLTag::parse(elem);
-
-        backgroundableData = BackgroundableData(elem);
-        contentSizeFitterData = ContentSizeFitterData(elem);
-        horizontalOrVerticalLayoutGroupData = HorizontalOrVerticalLayoutGroupData(elem);
-        layoutElementData = LayoutElementData(elem);
-        layoutGroupData = LayoutGroupData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }

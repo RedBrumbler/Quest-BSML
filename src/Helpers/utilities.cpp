@@ -59,10 +59,35 @@ namespace BSML::Utilities {
         return sprite;
     }
 
+    SafePtr<Dictionary<StringW, UnityEngine::Texture*>> textureCache;
+    Texture* FindTextureCached(StringW name) {
+        if (!textureCache)
+            textureCache.emplace(Dictionary<StringW, UnityEngine::Texture*>::New_ctor());
+        
+        UnityEngine::Texture* texture = nullptr;
+
+        if (textureCache->TryGetValue(name, byref(texture)) && texture && Object::IsNativeObjectAlive(texture))
+            return texture;
+
+        for (auto x : Resources::FindObjectsOfTypeAll<Texture*>())
+        {
+            if (x->get_name()->get_Length() == 0)
+                continue;
+            UnityEngine::Texture* a = nullptr;
+            if(!textureCache->TryGetValue(x->get_name(), byref(a)) || !a)
+                textureCache->Add(x->get_name(), x);
+
+            if (x->get_name() == name)
+                texture = x;
+        }
+
+        return texture;
+    }
+
     std::optional<UnityEngine::Color> ParseHTMLColorOpt(std::string_view str) {
         std::string val{str};
         bool valid = false;
-        auto color = CSSColorParser::parse(val);
+        auto color = CSSColorParser::parse(val, valid);
         if (!valid) return std::nullopt;
         return UnityEngine::Color{
             (float)color.r / 255.0f,

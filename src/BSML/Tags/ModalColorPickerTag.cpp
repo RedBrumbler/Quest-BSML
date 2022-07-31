@@ -6,6 +6,7 @@
 
 #include "UnityEngine/Object.hpp"
 #include "UnityEngine/Resources.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/GameObject.hpp"
 
 #include "HMUI/ImageView.hpp"
@@ -17,7 +18,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    // TODO: when action-button exists, make Done that
+    static BSMLTagParser<ModalColorPickerTag> modalColorPickerTagParser({"modal-color-picker"});
     std::string buttonXML {
         "\
         <horizontal anchor-pos-y='-30' spacing='2' horizontal-fit='PreferredSize'>\
@@ -37,10 +38,6 @@ namespace BSML {
         auto colorPicker = externalComponents->Get<ModalColorPicker*>();
         SetHostField(host, colorPicker);
         
-        rectTransformData.Apply(externalComponents->Get<RectTransform*>());
-        modalData.Apply(colorPicker->modalView, host);
-        modalColorPickerData.Apply(colorPicker, host);
-
         CreateChildren(go->get_transform(), host);
     }
 
@@ -107,7 +104,5 @@ namespace BSML {
     void ModalColorPickerTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing modal color picker tag");
         this->Base::parse(elem);
-
-        modalColorPickerData = ModalColorPickerData(elem);
     }
 }

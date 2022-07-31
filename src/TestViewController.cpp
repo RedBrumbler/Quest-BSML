@@ -2,6 +2,8 @@
 #include "logging.hpp"
 
 #include "assets.hpp"
+#include "UnityEngine/GameObject.hpp"
+#include "HMUI/Touchable.hpp"
 #include "BSML/Parsing/BSMLDocParser.hpp"
 #include "BSML/Tags/BSMLTag.hpp"
 
@@ -35,6 +37,7 @@ namespace BSML {
     void TestViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if (!firstActivation) return;
         
+        get_gameObject()->AddComponent<HMUI::Touchable*>();
         auto parsed = BSMLDocParser::parse(IncludedAssets::test_xml);
         if (parsed->valid()) {
             INFO("Constructing bsml view");
@@ -92,4 +95,13 @@ namespace BSML {
     void TestViewController::GibColor(UnityEngine::Color value) {
         INFO("Got color: (r:{}, g:{}, b:{}, a:{})", value.r, value.g, value.b, value.a);
     }
+
+    void TestViewController::TextClick() {
+        INFO("Text was clicked!");
+    }
+
+    void TestViewController::SegmentedControlSelect(Il2CppObject* segmentedControl, int index) {
+        INFO("SegmentedControlSelect: {}", index);
+    }
+
 }

@@ -23,6 +23,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<ButtonWithIconTag> buttonWithIconTagParser({"button-with-icon", "icon-button"});
     Button* buttonWithIconTemplate = nullptr;
 
     void ButtonWithIconTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
@@ -30,13 +31,6 @@ namespace BSML {
         auto externalComponents = go->GetComponent<ExternalComponents*>();
         auto button = externalComponents->Get<Button*>();
 
-        buttonData.Apply(button, host);
-        selectableData.Apply(button);
-        buttonIconImageData.Apply(externalComponents->Get<ButtonIconImage*>());
-        contentSizeFitterData.Apply(externalComponents->Get<ContentSizeFitter*>());
-        layoutElementData.Apply(externalComponents->Get<LayoutElement*>());
-        layoutGroupData.Apply(externalComponents->Get<LayoutGroup*>());
-        rectTransformData.Apply(externalComponents->Get<RectTransform*>());
         SetHostField(host, button);
         
         CreateChildren(go->get_transform(), host);
@@ -105,13 +99,5 @@ namespace BSML {
     void ButtonWithIconTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing button with icon tag");
         this->::BSML::BSMLTag::parse(elem);
-
-        buttonData = ButtonData(elem);
-        selectableData = SelectableData(elem);
-        buttonIconImageData = ButtonIconImageData(elem);
-        contentSizeFitterData = ContentSizeFitterData(elem);
-        layoutElementData = LayoutElementData(elem);
-        layoutGroupData = LayoutGroupData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }

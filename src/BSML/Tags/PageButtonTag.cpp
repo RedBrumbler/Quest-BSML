@@ -24,6 +24,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<PageButtonTag> pageButtonTagParser({"page-button", "pg-button"});
     Button* pageButtonTemplate = nullptr;
 
     void PageButtonTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
@@ -32,13 +33,6 @@ namespace BSML {
         auto pageButton = externalComponents->Get<PageButton*>();
         auto button = externalComponents->Get<Button*>();
 
-        buttonData.Apply(button, host);
-        selectableData.Apply(button);
-        pageButtonData.Apply(pageButton);
-        buttonIconImageData.Apply(externalComponents->Get<ButtonIconImage*>());
-        contentSizeFitterData.Apply(externalComponents->Get<ContentSizeFitter*>());
-        layoutElementData.Apply(externalComponents->Get<LayoutElement*>());
-        rectTransformData.Apply(externalComponents->Get<RectTransform*>());
         SetHostField(host, pageButton);
         
         CreateChildren(go->get_transform(), host);
@@ -94,13 +88,5 @@ namespace BSML {
     void PageButtonTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing page button tag");
         this->::BSML::BSMLTag::parse(elem);
-
-        buttonData = ButtonData(elem);
-        pageButtonData = PageButtonData(elem);
-        selectableData = SelectableData(elem);
-        buttonIconImageData = ButtonIconImageData(elem);
-        contentSizeFitterData = ContentSizeFitterData(elem);
-        layoutElementData = LayoutElementData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }

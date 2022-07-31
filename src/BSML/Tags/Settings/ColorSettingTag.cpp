@@ -8,18 +8,23 @@
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Object.hpp"
 #include "UnityEngine/Sprite.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/Toggle.hpp"
 #include "UnityEngine/UI/Toggle_ToggleEvent.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
 #include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
 
+#include "TMPro/TextMeshProUGUI.hpp"
+
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<ColorSettingTag> colorSettingTagParser({"color-setting"});
     GlobalNamespace::FormattedFloatListSettingsValueController* baseSettings = nullptr;
     Image* colorImage = nullptr;
 
@@ -28,12 +33,6 @@ namespace BSML {
         auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
         auto colorSetting = externalComponents->Get<BSML::ColorSetting*>();
         SetHostField(host, colorSetting);
-        
-        genericSettingData.Apply(colorSetting->genericSetting, host);
-        textMeshProUGUIData.Apply(externalComponents->Get<TMPro::TextMeshProUGUI*>());
-        layoutElementData.Apply(externalComponents->Get<LayoutElement*>());
-        rectTransformData.Apply(externalComponents->Get<RectTransform*>());
-
         CreateChildren(go->get_transform(), host);
     }
 
@@ -110,9 +109,5 @@ namespace BSML {
     void ColorSettingTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing color setting tag");
         this->Base::parse(elem);
-
-        genericSettingData = GenericSettingData(elem);
-        textMeshProUGUIData = TextMeshProUGUIData(elem);
-        layoutElementData = LayoutElementData(elem);
     }
 }

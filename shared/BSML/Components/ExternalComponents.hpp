@@ -11,6 +11,7 @@ DECLARE_CLASS_CODEGEN(BSML, ExternalComponents, UnityEngine::MonoBehaviour,
     DECLARE_CTOR(ctor);
 
     public:
+        UnityEngine::Component* GetByType(System::Type* type) const;
         UnityEngine::Component* GetByType(Il2CppReflectionType* type) const;
         template<typename T>
         requires(std::is_convertible_v<T, UnityEngine::Component*>)

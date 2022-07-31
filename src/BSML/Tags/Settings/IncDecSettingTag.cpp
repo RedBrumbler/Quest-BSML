@@ -3,7 +3,9 @@
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Resources.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
 #include "UnityEngine/UI/Button.hpp"
@@ -17,7 +19,6 @@ namespace BSML {
     void IncDecSettingTagBase::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto incrementSetting = go->GetComponent<BSML::IncDecSetting*>();
-        genericSettingData.Apply(incrementSetting->genericSetting, host);
         SetHostField(host, incrementSetting);
         
         CreateChildren(go->get_transform(), host);
@@ -65,21 +66,11 @@ namespace BSML {
 
         gameObject->SetActive(true);
 
-        // apply parsed information
-        textMeshProUGUIData.Apply(text);
-        rectTransformData.Apply(transform);
-        layoutElementData.Apply(layoutElement);
-
         return gameObject;
     }
 
     void IncDecSettingTagBase::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing incdecsetting tag");
         this->::BSML::BSMLTag::parse(elem);
-
-        genericSettingData = GenericSettingData(elem);
-        textMeshProUGUIData = TextMeshProUGUIData(elem);
-        layoutElementData = LayoutElementData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }

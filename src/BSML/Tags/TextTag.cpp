@@ -4,20 +4,19 @@
 #include "logging.hpp"
 #include "internal_macros.hpp"
 
+#include "UnityEngine/RectTransform.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "UnityEngine/GameObject.hpp"
 
 using namespace UnityEngine;
 
 namespace BSML {
+    static BSMLTagParser<TextTag> textTagParser({"text", "label"});
     void TextTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto text = go->GetComponent<TMPro::TextMeshProUGUI*>();
         SetHostField(host, text);
 
-        textMeshProUGUIData.Apply(text);
-        rectTransformData.Apply(text->get_rectTransform());
-        
         CreateChildren(go->get_transform(), host);
     }
 
@@ -44,8 +43,5 @@ namespace BSML {
     void TextTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing text tag");
         this->::BSML::BSMLTag::parse(elem);
-        
-        textMeshProUGUIData = TextMeshProUGUIData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }

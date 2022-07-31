@@ -4,6 +4,8 @@
 #include "internal_macros.hpp"
 
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 
@@ -11,18 +13,12 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<HorizontalTag> horizontalTagParser({"horizontal"});
     void HorizontalTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto horizontal = go->GetComponent<UnityEngine::UI::HorizontalLayoutGroup*>();
         SetHostField(host, horizontal);
         
-        backgroundableData.Apply(go->GetComponent<BSML::Backgroundable*>());
-        contentSizeFitterData.Apply(go->GetComponent<UnityEngine::UI::ContentSizeFitter*>());
-        horizontalOrVerticalLayoutGroupData.Apply(horizontal);
-        layoutElementData.Apply(go->GetComponent<UnityEngine::UI::LayoutElement*>());
-        layoutGroupData.Apply(horizontal);
-        rectTransformData.Apply(horizontal->get_rectTransform());
-
         CreateChildren(go->get_transform(), host);
     }
 
@@ -48,12 +44,5 @@ namespace BSML {
     void HorizontalTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing horizontal tag");
         this->::BSML::BSMLTag::parse(elem);
-        
-        backgroundableData = BackgroundableData(elem);
-        contentSizeFitterData = ContentSizeFitterData(elem);
-        horizontalOrVerticalLayoutGroupData = HorizontalOrVerticalLayoutGroupData(elem);
-        layoutElementData = LayoutElementData(elem);
-        layoutGroupData = LayoutGroupData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }

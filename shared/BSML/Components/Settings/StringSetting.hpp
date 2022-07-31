@@ -24,7 +24,7 @@ DECLARE_CLASS_CUSTOM(BSML, StringSetting, BSML::BaseSetting,
     DECLARE_INSTANCE_METHOD(StringW, get_text);
     DECLARE_INSTANCE_METHOD(void, set_text, StringW);
 
-    DECLARE_INSTANCE_METHOD(void, Start);
+    DECLARE_INSTANCE_METHOD(void, BaseSetup);
     DECLARE_INSTANCE_METHOD(void, Setup);
     DECLARE_INSTANCE_METHOD(void, EditButtonPressed);
     DECLARE_INSTANCE_METHOD(void, EnterPressed, StringW value);

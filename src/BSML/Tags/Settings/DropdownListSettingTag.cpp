@@ -9,6 +9,7 @@
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/Object.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 #include "HMUI/SimpleTextDropdown.hpp"
 #include "HMUI/ScrollView.hpp"
 #include "HMUI/ModalView.hpp"
@@ -20,6 +21,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<DropdownListSettingTag> dropdownListSettingTagParser({"dropdown-list-setting"});
     GameObject* dropdownTemplate = nullptr;
     GameObject* safePrefab = nullptr;
 
@@ -28,16 +30,6 @@ namespace BSML {
         auto externalComponents = go->GetComponent<ExternalComponents*>();
         auto dropdownListSetting = externalComponents->Get<BSML::DropdownListSetting*>();
         SetHostField(host, dropdownListSetting);
-        
-        genericSettingData.Apply(dropdownListSetting->genericSetting, host);
-        listSettingData.Apply(dropdownListSetting, host);
-        rectTransformData.Apply(externalComponents->Get<RectTransform*>());
-        layoutElementData.Apply(externalComponents->Get<LayoutElement*>());
-        textMeshProUGUIData.Apply(externalComponents->Get<TMPro::TextMeshProUGUI*>());
-
-        // we need to do this after everything has been applied, otherwise things will fail
-        //DEBUG("Setting up dropdown list");
-        //dropdownListSetting->Setup();
 
         CreateChildren(go->get_transform(), host);
     }
@@ -97,11 +89,5 @@ namespace BSML {
     void DropdownListSettingTag::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing dropdown list setting tag");
         this->::BSML::BSMLTag::parse(elem);
-
-        genericSettingData = GenericSettingData(elem);
-        listSettingData = ListSettingData(elem);
-        textMeshProUGUIData = TextMeshProUGUIData(elem);
-        layoutElementData = LayoutElementData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }

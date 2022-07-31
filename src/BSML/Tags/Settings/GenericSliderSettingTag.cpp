@@ -22,8 +22,6 @@ namespace BSML {
         auto slider = go->GetComponent<BSML::SliderSettingBase*>();
         SetHostField(host, slider);
         
-        genericSettingData.Apply(slider->genericSetting, host);
-        
         CreateChildren(go->get_transform(), host);
     }
 
@@ -59,20 +57,11 @@ namespace BSML {
 
         baseSetting->set_preferredWidth(90.0f);
 
-        layoutElementData.Apply(baseSetting);
-        textMeshProUGUIData.Apply(text);
-        rectTransformData.Apply(reinterpret_cast<RectTransform*>(gameObject->get_transform()));
-        
         return gameObject;
     }
 
     void GenericSliderSettingTagBase::parse(const tinyxml2::XMLElement& elem) {
         DEBUG("Parsing generic slider tag");
         this->::BSML::BSMLTag::parse(elem);
-
-        genericSettingData = GenericSettingData(elem);
-        textMeshProUGUIData = TextMeshProUGUIData(elem);
-        layoutElementData = LayoutElementData(elem);
-        rectTransformData = RectTransformData(elem);
     }
 }
