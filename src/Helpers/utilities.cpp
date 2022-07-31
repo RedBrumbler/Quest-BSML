@@ -252,19 +252,43 @@ namespace BSML::Utilities {
         }
 
         // TODO: ask sc2ad to help with this lol
-        void* myIter;
-        const PropertyInfo* prop;
+        void* myIter = nullptr;
+        const PropertyInfo* prop = nullptr;
         while((prop = il2cpp_functions::class_get_properties(klass, &myIter))) {
-            if (prop->set) {
-                auto value = il2cpp_utils::GetPropertyValue(other, prop);
-                if (value.has_value()) il2cpp_utils::SetPropertyValue(other, prop, value.value());
+            if (prop->get && prop->set) {
+                auto getter = il2cpp_functions::property_get_get_method(prop);
+                auto setter = il2cpp_functions::property_get_set_method(prop);
+                if (getter->token & METHOD_ATTRIBUTE_STATIC) continue;
+                if (setter->token & METHOD_ATTRIBUTE_STATIC) continue;
+
+                std::array<void*, 1> args{nullptr};
+                Il2CppException* exp = nullptr;
+                auto value = il2cpp_functions::runtime_invoke(getter, other, args.data(), &exp);
+                if (exp) {
+                    // handle an exception
+                    ERROR("Exception: {}", exp->message);
+                    continue;
+                }
+                args[0] = value;
+                il2cpp_functions::runtime_invoke(setter, comp, args.data(), &exp);
+                if (exp) {
+                    // handle an exception
+                    ERROR("Exception: {}", exp->message);
+                    continue;
+                }
             }
         }
-
-        ::FieldInfo* field;
+        
+        myIter = nullptr;
+        ::FieldInfo* field = nullptr;
         while((field = il2cpp_functions::class_get_fields(klass, &myIter))) {
-            auto value = il2cpp_utils::GetFieldValue(other, field);
-            if (value.has_value()) il2cpp_utils::SetFieldValue(other, field, value.value());
+            if (field->token & FIELD_ATTRIBUTE_STATIC) continue;
+            auto klass = il2cpp_functions::Class_FromIl2CppType(const_cast<Il2CppType*>(field->type));
+            // Ideally, reuse this across fields? Probably wrap in a unique_ptr
+            uint8_t* value = new uint8_t[klass->instance_size];
+            il2cpp_functions::field_get_value(other, field, value);
+            il2cpp_functions::field_set_value(comp, field, value);
+            delete[] value;
         }
         return comp;
     }
