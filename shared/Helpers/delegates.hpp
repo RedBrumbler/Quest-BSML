@@ -56,46 +56,16 @@ namespace BSML {
     template<typename... Targs>
     auto MakeSystemAction(const std::function<void(Targs...)>& fun) {
         constexpr int argc = sizeof...(Targs);
-        if constexpr (argc == 0) {
-            static check_count_equals<argc, 0> check_0s;
-            return MakeDelegate<System::Action*>(fun);
-        }
-        else if constexpr (argc == 1) {
-            static check_count_equals<argc, 1> check_1;
-            return MakeDelegate<System::Action_1<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 2) {
-            static check_count_equals<argc, 2> check_2;
-            return MakeDelegate<System::Action_2<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 3) {
-            static check_count_equals<argc, 3> check_3;
-            return MakeDelegate<System::Action_3<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 4) {
-            static check_count_equals<argc, 4> check_4;
-            return MakeDelegate<System::Action_4<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 5) {
-            static check_count_equals<argc, 5> check_5;
-            return MakeDelegate<System::Action_5<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 6) {
-            static check_count_equals<argc, 6> check_6;
-            return MakeDelegate<System::Action_6<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 7) {
-            static check_count_equals<argc, 7> check_7;
-            return MakeDelegate<System::Action_7<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 8) {
-            static check_count_equals<argc, 8> check_8;
-            return MakeDelegate<System::Action_8<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 11) {
-            static check_count_equals<argc, 11> check_11;
-            return MakeDelegate<System::Action_11<Targs...>*>(fun);
-        }
+        if constexpr (argc == 0) return MakeDelegate<System::Action*>(fun);
+        else if constexpr (argc == 1) return MakeDelegate<System::Action_1<Targs...>*>(fun);
+        else if constexpr (argc == 2) return MakeDelegate<System::Action_2<Targs...>*>(fun);
+        else if constexpr (argc == 3) return MakeDelegate<System::Action_3<Targs...>*>(fun);
+        else if constexpr (argc == 4) return MakeDelegate<System::Action_4<Targs...>*>(fun);
+        else if constexpr (argc == 5) return MakeDelegate<System::Action_5<Targs...>*>(fun);
+        else if constexpr (argc == 6) return MakeDelegate<System::Action_6<Targs...>*>(fun);
+        else if constexpr (argc == 7) return MakeDelegate<System::Action_7<Targs...>*>(fun);
+        else if constexpr (argc == 8) return MakeDelegate<System::Action_8<Targs...>*>(fun);
+        else if constexpr (argc == 11) return MakeDelegate<System::Action_11<Targs...>*>(fun);
 
         /// 9 is not allowed, System::Action_9 does not exist
         static check_count_not_equals<argc, 9> check_9;
@@ -135,26 +105,11 @@ namespace BSML {
     template<typename... Targs>
     auto MakeUnityAction(std::function<void(Targs...)> fun) {
         constexpr int argc = sizeof...(Targs);
-        if constexpr (argc == 0)  {
-            static check_count_equals<argc, 0> check_0;
-            return MakeDelegate<UnityEngine::Events::UnityAction*>(fun);
-        }
-        else if constexpr (argc == 1)  {
-            static check_count_equals<argc, 1> check_1;
-            return MakeDelegate<UnityEngine::Events::UnityAction_1<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 2)  {
-            static check_count_equals<argc, 2> check_2;
-            return MakeDelegate<UnityEngine::Events::UnityAction_2<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 3)  {
-            static check_count_equals<argc, 3> check_3;
-            return MakeDelegate<UnityEngine::Events::UnityAction_3<Targs...>*>(fun);
-        }
-        else if constexpr (argc == 4)  {
-            static check_count_equals<argc, 4> check_4;
-            return MakeDelegate<UnityEngine::Events::UnityAction_4<Targs...>*>(fun);
-        }
+        if constexpr (argc == 0) return MakeDelegate<UnityEngine::Events::UnityAction*>(fun);
+        else if constexpr (argc == 1) return MakeDelegate<UnityEngine::Events::UnityAction_1<Targs...>*>(fun);
+        else if constexpr (argc == 2) return MakeDelegate<UnityEngine::Events::UnityAction_2<Targs...>*>(fun);
+        else if constexpr (argc == 3) return MakeDelegate<UnityEngine::Events::UnityAction_3<Targs...>*>(fun);
+        else if constexpr (argc == 4) return MakeDelegate<UnityEngine::Events::UnityAction_4<Targs...>*>(fun);
 
         /// > 4 is not allowed, UnityEngine::Events::UnityAction_N does not exist with N > 4
         static check_count_smaller<argc, 4> check_4;
