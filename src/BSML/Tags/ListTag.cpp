@@ -12,6 +12,8 @@
 #include "UnityEngine/UI/ScrollRect.hpp"
 #include "UnityEngine/UI/RectMask2D.hpp"
 #include "UnityEngine/Canvas.hpp"
+#include "UnityEngine/RenderMode.hpp"
+#include "UnityEngine/AdditionalCanvasShaderChannels.hpp"
 #include "HMUI/EventSystemListener.hpp"
 #include "HMUI/ScrollView.hpp"
 #include "HMUI/TableView.hpp"
@@ -41,16 +43,30 @@ namespace BSML {
         }
 
         auto scrollRect = gameObject->AddComponent<ScrollRect*>();
-        Utilities::AddComponent(gameObject, listCanvasTemplate);
+        auto canvas = gameObject->AddComponent<Canvas*>();
+        // using this method causes the list to have it's cells be squished:
+        //Utilities::AddComponent(gameObject, listCanvasTemplate);
+        // therefore we just copy what we need:
+        canvas->set_additionalShaderChannels(listCanvasTemplate->get_additionalShaderChannels());
+        canvas->set_overrideSorting(listCanvasTemplate->get_overrideSorting());
+        canvas->set_pixelPerfect(listCanvasTemplate->get_pixelPerfect());
+        canvas->set_referencePixelsPerUnit(listCanvasTemplate->get_referencePixelsPerUnit());
+        canvas->set_renderMode(listCanvasTemplate->get_renderMode());
+        canvas->set_scaleFactor(listCanvasTemplate->get_scaleFactor());
+        canvas->set_sortingLayerID(listCanvasTemplate->get_sortingLayerID());
+        canvas->set_sortingOrder(listCanvasTemplate->get_sortingOrder());
+        canvas->set_worldCamera(listCanvasTemplate->get_worldCamera());
+
         gameObject->AddComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
         gameObject->AddComponent<HMUI::Touchable*>();
         gameObject->AddComponent<HMUI::EventSystemListener*>();
 
         auto scrollView = gameObject->AddComponent<HMUI::ScrollView*>();
-        // TODO: make the custom types for this
+
         HMUI::TableView* tableView = gameObject->AddComponent<BSML::TableView*>();
         auto tableData = container->get_gameObject()->AddComponent<CustomListTableData*>();
         tableData->tableView = tableView;
+
         tableView->preallocatedCells = ArrayW<HMUI::TableView::CellsGroup*>(il2cpp_array_size_t(0));
         tableView->isInitialized = false;
         tableView->scrollView = scrollView;

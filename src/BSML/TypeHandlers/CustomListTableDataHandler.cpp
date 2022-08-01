@@ -1,5 +1,6 @@
 #include "BSML/TypeHandlers/CustomListTableDataHandler.hpp"
 #include "Helpers/getters.hpp"
+#include "Helpers/delegates.hpp"
 
 #include "System/Action_2.hpp"
 #include "HMUI/ScrollView.hpp"
@@ -37,8 +38,6 @@ namespace BSML {
 
     CustomListTableDataHandler::Base::SetterMap CustomListTableDataHandler::get_setters() const {
         return {
-            {"listStyle",       [](auto component, auto value){ component->set_listStyle(CustomListTableData::stringToListStyle(value)); }},
-            {"cellSize",        [](auto component, auto value){ component->cellSize = value;}},
             {"expandCell",      [](auto component, auto value){ component->expandCell = value; }},
             {"alignCenter",     [](auto component, auto value){ component->tableView->alignToCenter = value; }},
             {"stickScrolling",  [](auto component, auto value){ if (static_cast<bool>(value)) component->tableView->scrollView->platformHelper = Helpers::GetIVRPlatformHelper(); }}
@@ -47,7 +46,6 @@ namespace BSML {
 
     void CustomListTableDataHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         Base::HandleType(componentType, parserParams);
-
         auto tableData = reinterpret_cast<CustomListTableData*>(componentType.component);
         auto tableView = tableData->tableView;
         auto scrollView = tableView->scrollView;
@@ -60,10 +58,8 @@ namespace BSML {
             auto arg = StringParseHelper(selectCellItr->second);
             auto methodInfo = arg.asMethodInfo(host, 2);
             if (methodInfo) {
-                std::function<void(HMUI::TableView*, int)> fun = [host, methodInfo](auto segmentedControl, auto index){
-                    il2cpp_utils::RunMethod(host, methodInfo, segmentedControl, index);
-                };
-                auto delegate = il2cpp_utils::MakeDelegate<System::Action_2<HMUI::TableView*, int>*>(fun);
+                auto delegate = MakeSystemAction<HMUI::TableView *, int>(host, methodInfo);
+                INFO("Created delegate: {}", fmt::ptr(delegate));
                 tableView->add_didSelectCellWithIdxEvent(delegate);
             } else {
                 ERROR("Could not find method '{}' with 2 args in class '{}::{}'", arg, host->klass->namespaze, host->klass->name);
@@ -77,6 +73,16 @@ namespace BSML {
             tableView->tableType = stringToTableType(arg);
             scrollView->scrollViewDirection = tableView->get_tableType() == HMUI::TableView::TableType::Vertical ? HMUI::ScrollView::ScrollViewDirection::Vertical : HMUI::ScrollView::ScrollViewDirection::Horizontal;
             verticalList = tableView->get_tableType() == HMUI::TableView::TableType::Vertical;
+        }
+
+        auto listStyleItr = data.find("listStyle");
+        if (listStyleItr != data.end() && !listStyleItr->second.empty()) {
+            tableData->set_listStyle(CustomListTableData::stringToListStyle(listStyleItr->second));
+        }
+
+        auto cellSizeItr = data.find("cellSize");
+        if (cellSizeItr != data.end() && !cellSizeItr->second.empty()) {
+            tableData->cellSize = StringParseHelper(cellSizeItr->second);
         }
 
         auto showScrollBarItr = data.find("showScrollbar");
@@ -135,6 +141,7 @@ namespace BSML {
             }
         }
 
+        INFO("set sizeDelta");
         auto transform = reinterpret_cast<RectTransform*>(tableData->get_transform());
         switch(tableView->get_tableType()) {
             case HMUI::TableView::TableType::Vertical: {
@@ -144,6 +151,8 @@ namespace BSML {
                 auto visibleCells = visibleCellsItr != data.end() ? static_cast<int>(StringParseHelper(visibleCellsItr->second)) : 7;
                 float listHeight = visibleCells * tableData->cellSize;
                 transform->set_sizeDelta({listWidth, listHeight});
+                INFO("listWidth: {}, listHeight: {}", listWidth, listHeight);
+                break;
             }
             case HMUI::TableView::TableType::Horizontal: {
                 auto listHeightItr = data.find("listHeight");
@@ -151,14 +160,23 @@ namespace BSML {
                 auto visibleCellsItr = data.find("visibleCells");
                 auto visibleCells = visibleCellsItr != data.end() ? static_cast<int>(StringParseHelper(visibleCellsItr->second)) : 4;
                 float listWidth = visibleCells * tableData->cellSize;
+                INFO("listWidth: {}, listHeight: {}", listWidth, listHeight);
                 transform->set_sizeDelta({listWidth, listHeight});
                 break;
             }
         }
 
         auto layoutElement = tableData->GetComponent<UnityEngine::UI::LayoutElement*>();
-        layoutElement->set_preferredHeight(transform->get_sizeDelta().y);
-        layoutElement->set_preferredWidth(transform->get_sizeDelta().x);
+        if (layoutElement) {
+            auto sizeDelta = transform->get_sizeDelta();
+            INFO("Size: {}, {}", sizeDelta.x, sizeDelta.y);
+            layoutElement->set_preferredHeight(sizeDelta.y);
+            layoutElement->set_flexibleHeight(sizeDelta.y);
+            layoutElement->set_minHeight(sizeDelta.y);
+            layoutElement->set_preferredWidth(sizeDelta.x);
+            layoutElement->set_flexibleWidth(sizeDelta.x);
+            layoutElement->set_minWidth(sizeDelta.x);
+        }
 
         tableView->get_gameObject()->SetActive(true);
         tableView->LazyInit();

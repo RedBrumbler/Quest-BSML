@@ -35,10 +35,10 @@ namespace BSML {
         listData = List<CustomCellInfo*>::New_ctor();
         listData->EnsureCapacity(26);
 
-        std::string str = "A";
+        char letter = 'A';
         for (int i = 0; i < 26; i++) {
-            listData->Add(CustomCellInfo::construct(str));
-            str[0]++;
+            listData->Add(CustomCellInfo::construct(fmt::format("Letter {}", letter), "A good letter"));
+            letter++;
         }
     }
     
@@ -107,5 +107,12 @@ namespace BSML {
 
     void TestViewController::TextClick() {
         INFO("Text was clicked!");
+    }
+
+    void TestViewController::ShowListModal() {
+        listModal->Show();
+    }
+    void TestViewController::ListElementSelected(HMUI::TableView*, int idx) {
+        INFO("List element selected: {}", idx);
     }
 }
