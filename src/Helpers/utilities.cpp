@@ -23,6 +23,9 @@
 
 #include "custom-types/shared/coroutine.hpp"
 
+#include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
+#include "beatsaber-hook/shared/utils/il2cpp-functions.hpp"
+
 #define coro(coroutine) GlobalNamespace::SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(coroutine))
 
 using namespace UnityEngine;
@@ -239,4 +242,75 @@ namespace BSML::Utilities {
         }
         return Sprite::Create(texture, Rect(0.0f, 0.0f, texture->get_width(), texture->get_height()), Vector2(0.5f, 0.5f), pixelsPerUnit, 1u, SpriteMeshType::FullRect, Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
     }
+
+    bool CheckIfClassIsParentClass(const Il2CppClass* klass, const Il2CppClass* possibleParent) {
+        while (klass->parent) {
+            if (klass->parent == possibleParent) return true;
+            klass = klass->parent;
+        }
+        return false;
+    }
+
+    Il2CppObject* CopyFieldsAndProperties(UnityEngine::Component* comp, UnityEngine::Component* other, Il2CppClass* klass) {
+        if (!klass) return comp;
+        if (!CheckIfClassIsParentClass(comp->klass, klass) && !CheckIfClassIsParentClass(other->klass, klass)) {
+            return nullptr;
+        }
+
+        void* myIter = nullptr;
+        const PropertyInfo* prop = nullptr;
+        while((prop = il2cpp_functions::class_get_properties(klass, &myIter))) {
+            if (prop->get && prop->set) {
+                auto getter = il2cpp_functions::property_get_get_method(prop);
+                auto setter = il2cpp_functions::property_get_set_method(prop);
+                if ((getter->token & METHOD_ATTRIBUTE_STATIC) == METHOD_ATTRIBUTE_STATIC) continue;
+                if ((setter->token & METHOD_ATTRIBUTE_STATIC) == METHOD_ATTRIBUTE_STATIC) continue;
+
+                std::array<void*, 1> args{nullptr};
+                Il2CppException* exp = nullptr;
+                auto value = il2cpp_functions::runtime_invoke(getter, other, args.data(), &exp);
+                if (exp) {
+                    // handle an exception
+                    ERROR("Exception: {}", exp->message);
+                    continue;
+                }
+                args[0] = value;
+                il2cpp_functions::runtime_invoke(setter, comp, args.data(), &exp);
+                if (exp) {
+                    // handle an exception
+                    ERROR("Exception: {}", exp->message);
+                    continue;
+                }
+            }
+        }
+        
+        myIter = nullptr;
+        ::FieldInfo* field = nullptr;
+        void* value = nullptr;
+        uint32_t size = 0;
+        while((field = il2cpp_functions::class_get_fields(klass, &myIter))) {
+            if ((field->token & FIELD_ATTRIBUTE_STATIC) == FIELD_ATTRIBUTE_STATIC) continue;
+            auto klass = il2cpp_functions::Class_FromIl2CppType(const_cast<Il2CppType*>(field->type));
+            size = klass->instance_size;
+            value = realloc(value, size);
+            il2cpp_functions::field_get_value(other, field, value);
+            il2cpp_functions::field_set_value(comp, field, value);
+        }
+        free(value);
+
+        return CopyFieldsAndProperties(comp, other, klass->parent);
+    }
+    
+    /// based on https://answers.unity.com/questions/530178/how-to-get-a-component-from-an-object-and-add-it-t.html
+    UnityEngine::Component* GetCopyOfComponent(UnityEngine::Component* comp, UnityEngine::Component* other) {
+        auto klass = comp->klass;
+        if (klass != other->klass) {
+            ERROR("Type Mismatch!");
+            return nullptr;
+        }
+
+        return reinterpret_cast<UnityEngine::Component*>(CopyFieldsAndProperties(comp, other, klass));
+    }
+
+    /// end of based on thing
 }

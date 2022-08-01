@@ -3,14 +3,14 @@
 #include "logging.hpp"
 
 /// makes a string that's lowercase
-static inline std::string toLower(std::string_view str) {
-    std::string ret{str.data(), str.size()};
+inline std::string StringParseHelper::toLower() const {
+    std::string ret{data(), size()};
     std::transform(ret.begin(), ret.end(), ret.begin(), ::tolower);
     return ret;
 }
 
 std::optional<bool> StringParseHelper::tryParseBool() const {
-    auto lower = toLower(*this);
+    auto lower = toLower();
     if (lower == "true")
         return true;
     if (lower == "false")

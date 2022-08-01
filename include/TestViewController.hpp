@@ -3,6 +3,8 @@
 #include "custom-types/shared/macros.hpp"
 #include "HMUI/ViewController.hpp"
 
+#include "BSML/Components/ModalView.hpp"
+#include "BSML/Components/CustomListTableData.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
@@ -14,7 +16,9 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(bool, someOtherField);
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, someList);
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, sliderList);
-
+    DECLARE_INSTANCE_FIELD(ListWrapper<CustomCellInfo*>, listData);
+    DECLARE_INSTANCE_FIELD(BSML::ModalView*, listModal);
+    
     BSML_OPTIONS_LIST(lyrics, "Never", "Gonna", "Give", "You", "Up");
     BSML_OPTIONS_LIST(textSegments, "Modded", "Vanilla", "Chocolate", "Strawberry", "Gasoline");
     DECLARE_INSTANCE_FIELD(StringW, sliderChoice);
@@ -38,6 +42,8 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_METHOD(void, ChangeLength, float value);
     DECLARE_INSTANCE_METHOD(void, GibColor, UnityEngine::Color value);
     DECLARE_INSTANCE_METHOD(void, TextClick);
+    DECLARE_INSTANCE_METHOD(void, ShowListModal);
+    DECLARE_INSTANCE_METHOD(void, ListElementSelected, HMUI::TableView*, int idx);
     DECLARE_INSTANCE_METHOD(void, SegmentedControlSelect, Il2CppObject* segmentedControl, int index);
 
     DECLARE_CTOR(ctor);

@@ -31,6 +31,15 @@ namespace BSML {
         sliderList->Add("You");
         sliderList->Add("Up");
         sliderChoice = sliderList[3];
+
+        listData = List<CustomCellInfo*>::New_ctor();
+        listData->EnsureCapacity(26);
+
+        char letter = 'A';
+        for (int i = 0; i < 26; i++) {
+            listData->Add(CustomCellInfo::construct(fmt::format("Letter {}", letter), "A good letter"));
+            letter++;
+        }
     }
     
 
@@ -100,8 +109,16 @@ namespace BSML {
         INFO("Text was clicked!");
     }
 
+
+    void TestViewController::ShowListModal() {
+        listModal->Show();
+    }
+
+    void TestViewController::ListElementSelected(HMUI::TableView*, int idx) {
+        INFO("List element selected: {}", idx);
+    }
+
     void TestViewController::SegmentedControlSelect(Il2CppObject* segmentedControl, int index) {
         INFO("SegmentedControlSelect: {}", index);
     }
-
 }

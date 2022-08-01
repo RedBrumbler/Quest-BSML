@@ -12,11 +12,11 @@
                 </horizontal>
                 <primary-button id="goodButton" on-click="ButtonPressed"/>
                 <toggle-setting text="test" on-change="OnPropertiesChanged" value="someOtherField" off-text="a" on-text="b" pref-width="60" apply-on-change="true"/>
-                <toggle-setting text="test2" on-change="PinkCuteToggled" value="testToggle" off-text="pink" on-text="cute" pref-width="60"  apply-on-change="true"/>
+                <toggle-setting text="test2" on-change="PinkCuteToggled" value="testToggle" off-text="pink" on-text="cute" pref-width="60" apply-on-change="true"/>
                 <increment-setting label="cuteness" pref-width="60"/>
-                <list-setting list-options="someList" list-choice="_myChoice"  pref-width="60"/>
-                <slider-setting label="length" min="2" max="6" increment="0.05" show-buttons="true" digits="3" value="length" on-change="ChangeLength"  pref-width="60"/>
-                <list-slider-setting label="object slider" show-buttons="false" options="sliderList" value="sliderChoice"  pref-width="60"/>
+                <list-setting list-options="someList" list-choice="_myChoice" pref-width="60"/>
+                <slider-setting label="length" min="2" max="6" increment="0.05" show-buttons="true" digits="3" value="length" on-change="ChangeLength" pref-width="60"/>
+                <list-slider-setting label="object slider" show-buttons="false" options="sliderList" value="sliderChoice" pref-width="60"/>
                 <button label="feeling brave?" on-click="show_scare" pref-width="60"/>
                 <modal id="scare" click-off-closes="true" move-to-center="true" size-delta-x="20" size-delta-y="20">
                     <vertical pref-height="20" vertical-fit="PreferredSize">
@@ -25,7 +25,7 @@
                         </horizontal>
                     </vertical>
                 </modal>
-                <button label="Wanna type?" on-click="show_mykb"  pref-width="60"/>
+                <button label="Wanna type?" on-click="show_mykb" pref-width="60"/>
                 <modal-keyboard id="mykb" click-off-closes="true" move-to-center="true" on-enter="KeyboardValueEntered" pref-width="60"/>
             </vertical>
         </tab>
@@ -36,7 +36,9 @@
                 <color-setting label="gay" on-change="GibColor" pref-width="60"/>
                 <icon-button pref-width="60"/>
                 <icon-button icon="#ClockIcon" pref-width="60"/>
-                <text text="yomama" pref-width="60" pref-height="10"><background bg="panel-top" bg-color="#ff00ff"/></text>
+                <text text="yomama" pref-width="60" pref-height="10">
+                    <background bg="panel-top" bg-color="#ff00ff"/>
+                </text>
                 <horizontal pref-height="10" bg="panel-fade-gradient" bg-color="#ffffff" pref-width="60">
                     <page-button dir="Up" pref-width="15" pref-height="10"/>
                     <page-button dir="Down" pref-width="15" pref-height="10"/>
@@ -55,7 +57,29 @@
         <tab tags="main" tab-name="third">
             <vertical pref-height="74" anchor-pos-y="-3" bg="round-rect-panel" bg-alpha="0.5" pad="2" vertical-fit="PreferredSize" child-expand-height="false">
                 <clickable-text label="click me!" on-click="TextClick" pref-height="4"/>
+                <button label="list-modal" on-click="ShowListModal"/>
             </vertical>
         </tab>
     </bg>
+    <modal id='listModal'
+            clickerino-offerino-closerino='true'
+            anchor-pos-x='0'
+            anchor-pos-y='10'
+            size-delta-x='65'
+            size-delta-y='65'
+            move-to-center='false'>
+        <vertical horizontal-fit='PreferredSize'
+                    vertical-fit='PreferredSize'
+                    anchor-pos-x='-3'
+                    size-delta-y='0'>
+            <list id='list'
+                    data='listData'
+                    select-cell='ListElementSelected'
+                    expand-cell='true'
+                    pref-height='55'
+                    pref-width='55'
+                    show-scrollbar='true'
+                    stick-scrolling='true'/>
+        </vertical>
+    </modal>
 </bsml>
