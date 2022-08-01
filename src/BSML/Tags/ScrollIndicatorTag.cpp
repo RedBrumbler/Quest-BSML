@@ -42,10 +42,4 @@ namespace BSML
 
         return gameObj;
     }
-
-    void ScrollIndicatorTag::parse(const tinyxml2::XMLElement &elem)
-    {
-        DEBUG("Parsing ScrollIndicator tag.");
-        this->::BSML::BSMLTag::parse(elem);
-    }
 }
