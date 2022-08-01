@@ -109,10 +109,16 @@ namespace BSML {
         INFO("Text was clicked!");
     }
 
+
     void TestViewController::ShowListModal() {
         listModal->Show();
     }
+
     void TestViewController::ListElementSelected(HMUI::TableView*, int idx) {
         INFO("List element selected: {}", idx);
+    }
+
+    void TestViewController::SegmentedControlSelect(Il2CppObject* segmentedControl, int index) {
+        INFO("SegmentedControlSelect: {}", index);
     }
 }

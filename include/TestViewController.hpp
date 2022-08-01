@@ -20,6 +20,7 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(BSML::ModalView*, listModal);
     
     BSML_OPTIONS_LIST(lyrics, "Never", "Gonna", "Give", "You", "Up");
+    BSML_OPTIONS_LIST(textSegments, "Modded", "Vanilla", "Chocolate", "Strawberry", "Gasoline");
     DECLARE_INSTANCE_FIELD(StringW, sliderChoice);
 
     BSML_PROPERTY_ONCHANGED(StringW, myChoice);
@@ -43,6 +44,7 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_METHOD(void, TextClick);
     DECLARE_INSTANCE_METHOD(void, ShowListModal);
     DECLARE_INSTANCE_METHOD(void, ListElementSelected, HMUI::TableView*, int idx);
+    DECLARE_INSTANCE_METHOD(void, SegmentedControlSelect, Il2CppObject* segmentedControl, int index);
 
     DECLARE_CTOR(ctor);
     
