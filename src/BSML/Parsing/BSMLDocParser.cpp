@@ -1,13 +1,13 @@
 #include "BSML/Parsing/BSMLDocParser.hpp"
-#include "BSML/Parsing/BSMLTagParser.hpp"
+#include "BSML/Parsing/BSMLNodeParser.hpp"
 #include "BSML/Tags/BSMLTag.hpp"
 #include "logging.hpp"
 
 namespace BSML {
     BSMLDocParser::TagNameToParser BSMLDocParser::tagNameToParser;
-    BSMLTagParserBase* defaultParser = nullptr;
+    BSMLNodeParserBase* defaultParser = nullptr;
 
-    void BSMLDocParser::RegisterTag(BSMLTagParserBase* parser) {
+    void BSMLDocParser::RegisterTag(BSMLNodeParserBase* parser) {
         for (auto& alias : parser->aliases) {
             DEBUG("Registering parser for tag {}", alias);
             tagNameToParser[alias] = parser;
@@ -20,7 +20,7 @@ namespace BSML {
 
     }
 
-    void BSMLDocParser::UnRegisterTag(BSMLTagParserBase* parser) {
+    void BSMLDocParser::UnRegisterTag(BSMLNodeParserBase* parser) {
         for (auto& alias : parser->aliases) {
             auto itr = tagNameToParser.find(alias);
             if (itr != tagNameToParser.end())
@@ -63,7 +63,7 @@ namespace BSML {
         return parentTag;
     }
 
-    BSMLTagParserBase* BSMLDocParser::get_parser(std::string alias) {
+    BSMLNodeParserBase* BSMLDocParser::get_parser(std::string alias) {
         auto itr = tagNameToParser.find(alias);
         if (itr == tagNameToParser.end())
             return defaultParser;

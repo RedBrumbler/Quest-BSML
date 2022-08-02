@@ -24,9 +24,9 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<PageButtonTag> pageButtonTagParser({"page-button", "pg-button"});
-    Button* pageButtonTemplate = nullptr;
+    static BSMLNodeParser<PageButtonTag> pageButtonTagParser({"page-button", "pg-button"});
 
+    Button* pageButtonTemplate = nullptr;
     UnityEngine::GameObject* PageButtonTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Page button");
         if (!pageButtonTemplate || !Object::IsNativeObjectAlive(pageButtonTemplate)) {

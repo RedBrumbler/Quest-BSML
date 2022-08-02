@@ -10,7 +10,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<RawImageTag> rawImageTagParser({"raw-image", "raw-img"});
+    static BSMLNodeParser<RawImageTag> rawImageTagParser({"raw-image", "raw-img"});
     
     UnityEngine::GameObject* RawImageTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating RawImage");

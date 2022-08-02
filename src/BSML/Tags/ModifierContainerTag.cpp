@@ -13,7 +13,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<ModifierContainerTag> modifierContainerTagParser({"modifier-container"});
+    static BSMLNodeParser<ModifierContainerTag> modifierContainerTagParser({"modifier-container"});
 
     UnityEngine::GameObject* ModifierContainerTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating ModifierContainer");

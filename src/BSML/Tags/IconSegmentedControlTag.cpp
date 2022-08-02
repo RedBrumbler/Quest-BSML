@@ -12,7 +12,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<IconSegmentedControlTag> iconSegmentedControlTag({"icon-segments"});
+    static BSMLNodeParser<IconSegmentedControlTag> iconSegmentedControlTag({"icon-segments"});
     
     HMUI::IconSegmentedControl* iconSegmentedControlTemplate = nullptr;
 

@@ -19,7 +19,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<StringSettingTag> stringSettingTagParser({"string-setting"});
+    static BSMLNodeParser<StringSettingTag> stringSettingTagParser({"string-setting"});
     GlobalNamespace::FormattedFloatListSettingsValueController* valueControllerTemplate = nullptr;
 
     UnityEngine::GameObject* StringSettingTag::CreateObject(UnityEngine::Transform* parent) const {

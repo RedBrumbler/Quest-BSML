@@ -3,5 +3,5 @@
 #include "UnityEngine/GameObject.hpp"
 
 namespace BSML {
-    static BSMLTagParser<IncrementSettingTag> incrementSettingTagParser({"increment-setting"});
+    static BSMLNodeParser<IncrementSettingTag> incrementSettingTagParser({"increment-setting"});
 }

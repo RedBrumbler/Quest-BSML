@@ -24,7 +24,7 @@
 #include "Helpers/getters.hpp"
 
 namespace BSML {
-    static BSMLTagParser<ScrollViewTag> scrollViewTagParser({"scroll-view"});
+    static BSMLNodeParser<ScrollViewTag> scrollViewTagParser({"scroll-view"});
 
     HMUI::TextPageScrollView* scrollViewTemplate = nullptr;
 

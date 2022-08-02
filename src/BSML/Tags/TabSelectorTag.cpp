@@ -11,7 +11,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<TabSelectorTag> tabSelectorTagParser({"tab-select", "tab-selector"});
+    static BSMLNodeParser<TabSelectorTag> tabSelectorTagParser({"tab-select", "tab-selector"});
 
     HMUI::TextSegmentedControl* tabSelectorTagTemplate = nullptr;
     UnityEngine::GameObject* TabSelectorTag::CreateObject(UnityEngine::Transform* parent) const {

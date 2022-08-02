@@ -11,7 +11,7 @@
 #include "GlobalNamespace/ReleaseInfoViewController.hpp"
 
 namespace BSML {
-    static BSMLTagParser<TextPageScrollViewTag> textPageScrollViewTagParser({"text-page", "page"});
+    static BSMLNodeParser<TextPageScrollViewTag> textPageScrollViewTagParser({"text-page", "page"});
     HMUI::TextPageScrollView* textPageTemplate = nullptr;
     UnityEngine::GameObject* TextPageScrollViewTag::CreateObject(UnityEngine::Transform* parent) const {
         if (textPageTemplate == nullptr) {

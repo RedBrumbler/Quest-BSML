@@ -11,7 +11,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<ImageTag> imageTagParser({"image", "img"});
+    static BSMLNodeParser<ImageTag> imageTagParser({"image", "img"});
     
     UnityEngine::GameObject* ImageTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Image");

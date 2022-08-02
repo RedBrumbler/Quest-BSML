@@ -13,7 +13,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<GridLayoutTag> gridLayoutTagParser({"grid"});
+    static BSMLNodeParser<GridLayoutTag> gridLayoutTagParser({"grid"});
     UnityEngine::GameObject* GridLayoutTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating GridLayout");
         auto gameObject = GameObject::New_ctor("BSMLGridLayoutGroup");

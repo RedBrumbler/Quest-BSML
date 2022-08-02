@@ -12,7 +12,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<TextSegmentedControlTag> textSegmentedControlTag({"text-segments"});
+    static BSMLNodeParser<TextSegmentedControlTag> textSegmentedControlTag({"text-segments"});
 
     HMUI::TextSegmentedControl* textSegmentedControlTemplate = nullptr;
 

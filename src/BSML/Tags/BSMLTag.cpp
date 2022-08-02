@@ -20,17 +20,8 @@ UnityEngine::Component* GetExternalComponent(UnityEngine::GameObject* obj, BSML:
 }
 
 namespace BSML {
-    static BSMLTagParser<BSMLTag> bsmlTagParser({"bsml"});
-    BSMLTag::BSMLTag() : is_valid(false), children({}) {}
-
-    BSMLTag::~BSMLTag() {
-        for (auto child : children) delete child;
-        children.clear();
-    } 
-
-    bool BSMLTag::valid() const { 
-        return is_valid; 
-    }
+    static BSMLNodeParser<BSMLTag> bsmlNodeParser({"bsml"});
+    BSMLTag::BSMLTag() : BSMLNode() {}
 
     void BSMLTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         if (!valid()) {
@@ -114,12 +105,6 @@ namespace BSML {
         return parent->get_gameObject();
     }
 
-    void BSMLTag::CreateChildren(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        for (auto child : children) {
-            child->Construct(parent, host);
-        }
-    }
-
     void BSMLTag::SetHostField(Il2CppObject* host, Il2CppObject* value) const {
         if (!host || id.empty()) return;
 
@@ -132,21 +117,13 @@ namespace BSML {
                 il2cpp_functions::field_set_value(host, fieldInfo, value);
         }
     }
-    
-    void BSMLTag::AddChild(BSMLTag* child) {
-        child->root = root;
-        child->parent = this;
-        children.emplace_back(child);
-    }
 
     void BSMLTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing bsml tag");
+        DEBUG("Parsing bsml Node");
+        BSMLNode::parse(elem);
         is_valid = true;
         GET_BSML_STRING("id", id);
 
-        for (const tinyxml2::XMLAttribute* a = elem.FirstAttribute(); a; a = a->Next()) {
-            attributes[a->Name()] = a->Value();
-        }
         std::string tagString;
         GET_BSML_STRING("tags", tagString);
         if (!tagString.empty()) {

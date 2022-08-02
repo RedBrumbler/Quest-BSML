@@ -10,7 +10,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<LeaderboardTag> leaderboardTagParser({"leaderboard", "custom-leaderboard"});
+    static BSMLNodeParser<LeaderboardTag> leaderboardTagParser({"leaderboard", "custom-leaderboard"});
 
     GlobalNamespace::LeaderboardTableView* leaderboardTemplate = nullptr;
     UnityEngine::GameObject* LeaderboardTag::CreateObject(UnityEngine::Transform* parent) const {

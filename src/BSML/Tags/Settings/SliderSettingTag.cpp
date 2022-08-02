@@ -8,5 +8,5 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<SliderSettingTag> sliderSettingTagParser({"slider-setting"});
+    static BSMLNodeParser<SliderSettingTag> sliderSettingTagParser({"slider-setting"});
 }

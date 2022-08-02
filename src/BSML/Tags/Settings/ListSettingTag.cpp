@@ -3,5 +3,5 @@
 #include "UnityEngine/GameObject.hpp"
 
 namespace BSML {
-    static BSMLTagParser<ListSettingTag> listSettingTagParser({"list-setting"});
+    static BSMLNodeParser<ListSettingTag> listSettingTagParser({"list-setting"});
 }
