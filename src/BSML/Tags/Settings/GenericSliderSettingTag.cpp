@@ -2,6 +2,7 @@
 #include "logging.hpp"
 
 #include "BSML/Components/Settings/SliderSetting.hpp"
+#include "BSML/Components/ExternalComponents.hpp"
 
 #include "UnityEngine/Object.hpp"
 #include "UnityEngine/Resources.hpp"
@@ -57,6 +58,9 @@ namespace BSML {
 
         baseSetting->set_preferredWidth(90.0f);
 
+        auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
+        externalComponents->Add(text);
+        
         return gameObject;
     }
 
