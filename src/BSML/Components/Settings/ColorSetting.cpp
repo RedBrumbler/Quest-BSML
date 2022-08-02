@@ -1,4 +1,5 @@
 #include "BSML/Components/Settings/ColorSetting.hpp"
+#include "Helpers/delegates.hpp"
 #include "logging.hpp"
 
 #include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
@@ -42,8 +43,7 @@ namespace BSML {
             ERROR("No modalColorPicker found!");
         }
 
-        std::function<void()> fun = std::bind(&ColorSetting::EditButtonPressed, this);
-        auto delegate = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(classof(UnityEngine::Events::UnityAction*), fun);
+        auto delegate = MakeUnityAction(std::bind(&ColorSetting::EditButtonPressed, this));
         editButton->set_onClick(Button::ButtonClickedEvent::New_ctor());
         editButton->get_onClick()->AddListener(delegate);
         ReceiveValue();

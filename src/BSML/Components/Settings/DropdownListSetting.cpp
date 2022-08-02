@@ -1,4 +1,5 @@
 #include "BSML/Components/Settings/DropdownListSetting.hpp"
+#include "Helpers/delegates.hpp"
 #include "logging.hpp"
 
 #include "TMPro/TextMeshProUGUI.hpp"
@@ -27,7 +28,7 @@ namespace BSML {
     void DropdownListSetting::Setup() {
         if (dropdown) {
             std::function<void(HMUI::DropdownWithTableView*, int)> fun = std::bind(&DropdownListSetting::OnSelectIndex, this, std::placeholders::_1, std::placeholders::_2);
-            auto delegate = il2cpp_utils::MakeDelegate<System::Action_2<HMUI::DropdownWithTableView*, int>*>(classof(System::Action_2<HMUI::DropdownWithTableView*, int>*), fun);
+            auto delegate = MakeSystemAction(fun);
             dropdown->add_didSelectCellWithIdxEvent(delegate);
         }
 

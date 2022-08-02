@@ -1,4 +1,5 @@
 #include "BSML/Components/Settings/ToggleSetting.hpp"
+#include "Helpers/delegates.hpp"
 
 #include "UnityEngine/Events/UnityAction_1.hpp"
 #include "UnityEngine/UI/Toggle_ToggleEvent.hpp"
@@ -12,8 +13,8 @@ namespace BSML {
     }
 
     void ToggleSetting::Setup() {
-        std::function<void(bool)> fun = std::bind(&ToggleSetting::OnValueChanged, this, std::placeholders::_1);
-        auto delegate = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(classof(UnityEngine::Events::UnityAction_1<bool>*), fun);
+        auto onValueChangedInfo = il2cpp_functions::class_get_method_from_name(this->klass, "OnValueChanged", 1);
+        auto delegate = MakeUnityAction<bool>(this, onValueChangedInfo);
         toggle->onValueChanged->AddListener(delegate);
 
         ReceiveValue();

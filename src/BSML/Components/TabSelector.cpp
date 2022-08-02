@@ -1,10 +1,10 @@
 #include "BSML/Components/TabSelector.hpp"
 #include "logging.hpp"
 
+#include "Helpers/delegates.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Events/UnityAction.hpp"
 #include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
-#include "System/Action_2.hpp"
 
 DEFINE_TYPE(BSML, TabSelector);
 
@@ -57,8 +57,7 @@ namespace BSML {
             if (!leftButtons.empty()) leftButton = leftButtons[0]->GetComponent<UnityEngine::UI::Button*>();
         }
         if (leftButton) {
-            std::function<void()> fun = std::bind(&TabSelector::PageLeft, this);
-            auto delegate = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(fun);
+            auto delegate = MakeUnityAction(std::bind(&TabSelector::PageLeft, this));
             leftButton->get_onClick()->AddListener(delegate);
         }
         if (!Il2CppString::IsNullOrEmpty(rightButtonTag))  {
@@ -66,17 +65,15 @@ namespace BSML {
             if (!rightButtons.empty()) rightButton = rightButtons[0]->GetComponent<UnityEngine::UI::Button*>();
         }
         if (rightButton) {
-            std::function<void()> fun = std::bind(&TabSelector::PageRight, this);
-            auto delegate = il2cpp_utils::MakeDelegate<UnityEngine::Events::UnityAction*>(fun);
+            auto delegate = MakeUnityAction(std::bind(&TabSelector::PageRight, this));
             rightButton->get_onClick()->AddListener(delegate);
         }
 
         DEBUG("left button: {}, right button: {}", leftButton != nullptr, rightButton != nullptr);
         Refresh();
 
-        std::function<void(HMUI::SegmentedControl*, int)> fun = std::bind(&TabSelector::TabSelected, this, std::placeholders::_1, std::placeholders::_2);
-        auto delegate = il2cpp_utils::MakeDelegate<System::Action_2<HMUI::SegmentedControl*, int>*>(fun);
-
+        auto tabSelectedInfo = il2cpp_functions::class_get_method_from_name(this->klass, "TabSelected", 2);
+        auto delegate = MakeSystemAction<HMUI::SegmentedControl*, int>(this, tabSelectedInfo);
         textSegmentedControl->add_didSelectCellEvent(delegate);
         textSegmentedControl->SelectCellWithNumber(0);
         TabSelected(textSegmentedControl, 0);

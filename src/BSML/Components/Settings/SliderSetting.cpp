@@ -1,7 +1,7 @@
 #include "BSML/Components/Settings/SliderSetting.hpp"
+#include "Helpers/delegates.hpp"
 #include "logging.hpp"
 
-#include "System/Action_2.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 
@@ -43,9 +43,9 @@ namespace BSML {
             slider->set_numberOfSteps(steps + 1);
             ReceiveValue();
 
-            using ValueDidChangeEvent_t = System::Action_2<HMUI::RangeValuesTextSlider*, float>*;
-            std::function<void(HMUI::RangeValuesTextSlider*, float)> fun = std::bind(&SliderSetting::OnChange, this, std::placeholders::_1, std::placeholders::_2);
-            auto delegate = il2cpp_utils::MakeDelegate<ValueDidChangeEvent_t>(classof(ValueDidChangeEvent_t), fun);
+            auto onChangeInfo = il2cpp_functions::class_get_method_from_name(this->klass, "OnChange", 2);
+            auto delegate = MakeSystemAction<HMUI::RangeValuesTextSlider*, float>(this, onChangeInfo);
+
             slider->add_valueDidChangeEvent(delegate);
         }
     }
