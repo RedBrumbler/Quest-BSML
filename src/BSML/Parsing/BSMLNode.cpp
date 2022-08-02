@@ -1,4 +1,6 @@
 #include "BSML/Parsing/BSMLNode.hpp"
+#include "BSML/ComponentTypeWithData.hpp"
+#include "BSML/Parsing/BSMLParserParams.hpp"
 #include "logging.hpp"
 
 namespace BSML {
@@ -7,6 +9,7 @@ namespace BSML {
         for (auto child : children) {
             delete child;
         }
+        children.clear();
     }
     bool BSMLNode::valid() const {
         return is_valid;
@@ -27,4 +30,11 @@ namespace BSML {
         }
     }
 
+    void BSMLNode::Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& components) const {}
+
+    void BSMLNode::HandleChildren(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& components) const {
+        for (auto child : children) {
+            child->Handle(parent, parserParams, components);
+        }
+    }
 }

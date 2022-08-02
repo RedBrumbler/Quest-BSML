@@ -7,22 +7,26 @@
 
 #include "UnityEngine/Transform.hpp"
 #include "BSML/Parsing/BSMLNodeParser.hpp"
-#include "BSML/ComponentTypeWithData.hpp"
-#include "BSML/Parsing/BSMLParserParams.hpp"
 
 namespace BSML {
+    class ComponentTypeWithData;
+    class BSMLParserParams;
+    class BSMLDocParser;
+    class BSMLParser;
     class BSMLNode {
         public:
             BSMLNode();
-            virtual ~BSMLNode();
+            ~BSMLNode();
 
-            virtual void Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const = 0;
+            virtual void Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const;
+            virtual void HandleChildren(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const;
             bool valid() const;
             void AddChild(BSMLNode* child);
             
-        protected:
             friend class ::BSML::BSMLDocParser;
             friend class ::BSML::BSMLNodeParserBase;
+            friend class ::BSML::BSMLParser;
+        protected:
             bool is_valid = false;
             BSMLNode* root;
             BSMLNode* parent;

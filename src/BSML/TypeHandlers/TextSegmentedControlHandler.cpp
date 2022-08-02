@@ -19,7 +19,7 @@ namespace BSML {
     void TextSegmentedControlHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto textControl = reinterpret_cast<HMUI::TextSegmentedControl*>(componentType.component);
         auto& data = componentType.data;
-        auto host = parserParams.host;
+        auto host = parserParams.get_host();
 
         auto dataItr = data.find("data");
         if (dataItr != data.end() && !dataItr->second.empty()) {

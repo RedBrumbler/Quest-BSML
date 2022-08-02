@@ -51,7 +51,7 @@ namespace BSML {
         auto scrollView = tableView->scrollView;
 
         auto& data = componentType.data;
-        auto host = parserParams.host;
+        auto host = parserParams.get_host();
 
         auto selectCellItr = data.find("selectCell");
         if (selectCellItr != data.end() && !selectCellItr->second.empty()) {

@@ -5,12 +5,14 @@
 #include "UnityEngine/GameObject.hpp"
 #include "HMUI/Touchable.hpp"
 #include "BSML/Parsing/BSMLDocParser.hpp"
+#include "BSML/Parsing/BSMLParser.hpp"
 #include "BSML/Tags/BSMLTag.hpp"
 
 DEFINE_TYPE(BSML, TestViewController);
 
 namespace BSML {
     void TestViewController::ctor() {
+        someOtherField = false;
         someList = List<StringW>::New_ctor();
         
         someList->Add("Hello");
@@ -47,13 +49,8 @@ namespace BSML {
         if (!firstActivation) return;
         
         get_gameObject()->AddComponent<HMUI::Touchable*>();
-        auto parsed = BSMLDocParser::parse(IncludedAssets::test_xml);
-        if (parsed->valid()) {
-            INFO("Constructing bsml view");
-            parsed->Construct(get_transform(), this);
-        } else {
-            ERROR("Invalid BSML file");
-        }
+        auto parser = BSMLParser::parse(IncludedAssets::test_xml);
+        parser->Construct(get_transform(), this);
 
         INFO("this ptr  : {}", fmt::ptr(this));
         INFO("layout ptr: {}", fmt::ptr(layout));

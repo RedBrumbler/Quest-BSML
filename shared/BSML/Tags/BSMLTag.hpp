@@ -17,7 +17,6 @@ namespace BSML {
             BSMLTag();
 
             void Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const override;
-            virtual void Construct(UnityEngine::Transform* parent, Il2CppObject* host) const;
         protected:
             friend class ::BSML::BSMLDocParser;
             friend class ::BSML::BSMLNodeParserBase;

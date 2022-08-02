@@ -12,7 +12,7 @@ namespace BSML {
     BSMLNodeParserBase::~BSMLNodeParserBase() {
         BSMLDocParser::UnRegisterTag(this);
     }
-    
+
     BSMLNode* BSMLNodeParserBase::parse(const tinyxml2::XMLElement& elem) const {
         auto tag = newNode();
         tag->parse(elem);

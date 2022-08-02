@@ -20,7 +20,7 @@ namespace BSML {
 
     void ClickableImageHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto clickableImageOpt = il2cpp_utils::try_cast<ClickableImage>(componentType.component);
-        auto host = parserParams.host;
+        auto host = parserParams.get_host();
 
         if (clickableImageOpt.has_value()) {
             auto clickableImage = clickableImageOpt.value();

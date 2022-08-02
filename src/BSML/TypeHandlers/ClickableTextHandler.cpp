@@ -20,7 +20,7 @@ namespace BSML {
 
     void ClickableTextHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto clickableTextOpt = il2cpp_utils::try_cast<ClickableText>(componentType.component);
-        auto host = parserParams.host;
+        auto host = parserParams.get_host();
 
         if (clickableTextOpt.has_value()) {
             auto clickableText = clickableTextOpt.value();

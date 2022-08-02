@@ -23,29 +23,6 @@ namespace BSML {
     static BSMLNodeParser<BSMLTag> bsmlNodeParser({"bsml"});
     BSMLTag::BSMLTag() : BSMLNode() {}
 
-    void BSMLTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        if (!valid()) {
-            ERROR("Trying to construct an invalid tag, not doing that!");
-            return;
-        }
-
-        BSMLParserParams parserParams(host, this);
-        std::vector<ComponentTypeWithData*> componentInfo;
-
-        Handle(parent, parserParams, componentInfo);
-
-        for (auto info : componentInfo) {
-            info->typeHandler->HandleTypeAfterParse(*info, parserParams);
-        }
-
-        // gotta clean up, or it's a memory leak
-        for (auto info : componentInfo) {
-            delete info;
-        }
-        
-        componentInfo.clear();
-    }
-
     void BSMLTag::Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const {
         // create object
         auto currentObject = CreateObject(parent);
@@ -119,7 +96,6 @@ namespace BSML {
     }
 
     void BSMLTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing bsml Node");
         BSMLNode::parse(elem);
         is_valid = true;
         GET_BSML_STRING("id", id);
