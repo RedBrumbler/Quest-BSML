@@ -11,6 +11,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    static BSMLTagParser<BackgroundTag> backgroundTagParser({"background", "bg", "div"});
     void BackgroundTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
         auto go = CreateObject(parent);
         auto background = go->GetComponent<Backgroundable*>();
