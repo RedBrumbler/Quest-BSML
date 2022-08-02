@@ -1,8 +1,9 @@
 #include "BSML/Tags/ModalColorPickerTag.hpp"
-#include "BSML.hpp"
 #include "BSML/Components/ModalColorPicker.hpp"
 #include "BSML/Components/ExternalComponents.hpp"
+#include "Helpers/delegates.hpp"
 #include "logging.hpp"
+#include "BSML.hpp"
 
 #include "UnityEngine/Object.hpp"
 #include "UnityEngine/Resources.hpp"
@@ -10,7 +11,6 @@
 #include "UnityEngine/GameObject.hpp"
 
 #include "HMUI/ImageView.hpp"
-#include "System/Action_2.hpp"
 #include "BSML/Components/ModalColorPicker.hpp"
 
 using namespace HMUI;
@@ -66,9 +66,8 @@ namespace BSML {
             });
         }   
 
-        std::function<void(UnityEngine::Color value, GlobalNamespace::ColorChangeUIEventType type)> fun = std::bind(&ModalColorPicker::OnChange, colorPicker, std::placeholders::_1, std::placeholders::_2);
-        using delegate_t = System::Action_2<UnityEngine::Color, GlobalNamespace::ColorChangeUIEventType>*;
-        auto delegate = il2cpp_utils::MakeDelegate<delegate_t>(classof(delegate_t), fun);
+        auto onChangeInfo = il2cpp_functions::class_get_method_from_name(colorPicker->klass, "OnChange", 2);
+        auto delegate = MakeSystemAction<UnityEngine::Color, GlobalNamespace::ColorChangeUIEventType>(colorPicker, onChangeInfo);
         auto rgbController = Object::Instantiate(rgbTemplate, gameObject->get_transform(), false);
         rgbController->set_name("BSMLRGBPanel");
         auto rgbTransform = reinterpret_cast<RectTransform*>(rgbController->get_transform());

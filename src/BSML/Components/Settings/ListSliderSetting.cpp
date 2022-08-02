@@ -1,4 +1,5 @@
 #include "BSML/Components/Settings/ListSliderSetting.hpp"
+#include "Helpers/delegates.hpp"
 
 #include "System/Action_2.hpp"
 #include "UnityEngine/GameObject.hpp"
@@ -31,9 +32,8 @@ namespace BSML {
             text = slider->get_gameObject()->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
             ReceiveValue();
 
-            using ValueDidChangeEvent_t = System::Action_2<HMUI::RangeValuesTextSlider*, float>*;
-            std::function<void(HMUI::RangeValuesTextSlider*, float)> fun = std::bind(&ListSliderSetting::OnChange, this, std::placeholders::_1, std::placeholders::_2);
-            auto delegate = il2cpp_utils::MakeDelegate<ValueDidChangeEvent_t>(classof(ValueDidChangeEvent_t), fun);
+            auto onChangeInfo = il2cpp_functions::class_get_method_from_name(this->klass, "OnChange", 2);
+            auto delegate = MakeSystemAction<HMUI::RangeValuesTextSlider*, float>(this, onChangeInfo);
             slider->add_valueDidChangeEvent(delegate);
         }
     }

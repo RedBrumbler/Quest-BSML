@@ -1,4 +1,5 @@
 #include "BSML/Components/Settings/StringSetting.hpp"
+#include "Helpers/delegates.hpp"
 #include "logging.hpp"
 
 #include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
@@ -37,8 +38,7 @@ namespace BSML {
         modalKeyboard->onEnter = std::bind(&StringSetting::EnterPressed, this, std::placeholders::_1);
 
         editButton->set_onClick(Button::ButtonClickedEvent::New_ctor());
-        std::function<void()> fun = std::bind(&StringSetting::EditButtonPressed, this);
-        auto delegate = il2cpp_utils::MakeDelegate<Events::UnityAction*>(classof(Events::UnityAction*), fun);
+        auto delegate = MakeUnityAction(std::bind(&StringSetting::EditButtonPressed, this));
         editButton->get_onClick()->AddListener(delegate);
     }
 

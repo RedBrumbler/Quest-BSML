@@ -1,6 +1,7 @@
 #include "BSML/Components/Keyboard/Key.hpp"
 #include "BSML/Components/Keyboard/Keyboard.hpp"
 #include "Helpers/getters.hpp"
+#include "Helpers/delegates.hpp"
 
 #include "System/StringComparison.hpp"
 #include "UnityEngine/Events/UnityAction.hpp"
@@ -71,8 +72,7 @@ namespace BSML {
 
         button->set_onClick(Button::ButtonClickedEvent::New_ctor());
 
-        std::function<void()> fun = std::bind(&Key::OnClick, self);
-        auto delegate = il2cpp_utils::MakeDelegate<Events::UnityAction*>(classof(Events::UnityAction*), fun);
+        auto delegate = MakeUnityAction(std::bind(&Key::OnClick, self));
         button->get_onClick()->AddListener(delegate);
         auto hintText = button->get_gameObject()->AddComponent<HMUI::HoverHint*>();
         hintText->set_text(self->value);

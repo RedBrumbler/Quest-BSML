@@ -1,7 +1,9 @@
 #include "BSML/TypeHandlers/ButtonHandler.hpp"
+#include "Helpers/delegates.hpp"
+#include "logging.hpp"
+
 #include "UnityEngine/Events/UnityAction.hpp"
 #include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
-#include "logging.hpp"
 
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 
@@ -35,8 +37,7 @@ namespace BSML {
                 auto arg = StringParseHelper(onClickItr->second);
                 auto onClickMethodInfo = arg.asMethodInfo(host, 0);
                 if (onClickMethodInfo) {
-                    std::function<void()> fun = [host, onClickMethodInfo](){ il2cpp_utils::RunMethod(host, onClickMethodInfo); };
-                    auto delegate = il2cpp_utils::MakeDelegate<UnityAction*>(fun);
+                    auto delegate = MakeUnityAction(host, onClickMethodInfo);
                     event->AddListener(delegate);
                 } else {
                     ERROR("Method '{}' could not be found in class {}::{}", onClickItr->second, host->klass->namespaze, host->klass->name);
@@ -48,8 +49,7 @@ namespace BSML {
                 auto arg = StringParseHelper(clickEventItr->second);
                 auto clickEventMethodInfo = arg.asMethodInfo(host, 0);
                 if (clickEventMethodInfo) {
-                    std::function<void()> fun = [host, clickEventMethodInfo](){ il2cpp_utils::RunMethod(host, clickEventMethodInfo); };
-                    auto delegate = il2cpp_utils::MakeDelegate<UnityAction*>(fun);
+                    auto delegate = MakeUnityAction(host, clickEventMethodInfo);
                     event->AddListener(delegate);
                 } else {
                     ERROR("Method '{}' could not be found in class {}::{}", clickEventItr->second, host->klass->namespaze, host->klass->name);

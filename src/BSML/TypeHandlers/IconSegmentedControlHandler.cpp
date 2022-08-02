@@ -1,7 +1,7 @@
 #include "BSML/TypeHandlers/IconSegmentedControlHandler.hpp"
+#include "Helpers/delegates.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 
-#include "System/Action_2.hpp"
 #include "HMUI/IconSegmentedControl_DataItem.hpp"
 
 namespace BSML {
@@ -50,11 +50,7 @@ namespace BSML {
             auto arg = StringParseHelper(selectCellItr->second);
             auto methodInfo = arg.asMethodInfo(host, 2);
             if (methodInfo) {
-                std::function<void(HMUI::SegmentedControl*, int)> fun = [host, methodInfo](auto segmentedControl, auto index){
-                    il2cpp_utils::RunMethod(host, methodInfo, segmentedControl, index);
-                };
-
-                auto delegate = il2cpp_utils::MakeDelegate<System::Action_2<HMUI::SegmentedControl*, int>*>(fun);
+                auto delegate = MakeSystemAction<HMUI::SegmentedControl*, int>(host, methodInfo);
                 textControl->add_didSelectCellEvent(delegate);
             } else {
                 ERROR("Could not find method '{}' with 2 args in class '{}::{}'", arg, host->klass->namespaze, host->klass->name);
