@@ -1,24 +1,24 @@
 <bg bg="round-rect-panel">
-    <vertical anchor-pos-x="60" pref-height="60" vertical-fit="PreferredSize">
+    <vertical anchor-pos-x="60" pref-height="80" pref-width="10" vertical-fit="PreferredSize">
         <!-- 
             This is a page up button, that means this button can be used to scroll up 
             the tag 'PageUpFor:id' where id corresponds to the id of the scrollable container makes sure it knows what to apply to
         -->
-        <horizontal><page-button text="Up" tags="PageUpFor:cont" direction="Up" pref-height="5" pref-width="5"/></horizontal>
+        <horizontal><page-button text="Up" tags="PageUpFor:cont" direction="Up" pref-height="7.5" pref-width="7.5"/></horizontal>
         <!-- 
             scroll indicator, this is to show where in the container you are at
             the tag 'IndicatorFor:id' where id corresponds to the id of the scrollable container makes sure it knows what to apply to
         -->
-        <horizontal vertical-fit="Unconstrained" horizontal-fit="MinSize" min-width="1.5" pref-width="1.5" pref-height="50">
+        <horizontal vertical-fit="Unconstrained" horizontal-fit="MinSize" min-width="1.5" pref-width="1.5" pref-height="65">
             <scroll-indicator tags="IndicatorFor:cont"/>
         </horizontal>
         <!-- 
             This is a page down button, that means this button can be used to scroll down 
             the tag 'PageDownFor:id' where id corresponds to the id of the scrollable container makes sure it knows what to apply to
         -->
-        <horizontal><page-button tags="PageDownFor:cont" direction="Down" pref-height="5" pref-width="5"/></horizontal>
+        <horizontal><page-button tags="PageDownFor:cont" direction="Down" pref-height="7.5" pref-width="7.5"/></horizontal>
     </vertical>
-    <scrollable-container horizontal-fit="PreferredSize" pref-width="40" pref-height="20" id="cont">
+    <scrollable-container size-delta-x="-54" horizontal-fit="PreferredSize" id="cont">
         <!-- We just fill the container with a bunch of stuff to use -->
         <string-setting/>
         <string-setting/>

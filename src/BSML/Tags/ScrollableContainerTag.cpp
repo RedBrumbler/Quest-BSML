@@ -32,7 +32,7 @@ namespace BSML {
         transform->set_anchorMin({0, 0});
         transform->set_anchorMax({1, 1});
         transform->set_anchoredPosition({0, 0});
-        transform->set_sizeDelta({-54, 0});
+        transform->set_sizeDelta({0, 0});
 
         auto vpgo = GameObject::New_ctor("Viewport");
         auto viewport = vpgo->AddComponent<RectTransform*>();
@@ -57,6 +57,7 @@ namespace BSML {
         content->set_anchorMin({0, 1});
         content->set_anchorMax({1, 1});
         content->set_anchoredPosition({0, 0});
+        content->set_sizeDelta({0, 0});
         content->set_pivot({0.5, 1});
 
         auto contentFitter = contentGo->AddComponent<ContentSizeFitter*>();
@@ -68,7 +69,6 @@ namespace BSML {
         layout->set_childForceExpandHeight(false);
         layout->set_childForceExpandWidth(false);
 
-        go->AddComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
         go->AddComponent<HMUI::Touchable*>(); // Required by EventSystemListener
         go->AddComponent<HMUI::EventSystemListener*>(); // Required by ScrollView
         auto scrollView = go->AddComponent<ScrollableContainer*>();
@@ -78,7 +78,13 @@ namespace BSML {
 
         auto externalComponents = contentGo->AddComponent<ExternalComponents*>();
         externalComponents->Add(scrollView);
-        externalComponents->Add(go->AddComponent<LayoutElement*>());
+        externalComponents->Add(transform);
+        auto layoutElement = go->AddComponent<LayoutElement*>();
+        layoutElement->set_minWidth(-1);
+        layoutElement->set_preferredWidth(-1);
+        layoutElement->set_flexibleWidth(0);
+
+        externalComponents->Add(layoutElement);
 
         go->SetActive(true);
         return contentGo;
