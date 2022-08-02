@@ -4,15 +4,4 @@
 
 namespace BSML {
     static BSMLTagParser<IncrementSettingTag> incrementSettingTagParser({"increment-setting"});
-    void IncrementSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto incrementSetting = go->GetComponent<BSML::IncrementSetting*>();
-        SetHostField(host, incrementSetting);
-
-        CreateChildren(go->get_transform(), host);
-    }
-
-    void IncrementSettingTag::parse(const tinyxml2::XMLElement& elem) {
-        Base::parse(elem);
-    }
 }

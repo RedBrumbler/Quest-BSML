@@ -16,15 +16,6 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     LayoutElement* controllersTransformTemplate = nullptr;
-
-    void GenericSliderSettingTagBase::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto slider = go->GetComponent<BSML::SliderSettingBase*>();
-        SetHostField(host, slider);
-        
-        CreateChildren(go->get_transform(), host);
-    }
-
     UnityEngine::GameObject* GenericSliderSettingTagBase::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating SliderSettingBase");
         if (!controllersTransformTemplate || !Object::IsNativeObjectAlive(controllersTransformTemplate))
@@ -58,10 +49,5 @@ namespace BSML {
         baseSetting->set_preferredWidth(90.0f);
 
         return gameObject;
-    }
-
-    void GenericSliderSettingTagBase::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing generic slider tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

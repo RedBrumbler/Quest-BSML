@@ -16,14 +16,6 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    void IncDecSettingTagBase::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto incrementSetting = go->GetComponent<BSML::IncDecSetting*>();
-        SetHostField(host, incrementSetting);
-        
-        CreateChildren(go->get_transform(), host);
-    }
-
     UnityEngine::GameObject* IncDecSettingTagBase::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating IncDecSetting");
         if (!valueControllerTemplate || !Object::IsNativeObjectAlive(valueControllerTemplate)) {
@@ -67,10 +59,5 @@ namespace BSML {
         gameObject->SetActive(true);
 
         return gameObject;
-    }
-
-    void IncDecSettingTagBase::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing incdecsetting tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }
