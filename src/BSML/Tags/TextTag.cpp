@@ -12,13 +12,6 @@ using namespace UnityEngine;
 
 namespace BSML {
     static BSMLTagParser<TextTag> textTagParser({"text", "label"});
-    void TextTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto text = go->GetComponent<TMPro::TextMeshProUGUI*>();
-        SetHostField(host, text);
-
-        CreateChildren(go->get_transform(), host);
-    }
 
     UnityEngine::GameObject* TextTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Text");
@@ -38,10 +31,5 @@ namespace BSML {
         rectTransform->set_anchorMax({0.5f, 0.5f});
         
         return gameObject;
-    }
-
-    void TextTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing text tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

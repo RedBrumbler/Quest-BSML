@@ -14,14 +14,6 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLTagParser<GridLayoutTag> gridLayoutTagParser({"grid"});
-    void GridLayoutTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto grid = go->GetComponent<UnityEngine::UI::GridLayoutGroup*>();
-        SetHostField(host, grid);
-        
-        CreateChildren(go->get_transform(), host);
-    }
-
     UnityEngine::GameObject* GridLayoutTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating GridLayout");
         auto gameObject = GameObject::New_ctor("BSMLGridLayoutGroup");
@@ -39,10 +31,5 @@ namespace BSML {
 
         gameObject->AddComponent<LayoutElement*>();
         return gameObject;
-    }
-
-    void GridLayoutTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing grid tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

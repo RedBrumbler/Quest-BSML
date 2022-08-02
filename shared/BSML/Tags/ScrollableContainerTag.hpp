@@ -4,11 +4,9 @@
 
 namespace BSML
 {
-    class ScrollableContainerTag : public BSMLTag
-    {
+    class ScrollableContainerTag : public BSMLTag {
         public:
             ScrollableContainerTag() : BSMLTag() {}
-    
         protected:
             virtual UnityEngine::GameObject *CreateObject(UnityEngine::Transform *parent) const override;
     };

@@ -21,15 +21,6 @@ using namespace VRUIControls;
 
 namespace BSML {
     static BSMLTagParser<ModalKeyboardTag> modalKeyboardTagParser({"modal-keyboard"});
-    void ModalKeyboardTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto keyboard = go->GetComponent<BSML::ModalKeyboard*>();
-        SetHostField(host, keyboard);
-        auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
-        
-        CreateChildren(go->get_transform(), host);
-    }
-
     UnityEngine::GameObject* ModalKeyboardTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Modal Keyboard");
         auto gameObject = ModalTag::CreateObject(parent);
@@ -51,10 +42,5 @@ namespace BSML {
         externalComponents->Add(modalKeyboard);
 
         return gameObject;
-    }
-
-    void ModalKeyboardTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing modal tag");
-        this->::BSML::ModalTag::parse(elem);
     }
 }

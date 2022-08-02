@@ -23,17 +23,6 @@ using namespace VRUIControls;
 namespace BSML {
     static BSMLTagParser<ModalTag> modalTagParser({"modal"});
     HMUI::ModalView* modalViewTemplate = nullptr;
-    void ModalTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto modal = go->GetComponent<BSML::ModalView*>();
-        auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
-        auto rectTransform = externalComponents->Get<RectTransform*>();
-        
-        SetHostField(host, modal);
-        
-        CreateChildren(go->get_transform(), host);
-    }
-
     UnityEngine::GameObject* ModalTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Modal");
         if (!modalViewTemplate || !Object::IsNativeObjectAlive(modalViewTemplate)) {
@@ -86,10 +75,5 @@ namespace BSML {
         externalComponents->Add(modalView);
 
         return gameObject;
-    }
-
-    void ModalTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing modal tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

@@ -27,7 +27,6 @@ namespace BSML {
     static BSMLTagParser<ScrollViewTag> scrollViewTagParser({"scroll-view"});
 
     HMUI::TextPageScrollView* scrollViewTemplate = nullptr;
-    
 
     UnityEngine::GameObject* ScrollViewTag::CreateObject(UnityEngine::Transform* parent) const {
         if (!scrollViewTemplate || !UnityEngine::Object::IsNativeObjectAlive(scrollViewTemplate)) {

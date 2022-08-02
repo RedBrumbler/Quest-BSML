@@ -14,14 +14,6 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLTagParser<VerticalTag> verticalTagParser({"vertical"});
-    void VerticalTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto vertical = go->GetComponent<UnityEngine::UI::VerticalLayoutGroup*>();
-        SetHostField(host, vertical);
-        
-        CreateChildren(go->get_transform(), host);
-    }
-
     UnityEngine::GameObject* VerticalTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Vertical");
         auto gameObject = GameObject::New_ctor("BSMLVerticalLayoutGroup");
@@ -39,10 +31,5 @@ namespace BSML {
 
         gameObject->AddComponent<LayoutElement*>();
         return gameObject;
-    }
-    
-    void VerticalTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing vertical tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

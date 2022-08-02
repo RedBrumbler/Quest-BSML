@@ -32,15 +32,6 @@ namespace BSML {
     GlobalNamespace::HSVPanelController* hsvTemplate = nullptr;
     HMUI::ImageView* currentColorTemplate = nullptr;
 
-    void ModalColorPickerTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto externalComponents = go->GetComponent<ExternalComponents*>();
-        auto colorPicker = externalComponents->Get<ModalColorPicker*>();
-        SetHostField(host, colorPicker);
-        
-        CreateChildren(go->get_transform(), host);
-    }
-
     UnityEngine::GameObject* ModalColorPickerTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Modal Color Picker");
 
@@ -98,10 +89,5 @@ namespace BSML {
 
         externalComponents->Add(colorPicker);
         return gameObject;
-    }
-
-    void ModalColorPickerTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing modal color picker tag");
-        this->Base::parse(elem);
     }
 }

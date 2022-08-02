@@ -27,18 +27,6 @@ namespace BSML {
     static BSMLTagParser<PageButtonTag> pageButtonTagParser({"page-button", "pg-button"});
     Button* pageButtonTemplate = nullptr;
 
-    void PageButtonTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto externalComponents = go->GetComponent<ExternalComponents*>();
-        auto pageButton = externalComponents->Get<PageButton*>();
-        auto button = externalComponents->Get<Button*>();
-
-        SetHostField(host, pageButton);
-        
-        CreateChildren(go->get_transform(), host);
-
-    }
-
     UnityEngine::GameObject* PageButtonTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Page button");
         if (!pageButtonTemplate || !Object::IsNativeObjectAlive(pageButtonTemplate)) {
@@ -83,10 +71,5 @@ namespace BSML {
 
         gameObject->SetActive(true);
         return gameObject;
-    }
-
-    void PageButtonTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing page button tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

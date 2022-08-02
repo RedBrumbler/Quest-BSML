@@ -9,18 +9,16 @@
 #include "BSML/Components/ScrollIndicator.hpp"
 #include "UnityEngine/RectTransform.hpp"
 
-namespace BSML
-{
-    HMUI::VerticalScrollIndicator *scrollIndicator = nullptr;
-
+namespace BSML {
+    HMUI::VerticalScrollIndicator* scrollIndicator = nullptr;
     static BSMLTagParser<ScrollIndicatorTag> scrollIndicatorTagParser({"scroll-indicator", "vertical-scroll-indicator"});
 
-    UnityEngine::GameObject *ScrollIndicatorTag::CreateObject(UnityEngine::Transform *parent) const
+    UnityEngine::GameObject* ScrollIndicatorTag::CreateObject(UnityEngine::Transform* parent) const
     {
         DEBUG("making ScrollIndicator");
         if (!scrollIndicator || !UnityEngine::Object::IsNativeObjectAlive(scrollIndicator))
         {
-            scrollIndicator = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::VerticalScrollIndicator *>().FirstOrDefault();
+            scrollIndicator = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::VerticalScrollIndicator* >().FirstOrDefault();
         }
 
         auto gameObj = UnityEngine::Object::Instantiate(scrollIndicator->get_gameObject(), parent, false);
@@ -29,7 +27,7 @@ namespace BSML
         gameObj->SetActive(false);
         gameObj->set_name("BSMLVerticalScrollIndicator");
         
-        auto transform = gameObj->GetComponent<UnityEngine::RectTransform *>();
+        auto transform = gameObj->GetComponent<UnityEngine::RectTransform* >();
         transform->SetParent(parent, false);
         
 
