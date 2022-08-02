@@ -55,7 +55,10 @@ namespace BSML {
     }
 
     void ScrollableContainer::RefreshBindings() {
-        if (!buttonBinder) return;
+        if (!buttonBinder) {
+            ERROR("No button binder");
+            return;
+        }
 
         buttonBinder->ClearBindings();
         if (pageUpButton) {
@@ -65,7 +68,7 @@ namespace BSML {
         }
         if (pageDownButton) {
             if (!downButtonAction)
-                downButtonAction = MakeSystemAction(this, il2cpp_functions::class_get_method_from_name(klass, "PageUpButtonPressed", 0));
+                downButtonAction = MakeSystemAction(this, il2cpp_functions::class_get_method_from_name(klass, "PageDownButtonPressed", 0));
             buttonBinder->AddBinding(pageDownButton, downButtonAction);
         }
     }
@@ -84,7 +87,7 @@ namespace BSML {
             pageUpButton->set_interactable(destinationPos > 0);
         }
         if (pageDownButton) {
-            pageUpButton->set_interactable(destinationPos < contentHeight - (viewport ? viewport->get_rect().get_height() : 0));
+            pageDownButton->set_interactable(destinationPos < contentHeight - (viewport ? viewport->get_rect().get_height() : 0));
         }
     }
 
@@ -167,6 +170,7 @@ namespace BSML {
     }
 
     void ScrollableContainer::PageUpButtonPressed() {
+        INFO("Up");
         float num = destinationPos;
         switch (scrollType)
         {
@@ -191,13 +195,16 @@ namespace BSML {
                     break;
                 }
         }
+        INFO("ScrollTo {}", num);
         ScrollTo(num, true);
         RefreshButtons();
         set_enabled(true);
     }
 
     void ScrollableContainer::PageDownButtonPressed() {
+        INFO("Down");
         float num = destinationPos;
+        INFO("scrollType {}", scrollType.value);
         switch (scrollType)
         {
             case ScrollType::PageSize:
@@ -220,6 +227,7 @@ namespace BSML {
                     break;
                 }
         }
+        INFO("ScrollTo {}", num);
         ScrollTo(num, true);
         RefreshButtons();
         set_enabled(true);

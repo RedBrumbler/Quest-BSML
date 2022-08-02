@@ -313,4 +313,28 @@ namespace BSML::Utilities {
     }
 
     /// end of based on thing
+
+    namespace ImageResources {
+        UnityEngine::Sprite* blankSprite = nullptr;
+        UnityEngine::Sprite* GetBlankSprite() {
+            if (!blankSprite || !Object::IsNativeObjectAlive(blankSprite)) {
+                auto texture = Texture2D::get_blackTexture();
+                blankSprite = Sprite::Create(texture, Rect(0.0f, 0.0f, texture->get_width(), texture->get_height()), Vector2(0.5f, 0.5f), 100.0f, 1u, SpriteMeshType::FullRect, Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
+                blankSprite->set_name("BlankSprite");
+                Object::DontDestroyOnLoad(blankSprite);
+            }
+            return blankSprite;
+        }
+        
+        UnityEngine::Sprite* whitePixelSprite = nullptr;
+        UnityEngine::Sprite* GetWhitePixel() {
+            if (!whitePixelSprite || !Object::IsNativeObjectAlive(whitePixelSprite)) {
+                auto texture = Texture2D::get_whiteTexture();
+                whitePixelSprite = Sprite::Create(texture, Rect(0.0f, 0.0f, texture->get_width(), texture->get_height()), Vector2(0.5f, 0.5f), 1, 1u, SpriteMeshType::FullRect, Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
+                whitePixelSprite->set_name("BlankSprite");
+                Object::DontDestroyOnLoad(whitePixelSprite);
+            }
+            return whitePixelSprite;
+        }
+    }
 }

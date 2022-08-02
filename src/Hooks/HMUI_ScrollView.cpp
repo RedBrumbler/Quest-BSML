@@ -6,6 +6,7 @@
 
 bool compareKlass(Il2CppClass* other) {
     static Il2CppClass* klass = BSML::ScrollableContainer::___TypeRegistration::get()->klass();
+    INFO("{} == {}: {}", klass->name, other->name, klass == other);
     return other == klass;
 }
 
