@@ -28,14 +28,6 @@ namespace BSML {
     GlobalNamespace::FormattedFloatListSettingsValueController* baseSettings = nullptr;
     Image* colorImage = nullptr;
 
-    void ColorSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
-        auto colorSetting = externalComponents->Get<BSML::ColorSetting*>();
-        SetHostField(host, colorSetting);
-        CreateChildren(go->get_transform(), host);
-    }
-
     UnityEngine::GameObject* ColorSettingTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating ColorSetting");
         if (!baseSettings || !Object::IsNativeObjectAlive(baseSettings)) {
@@ -104,10 +96,5 @@ namespace BSML {
 
         gameObject->SetActive(true);
         return gameObject;
-    }
-
-    void ColorSettingTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing color setting tag");
-        this->Base::parse(elem);
     }
 }

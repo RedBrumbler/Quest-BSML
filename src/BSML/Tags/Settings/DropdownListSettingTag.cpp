@@ -25,15 +25,6 @@ namespace BSML {
     GameObject* dropdownTemplate = nullptr;
     GameObject* safePrefab = nullptr;
 
-    void DropdownListSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto externalComponents = go->GetComponent<ExternalComponents*>();
-        auto dropdownListSetting = externalComponents->Get<BSML::DropdownListSetting*>();
-        SetHostField(host, dropdownListSetting);
-
-        CreateChildren(go->get_transform(), host);
-    }
-
     UnityEngine::GameObject* DropdownListSettingTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating DropdownListSetting");
 
@@ -84,10 +75,5 @@ namespace BSML {
         dropdown->get_gameObject()->SetActive(true);
         gameObject->SetActive(true);
         return gameObject;
-    }
-
-    void DropdownListSettingTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing dropdown list setting tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

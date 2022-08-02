@@ -21,13 +21,6 @@ using namespace UnityEngine::UI;
 namespace BSML {
     static BSMLTagParser<ToggleSettingTag> toggleSettingTagParser({"toggle-setting"});
     GameObject* toggleTemplate = nullptr;
-    
-    void ToggleSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto toggle = go->GetComponent<BSML::ToggleSetting*>();
-        SetHostField(host, toggle);
-        CreateChildren(go->get_transform(), host);
-    }
 
     UnityEngine::GameObject* ToggleSettingTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating ToggleSetting");
@@ -70,10 +63,5 @@ namespace BSML {
         go->SetActive(true);
 
         return go;
-    }
-
-    void ToggleSettingTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing horizontal tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

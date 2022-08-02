@@ -15,31 +15,12 @@
 #include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
 #include "GlobalNamespace/StepValuePicker.hpp"
 
-
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLTagParser<StringSettingTag> stringSettingTagParser({"string-setting"});
     GlobalNamespace::FormattedFloatListSettingsValueController* valueControllerTemplate = nullptr;
-    
-    void StringSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto externalComponents = go->GetComponent<ExternalComponents*>();
-        auto stringSetting = externalComponents->Get<BSML::StringSetting*>();
-
-        auto modalView = externalComponents->Get<BSML::ModalView*>();
-        modalView->dismissOnBlockerClicked = true;
-        modalView->moveToCenter = true;
-
-        auto keyboard = externalComponents->Get<BSML::ModalKeyboard*>();
-        keyboard->genericSetting->Finalize();
-        keyboard->genericSetting = nullptr;
-        
-        SetHostField(host, stringSetting);
-        
-        CreateChildren(go->get_transform(), host);
-    }
 
     UnityEngine::GameObject* StringSettingTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating StringSetting");
@@ -102,10 +83,5 @@ namespace BSML {
 
         gameObject->SetActive(true);
         return gameObject;
-    }
-
-    void StringSettingTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing string setting tag");
-        this->Base::parse(elem);
     }
 }
