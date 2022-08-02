@@ -2,6 +2,7 @@
 #include "logging.hpp"
 
 #include "BSML/Components/Settings/ToggleSetting.hpp"
+#include "BSML/Components/ExternalComponents.hpp"
 
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/GameObject.hpp"
@@ -19,7 +20,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<ToggleSettingTag> toggleSettingTagParser({"toggle-setting"});
+    static BSMLTagParser<ToggleSettingTag> toggleSettingTagParser({"toggle-setting", "bool-setting", "checkbox-setting", "checkbox"});
     GameObject* toggleTemplate = nullptr;
     
     void ToggleSettingTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
@@ -68,6 +69,9 @@ namespace BSML {
         auto layoutElement = go->GetComponent<LayoutElement*>();
         layoutElement->set_preferredWidth(90.0f);
         go->SetActive(true);
+
+        auto externalComponents = go->AddComponent<ExternalComponents*>();
+        externalComponents->Add(toggleSetting->text);
 
         return go;
     }
