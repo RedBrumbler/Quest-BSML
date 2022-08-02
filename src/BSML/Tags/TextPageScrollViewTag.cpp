@@ -1,6 +1,14 @@
 #include "BSML/Tags/TextPageScrollViewTag.hpp"
 #include "Helpers/getters.hpp"
 #include "BSML/Components/ExternalComponents.hpp"
+#include "BSML/Components/TextPageScrollViewRefresher.hpp"
+
+#include "UnityEngine/Object.hpp"
+#include "UnityEngine/Resources.hpp"
+#include "HMUI/ScrollView.hpp"
+#include "HMUI/TextPageScrollView.hpp"
+#include "TMPro/TextMeshProUGUI.hpp"
+#include "GlobalNamespace/ReleaseInfoViewController.hpp"
 
 namespace BSML {
     static BSMLTagParser<TextPageScrollViewTag> textPageScrollViewTagParser({"text-page", "page"});

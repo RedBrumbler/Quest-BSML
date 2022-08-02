@@ -27,17 +27,6 @@ namespace BSML {
         return buttonPrefab;
     }
 
-    void ButtonTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto externalComponents = go->GetComponent<ExternalComponents*>();
-        auto button = externalComponents->Get<Button*>();
-
-        SetHostField(host, button);
-        
-        CreateChildren(go->get_transform(), host);
-
-    }
-
     UnityEngine::GameObject* ButtonTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Button");
 
@@ -76,10 +65,5 @@ namespace BSML {
         externalComponents->Add(layoutElement);
 
         return gameObject;
-    }
-
-    void ButtonTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing button tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

@@ -26,17 +26,6 @@ namespace BSML {
     static BSMLTagParser<ButtonWithIconTag> buttonWithIconTagParser({"button-with-icon", "icon-button"});
     Button* buttonWithIconTemplate = nullptr;
 
-    void ButtonWithIconTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto externalComponents = go->GetComponent<ExternalComponents*>();
-        auto button = externalComponents->Get<Button*>();
-
-        SetHostField(host, button);
-        
-        CreateChildren(go->get_transform(), host);
-
-    }
-
     UnityEngine::GameObject* ButtonWithIconTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Button with icon");
         if (!buttonWithIconTemplate || !Object::IsNativeObjectAlive(buttonWithIconTemplate)) {
@@ -94,10 +83,5 @@ namespace BSML {
 
         gameObject->SetActive(true);
         return gameObject;
-    }
-
-    void ButtonWithIconTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing button with icon tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

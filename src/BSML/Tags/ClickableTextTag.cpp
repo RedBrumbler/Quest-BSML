@@ -15,14 +15,6 @@ using namespace UnityEngine;
 
 namespace BSML {
     static BSMLTagParser<ClickableTextTag> clickableTextTagParser({"clickable-text"});
-    void ClickableTextTag::Construct(UnityEngine::Transform* parent, Il2CppObject* host) const {
-        auto go = CreateObject(parent);
-        auto text = go->GetComponent<ClickableText*>();
-        SetHostField(host, text);
-
-        CreateChildren(go->get_transform(), host);
-    }
-
     UnityEngine::GameObject* ClickableTextTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Clickable text");
         auto gameObject = GameObject::New_ctor("BSMLClickableText");
@@ -46,10 +38,5 @@ namespace BSML {
 
         gameObject->SetActive(true);
         return gameObject;
-    }
-
-    void ClickableTextTag::parse(const tinyxml2::XMLElement& elem) {
-        DEBUG("Parsing clickable text tag");
-        this->::BSML::BSMLTag::parse(elem);
     }
 }

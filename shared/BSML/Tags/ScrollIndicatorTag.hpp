@@ -4,12 +4,10 @@
 
 namespace BSML
 {
-    class ScrollIndicatorTag : public BSMLTag
-    {
+    class ScrollIndicatorTag : public BSMLTag {
     public:
         ScrollIndicatorTag() : BSMLTag() {}
-
     protected:
-        virtual UnityEngine::GameObject *CreateObject(UnityEngine::Transform *parent) const override;
+        virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform *parent) const override;
     };
 }

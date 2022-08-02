@@ -27,7 +27,6 @@ namespace BSML {
                 IncDecSettingTagBase::Construct(parent, host);
             }
         protected:
-            friend class IncrementSettingTagParser;
             virtual void parse(const tinyxml2::XMLElement& elem) override {
                 IncDecSettingTagBase::parse(elem);
             }
