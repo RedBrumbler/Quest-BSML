@@ -14,6 +14,7 @@
 #include "HMUI/ImageView.hpp"
 #include "HMUI/Touchable.hpp"
 #include "HMUI/EventSystemListener.hpp"
+#include "VRUIControls/VRGraphicRaycaster.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -67,6 +68,7 @@ namespace BSML {
         layout->set_childForceExpandHeight(false);
         layout->set_childForceExpandWidth(false);
 
+        go->AddComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
         go->AddComponent<HMUI::Touchable*>(); // Required by EventSystemListener
         go->AddComponent<HMUI::EventSystemListener*>(); // Required by ScrollView
         auto scrollView = go->AddComponent<ScrollableContainer*>();
