@@ -28,8 +28,6 @@ namespace BSML {
             return;
         }
 
-        genericSettings->host = host;
-        
         auto applyOnChangeItr = data.find("applyOnChange");
         if (applyOnChangeItr != data.end()) {
             auto arg = StringParseHelper(applyOnChangeItr->second);
@@ -38,11 +36,12 @@ namespace BSML {
 
         auto valueItr = data.find("value");
         if (valueItr != data.end() && !valueItr->second.empty()) {
-            auto arg = StringParseHelper(valueItr->second);
-            genericSettings->valueInfo = arg.asFieldInfo(host);
-            if (!genericSettings->valueInfo) {
-                genericSettings->getterInfo = arg.asGetter(host);
-                genericSettings->setterInfo = arg.asSetter(host);
+            auto val = parserParams.TryGetValue(valueItr->second);
+            if (val) {
+                genericSettings->host = val->host;
+                genericSettings->valueInfo = val->fieldInfo;
+                genericSettings->getterInfo = val->getterInfo;
+                genericSettings->setterInfo = val->setterInfo;
             }
         }
 

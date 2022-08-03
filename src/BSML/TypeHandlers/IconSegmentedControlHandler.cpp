@@ -25,23 +25,16 @@ namespace BSML {
 
         auto dataItr = data.find("data");
         if (dataItr != data.end() && !dataItr->second.empty()) {
-            auto arg = StringParseHelper(dataItr->second);
-            List<HMUI::IconSegmentedControl::DataItem*>* iconData = nullptr;
-
-            auto fieldInfo = arg.asFieldInfo(host);
-            // use the 'data' value as a field name
-            if (fieldInfo) iconData = il2cpp_utils::GetFieldValue<List<HMUI::IconSegmentedControl::DataItem*>*>(host, fieldInfo).value_or(nullptr);
-            if (!iconData) {
-                // use the 'data' value as a getter method name
-                auto getterInfo = arg.asGetter(host);
-                if (getterInfo) iconData = il2cpp_utils::RunMethod<List<HMUI::IconSegmentedControl::DataItem*>*>(host, getterInfo).value_or(nullptr);
-            }
-
-            if (iconData && iconData->get_Count() > 0) {
+            auto val = parserParams.TryGetValue(dataItr->second);
+            List<HMUI::IconSegmentedControl::DataItem*>* iconData = val ? val->GetValue<List<HMUI::IconSegmentedControl::DataItem*>*>() : nullptr;
+            static auto dataKlass = classof(List<HMUI::IconSegmentedControl::DataItem*>*);
+            if (iconData && il2cpp_functions::class_is_assignable_from(iconData->klass, dataKlass) && iconData->get_Count() > 0) {
                 textControl->SetData(iconData->ToArray());
+            } else if (iconData && !il2cpp_functions::class_is_assignable_from(iconData->klass, dataKlass)) {
+                ERROR("{}::{} is not assignable from {}::{}", iconData->klass->namespaze, iconData->klass->name, dataKlass->namespaze, dataKlass->name);
             } else {
                 ERROR("IconSegmentedControl needs to have at least 1 value!");
-                ERROR("This means BSML could not find field '{0}' or method 'get_{0}'", arg);
+                ERROR("This means BSML could not find value '{0}'", dataItr->second);
             }
         }
 

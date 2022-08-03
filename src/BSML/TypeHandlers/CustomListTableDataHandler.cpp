@@ -117,27 +117,17 @@ namespace BSML {
 
         auto dataItr = data.find("data");
         if (dataItr != data.end() && !dataItr->second.empty()) {
-            auto arg = StringParseHelper(dataItr->second);
-            List<BSML::CustomCellInfo*>* listData = nullptr;
-
+            auto val = parserParams.TryGetValue(dataItr->second);
+            List<BSML::CustomCellInfo*>* cellInfos = val ? val->GetValue<List<BSML::CustomCellInfo*>*>() : nullptr;
             static auto dataKlass = classof(List<BSML::CustomCellInfo*>*);
-            auto fieldInfo = arg.asFieldInfo(host);
-            // use the 'data' value as a field name
-            if (fieldInfo) listData = il2cpp_utils::GetFieldValue<List<BSML::CustomCellInfo*>*>(host, fieldInfo).value_or(nullptr);
-            if (!listData) {
-                // use the 'data' value as a getter method name
-                auto getterInfo = arg.asGetter(host);
-                if (getterInfo) listData = il2cpp_utils::RunMethod<List<BSML::CustomCellInfo*>*>(host, getterInfo).value_or(nullptr);
-            }
-
-            if (listData->klass == dataKlass && listData && listData->get_Count() > 0) {
-                tableData->data = listData;
+            if (cellInfos && il2cpp_functions::class_is_assignable_from(cellInfos->klass, dataKlass)) {
+                tableData->data = cellInfos;
                 tableView->ReloadData();
-            } else if (listData && listData->klass != dataKlass){
+            } else if (cellInfos && !il2cpp_functions::class_is_assignable_from(cellInfos->klass, dataKlass)){
                 ERROR("The class of the data field was not Correct! this should be a 'List<BSML::CustomCellInfo*>*' or equivalent!");
             } else {
                 ERROR("IconSegmentedControl needs to have at least 1 value!");
-                ERROR("This means BSML could not find field '{0}' or method 'get_{0}'", arg);
+                ERROR("This means BSML could not find value '{}'", dataItr->second);
             }
         }
 

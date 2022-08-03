@@ -23,18 +23,8 @@ namespace BSML {
 
         auto optionsItr = data.find("options");
         if (optionsItr != data.end() && !optionsItr->second.empty()) {
-            auto arg = StringParseHelper(optionsItr->second);
-            auto fieldInfo = arg.asFieldInfo(host);
-            if (fieldInfo) {
-                component->values = il2cpp_functions::field_get_value_object(fieldInfo, host);
-            } else {
-                auto getterInfo = arg.asGetter(host);
-                if (getterInfo) {
-                    auto list = il2cpp_utils::RunMethod<List<Il2CppObject*>*>(host, getterInfo);
-                    if (list.has_value())
-                        component->values = list.value();
-                }
-            }
+            auto val = parserParams.TryGetValue(optionsItr->second);
+            if (val) component->values = val->GetValue<List<Il2CppObject*>*>();
         }
 
         if (!component->values || component->values->get_Count() == 0) {

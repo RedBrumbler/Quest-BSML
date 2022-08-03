@@ -24,15 +24,13 @@ namespace BSML {
         colorPicker->host = host;
         auto valueItr = data.find("value");
         if (valueItr != data.end()) {
+            auto val = parserParams.TryGetValue(valueItr->second);
             auto genericSetting = colorPicker->genericSetting;
-            auto arg = StringParseHelper(valueItr->second);
-            auto fieldInfo = arg.asFieldInfo(host);
-
-            if (fieldInfo) {
-                genericSetting->valueInfo = fieldInfo;
-            } else {
-                genericSetting->getterInfo = arg.asGetter(host);
-                genericSetting->setterInfo = arg.asSetter(host);
+            if (val) {
+                genericSetting->host = val->host;
+                genericSetting->valueInfo = val->fieldInfo;
+                genericSetting->getterInfo = val->getterInfo;
+                genericSetting->setterInfo = val->setterInfo;
             }
         }
 
