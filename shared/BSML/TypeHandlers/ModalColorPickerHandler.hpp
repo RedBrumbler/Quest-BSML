@@ -13,5 +13,6 @@ namespace BSML {
             virtual Base::SetterMap get_setters() const override;
     
             virtual void HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) override;
+            virtual void HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) override;
     };
 }

@@ -1,5 +1,4 @@
 #include "BSML.hpp"
-#include "BSML/Parsing/BSMLDocParser.hpp"
 
 extern "C" void load();
 

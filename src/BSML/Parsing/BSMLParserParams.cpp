@@ -50,7 +50,7 @@ namespace BSML {
         }
     }
 
-    BSMLValue* BSMLParserParams::TryGetValue(const std::string& key) {
+    BSMLValue* BSMLParserParams::TryGetValue(const std::string& key) const {
         auto itr = values.find(key);
         if (itr != values.end()) return itr->second;
         return nullptr;
@@ -63,6 +63,22 @@ namespace BSML {
         } else {
             delete itr->second;
             itr->second = value;
+        }
+    }
+
+    BSMLAction* BSMLParserParams::TryGetAction(const std::string& key) const {
+        auto itr = actions.find(key);
+        if (itr != actions.end()) return itr->second;
+        return nullptr;
+    }
+    
+    void BSMLParserParams::AddAction(const std::string& key, BSMLAction* action) {
+        auto itr = actions.find(key);
+        if (itr == actions.end()) {
+            actions.insert({key, action});
+        } else {
+            delete itr->second;
+            itr->second = action;
         }
     }
 

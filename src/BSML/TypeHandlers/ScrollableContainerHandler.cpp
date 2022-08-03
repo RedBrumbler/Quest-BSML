@@ -27,7 +27,12 @@ namespace BSML {
         auto& data = componentType.data;
         auto idItr = data.find("id");
         if (idItr != data.end() && !idItr->second.empty()) {
-            // TODO: scrollView#PageUp thing
+            std::string id = idItr->second;
+            auto pageUpMinfo = il2cpp_utils::FindMethodUnsafe(scrollView, "PageUpButtonPressed", 0);
+            auto pageDownMinfo = il2cpp_utils::FindMethodUnsafe(scrollView, "PageDownButtonPressed", 0);
+
+            if (pageUpMinfo) parserParams.AddAction(id + "#PageUp", new BSMLAction(scrollView, pageUpMinfo));
+            if (pageDownMinfo) parserParams.AddAction(id + "#PageDown", new BSMLAction(scrollView, pageDownMinfo));
         }
     }
 

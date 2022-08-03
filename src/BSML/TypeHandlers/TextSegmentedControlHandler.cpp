@@ -56,14 +56,9 @@ namespace BSML {
 
         auto selectCellItr = data.find("selectCell");
         if (selectCellItr != data.end() && !selectCellItr->second.empty()) {
-            auto arg = StringParseHelper(selectCellItr->second);
-            auto methodInfo = arg.asMethodInfo(host, 2);
-            if (methodInfo) {
-                auto delegate = MakeSystemAction<HMUI::SegmentedControl*, int>(host, methodInfo);
-                textControl->add_didSelectCellEvent(delegate);
-            } else {
-                ERROR("Could not find method '{}' with 2 args in class '{}::{}'", arg, host->klass->namespaze, host->klass->name);
-            }
+            auto action = parserParams.TryGetAction(selectCellItr->second);
+            if (action) textControl->add_didSelectCellEvent(action->GetSystemAction<HMUI::SegmentedControl*, int>());
+            else ERROR("Action '{}' could not be found", selectCellItr->second);
         }
 
         Base::HandleType(componentType, parserParams);

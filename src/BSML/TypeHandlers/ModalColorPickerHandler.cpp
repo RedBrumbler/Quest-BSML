@@ -34,19 +34,33 @@ namespace BSML {
             }
         }
 
+        Base::HandleType(componentType, parserParams);
+    }
+
+    void ModalColorPickerHandler::HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
+        Base::HandleTypeAfterParse(componentType, parserParams);
+        auto colorPicker = reinterpret_cast<ModalColorPicker*>(componentType.component);
+        auto& data = componentType.data;
+
         auto onCancelItr = data.find("onCancel");
         if (onCancelItr != data.end() && !onCancelItr->second.empty()) {
-            colorPicker->onCancelInfo = StringParseHelper(onCancelItr->second).asMethodInfo(host, 0);
-        }
-        auto onDoneItr = data.find("onDone");
-        if (onDoneItr != data.end() && !onDoneItr->second.empty()) {
-            colorPicker->onDoneInfo = StringParseHelper(onDoneItr->second).asMethodInfo(host, 1);
-        }
-        auto onChangeItr = data.find("onChange");
-        if (onChangeItr != data.end() && !onChangeItr->second.empty()) {
-            colorPicker->colorChangeInfo = StringParseHelper(onChangeItr->second).asMethodInfo(host, 1);
+            auto action = parserParams.TryGetAction(onCancelItr->second);
+            if (action) colorPicker->onCancelInfo = action->methodInfo;
+            else ERROR("Action '{}' could not be found", onCancelItr->second);
         }
 
-        Base::HandleType(componentType, parserParams);
+        auto onDoneItr = data.find("onDone");
+        if (onDoneItr != data.end() && !onDoneItr->second.empty()) {
+            auto action = parserParams.TryGetAction(onDoneItr->second);
+            if (action) colorPicker->onCancelInfo = action->methodInfo;
+            else ERROR("Action '{}' could not be found", onDoneItr->second);
+        }
+
+        auto onChangeItr = data.find("onChange");
+        if (onChangeItr != data.end() && !onChangeItr->second.empty()) {
+            auto action = parserParams.TryGetAction(onChangeItr->second);
+            if (action) colorPicker->colorChangeInfo = action->methodInfo;
+            else ERROR("Action '{}' could not be found", onChangeItr->second);
+        }
     }
 }

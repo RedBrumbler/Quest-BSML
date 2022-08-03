@@ -54,6 +54,12 @@ namespace BSML {
             parserParams.AddValue(key, value);
         }
 
+        auto actions = BSMLAction::MakeActions(host);
+        for (auto& [key, action] : actions) {
+            INFO("Got action: {}", key);
+            parserParams.AddAction(key, action);
+        }
+        
         /// when making from a new "root" we skip the root itself
         root->HandleChildren(parent, parserParams, components);
 

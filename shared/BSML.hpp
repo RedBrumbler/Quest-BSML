@@ -1,7 +1,6 @@
 #pragma once
 
 #include "UnityEngine/Transform.hpp"
-#include "BSML/Parsing/BSMLNode.hpp"
 #include "BSML/Parsing/BSMLParser.hpp"
 
 namespace BSML {

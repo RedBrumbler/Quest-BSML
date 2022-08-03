@@ -87,7 +87,7 @@ namespace BSML {
     }
 
     float TestViewController::get_length() { return _length; }
-    void TestViewController::set_length(float value) { _length = value; INFO("length set"); }
+    void TestViewController::set_length(float value) { _length = value; INFO("length set {}", value); }
 
 
     void TestViewController::ChangeLength(float value) {
