@@ -6,7 +6,7 @@
 #include "UnityEngine/Vector2.hpp"
 
 namespace BSML {
-    static BSMLTagParser<SettingsContainerTag> settingsContainerTagParser({"settings-scroll-view", "scrollable-settings-container", "settings-container"});
+    static BSMLNodeParser<SettingsContainerTag> settingsContainerTagParser({"settings-scroll-view", "scrollable-settings-container", "settings-container"});
 
     UnityEngine::GameObject* SettingsContainerTag::CreateObject(UnityEngine::Transform* parent) const {
         INFO("Creating settings container");

@@ -9,7 +9,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<LoadingIndicatorTag> loadingIndicatorTagParser({"loading", "loading-indicator"});
+    static BSMLNodeParser<LoadingIndicatorTag> loadingIndicatorTagParser({"loading", "loading-indicator"});
     UnityEngine::GameObject* loadingTemplate = nullptr;
     UnityEngine::GameObject* LoadingIndicatorTag::CreateObject(UnityEngine::Transform* parent) const {
         if (!loadingTemplate || !Object::IsNativeObjectAlive(loadingTemplate)) {

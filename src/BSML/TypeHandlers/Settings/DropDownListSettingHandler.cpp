@@ -16,7 +16,7 @@ namespace BSML {
     void DropdownListSettingHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto component = reinterpret_cast<DropdownListSetting*>(componentType.component);
         auto& data = componentType.data;
-        auto host = parserParams.host;
+        auto host = parserParams.get_host();
 
         auto optionsItr = data.find("options");
         if (optionsItr != data.end() && !optionsItr->second.empty()) {

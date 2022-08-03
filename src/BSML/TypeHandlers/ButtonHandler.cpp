@@ -26,7 +26,7 @@ namespace BSML {
 
     void ButtonHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto buttonOpt = il2cpp_utils::try_cast<Button>(componentType.component);
-        auto host = parserParams.host;
+        auto host = parserParams.get_host();
         if (buttonOpt.has_value()) {
             auto button = buttonOpt.value();
             auto event = Button::ButtonClickedEvent::New_ctor();

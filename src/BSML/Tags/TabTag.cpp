@@ -6,7 +6,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<TabTag> tabSelectorTagParser({"tab"});
+    static BSMLNodeParser<TabTag> tabSelectorTagParser({"tab"});
 
     UnityEngine::GameObject* TabTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Tab");

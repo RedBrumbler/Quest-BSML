@@ -21,7 +21,7 @@ using namespace UnityEngine::UI;
 using namespace VRUIControls;
 
 namespace BSML {
-    static BSMLTagParser<ModalTag> modalTagParser({"modal"});
+    static BSMLNodeParser<ModalTag> modalTagParser({"modal"});
     HMUI::ModalView* modalViewTemplate = nullptr;
     UnityEngine::GameObject* ModalTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Modal");

@@ -20,7 +20,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<ScrollableContainerTag> scrollableContainerTagParser({"scrollable-container"});
+    static BSMLNodeParser<ScrollableContainerTag> scrollableContainerTagParser({"scrollable-container"});
 
     UnityEngine::GameObject* ScrollableContainerTag::CreateObject(UnityEngine::Transform* parent) const {
         auto go = GameObject::New_ctor("BSMLScrollableContainer");

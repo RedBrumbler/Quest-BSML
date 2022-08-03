@@ -21,7 +21,7 @@ namespace BSML {
 
     void ModalViewHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto modalView = reinterpret_cast<BSML::ModalView*>(componentType.component);
-        auto host = parserParams.host;
+        auto host = parserParams.get_host();
         auto& data = componentType.data;
 
         auto showEventItr = data.find("showEvent");

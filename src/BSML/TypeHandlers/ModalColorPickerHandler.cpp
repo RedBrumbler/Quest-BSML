@@ -18,7 +18,7 @@ namespace BSML {
 
     void ModalColorPickerHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto colorPicker = reinterpret_cast<ModalColorPicker*>(componentType.component);
-        auto host = parserParams.host;
+        auto host = parserParams.get_host();
         auto& data = componentType.data;
 
         colorPicker->host = host;

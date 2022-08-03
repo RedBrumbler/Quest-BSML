@@ -12,7 +12,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<StackLayoutTag> stackLayoutTagParser({"stack"});
+    static BSMLNodeParser<StackLayoutTag> stackLayoutTagParser({"stack"});
 
     UnityEngine::GameObject* StackLayoutTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating StackLayoutTag");

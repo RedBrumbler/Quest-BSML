@@ -1,0 +1,28 @@
+<bg>
+    <!-- The repeat macro will repeat whatever you type inside count times -->
+    <macro.repeat count="5">
+        <text text="repeated"/>
+    </macro.repeat>
+    <!-- The as host macro creates it's children UI with a different host than the main view controller or whatever you passed -->
+    <!-- This lets you more easily make child objects within 1 BSML file -->
+    <macro.as-host host="someHost">
+        <text text="I can be set on someHost field value!"/>
+    </macro.as-host>
+    <!-- The for-each macro acts like a combination of the repeat and as host macros, it will use the list of values -->
+    <!-- Given by the items parameter as hosts to repeat the given UI for every object in that list -->
+    <macro.for-each items="someList">
+        <text text="repated per object!"/>
+    </macro.for-each>
+    <!-- The if macro will conditionally make whatever you put inside -->
+    <!-- it bases this off of the BSMLValue you give it (! is supported) -->
+    <macro.if value="!someBool">
+        <text text="You should see this if 'someBool' is false!"/>
+    </macro.if>
+    <!-- you can use the define macro to set a string value or other value to that string -->
+    <macro.define name="coolName" value="valuestring"/>
+    <!-- You can use the reparent macro to reparent any value that is a transform to whatever this macro has as a parent-->
+    <macro.reparent transform="MainMenu"/>
+    <!-- The print macro can be used to print some text to the log -->
+    <!-- It's not very useful, though can help debug if your ifs or repeats are working right -->
+    <macro.print print="Some logged text!"/>
+</bg>

@@ -11,8 +11,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<TextTag> textTagParser({"text", "label"});
-
+    static BSMLNodeParser<TextTag> textTagParser({"text", "label"});
     UnityEngine::GameObject* TextTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Text");
         auto gameObject = GameObject::New_ctor("BSMLText");

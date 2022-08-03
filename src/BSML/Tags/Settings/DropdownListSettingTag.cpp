@@ -21,7 +21,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<DropdownListSettingTag> dropdownListSettingTagParser({"dropdown-list-setting"});
+    static BSMLNodeParser<DropdownListSettingTag> dropdownListSettingTagParser({"dropdown-list-setting"});
     GameObject* dropdownTemplate = nullptr;
     GameObject* safePrefab = nullptr;
 

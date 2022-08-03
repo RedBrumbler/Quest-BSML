@@ -20,7 +20,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<ToggleSettingTag> toggleSettingTagParser({"toggle-setting", "bool-setting", "checkbox-setting", "checkbox"});
+    static BSMLNodeParser<ToggleSettingTag> toggleSettingTagParser({"toggle-setting", "bool-setting", "checkbox-setting", "checkbox"});
     GameObject* toggleTemplate = nullptr;
 
     UnityEngine::GameObject* ToggleSettingTag::CreateObject(UnityEngine::Transform* parent) const {

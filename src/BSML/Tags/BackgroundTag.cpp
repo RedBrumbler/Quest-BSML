@@ -11,7 +11,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<BackgroundTag> backgroundTagParser({"background", "bg", "div"});
+    static BSMLNodeParser<BackgroundTag> backgroundTagParser({"background", "bg", "div"});
     UnityEngine::GameObject* BackgroundTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Background");
         auto gameObject = GameObject::New_ctor("BSMLBackground");

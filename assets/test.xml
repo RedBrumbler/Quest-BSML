@@ -1,6 +1,6 @@
 <bsml xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
     <bg bg="round-rect-panel" bg-alpha="0.3">
-        <text-segments data="textSegments" anchor-pos-y='10' select-cell="SegmentedControlSelect" child-expand-width='true' child-control-width='true' size-delta-y='6' size-delta-x='-60'/>
+        <bg anchor-pos-y="80"><text-segments data="textSegments" select-cell="SegmentedControlSelect" child-expand-width='true' child-control-width='true' size-delta-y='6' size-delta-x='-60'/></bg>
         <tab-selector tab-tag="main" anchor-pos-y='0' size-delta-y='6' size-delta-x='-60' child-expand-width='true' child-control-width='true'/>
         <tab tags="main" tab-name="first">
             <vertical pref-height="74" anchor-pos-y="-3" bg="round-rect-panel" bg-alpha="0.5" pad="2" vertical-fit="PreferredSize">
@@ -58,6 +58,14 @@
             <vertical pref-height="74" anchor-pos-y="-3" bg="round-rect-panel" bg-alpha="0.5" pad="2" vertical-fit="PreferredSize" child-expand-height="false">
                 <clickable-text label="click me!" on-click="TextClick" pref-height="4"/>
                 <button label="list-modal" on-click="ShowListModal"/>
+                <macro.print text="Before If"/>
+                <macro.if value="someOtherField">
+                    <text text="butts"/>
+                    <macro.repeat count="5">
+                        <button text="a"/>
+                    </macro.repeat>
+                </macro.if>
+                <macro.print text="After If"/>
             </vertical>
         </tab>
     </bg>

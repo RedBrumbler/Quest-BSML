@@ -10,9 +10,9 @@
 #include "UnityEngine/RectTransform.hpp"
 
 namespace BSML {
+    static BSMLNodeParser<ScrollIndicatorTag> scrollIndicatorTagParser({"scroll-indicator", "vertical-scroll-indicator"});
+    
     HMUI::VerticalScrollIndicator* scrollIndicator = nullptr;
-    static BSMLTagParser<ScrollIndicatorTag> scrollIndicatorTagParser({"scroll-indicator", "vertical-scroll-indicator"});
-
     UnityEngine::GameObject* ScrollIndicatorTag::CreateObject(UnityEngine::Transform* parent) const
     {
         DEBUG("making ScrollIndicator");

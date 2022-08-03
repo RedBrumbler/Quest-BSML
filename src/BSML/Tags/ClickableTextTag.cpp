@@ -14,7 +14,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<ClickableTextTag> clickableTextTagParser({"clickable-text"});
+    static BSMLNodeParser<ClickableTextTag> clickableTextTagParser({"clickable-text"});
     UnityEngine::GameObject* ClickableTextTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Clickable text");
         auto gameObject = GameObject::New_ctor("BSMLClickableText");

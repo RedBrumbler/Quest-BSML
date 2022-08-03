@@ -25,7 +25,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<ListTag> listTagParser({"list"});
+    static BSMLNodeParser<ListTag> listTagParser({"list"});
     Canvas* listCanvasTemplate = nullptr;
     UnityEngine::GameObject* ListTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating List");

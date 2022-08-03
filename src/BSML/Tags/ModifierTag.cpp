@@ -17,7 +17,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<ModifierTag> modifierTagParser({"modifier", "modifier-toggle"});
+    static BSMLNodeParser<ModifierTag> modifierTagParser({"modifier", "modifier-toggle"});
     GlobalNamespace::GameplayModifierToggle* gameplayModifierToggleTemplate = nullptr;
 
     UnityEngine::GameObject* ModifierTag::CreateObject(UnityEngine::Transform* parent) const {

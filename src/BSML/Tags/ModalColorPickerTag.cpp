@@ -18,7 +18,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<ModalColorPickerTag> modalColorPickerTagParser({"modal-color-picker"});
+    static BSMLNodeParser<ModalColorPickerTag> modalColorPickerTagParser({"modal-color-picker"});
     std::string buttonXML {
         "\
         <horizontal anchor-pos-y='-30' spacing='2' horizontal-fit='PreferredSize'>\

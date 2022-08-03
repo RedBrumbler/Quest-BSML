@@ -16,7 +16,7 @@ namespace BSML {
     void ListSettingHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto component = reinterpret_cast<ListSetting*>(componentType.component);
         auto& data = componentType.data;
-        auto host = parserParams.host;
+        auto host = parserParams.get_host();
 
         auto optionsItr = data.find("options");
         if (optionsItr != data.end() && !optionsItr->second.empty()) {

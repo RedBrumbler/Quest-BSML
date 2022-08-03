@@ -12,7 +12,7 @@
 using namespace UnityEngine;
 
 namespace BSML {
-    static BSMLTagParser<ClickableImageTag> imageTagParser({"clickable-image", "clickable-img"});
+    static BSMLNodeParser<ClickableImageTag> imageTagParser({"clickable-image", "clickable-img"});
     
     UnityEngine::GameObject* ClickableImageTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Image");

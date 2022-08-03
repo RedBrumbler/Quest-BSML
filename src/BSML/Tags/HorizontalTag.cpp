@@ -13,7 +13,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLTagParser<HorizontalTag> horizontalTagParser({"horizontal"});
+    static BSMLNodeParser<HorizontalTag> horizontalTagParser({"horizontal"});
     UnityEngine::GameObject* HorizontalTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Horizontal");
         auto gameObject = GameObject::New_ctor("BSMLHorizontalLayoutGroup");

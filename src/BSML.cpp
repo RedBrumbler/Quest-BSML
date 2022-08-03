@@ -8,14 +8,13 @@ namespace BSML {
         load();
     }
 
-    std::shared_ptr<BSMLTag> parse(std::string_view str) {
+    std::shared_ptr<BSMLParser> parse(std::string_view str) {
         Init();
-        return BSMLDocParser::parse(str);
+        return BSMLParser::parse(str);
     }
     
-    void parse_and_construct(std::string_view str, UnityEngine::Transform* parent, Il2CppObject* host) {
+    std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, Il2CppObject* host) {
         Init();
-        auto tag = parse(str);
-        tag->Construct(parent, host);
+        return BSMLParser::parse_and_construct(str, parent, host);
     }
 }
