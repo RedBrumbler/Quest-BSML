@@ -12,6 +12,10 @@
 #include "UnityEngine/Texture.hpp"
 #include "UnityEngine/FilterMode.hpp"
 #include "UnityEngine/Texture2D.hpp"
+#include "UnityEngine/Graphics.hpp"
+#include "UnityEngine/RenderTexture.hpp"
+#include "UnityEngine/RenderTextureFormat.hpp"
+#include "UnityEngine/RenderTextureReadWrite.hpp"
 #include "UnityEngine/TextureWrapMode.hpp"
 #include "UnityEngine/Networking/UnityWebRequest.hpp"
 #include "UnityEngine/Networking/DownloadHandler.hpp"
@@ -121,6 +125,46 @@ namespace BSML::Utilities {
         return ParseHTMLColor32Opt(str).value_or(UnityEngine::Color32{255, 255, 255, 255});
     }
 
+    Texture2D* DownScaleTexture(Texture2D* tex, const ScaleOptions& options) {
+        auto originalWidth = tex->get_width();
+        auto originalHeight = tex->get_height();
+
+        if (originalWidth + originalHeight <= options.width + options.height)
+            return tex;
+
+        auto newWidth = options.width;
+        auto newHeight = options.height;
+        if (options.maintainRatio) {
+            auto ratio = (float)originalWidth / (float)originalHeight;
+            auto scale = originalWidth > originalHeight ? originalWidth : originalHeight;
+
+            if (scale * ratio <= originalWidth) {
+                originalWidth = scale * ratio;
+                originalHeight = scale;
+            } else {
+                originalWidth = scale;
+                originalHeight = scale * ratio;
+            }
+        }
+
+        auto rect = Rect(0, 0, newWidth, newHeight);
+        auto copy = Texture2D::New_ctor(rect.get_width(), rect.get_height(), TextureFormat::RGBA32, false);
+        auto currentRT = RenderTexture::get_active();
+        auto renderTexture = RenderTexture::GetTemporary(rect.get_width(), rect.get_height(), 32, RenderTextureFormat::Default, RenderTextureReadWrite::Default);
+        Graphics::Blit(tex, renderTexture);
+    
+        RenderTexture::set_active(renderTexture);
+        copy->ReadPixels(rect, 0, 0);
+        copy->Apply();
+        RenderTexture::set_active(currentRT);
+        RenderTexture::ReleaseTemporary(renderTexture);
+        return copy;
+    }
+    
+    UnityEngine::Sprite* DownScaleSprite(Sprite* sprite, const ScaleOptions& options) {
+        return LoadSpriteFromTexture(DownScaleTexture(sprite->get_texture(), options));
+    }
+
     custom_types::Helpers::Coroutine GetDataCoroutine(System::Uri* uri, std::function<void(ArrayW<uint8_t>)> onFinished) {
         if (!onFinished) {
             ERROR("Can't get data async without a callback to use it with");
@@ -194,17 +238,17 @@ namespace BSML::Utilities {
             auto onDataFinished = [path, onFinished, image, scaleOptions](ArrayW<uint8_t> data) {
                 DEBUG("Data was gotten");
                 if (data.Length() > 0) {
+                    auto texture = LoadTextureRaw(data);
                     if (scaleOptions.shouldScale) {
-                        // TODO: downscaling
+                        auto scaledTexture = DownScaleTexture(texture, scaleOptions);
+                        if (scaledTexture != texture) {
+                            Object::DestroyImmediate(texture);
+                            texture = scaledTexture;
+                        }
                     }
-                    DEBUG("Loading sprite");
-                    auto sprite = LoadSpriteRaw(data);
+                    auto sprite = LoadSpriteFromTexture(texture);
                     sprite->get_texture()->set_wrapMode(TextureWrapMode::Clamp);
-                    DEBUG("setting sprite");
                     image->set_sprite(sprite);
-                    INFO("image: {}", fmt::ptr(image));
-                    INFO("sprite: {}", fmt::ptr(sprite));
-
                     spriteCache->Add(path, sprite);
                 }
 

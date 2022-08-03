@@ -49,6 +49,19 @@ namespace BSML::Utilities {
         {}
     };
 
+    /// @brief Downscales a texture using a rendertexture (I know, not the most efficient way to do it)
+    /// @param tex the texture to copy and downscale
+    /// @param options the options to use for downscaling
+    /// @return downscaled texture, or tex if it was not scaled
+    UnityEngine::Texture2D* DownScaleTexture(UnityEngine::Texture2D* tex, const ScaleOptions& options);
+
+    /// @brief Downscales a sprite using DownScaleTexture
+    /// @param sprite the sprite to copy and downscale
+    /// @param options the options to use for downscaling
+    /// @return downscaled sprite
+    UnityEngine::Sprite* DownScaleSprite(UnityEngine::Sprite* sprite, const ScaleOptions& options);
+
+
     /// @brief sets the sprite from a path, this does not yet bother with animated textures so it will only work with base textures
     /// @param image the image to set the sprite on
     /// @param path the path, basegame name, or URI to an image
