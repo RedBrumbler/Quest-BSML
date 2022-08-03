@@ -1,6 +1,8 @@
 #include "BSML/Tags/Settings/IncDecSettingTag.hpp"
 #include "logging.hpp"
 
+#include "BSML/Components/ExternalComponents.hpp"
+
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/RectTransform.hpp"
@@ -55,6 +57,9 @@ namespace BSML {
         // layout stuff
         auto layoutElement = gameObject->GetComponent<LayoutElement*>();
         layoutElement->set_preferredWidth(90);
+
+        auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
+        externalComponents->Add(text);
 
         gameObject->SetActive(true);
 
