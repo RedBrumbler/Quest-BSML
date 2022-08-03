@@ -25,14 +25,12 @@ namespace BSML {
         auto valueItr = data.find("value");
         if (valueItr != data.end() && !valueItr->second.empty()) {
             auto genericSetting = modalKeyboard->genericSetting;
-            auto arg = StringParseHelper(valueItr->second);
-
-            auto fieldInfo = arg.asFieldInfo(host);
-            if (fieldInfo) {
-                genericSetting->valueInfo = fieldInfo;
-            } else {
-                genericSetting->getterInfo = arg.asGetter(host);
-                genericSetting->setterInfo = arg.asSetter(host);
+            auto val = parserParams.TryGetValue(valueItr->second);
+            if (val) {
+                genericSetting->host = val->host;
+                genericSetting->valueInfo = val->fieldInfo;
+                genericSetting->getterInfo = val->getterInfo;
+                genericSetting->setterInfo = val->setterInfo;
             }
         }
 

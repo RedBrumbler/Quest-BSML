@@ -23,44 +23,34 @@ namespace BSML {
 
         auto dataItr = data.find("data");
         if (dataItr != data.end() && !dataItr->second.empty()) {
-            auto arg = StringParseHelper(dataItr->second);
+            auto val = parserParams.TryGetValue(dataItr->second);
             ListWrapper<StringW> texts = List<StringW>::New_ctor();
+            static auto dataKlass = classof(List<Il2CppObject*>*);
+            static auto stringDataKlass = classof(List<Il2CppString*>*);
 
-            static auto stringklass = classof(Il2CppString*);
+            List<Il2CppObject*>* data = val ? val->GetValue<List<Il2CppObject*>*>() : nullptr;
 
-            auto fieldInfo = arg.asFieldInfo(host);
-            auto fieldOpt = il2cpp_utils::GetFieldValue<List<Il2CppObject*>*>(host, fieldInfo);
-            // use the 'data' value as a field name
-            if (fieldOpt.has_value()) {
-                ListWrapper<Il2CppObject*> list = fieldOpt.value();
-                texts->EnsureCapacity(list->get_Count());
-                for (auto v : list) {
-                    if (v->klass == stringklass)
-                        texts->Add(reinterpret_cast<Il2CppString*>(v));
-                    else
-                        texts->Add(v->ToString());
+            if (data && il2cpp_functions::class_is_assignable_from(data->klass, dataKlass)) {
+                if (il2cpp_functions::class_is_assignable_from(data->klass, stringDataKlass)) {
+                    // it's already a list of strings :)
+                    ListWrapper<StringW> strings = reinterpret_cast<List<StringW>*>(data);
+                    for (auto str : strings) texts->Add(str);
+                } else {
+                    // it's a list of objects, use ToString
+                    ListWrapper<Il2CppObject*> objects = data;
+                    for (auto obj : objects) texts->Add(obj ? obj->ToString() : StringW(""));
                 }
+            } else if (data && !il2cpp_functions::class_is_assignable_from(data->klass, dataKlass)) {
+                ERROR("klass {}::{} is not assignable from {}::{}", data->klass->namespaze, data->klass->name, dataKlass->namespaze, dataKlass->name);
             } else {
-                // use the 'data' value as a getter method name
-                auto getterInfo = arg.asGetter(host);
-                auto getOpt = il2cpp_utils::RunMethod<List<Il2CppObject*>*>(host, getterInfo);
-                if (getOpt.has_value()) {
-                    ListWrapper<Il2CppObject*> list = getOpt.value();
-                    texts->EnsureCapacity(list->get_Count());
-                    for (auto v : list) {
-                        if (v->klass == stringklass)
-                            texts->Add(reinterpret_cast<Il2CppString*>(v));
-                        else
-                            texts->Add(v->ToString());
-                    }
-                }
+                ERROR("Could not find value {}", dataItr->second);
             }
 
             if (texts->get_Count() > 0) {
                 textControl->SetTexts(texts->i_IReadOnlyList_1_T());
             } else {
                 ERROR("TextSegmentedControl needs to have at least 1 value!");
-                ERROR("This means BSML could not find field '{0}' or method 'get_{0}'", arg);
+                ERROR("This means BSML could not find field '{0}' or method 'get_{0}'", dataItr->second);
             }
         }
 
