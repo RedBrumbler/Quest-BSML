@@ -9,12 +9,24 @@
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/Resources.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 
+#include "GlobalNamespace/Signal.hpp"
+#include "GlobalNamespace/MenuShockwave.hpp"
+#include "GlobalNamespace/HapticFeedbackController.hpp"
+#include "Libraries/HM/HMLib/VR/HapticPresetSO.hpp"
+
 using namespace UnityEngine;
+using HapticPresetSO = Libraries::HM::HMLib::VR::HapticPresetSO;
 
 namespace BSML {
     static BSMLNodeParser<ClickableTextTag> clickableTextTagParser({"clickable-text"});
+
+    GlobalNamespace::Signal* textClickedSignal = nullptr;
+    HapticPresetSO* textHapticPreset = nullptr;
+    GlobalNamespace::HapticFeedbackController* textHapticFeedbackController = nullptr;
+
     UnityEngine::GameObject* ClickableTextTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Clickable text");
         auto gameObject = GameObject::New_ctor("BSMLClickableText");
@@ -35,6 +47,26 @@ namespace BSML {
         rectTransform->set_sizeDelta({90, 8});
         
         gameObject->AddComponent<UI::LayoutElement*>();
+
+        if (!textClickedSignal || !Object::IsNativeObjectAlive(textClickedSignal)) {
+            auto menuShockWave = Resources::FindObjectsOfTypeAll<GlobalNamespace::MenuShockwave*>().FirstOrDefault();
+            textClickedSignal = menuShockWave ? menuShockWave->buttonClickEvents.LastOrDefault() : nullptr;
+        }
+
+        if (!textHapticPreset || !Object::IsNativeObjectAlive(textHapticPreset)) {
+            textHapticPreset = UnityEngine::ScriptableObject::CreateInstance<HapticPresetSO*>();
+            textHapticPreset->duration = 0.02f;
+            textHapticPreset->strength = 1.0f;
+            textHapticPreset->frequency = 0.2f;
+            Object::DontDestroyOnLoad(textHapticPreset);
+        }
+        if (!textHapticFeedbackController || !Object::IsNativeObjectAlive(textHapticFeedbackController)) {
+            textHapticFeedbackController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::HapticFeedbackController*>();
+        }
+
+        textMesh->buttonClickedSignal = textClickedSignal;
+        textMesh->hapticFeedbackController = textHapticFeedbackController;
+        textMesh->hapticFeedbackPresetSO = textHapticPreset;
 
         gameObject->SetActive(true);
         return gameObject;
