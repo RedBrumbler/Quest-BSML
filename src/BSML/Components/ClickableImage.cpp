@@ -34,13 +34,13 @@ namespace BSML {
         if (buttonClickedSignal) buttonClickedSignal->Raise();
         set_isHighlighted(false);
         if (onClick) onClick();
-        Vibrate(!VRUIControls::VRPointer::_get__lastControllerUsedWasRight());
     }
 
     void ClickableImage::OnPointerEnter(UnityEngine::EventSystems::PointerEventData* eventData) {
         INFO("Enter");
         set_isHighlighted(true);
         if (onEnter) onEnter();
+        Vibrate(!VRUIControls::VRPointer::_get__lastControllerUsedWasRight());
     }
 
     void ClickableImage::OnPointerExit(UnityEngine::EventSystems::PointerEventData* eventData) {

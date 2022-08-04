@@ -32,6 +32,7 @@ namespace BSML {
 
     void ClickableText::OnPointerClick(UnityEngine::EventSystems::PointerEventData* eventData) {
         INFO("Click");
+        if (buttonClickedSignal) buttonClickedSignal->Raise();
         set_isHighlighted(false);
         if (onClick) onClick();
     }
