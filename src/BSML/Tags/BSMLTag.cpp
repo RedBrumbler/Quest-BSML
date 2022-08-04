@@ -65,9 +65,7 @@ namespace BSML {
             parserParams.AddObjectWithTags(currentObject, tags);
         }
         // handle children
-        for (auto child : children) {
-            child->Handle(currentObject->get_transform(), parserParams, componentInfo);
-        }
+        HandleChildren(currentObject->get_transform(), parserParams, componentInfo);
 
         // handle type after children
         for (auto componentTypeWithData : localComponentInfo) {
