@@ -5,6 +5,7 @@ namespace BSML {
 
     ModalViewHandler::Base::PropMap ModalViewHandler::get_props() const {
         return {
+            {"id", {"id"}},
             {"showEvent", {"show-event"}},
             {"hideEvent", {"hide-event"}},
             {"clickOffCloses", {"click-off-closes", "clickerino-offerino-closerino"}},
@@ -34,6 +35,15 @@ namespace BSML {
             // TODO: events
         }
 
+        auto idItr = data.find("id");
+        if (idItr != data.end()) {
+            std::string id = idItr->second;
+            auto showMinfo = il2cpp_utils::FindMethodUnsafe(modalView, "Show", 0);
+            auto hideMinfo = il2cpp_utils::FindMethodUnsafe(modalView, "Hide", 0);
+
+            if (showMinfo) parserParams.AddAction(id + "#Show", new BSMLAction(modalView, showMinfo));
+            if (hideMinfo) parserParams.AddAction(id + "#Hide", new BSMLAction(modalView, hideMinfo));
+        }
         Base::HandleType(componentType, parserParams);
     }
 }

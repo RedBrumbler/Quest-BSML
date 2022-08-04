@@ -20,6 +20,8 @@
 #include "UnityEngine/Events/UnityAction_3.hpp"
 #include "UnityEngine/Events/UnityAction_4.hpp"
 
+#include "fmt/format.h"
+
 namespace BSML {
     /// @brief struct to check argcount
     template <int argc, int check>
@@ -93,6 +95,9 @@ namespace BSML {
     /// @return System::Action_N<Targs>
     template<typename...Targs>
     auto MakeSystemAction(Il2CppObject* instance, const MethodInfo* methodInfo) {
+        if (methodInfo->parameters_count != sizeof...(Targs)) {
+            throw std::runtime_error(fmt::format("Argcount mismatch between methodInfo and Targs: {} != {}", methodInfo->parameters_count, sizeof...(Targs)));
+        }
         return MakeSystemAction<Targs...>(std::function<void(Targs...)>([instance, methodInfo](Targs... args){
             il2cpp_utils::RunMethod(instance, methodInfo, args...);
         }));
@@ -133,6 +138,9 @@ namespace BSML {
     /// @return UnityEngine::Events::UnityAction_N<Targs>
     template<typename...Targs>
     auto MakeUnityAction(Il2CppObject* instance, const MethodInfo* methodInfo) {
+        if (methodInfo->parameters_count != sizeof...(Targs)) {
+            throw std::runtime_error(fmt::format("Argcount mismatch between methodInfo and Targs: {} != {}", methodInfo->parameters_count, sizeof...(Targs)));
+        }
         return MakeUnityAction<Targs...>(std::function<void(Targs...)>([instance, methodInfo](Targs... args){
             il2cpp_utils::RunMethod(instance, methodInfo, args...);
         }));

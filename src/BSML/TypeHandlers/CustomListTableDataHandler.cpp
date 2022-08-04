@@ -55,15 +55,9 @@ namespace BSML {
 
         auto selectCellItr = data.find("selectCell");
         if (selectCellItr != data.end() && !selectCellItr->second.empty()) {
-            auto arg = StringParseHelper(selectCellItr->second);
-            auto methodInfo = arg.asMethodInfo(host, 2);
-            if (methodInfo) {
-                auto delegate = MakeSystemAction<HMUI::TableView *, int>(host, methodInfo);
-                INFO("Created delegate: {}", fmt::ptr(delegate));
-                tableView->add_didSelectCellWithIdxEvent(delegate);
-            } else {
-                ERROR("Could not find method '{}' with 2 args in class '{}::{}'", arg, host->klass->namespaze, host->klass->name);
-            }
+            auto action = parserParams.TryGetAction(selectCellItr->second);
+            if (action) tableView->add_didSelectCellWithIdxEvent(action->GetSystemAction<HMUI::TableView *, int>());
+            else ERROR("Action '{}' could not be found", selectCellItr->second);
         }
 
         bool verticalList = true;
@@ -173,8 +167,12 @@ namespace BSML {
 
         auto idItr = data.find("id");
         if (idItr != data.end() && !idItr->second.empty()) {
-            // TODO: this is where the list#pageUp thing comes into play
-            // this can probably be done through the parserparams and a std::string -> std::function std::map
+            std::string id = idItr->second;
+            auto pageUpMinfo = il2cpp_utils::FindMethodUnsafe(scrollView, "PageUpButtonPressed", 0);
+            auto pageDownMinfo = il2cpp_utils::FindMethodUnsafe(scrollView, "PageDownButtonPressed", 0);
+
+            if (pageUpMinfo) parserParams.AddAction(id + "#PageUp", new BSMLAction(scrollView, pageUpMinfo));
+            if (pageDownMinfo) parserParams.AddAction(id + "#PageDown", new BSMLAction(scrollView, pageDownMinfo));
         }
     }
 }

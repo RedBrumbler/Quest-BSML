@@ -7,6 +7,7 @@ namespace BSML {
     int BaseSettingHandler::get_priority() const { return 10; }
     BaseSettingHandler::Base::PropMap BaseSettingHandler::get_props() const {
         return {
+            {"id", {"id"}},
             {"onChange", {"on-change"}},
             {"value", {"value"}},
             {"applyOnChange", {"apply-on-change"}}
@@ -47,9 +48,21 @@ namespace BSML {
 
         auto onChangeItr = data.find("onChange");
         if (onChangeItr != data.end() && !onChangeItr->second.empty()) {
-            auto arg = StringParseHelper(onChangeItr->second);
-            genericSettings->onChangeInfo = arg.asMethodInfo(host, 1);
-            if (!genericSettings->onChangeInfo) genericSettings->onChangeInfo = arg.asMethodInfo(host, 0);
+            auto action = parserParams.TryGetAction(onChangeItr->second);
+            if (action) {
+                genericSettings->onChangeHost = action->host;
+                genericSettings->onChangeInfo = action->methodInfo;
+            } else ERROR("Action '{}' could not be found", onChangeItr->second);
+        }
+
+        auto idItr = data.find("id");
+        if (idItr != data.end()) {
+            std::string id = idItr->second;
+            auto applyMinfo = il2cpp_utils::FindMethodUnsafe(component, "ApplyValue", 0);
+            auto receiveMinfo = il2cpp_utils::FindMethodUnsafe(component, "ReceiveValue", 0);
+
+            if (applyMinfo) parserParams.AddAction(id + "#Apply", new BSMLAction(component, applyMinfo));
+            if (receiveMinfo) parserParams.AddAction(id + "#Receive", new BSMLAction(component, receiveMinfo));
         }
 
         Base::HandleType(componentType, parserParams);

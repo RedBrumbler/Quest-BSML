@@ -34,14 +34,19 @@ namespace BSML {
             }
         }
 
+        Base::HandleType(componentType, parserParams);
+    }
+
+    void ModalKeyboardHandler::HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
+        Base::HandleTypeAfterParse(componentType, parserParams);
+        auto modalKeyboard = reinterpret_cast<BSML::ModalKeyboard*>(componentType.component);
+        auto& data = componentType.data;
+    
         auto onEnterItr = data.find("onEnter");
         if (onEnterItr != data.end() && !onEnterItr->second.empty()) {
-            auto arg = StringParseHelper(onEnterItr->second);
-            auto onEnterInfo = arg.asMethodInfo(host, 1);
-            if (onEnterInfo)
-                modalKeyboard->onEnter = [host, onEnterInfo](auto value){ il2cpp_utils::RunMethod(host, onEnterInfo, value); };
+            auto action = parserParams.TryGetAction(onEnterItr->second);
+            if (action) modalKeyboard->onEnter = action->GetFunction<StringW>();
+            else ERROR("Action '{}' could not be found", onEnterItr->second);
         }
-
-        Base::HandleType(componentType, parserParams);
     }
 }

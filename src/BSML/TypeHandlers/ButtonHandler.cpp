@@ -25,39 +25,33 @@ namespace BSML {
     }
 
     void ButtonHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
-        auto buttonOpt = il2cpp_utils::try_cast<Button>(componentType.component);
+        Base::HandleType(componentType, parserParams);
+        auto button = reinterpret_cast<Button*>(componentType.component);
+        auto event = Button::ButtonClickedEvent::New_ctor();
+        button->set_onClick(event);
+    }
+
+    void ButtonHandler::HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
+        Base::HandleTypeAfterParse(componentType, parserParams);
+        
+        auto button = reinterpret_cast<Button*>(componentType.component);
         auto host = parserParams.get_host();
-        if (buttonOpt.has_value()) {
-            auto button = buttonOpt.value();
-            auto event = Button::ButtonClickedEvent::New_ctor();
+        auto event = Button::ButtonClickedEvent::New_ctor();
 
-            // it was a button!
-            auto onClickItr = componentType.data.find("onClick");
-            if (onClickItr != componentType.data.end() && !onClickItr->second.empty()) {
-                auto arg = StringParseHelper(onClickItr->second);
-                auto onClickMethodInfo = arg.asMethodInfo(host, 0);
-                if (onClickMethodInfo) {
-                    auto delegate = MakeUnityAction(host, onClickMethodInfo);
-                    event->AddListener(delegate);
-                } else {
-                    ERROR("Method '{}' could not be found in class {}::{}", onClickItr->second, host->klass->namespaze, host->klass->name);
-                }
+        // it was a button!
+        auto onClickItr = componentType.data.find("onClick");
+        if (onClickItr != componentType.data.end() && !onClickItr->second.empty()) {
+            auto action = parserParams.TryGetAction(onClickItr->second);
+            if (action) {
+                event->AddListener(action->GetUnityAction());
             }
-
-            auto clickEventItr = componentType.data.find("click-event");
-            if (clickEventItr != componentType.data.end() && !clickEventItr->second.empty()) {
-                auto arg = StringParseHelper(clickEventItr->second);
-                auto clickEventMethodInfo = arg.asMethodInfo(host, 0);
-                if (clickEventMethodInfo) {
-                    auto delegate = MakeUnityAction(host, clickEventMethodInfo);
-                    event->AddListener(delegate);
-                } else {
-                    ERROR("Method '{}' could not be found in class {}::{}", clickEventItr->second, host->klass->namespaze, host->klass->name);
-                }
-            }
-            button->set_onClick(event);
         }
 
-        Base::HandleType(componentType, parserParams);
+        auto clickEventItr = componentType.data.find("click-event");
+        if (clickEventItr != componentType.data.end() && !clickEventItr->second.empty()) {
+            // TODO: events
+        }
+
+        button->set_onClick(event);
     }
 }

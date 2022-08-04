@@ -2,6 +2,7 @@
 
 #include "UnityEngine/GameObject.hpp"
 #include "BSML/Parsing/BSMLValue.hpp"
+#include "BSML/Parsing/BSMLAction.hpp"
 
 #include <map>
 #include <vector>
@@ -11,7 +12,6 @@ namespace BSML {
     class BSMLParserParams {
         friend class BSMLTag;
         friend class BSMLMacro;
-        friend class BSMLDocParser;
         friend class BSMLParser;
         public:
             ~BSMLParserParams();
@@ -41,18 +41,28 @@ namespace BSML {
 
             /// @brief Equivalent to getting a BSMLValue from PC
             /// @param key the key the value is saved to
-            BSMLValue* TryGetValue(const std::string& key);
+            BSMLValue* TryGetValue(const std::string& key) const;
 
             /// @brief adds the BSMLValue to the map
             /// @param key the key the value is saved to
             /// @param value the value to save
             void AddValue(const std::string& key, BSMLValue* value);
 
+            /// @brief Equivalent to getting a BSMLAction from PC
+            /// @param key the key the action is saved to
+            BSMLAction* TryGetAction(const std::string& key) const;
+
+            /// @brief adds the BSMLValue to the map
+            /// @param key the key the value is saved to
+            /// @param value the value to save
+            void AddAction(const std::string& key, BSMLAction* action);
+
             /// @brief get the host object
             Il2CppObject* get_host();
         private:
             std::map<std::string, std::vector<UnityEngine::GameObject*>> objectsWithIds;
             std::map<std::string, BSMLValue*> values;
+            std::map<std::string, BSMLAction*> actions;
             Il2CppObject* host;
     };
 }

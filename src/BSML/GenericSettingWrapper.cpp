@@ -9,3 +9,12 @@ void BSML::GenericSettingWrapper::ctor() {
     getterInfo = nullptr;
     onChangeInfo = nullptr;
 }
+
+Il2CppObject* BSML::GenericSettingWrapper::get_onChangeHost() {
+    return onChangeHost ? onChangeHost : host;
+}
+
+Il2CppObject* BSML::GenericSettingWrapper::get_host() {
+    return host ? host : onChangeHost;
+}
+
