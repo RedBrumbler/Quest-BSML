@@ -373,10 +373,7 @@ namespace BSML::Utilities {
         UnityEngine::Sprite* whitePixelSprite = nullptr;
         UnityEngine::Sprite* GetWhitePixel() {
             if (!whitePixelSprite || !Object::IsNativeObjectAlive(whitePixelSprite)) {
-                auto texture = Texture2D::get_whiteTexture();
-                whitePixelSprite = Sprite::Create(texture, Rect(0.0f, 0.0f, texture->get_width(), texture->get_height()), Vector2(0.5f, 0.5f), 1, 1u, SpriteMeshType::FullRect, Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
-                whitePixelSprite->set_name("BlankSprite");
-                Object::DontDestroyOnLoad(whitePixelSprite);
+                FindSpriteCached("WhitePixel");
             }
             return whitePixelSprite;
         }

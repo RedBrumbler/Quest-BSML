@@ -1,5 +1,6 @@
 #include "BSML/Tags/ImageTag.hpp"
 #include "Helpers/getters.hpp"
+#include "Helpers/utilities.hpp"
 #include "logging.hpp"
 
 #include "UnityEngine/GameObject.hpp"
@@ -21,8 +22,8 @@ namespace BSML {
         auto rectTransform = image->get_rectTransform();
         rectTransform->set_sizeDelta({20, 20});
         rectTransform->SetParent(parent, false);
-        // TODO: blank sprite
-        //image->set_sprite(BlankSprite);
+        // TODO: maybe use a default placeholder sprite instead? maybe a BSML image
+        image->set_sprite(Utilities::ImageResources::GetBlankSprite());
 
         gameObject->AddComponent<UI::LayoutElement*>();
         return gameObject;
