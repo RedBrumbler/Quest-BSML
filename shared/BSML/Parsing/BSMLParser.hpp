@@ -15,7 +15,7 @@ namespace BSML {
             void Construct(UnityEngine::Transform* parent, Il2CppObject* host);
             static std::shared_ptr<BSMLParserParams> Construct(const BSMLNode* root, UnityEngine::Transform* parent, Il2CppObject* host);
 
-            BSMLParserParams parserParams;
+            std::shared_ptr<BSMLParserParams> parserParams;
             BSMLNode* root;
     };
 }

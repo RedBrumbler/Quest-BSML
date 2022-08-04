@@ -8,6 +8,8 @@
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
+#include "CustomListObject.hpp"
+
 #include "macros.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
@@ -17,6 +19,7 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, someList);
     DECLARE_INSTANCE_FIELD(ListWrapper<StringW>, sliderList);
     DECLARE_INSTANCE_FIELD(ListWrapper<CustomCellInfo*>, listData);
+    DECLARE_INSTANCE_FIELD(ListWrapper<Il2CppObject*>, customListData);
     DECLARE_INSTANCE_FIELD(BSML::ModalView*, listModal);
     
     BSML_OPTIONS_LIST(lyrics, "Never", "Gonna", "Give", "You", "Up");

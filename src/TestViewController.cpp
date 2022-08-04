@@ -42,8 +42,11 @@ namespace BSML {
             listData->Add(CustomCellInfo::construct(fmt::format("Letter {}", letter), "A good letter"));
             letter++;
         }
+
+        customListData = List<Il2CppObject*>::New_ctor();
+        for (int i = 0; i < 20; i++) customListData->Add(CustomListObject::New_ctor());
     }
-    
+
 
     void TestViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if (!firstActivation) return;

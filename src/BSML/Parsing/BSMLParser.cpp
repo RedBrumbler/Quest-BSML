@@ -5,7 +5,7 @@
 #include "logging.hpp"
 
 namespace BSML {
-    BSMLParser::BSMLParser() : root(new BSMLNode()) {}
+    BSMLParser::BSMLParser() : root(new BSMLNode()), parserParams(std::make_shared<BSMLParserParams>()) {}
     BSMLParser::~BSMLParser() {
         delete root;
     }
@@ -44,27 +44,27 @@ namespace BSML {
     }
 
     void BSMLParser::Construct(UnityEngine::Transform* parent, Il2CppObject* host) {
-        parserParams.host = host;
+        parserParams->host = host;
         std::vector<ComponentTypeWithData*> components;
 
         INFO("Making values from host fields, props and methods");
         auto values = BSMLValue::MakeValues(host);
         for (auto& [key, value] : values) {
             INFO("Got value: {}", key);
-            parserParams.AddValue(key, value);
+            parserParams->AddValue(key, value);
         }
 
         auto actions = BSMLAction::MakeActions(host);
         for (auto& [key, action] : actions) {
             INFO("Got action: {}", key);
-            parserParams.AddAction(key, action);
+            parserParams->AddAction(key, action);
         }
         
         /// when making from a new "root" we skip the root itself
-        root->HandleChildren(parent, parserParams, components);
+        root->HandleChildren(parent, *parserParams, components);
 
         for (auto comp : components) {
-            comp->typeHandler->HandleTypeAfterParse(*comp, parserParams);
+            comp->typeHandler->HandleTypeAfterParse(*comp, *parserParams);
         }
 
         for (auto component : components) {
