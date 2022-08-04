@@ -73,7 +73,7 @@ namespace BSML {
         
         components.clear();
 
-        auto postParseMinfo = il2cpp_functions::class_get_method_from_name(host, "PostParse", 0);
+        auto postParseMinfo = il2cpp_functions::class_get_method_from_name(host->, "PostParse", 0);
         if (postParseMinfo) il2cpp_utils::RunMethod(host, postParseMinfo);
     }
 
