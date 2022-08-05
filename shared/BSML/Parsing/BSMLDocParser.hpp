@@ -14,6 +14,9 @@ namespace BSML {
             static void UnRegisterTag(BSMLNodeParserBase* parser);
 
             static BSMLNodeParserBase* get_parser(std::string alias);
+            #if MAKE_DOCS
+            static void PrintDocs();
+            #endif
         private:
             using TagNameToParser = std::map<std::string, BSML::BSMLNodeParserBase*>;
             static TagNameToParser tagNameToParser;

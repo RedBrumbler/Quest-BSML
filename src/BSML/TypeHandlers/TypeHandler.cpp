@@ -34,4 +34,38 @@ namespace BSML {
         }
         INFO("type handler count: {}", typeHandlers.size());
     }
+    
+    #if MAKE_DOCS
+    void TypeHandlerBase::AddToArray(rapidjson::Value& val, rapidjson::Document::AllocatorType& allocator) {
+        val.PushBack(ToJson(allocator), allocator);
+    }
+
+    rapidjson::Value TypeHandlerBase::ToJson(rapidjson::Document::AllocatorType& allocator) {
+        rapidjson::Value typehandler;
+        typehandler.SetObject();
+        std::string name =  get_type()->get_FullName();
+        typehandler.AddMember("typename", rapidjson::Value(name.c_str(), name.size(), allocator), allocator);
+
+        rapidjson::Value propertiesArray;
+        propertiesArray.SetArray();
+
+        auto& properties = get_cachedProps();
+        for (const auto& [key, aliases]  : properties) {
+            rapidjson::Value prop;
+            prop.SetObject();
+
+            rapidjson::Value aliasArray;
+            aliasArray.SetArray();
+            for (const auto& alias : aliases) {
+                aliasArray.PushBack(rapidjson::Value(alias.c_str(), alias.size(), allocator), allocator);
+            }
+            prop.AddMember("key", rapidjson::Value(key.c_str(), key.size(), allocator), allocator);
+            prop.AddMember("aliases", aliasArray, allocator);
+            propertiesArray.PushBack(prop, allocator);
+        }
+
+        typehandler.AddMember("properties", propertiesArray, allocator);
+        return typehandler;
+    }
+    #endif
 }

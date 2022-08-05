@@ -11,6 +11,10 @@
 #include <optional>
 #include "logging.hpp"
 
+#if MAKE_DOCS
+#include "beatsaber-hook/shared/rapidjson/include/rapidjson/document.h"
+#endif
+
 namespace BSML {
     class TypeHandlerBase {
         public:
@@ -29,6 +33,18 @@ namespace BSML {
             static std::vector<TypeHandlerBase*>& get_typeHandlers();
 
             virtual int get_priority() const { return 100; }
+
+            #if MAKE_DOCS
+                /// @brief method to add the typehandler to a given json value as a member
+                /// @param val the value to add to
+                /// @param allocator the allocator for the doc
+                void AddToArray(rapidjson::Value& val, rapidjson::Document::AllocatorType& allocator);
+
+                /// @brief method to make a rapidjson value of the typehandler
+                /// @param allocator the allocator for the doc
+                /// @return a rapidjson value of the typehandler name + properties
+                rapidjson::Value ToJson(rapidjson::Document::AllocatorType& allocator);
+            #endif
         private:
             PropMap cachedProps;
             static void RegisterTypeHandler(TypeHandlerBase* typeHandler);

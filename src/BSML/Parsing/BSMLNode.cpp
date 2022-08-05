@@ -4,7 +4,12 @@
 #include "logging.hpp"
 
 namespace BSML {
-    BSMLNode::BSMLNode() : is_valid(false), children({}) {}
+    BSMLNode::BSMLNode() : is_valid(false), children({}) {
+        #if MAKE_DOCS
+        nodeType = NodeType::None;
+        #endif
+    }
+    
     BSMLNode::~BSMLNode() {
         for (auto child : children) {
             delete child;
