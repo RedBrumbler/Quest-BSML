@@ -2,7 +2,7 @@
 
 /// A header with templated methods to simplify making delegates
 
-#include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
+#include "custom-types/shared/delegate.hpp"
 #include "System/Action.hpp"
 #include "System/Action_1.hpp"
 #include "System/Action_2.hpp"
@@ -48,7 +48,7 @@ namespace BSML {
     /// @return T delegate
     template <typename T, typename F>
     inline T MakeDelegate(F fun) {
-        return il2cpp_utils::MakeDelegate<T>(fun);
+        return custom_types::MakeDelegate<T>(fun);
     }
 
     /// @brief templated method to turn an std::function into an action
