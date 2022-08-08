@@ -1,9 +1,10 @@
 #pragma once
 
-
-// Use this macro in combination with BSML settings to declare the proper setters and getters, make sure that the id of the setting is the same as what you pass as name
-#define BSML_PROPERTY(type, name)                                                                              \
-DECLARE_INSTANCE_FIELD(type, _##name);                                                                              \
+/// This macro defines a backing field, a getter and a setter for a property.
+/// The field is declared as _name, the getter as get_name and the setter as set_name.
+/// you can use these as BSMValue in your bsml file
+#define DECLARE_BSML_PROPERTY(type, name)                                                                               \
+DECLARE_INSTANCE_FIELD(type, _##name);                                                                                  \
 public:                                                                                                                 \
 type get_##name();                                                                                                      \
 ___CREATE_INSTANCE_METHOD(get_##name, "get_" #name, METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_HIDE_BY_SIG, nullptr);   \
