@@ -1,6 +1,6 @@
 #pragma once
 
-#include "/SliderSettingBase.hpp"
+#include "SliderSettingBase.hpp"
 #include "HMUI/CustomFormatRangeValuesSlider.hpp"
 #include <map>
 
