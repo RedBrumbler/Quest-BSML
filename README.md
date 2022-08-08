@@ -1,18 +1,36 @@
-# Why this?
+If you want more info about BSML, you should also check out the [docs](https://redbrumbler.github.io/Quest-BSML-Docs/)
 
-I was kinda bored and thought a (possibly non-complete) port of BSML might be very useful for quest mods despite probably objections by some people.
+# Why I ported BSML
 
-also I was wondering how difficult it would be to make it work and turns out not too difficult
+Since PC Mods heavily utilize BSML, to great effect, I've always thought it was a good idea to port the library to quest to truly get cross platform UI possibilities. QuestUI was always a thing we could use obviously, but it was not optimal in my opinion. It felt sluggish and honestly feels like you don't have control over the UI you create. It's also pretty difficult to see the shape of the UI when it's all just code that executes one after the other. BSML provides a better experience in that regard as you can more clearly see how things are grouped and parented without having to read a ton of code. On top of that BSML gives the possibility of more easily changing the UI during the runtime of the game, where other methods of UI would not provide this.
 
-# Building it
+All this resulted in me deciding to port the library from the [PC version](https://github.com/monkeymanboy/BeatSaberMarkupLanguage) where I wanted most if not all the tags to exist in a way that we can use it on quest. Aside from some minute differences it's the same as on the pc version, so UI should be copy-pasteable now.
+This means you can prototype your UI on PC, and then just copy it over to your quest, if you don't feel like constantly putting on your headset to test out your made UI. This should make creating UI for your mod a breeze.
 
-Clone the repo
+Key differences between the PC and Quest version are that UIValues and UIActions don't exist in the same way. On quest any method on your host is handled as if it is a BSMLAction, meaning any C# method can be used as `on-click` or `on-change` actions. For BSMLValues about the same holds true, except it's fields, or methods starting with `get_` or `set_` are handled as if they are BSMLValues.
+
+# Getting the library
+To get the library, simply head over to the [releases](https://github.com/RedBrumbler/Quest-BSML/releases) section, or build it yourself.
+If you want to develop with the library simply use [qpm-rust](https://github.com/RedBrumbler/QuestPackageManager-Rust) to add it as a dependency to your mod
+
+# Building the library
+To build the library, make sure you have [qpm-rust](https://github.com/RedBrumbler/QuestPackageManager-Rust) setup, as well as [ninja](https://github.com/ninja-build/ninja/releases/latest) and [cmake](https://cmake.org/download/). Powershell is also adised
 
 ```bash
 git clone https://github.com/RedBrumbler/Quest-BSML.git --recursive &&
 cd Quest-BSML &&
 qpm-rust restore &&
-pwsh ./build.ps1
+cmake -G "Ninja" -DCMAKE_BUILD_TYPE="Debug" $make_docs . -B build &&
+cmake --build ./build
+```
+
+You will find the binary in the `./build/` directory.
+
+if you also want to have the `bsml.qmod` then you can also run the following commands, though these require a powershell:
+
+```bash
+qpm-rust qmod create &&
+./createqmod.ps1 "BSML.qmod"
 ```
 
 # Generating docs information
