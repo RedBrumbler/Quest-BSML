@@ -7,7 +7,7 @@
     "version": "0.1.0",
     "url": "https://github.com/RedBrumbler/BSQML",
     "additionalData": {
-      "overrideSoName": "libbsqml.so"
+      "overrideSoName": "libbsml.so"
     }
   },
   "dependencies": [
@@ -30,13 +30,6 @@
     {
       "id": "custom-types",
       "versionRange": "^0.15.13",
-      "additionalData": {
-        "includeQmod": false
-      }
-    },
-    {
-      "id": "questui",
-      "versionRange": "^0.16.1",
       "additionalData": {
         "includeQmod": false
       }

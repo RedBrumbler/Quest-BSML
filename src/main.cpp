@@ -8,7 +8,6 @@
 #include "BSML/Parsing/BSMLDocParser.hpp"
 #include "BSML/Tags/BSMLTag.hpp"
 
-#include "questui/shared/QuestUI.hpp"
 #include "TestViewController.hpp"
 
 using namespace BSML;
@@ -27,6 +26,4 @@ extern "C" void load() {
     custom_types::Register::AutoRegister();
     
     Hooks::InstallHooks(BSML::Logging::getLogger());
-
-    QuestUI::Register::RegisterAllModSettingsViewController<BSML::TestViewController*>(modInfo, "BSMLTest");
 }
