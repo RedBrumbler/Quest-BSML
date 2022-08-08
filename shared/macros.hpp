@@ -1,5 +1,4 @@
 #pragma once
-#include "BSML/Components/ModalView.hpp"
 
 /// This macro defines a backing field, a getter and a setter for a property.
 /// The field is declared as _name, the getter as get_name and the setter as set_name.
