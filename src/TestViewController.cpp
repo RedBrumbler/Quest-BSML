@@ -22,8 +22,6 @@ namespace BSML {
         someList->Add("Is");
         someList->Add("Cute");
 
-        _myChoice = StringW(someList[3]);
-
         set_length(5.0f);
 
         sliderList = List<StringW>::New_ctor();
@@ -67,22 +65,6 @@ namespace BSML {
     void TestViewController::OnPropertiesChanged() {
         INFO("someOtherField: {}", someOtherField);
         INFO("A property changed!");
-    }
-
-    void TestViewController::testToggle_changed(bool value) {
-        INFO("testToggle changed: {}, was: {}", value, _testToggle);
-    }
-
-    void TestViewController::myChoice_changed(StringW value) {
-        if (!_myChoice) {
-            INFO("myChoice changed: {}", value);
-        } else {
-            INFO("myChoice changed: {}, was: {}", value, _myChoice);
-        }
-    }
-
-    void TestViewController::incdecValue_changed(float value) {
-        INFO("incdecValue changed: {}, was: {}", value, _incdecValue);
     }
 
     void TestViewController::PinkCuteToggled(bool value) {
