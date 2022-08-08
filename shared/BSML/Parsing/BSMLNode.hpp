@@ -27,11 +27,21 @@ namespace BSML {
             friend class ::BSML::BSMLNodeParserBase;
             friend class ::BSML::BSMLParser;
         protected:
+
             bool is_valid = false;
             BSMLNode* root;
             BSMLNode* parent;
             std::vector<BSMLNode*> children;
             std::map<std::string, std::string> attributes = {};
+
+            #if MAKE_DOCS
+            enum class NodeType {
+                None,
+                Tag,
+                Macro
+            };
+            NodeType nodeType;
+            #endif
 
             virtual void parse(const tinyxml2::XMLElement& elem);
     };

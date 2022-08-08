@@ -21,7 +21,11 @@ UnityEngine::Component* GetExternalComponent(UnityEngine::GameObject* obj, BSML:
 
 namespace BSML {
     static BSMLNodeParser<BSMLTag> bsmlNodeParser({"bsml"});
-    BSMLTag::BSMLTag() : BSMLNode() {}
+    BSMLTag::BSMLTag() : BSMLNode() {
+        #if MAKE_DOCS
+        nodeType = NodeType::Tag;
+        #endif
+    }
 
     void BSMLTag::Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const {
         // create object
