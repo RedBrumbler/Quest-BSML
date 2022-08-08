@@ -1,7 +1,6 @@
 #pragma once
 #include "BSML/Components/ModalView.hpp"
 
-
 // Use this macro in combination with BSML settings to declare the proper setters and getters, make sure that the id of the setting is the same as what you pass as name
 #define BSML_PROPERTY(type, name)                                                                              \
 DECLARE_INSTANCE_FIELD(type, _##name);                                                                              \

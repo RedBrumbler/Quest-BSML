@@ -1,8 +1,8 @@
 #pragma once
 
 #include "UnityEngine/GameObject.hpp"
-#include "BSML/Parsing/BSMLValue.hpp"
-#include "BSML/Parsing/BSMLAction.hpp"
+#include "BSMLValue.hpp"
+#include "BSMLAction.hpp"
 
 #include <map>
 #include <vector>

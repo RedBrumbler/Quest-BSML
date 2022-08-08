@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "BSML/TypeHandlers/TypeHandler.hpp"
+#include "../TypeHandler.hpp"
 #include "BSML/Components/Settings/BaseSetting.hpp"
 
 // note: this is analogous to GenericSettingHandler, but due to this being quest,

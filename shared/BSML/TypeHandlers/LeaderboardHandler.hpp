@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/TypeHandlers/TypeHandler.hpp"
+#include "TypeHandler.hpp"
 #include "GlobalNamespace/LeaderboardTableView.hpp"
 
 namespace BSML {

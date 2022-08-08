@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Tags/ButtonTag.hpp"
+#include "ButtonTag.hpp"
 
 namespace BSML {
     class PrimaryButtonTag : public ButtonTag {

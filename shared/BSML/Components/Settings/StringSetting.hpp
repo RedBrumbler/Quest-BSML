@@ -1,7 +1,7 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
-#include "BSML/Components/Settings/BaseSetting.hpp"
+#include "/BaseSetting.hpp"
 #include "BSML/Components/Keyboard/ModalKeyboard.hpp"
 #include "BSML/GenericSettingWrapper.hpp"
 

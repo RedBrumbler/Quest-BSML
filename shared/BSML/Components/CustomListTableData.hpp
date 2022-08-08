@@ -6,7 +6,7 @@
 #include "UnityEngine/MonoBehaviour.hpp"
 #include "UnityEngine/Sprite.hpp"
 
-#include "BSML/Components/BoxTableCell.hpp"
+#include "BoxTableCell.hpp"
 #include "GlobalNamespace/LevelListTableCell.hpp"
 #include "GlobalNamespace/AnnotatedBeatmapLevelCollectionCell.hpp"
 #include "GlobalNamespace/SimpleTextTableCell.hpp"

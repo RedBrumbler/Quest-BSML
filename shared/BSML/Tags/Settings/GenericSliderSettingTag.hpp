@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Tags/BSMLTag.hpp"
+#include "../BSMLTag.hpp"
 
 #include "BSML/Components/Settings/SliderSettingBase.hpp"
 

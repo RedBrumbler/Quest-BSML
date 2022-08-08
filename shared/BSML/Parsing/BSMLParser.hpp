@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/ComponentTypeWithData.hpp"
+#include "../ComponentTypeWithData.hpp"
 #include "BSMLParserParams.hpp"
 #include "BSMLNode.hpp"
 

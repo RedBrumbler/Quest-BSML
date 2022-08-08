@@ -1,7 +1,7 @@
 #pragma once
 
-#include "BSML/Tags/BSMLTag.hpp"
-#include "BSML/Tags/ScrollViewTag.hpp"
+#include "BSMLTag.hpp"
+#include "ScrollViewTag.hpp"
 
 namespace BSML {
     class SettingsContainerTag : public ScrollViewTag {

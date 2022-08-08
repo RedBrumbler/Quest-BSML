@@ -1,7 +1,7 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
-#include "BSML/Components/CustomCellTableCell.hpp"
+#include "CustomCellTableCell.hpp"
 #include "HMUI/TableView.hpp"
 #include "HMUI/TableCell.hpp"
 #include "HMUI/TableView_IDataSource.hpp"

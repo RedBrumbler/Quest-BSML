@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Tags/BackgroundTag.hpp"
+#include "BackgroundTag.hpp"
 
 namespace BSML {
     class TabTag : public BackgroundTag {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BSML/Components/ScrollIndicator.hpp"
-#include "BSML/TypeHandlers/TypeHandler.hpp"
+#include "TypeHandler.hpp"
 
 namespace BSML {
     class ScrollIndicatorHandler : public TypeHandler<BSML::ScrollIndicator*> {

@@ -6,11 +6,11 @@
 #include "UnityEngine/Color.hpp"
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/Button.hpp"
-#include "BSML/Components/ModalView.hpp"
-#include "BSML/GenericSettingWrapper.hpp"
+#include "../ModalView.hpp"
+#include "../../GenericSettingWrapper.hpp"
 
-#include "BSML/Components/Keyboard/Key.hpp"
-#include "BSML/Components/Keyboard/Keyboard.hpp"
+#include "Key.hpp"
+#include "Keyboard.hpp"
 
 
 DECLARE_CLASS_CODEGEN(BSML, ModalKeyboard, UnityEngine::MonoBehaviour,

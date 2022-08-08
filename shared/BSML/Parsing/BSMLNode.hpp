@@ -6,7 +6,7 @@
 #include <map>
 
 #include "UnityEngine/Transform.hpp"
-#include "BSML/Parsing/BSMLNodeParser.hpp"
+#include "BSMLNodeParser.hpp"
 
 namespace BSML {
     class ComponentTypeWithData;

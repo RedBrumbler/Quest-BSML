@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Parsing/BSMLValue.hpp"
+#include "BSMLValue.hpp"
 
 namespace BSML {
     struct BSMLStringValue : public BSMLValue {

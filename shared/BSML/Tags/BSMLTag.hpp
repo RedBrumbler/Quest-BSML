@@ -3,10 +3,10 @@
 #include <vector>
 #include "tinyxml2/shared/tinyxml2.h"
 #include "UnityEngine/Transform.hpp"
-#include "BSML/Parsing/BSMLNodeParser.hpp"
-#include "BSML/Parsing/BSMLNode.hpp"
-#include "BSML/ComponentTypeWithData.hpp"
-#include "BSML/Parsing/BSMLParserParams.hpp"
+#include "../Parsing/BSMLParserParams.hpp"
+#include "../Parsing/BSMLNodeParser.hpp"
+#include "../Parsing/BSMLNode.hpp"
+#include "../ComponentTypeWithData.hpp"
 
 namespace BSML {
     class BSMLNodeParserBase;

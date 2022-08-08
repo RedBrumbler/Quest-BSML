@@ -1,8 +1,8 @@
 #pragma once
 
 #include "StringParseHelper.hpp"
-#include "BSML/ComponentTypeWithData.hpp"
-#include "BSML/Parsing/BSMLParserParams.hpp"
+#include "../ComponentTypeWithData.hpp"
+#include "../Parsing/BSMLParserParams.hpp"
 #include "UnityEngine/Component.hpp"
 #include "System/Type.hpp"
 #include <string>
