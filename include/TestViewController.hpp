@@ -22,16 +22,10 @@ DECLARE_CLASS_CODEGEN(BSML, TestViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(ListWrapper<Il2CppObject*>, customListData);
     DECLARE_INSTANCE_FIELD(BSML::ModalView*, listModal);
     
-    BSML_OPTIONS_LIST(lyrics, "Never", "Gonna", "Give", "You", "Up");
-    BSML_OPTIONS_LIST(textSegments, "Modded", "Vanilla", "Chocolate", "Strawberry", "Gasoline");
+    BSML_OPTIONS_LIST_OBJECT(lyrics, "Never", "Gonna", "Give", "You", "Up");
+    BSML_OPTIONS_LIST_OBJECT(textSegments, "Modded", "Vanilla", "Chocolate", "Strawberry", "Gasoline");
     DECLARE_INSTANCE_FIELD(StringW, sliderChoice);
 
-    BSML_PROPERTY_ONCHANGED(StringW, myChoice);
-    BSML_PROPERTY_ONCHANGED(bool, testToggle);
-    BSML_PROPERTY_ONCHANGED(float, incdecValue);
-    
-    BSML_MODAL_METHOD(scare);
-    BSML_MODAL_METHOD(mykb);
     DECLARE_INSTANCE_FIELD(float, _length);
     DECLARE_INSTANCE_METHOD(float, get_length);
     DECLARE_INSTANCE_METHOD(void, set_length, float value);
