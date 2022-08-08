@@ -1,7 +1,11 @@
 #include "BSML/Macros/BSMLMacro.hpp"
 
 namespace BSML {
-    BSMLMacro::BSMLMacro() : BSMLNode() {};
+    BSMLMacro::BSMLMacro() : BSMLNode() {
+        #if MAKE_DOCS
+        nodeType = NodeType::Macro;
+        #endif
+    };
 
     const BSMLMacro::PropMap& BSMLMacro::get_cachedProps() const {
         if (cachedProps.empty())

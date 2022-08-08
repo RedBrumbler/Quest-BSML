@@ -2,10 +2,15 @@ param (
     [Parameter(Mandatory=$false)]
     [Switch]$debug_so,
     [Parameter(Mandatory=$false)]
-    [Switch]$log
+    [Switch]$log,
+    [Parameter(Mandatory=$false)]
+    [Switch]$docs
 )
-
-& ./build.ps1
+if ($docs.IsPresent) {
+    & ./build.ps1 -docs
+} else {
+    & ./build.ps1
+}
 if (-not ($LastExitCode -eq 0)) {
     echo "build failed, not copying"
     exit

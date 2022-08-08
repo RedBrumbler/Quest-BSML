@@ -1,6 +1,8 @@
 Param(
     [Parameter(Mandatory=$false)]
-    [Switch]$clean
+    [Switch]$clean,
+    [Parameter(Mandatory=$false)]
+    [Switch]$docs
 )
 
 # if user specified clean, remove all build files
@@ -14,10 +16,12 @@ if ($clean.IsPresent)
 
 if (($clean.IsPresent) -or (-not (Test-Path -Path "build")))
 {
-    $out = new-item -Path build -ItemType Directory
+    new-item -Path build -ItemType Directory
 }
 
-& cmake -G "Ninja" -DCMAKE_BUILD_TYPE="Debug" . -B build
+$make_docs = "-DMAKE_DOCS=" + $docs.IsPresent.ToString().ToLower()
+
+& cmake -G "Ninja" -DCMAKE_BUILD_TYPE="Debug" $make_docs . -B build 
 & cmake --build ./build
 
 exit $LastExitCode

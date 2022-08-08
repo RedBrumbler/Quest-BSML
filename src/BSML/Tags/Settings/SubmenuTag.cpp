@@ -7,6 +7,8 @@
 namespace BSML {
     static BSMLNodeParser<SubmenuTag> submenuTagParser({"settings-submenu"});
     UnityEngine::GameObject* SubmenuTag::CreateObject(UnityEngine::Transform* parent) const {
-        return nullptr;
+        auto go = UnityEngine::GameObject::New_ctor("BSMLSubMenu");
+        go->get_transform()->SetParent(parent, false);
+        return go;
     }
 }
