@@ -6,7 +6,7 @@
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "HMUI/RangeValuesTextSlider.hpp"
 #include "BSML/GenericSettingWrapper.hpp"
-#include "BSML/Components/Settings/BaseSetting.hpp"
+#include "BaseSetting.hpp"
 
 DECLARE_CLASS_CUSTOM(BSML, SliderSettingBase, BSML::BaseSetting,
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);

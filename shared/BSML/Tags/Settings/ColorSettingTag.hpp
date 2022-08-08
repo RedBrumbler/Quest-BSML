@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Tags/ModalColorPickerTag.hpp"
+#include "../ModalColorPickerTag.hpp"
 
 namespace BSML {
     class ColorSettingTag : public ModalColorPickerTag {

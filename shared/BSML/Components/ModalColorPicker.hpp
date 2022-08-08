@@ -1,7 +1,7 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
-#include "BSML/Components/ModalView.hpp"
+#include "ModalView.hpp"
 #include "UnityEngine/MonoBehaviour.hpp"
 #include "GlobalNamespace/RGBPanelController.hpp"
 #include "GlobalNamespace/HSVPanelController.hpp"

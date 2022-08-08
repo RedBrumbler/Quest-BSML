@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "custom-types/shared/macros.hpp"
-#include "BSML/Components/Settings/IncDecSetting.hpp"
+#include "IncDecSetting.hpp"
 
 DECLARE_CLASS_CUSTOM(BSML, ListSetting, BSML::IncDecSetting,
     DECLARE_INSTANCE_METHOD(void, Setup);

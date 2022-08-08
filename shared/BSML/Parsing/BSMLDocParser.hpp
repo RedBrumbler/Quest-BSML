@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Parsing/BSMLParserParams.hpp"
+#include "BSMLParserParams.hpp"
 #include "tinyxml2/shared/tinyxml2.h"
 #include <map>
 #include <string>

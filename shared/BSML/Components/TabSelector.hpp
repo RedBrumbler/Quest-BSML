@@ -5,7 +5,7 @@
 #include "UnityEngine/UI/Button.hpp"
 #include "HMUI/TextSegmentedControl.hpp"
 #include "HMUI/SegmentedControl.hpp"
-#include "BSML/Components/Tab.hpp"
+#include "Tab.hpp"
 #include "BSML/Parsing/BSMLParserParams.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, TabSelector, UnityEngine::MonoBehaviour,

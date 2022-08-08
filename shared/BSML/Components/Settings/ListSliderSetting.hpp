@@ -1,7 +1,7 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
-#include "BSML/Components/Settings/SliderSettingBase.hpp"
+#include "SliderSettingBase.hpp"
 #include <map>
 
 DECLARE_CLASS_CUSTOM(BSML, ListSliderSetting, BSML::SliderSettingBase,

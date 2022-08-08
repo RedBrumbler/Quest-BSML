@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Components/Settings/BaseSetting.hpp"
+#include "BaseSetting.hpp"
 #include "BSML/Components/ModalColorPicker.hpp"
 #include "BSML/GenericSettingWrapper.hpp"
 #include "UnityEngine/UI/Button.hpp"

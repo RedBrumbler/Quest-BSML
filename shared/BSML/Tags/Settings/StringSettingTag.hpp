@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Tags/ModalKeyboardTag.hpp"
+#include "../ModalKeyboardTag.hpp"
 
 namespace BSML {
     class StringSettingTag : public ModalKeyboardTag {

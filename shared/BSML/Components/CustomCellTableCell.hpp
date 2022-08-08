@@ -1,7 +1,7 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
-#include "BSML/Parsing/BSMLParserParams.hpp"
+#include "../Parsing/BSMLParserParams.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "HMUI/SelectableCell.hpp"
 #include "HMUI/TableCell.hpp"

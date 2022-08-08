@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "BSML/Tags/Settings/IncDecSettingTag.hpp"
+#include "../Settings/IncDecSettingTag.hpp"
 #include "BSML/Components/Settings/ListSetting.hpp"
 
 namespace BSML {

@@ -4,7 +4,7 @@
 #include "UnityEngine/UI/Toggle.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "BSML/GenericSettingWrapper.hpp"
-#include "BSML/Components/Settings/BaseSetting.hpp"
+#include "BaseSetting.hpp"
 
 DECLARE_CLASS_CUSTOM(BSML, ToggleSetting, BSML::BaseSetting,
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);

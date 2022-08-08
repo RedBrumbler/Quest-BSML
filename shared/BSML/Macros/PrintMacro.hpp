@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Macros/BSMLMacro.hpp"
+#include "BSMLMacro.hpp"
 
 namespace BSML {
     class PrintMacro : public BSMLMacro {

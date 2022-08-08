@@ -5,7 +5,7 @@
 #include "UnityEngine/RectTransform.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "UnityEngine/UI/Button.hpp"
-#include "BSML/Components/Keyboard/Key.hpp"
+#include "Key.hpp"
 #include <functional>
 
 DECLARE_CLASS_CODEGEN(BSML, Keyboard, Il2CppObject,

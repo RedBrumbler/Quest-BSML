@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Parsing/BSMLNode.hpp"
+#include "../Parsing/BSMLNode.hpp"
 #include <map>
 
 namespace BSML {

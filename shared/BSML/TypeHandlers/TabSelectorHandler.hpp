@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/TypeHandlers/TypeHandler.hpp"
+#include "TypeHandler.hpp"
 #include "BSML/Components/TabSelector.hpp"
 
 namespace BSML {
