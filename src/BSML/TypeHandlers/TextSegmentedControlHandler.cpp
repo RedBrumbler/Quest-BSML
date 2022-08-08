@@ -30,12 +30,12 @@ namespace BSML {
 
             List<Il2CppObject*>* data = val ? val->GetValue<List<Il2CppObject*>*>() : nullptr;
 
-            if (data && il2cpp_functions::class_is_assignable_from(data->klass, dataKlass)) {
+            if (data) {
                 if (il2cpp_functions::class_is_assignable_from(data->klass, stringDataKlass)) {
                     // it's already a list of strings :)
                     ListWrapper<StringW> strings = reinterpret_cast<List<StringW>*>(data);
                     for (auto str : strings) texts->Add(str);
-                } else {
+                } else if (il2cpp_functions::class_is_assignable_from(data->klass, dataKlass)) {
                     // it's a list of objects, use ToString
                     ListWrapper<Il2CppObject*> objects = data;
                     for (auto obj : objects) texts->Add(obj ? obj->ToString() : StringW(""));
