@@ -26,13 +26,17 @@ using namespace UnityEngine::UI;
 namespace BSML {
     static BSMLNodeParser<PageButtonTag> pageButtonTagParser({"page-button", "pg-button"});
 
-    Button* pageButtonTemplate = nullptr;
-    UnityEngine::GameObject* PageButtonTag::CreateObject(UnityEngine::Transform* parent) const {
-        DEBUG("Creating Page button");
-        if (!pageButtonTemplate || !Object::IsNativeObjectAlive(pageButtonTemplate)) {
+    Button* get_pageButtonTemplate() {
+        static SafePtrUnity<Button> pageButtonTemplate;
+        if (!pageButtonTemplate) {
             pageButtonTemplate = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "UpButton"; });
         }
+        return pageButtonTemplate.ptr();
+    }
 
+    UnityEngine::GameObject* PageButtonTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating Page button");
+        auto pageButtonTemplate = get_pageButtonTemplate();
         auto button = Object::Instantiate(pageButtonTemplate, parent, false);
         auto gameObject = button->get_gameObject();
         gameObject->SetActive(false);

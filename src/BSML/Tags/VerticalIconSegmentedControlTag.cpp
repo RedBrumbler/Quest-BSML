@@ -14,15 +14,18 @@ using namespace UnityEngine;
 namespace BSML {
     static BSMLNodeParser<VerticalIconSegmentedControlTag> vericalIconSegmentedControlTag({"vertical-icon-segments"});
     
-    HMUI::IconSegmentedControl* verticalIconSegmentedControlTemplate = nullptr;
-
-    UnityEngine::GameObject* VerticalIconSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
-        DEBUG("Creating VerticalIconSegmentedControl");
-        if (!verticalIconSegmentedControlTemplate || !Object::IsNativeObjectAlive(verticalIconSegmentedControlTemplate)) {
+    HMUI::IconSegmentedControl* get_verticalIconSegmentedControlTemplate() {
+        static SafePtrUnity<HMUI::IconSegmentedControl> verticalIconSegmentedControlTemplate;
+        if (!verticalIconSegmentedControlTemplate) {
             auto vc = Resources::FindObjectsOfTypeAll<GlobalNamespace::PlatformLeaderboardViewController*>().FirstOrDefault();
             verticalIconSegmentedControlTemplate = vc->scopeSegmentedControl;
         }
+        return verticalIconSegmentedControlTemplate.ptr();
+    }
 
+    UnityEngine::GameObject* VerticalIconSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating VerticalIconSegmentedControl");
+        auto verticalIconSegmentedControlTemplate = get_verticalIconSegmentedControlTemplate();
         auto verticalIconSegmentedControl = Object::Instantiate(verticalIconSegmentedControlTemplate, parent, false);
         verticalIconSegmentedControl->dataSource = nullptr;
 

@@ -26,7 +26,14 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ListTag> listTagParser({"list"});
-    Canvas* listCanvasTemplate = nullptr;
+    Canvas* get_listCanvasTemplate() {
+        static SafePtrUnity<Canvas> listCanvasTemplate;
+        if (!listCanvasTemplate) {
+            listCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
+        }
+        return listCanvasTemplate.ptr();
+    }
+
     UnityEngine::GameObject* ListTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating List");
         auto container = GameObject::New_ctor("BSMLListContainer")->AddComponent<RectTransform*>();
@@ -38,10 +45,7 @@ namespace BSML {
         gameObject->get_transform()->SetParent(containerGameObject->get_transform(), false);
         gameObject->SetActive(false);
 
-        if (!listCanvasTemplate || !Object::IsNativeObjectAlive(listCanvasTemplate)) {
-            listCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
-        }
-
+        auto listCanvasTemplate = get_listCanvasTemplate();
         auto scrollRect = gameObject->AddComponent<ScrollRect*>();
         auto canvas = gameObject->AddComponent<Canvas*>();
         // using this method causes the list to have it's cells be squished:

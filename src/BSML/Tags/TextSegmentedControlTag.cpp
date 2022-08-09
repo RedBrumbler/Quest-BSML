@@ -14,11 +14,9 @@ using namespace UnityEngine;
 namespace BSML {
     static BSMLNodeParser<TextSegmentedControlTag> textSegmentedControlTag({"text-segments"});
 
-    HMUI::TextSegmentedControl* textSegmentedControlTemplate = nullptr;
-
-    UnityEngine::GameObject* TextSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
-        DEBUG("Creating TextSegmentedControl");
-        if (!textSegmentedControlTemplate || !Object::IsNativeObjectAlive(textSegmentedControlTemplate)) {
+    HMUI::TextSegmentedControl* get_textSegmentedControlTemplate() {
+        SafePtrUnity<HMUI::TextSegmentedControl> textSegmentedControlTemplate;
+        if (!textSegmentedControlTemplate) {
             textSegmentedControlTemplate = Resources::FindObjectsOfTypeAll<HMUI::TextSegmentedControl*>().FirstOrDefault(
                 [](auto x) { 
                     auto name = x->get_name();
@@ -26,7 +24,13 @@ namespace BSML {
                     return x->container != nullptr;
                 });
         }
+        return textSegmentedControlTemplate.ptr();
+    }
+    
+    UnityEngine::GameObject* TextSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating TextSegmentedControl");
 
+        auto textSegmentedControlTemplate = get_textSegmentedControlTemplate();
         auto textSegmentedControl = Object::Instantiate(textSegmentedControlTemplate, parent, false);
         textSegmentedControl->dataSource = nullptr;
 

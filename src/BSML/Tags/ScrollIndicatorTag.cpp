@@ -12,16 +12,19 @@
 namespace BSML {
     static BSMLNodeParser<ScrollIndicatorTag> scrollIndicatorTagParser({"scroll-indicator", "vertical-scroll-indicator"});
     
-    HMUI::VerticalScrollIndicator* scrollIndicator = nullptr;
+    HMUI::VerticalScrollIndicator* get_scrollIndicatorTemplate() {
+        static SafePtrUnity<HMUI::VerticalScrollIndicator> scrollIndicatorTemplate;
+        if (!scrollIndicatorTemplate)
+        {
+            scrollIndicatorTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::VerticalScrollIndicator* >().FirstOrDefault();
+        }
+        return scrollIndicatorTemplate.ptr();
+    }
+
     UnityEngine::GameObject* ScrollIndicatorTag::CreateObject(UnityEngine::Transform* parent) const
     {
         DEBUG("making ScrollIndicator");
-        if (!scrollIndicator || !UnityEngine::Object::IsNativeObjectAlive(scrollIndicator))
-        {
-            scrollIndicator = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::VerticalScrollIndicator* >().FirstOrDefault();
-        }
-
-        auto gameObj = UnityEngine::Object::Instantiate(scrollIndicator->get_gameObject(), parent, false);
+        auto gameObj = UnityEngine::Object::Instantiate(get_scrollIndicatorTemplate()->get_gameObject(), parent, false);
         DEBUG("instantiated {}", gameObj->get_name());
 
         gameObj->SetActive(false);

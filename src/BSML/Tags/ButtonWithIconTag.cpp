@@ -24,15 +24,19 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ButtonWithIconTag> buttonWithIconTagParser({"button-with-icon", "icon-button"});
-    Button* buttonWithIconTemplate = nullptr;
+    
+    Button* get_buttonWithIconTemplate() {
+        static SafePtrUnity<Button> buttonWithIconTemplate;
+        if (!buttonWithIconTemplate) {
+            buttonWithIconTemplate = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
+        }
+        return buttonWithIconTemplate.ptr();
+    } 
 
     UnityEngine::GameObject* ButtonWithIconTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Button with icon");
-        if (!buttonWithIconTemplate || !Object::IsNativeObjectAlive(buttonWithIconTemplate)) {
-            buttonWithIconTemplate = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
-        }
 
-        auto button = Object::Instantiate(buttonWithIconTemplate, parent, false);
+        auto button = Object::Instantiate(get_buttonWithIconTemplate(), parent, false);
         button->set_name("BSMLIconButton");
         button->set_interactable(true);
         auto transform = reinterpret_cast<RectTransform*>(button->get_transform());

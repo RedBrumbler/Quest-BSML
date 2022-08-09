@@ -6,7 +6,7 @@ DEFINE_TYPE(BSML, TextPageScrollViewRefresher);
 
 namespace BSML {
     void TextPageScrollViewRefresher::OnEnable() {
-        if (scrollView && Object::IsNativeObjectAlive(scrollView)) {
+        if (scrollView && scrollView->m_CachedPtr.m_value) {
             scrollView->SetText(scrollView->text ? scrollView->text->get_text() : "");
             scrollView->RefreshButtons();
         }
@@ -14,7 +14,7 @@ namespace BSML {
     }
 
     void TextPageScrollViewRefresher::OnRectTransformDimensionsChange() {
-        if (scrollView && Object::IsNativeObjectAlive(scrollView)) {
+        if (scrollView && scrollView->m_CachedPtr.m_value) {
             scrollView->SetText(scrollView->text ? scrollView->text->get_text() : "");
             scrollView->RefreshButtons();
         }

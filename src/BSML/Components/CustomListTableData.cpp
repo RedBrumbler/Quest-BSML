@@ -67,7 +67,7 @@ namespace BSML {
         auto tableCell = reinterpret_cast<GlobalNamespace::LevelListTableCell*>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
 
         if (!tableCell) {
-            if (!levelListTableCell || !Object::IsNativeObjectAlive(levelListTableCell)) {
+            if (!levelListTableCell || !levelListTableCell->m_CachedPtr.m_value) {
                 levelListTableCell = Resources::FindObjectsOfTypeAll<GlobalNamespace::LevelListTableCell*>().FirstOrDefault([](auto x){ return x->get_name() == "LevelListTableCell"; });
             }
 
@@ -83,7 +83,7 @@ namespace BSML {
         auto tableCell = reinterpret_cast<GlobalNamespace::SimpleTextTableCell*>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
         
         if (!tableCell) {
-            if (!simpleTextTableCell || !Object::IsNativeObjectAlive(simpleTextTableCell)) {
+            if (!simpleTextTableCell || !simpleTextTableCell->m_CachedPtr.m_value) {
                 simpleTextTableCell = Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleTextTableCell*>().FirstOrDefault([](auto x){ return x->get_name() == "SimpleTextTableCell"; });
             }
 
@@ -98,7 +98,7 @@ namespace BSML {
         auto tableCell = reinterpret_cast<BSML::BoxTableCell*>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
 
         if (!tableCell) {
-            if (!levelPackCell || !Object::IsNativeObjectAlive(levelPackCell)) {
+            if (!levelPackCell || !levelPackCell->m_CachedPtr.m_value) {
                 levelPackCell = Resources::FindObjectsOfTypeAll<GlobalNamespace::LevelPackCell*>().FirstOrDefault([](auto x){ return x->get_name() == "AnnotatedBeatmapLevelCollectionCell"; });
             }
             tableCell = BSML::BoxTableCell::Create(levelPackCell);

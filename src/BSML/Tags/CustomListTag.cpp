@@ -26,7 +26,14 @@ using namespace UnityEngine::UI;
 namespace BSML {
     static BSMLNodeParser<CustomListTag> customListTagParser({"custom-list"});
 
-    Canvas* customListCanvasTemplate = nullptr;
+    Canvas* get_customListCanvasTemplate() {
+        static SafePtrUnity<Canvas> customListCanvasTemplate;
+        if (!customListCanvasTemplate) {
+            customListCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
+        }
+        return customListCanvasTemplate.ptr();
+    }
+
     UnityEngine::GameObject* CustomListTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Custom List");
         auto container = GameObject::New_ctor("BSMLCustomListContainer")->AddComponent<RectTransform*>();
@@ -38,10 +45,7 @@ namespace BSML {
         gameObject->get_transform()->SetParent(containerGameObject->get_transform(), false);
         gameObject->SetActive(false);
 
-        if (!customListCanvasTemplate || !Object::IsNativeObjectAlive(customListCanvasTemplate)) {
-            customListCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
-        }
-
+        auto customListCanvasTemplate = get_customListCanvasTemplate();
         auto scrollRect = gameObject->AddComponent<ScrollRect*>();
         auto canvas = gameObject->AddComponent<Canvas*>();
         canvas->set_additionalShaderChannels(customListCanvasTemplate->get_additionalShaderChannels());

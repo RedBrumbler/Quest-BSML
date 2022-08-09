@@ -19,12 +19,12 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ButtonTag> buttonTagParser({"button"});
-    Button* buttonPrefab = nullptr;
     Button* ButtonTag::get_buttonPrefab() const {
-        if (!buttonPrefab || !Object::IsNativeObjectAlive(buttonPrefab)) {
+        static SafePtrUnity<Button> buttonPrefab;
+        if (!buttonPrefab) {
             buttonPrefab = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
         }
-        return buttonPrefab;
+        return buttonPrefab.ptr();
     }
 
     UnityEngine::GameObject* ButtonTag::CreateObject(UnityEngine::Transform* parent) const {

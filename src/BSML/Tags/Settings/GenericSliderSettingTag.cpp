@@ -16,12 +16,16 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    LayoutElement* controllersTransformTemplate = nullptr;
+    LayoutElement* get_controllersTransformTemplate() {
+        static SafePtrUnity<LayoutElement> controllersTransformTemplate;
+        if (!controllersTransformTemplate)
+                controllersTransformTemplate = Resources::FindObjectsOfTypeAll<LayoutElement*>().First([](auto x){ return x->get_name() == "PositionX"; });
+        return controllersTransformTemplate.ptr();
+    }
+    
     UnityEngine::GameObject* GenericSliderSettingTagBase::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating SliderSettingBase");
-        if (!controllersTransformTemplate || !Object::IsNativeObjectAlive(controllersTransformTemplate))
-                controllersTransformTemplate = Resources::FindObjectsOfTypeAll<LayoutElement*>().First([](auto x){ return x->get_name() == "PositionX"; });
-        auto baseSetting = Object::Instantiate(controllersTransformTemplate, parent, false);
+        auto baseSetting = Object::Instantiate(get_controllersTransformTemplate(), parent, false);
         auto gameObject = baseSetting->get_gameObject();
         gameObject->set_name("BSMLSliderSetting");
 

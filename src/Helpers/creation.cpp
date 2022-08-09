@@ -37,10 +37,11 @@ namespace BSML::Helpers {
         return textComponent;
     }
 
-    Canvas* canvasTemplate = nullptr;
+    SafePtrUnity<Canvas> canvasTemplate;
     HMUI::ViewController* CreateViewController(System::Type* type) {
-        if (!canvasTemplate || !Object::IsNativeObjectAlive(canvasTemplate))
+        if (!canvasTemplate)
             canvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x) { return x->get_name() == "DropdownTableView"; });
+        
         auto go = GameObject::New_ctor(type->get_Name());
         auto cv = go->AddComponent<Canvas*>();
 

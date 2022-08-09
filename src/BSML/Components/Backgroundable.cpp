@@ -58,10 +58,10 @@ namespace BSML {
 
         if (!backgroundCache)
             backgroundCache.emplace(Dictionary<StringW, HMUI::ImageView*>::New_ctor());
-        
+
         HMUI::ImageView* bgTemplate = nullptr;
-        if (!backgroundCache->TryGetValue(name, byref(bgTemplate)) || (!bgTemplate || !Object::IsNativeObjectAlive(bgTemplate))) {
-            if (!bgTemplate || !Object::IsNativeObjectAlive(bgTemplate)) {
+        if (!backgroundCache->TryGetValue(name, byref(bgTemplate)) || (!bgTemplate || !bgTemplate->m_CachedPtr.m_value)) {
+            if (!bgTemplate || !bgTemplate->m_CachedPtr.m_value) {
                 backgroundCache->Remove(name);
             }
 

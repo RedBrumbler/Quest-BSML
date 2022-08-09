@@ -8,7 +8,6 @@
 #include "HMUI/VerticalScrollIndicator.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
-#include "GlobalNamespace/ReleaseInfoViewController.hpp"
 
 using namespace UnityEngine;
 
@@ -16,7 +15,7 @@ HMUI::TableView::TableType stringToTableType(const std::string& str);
 
 namespace BSML {    
     static CustomListTableDataHandler customListTableDataHandler{};
-    HMUI::TextPageScrollView* listScrollViewTemplate = nullptr;
+    HMUI::TextPageScrollView* get_textPageTemplate();
     
     CustomListTableDataHandler::Base::PropMap CustomListTableDataHandler::get_props() const {
         return {
@@ -84,10 +83,7 @@ namespace BSML {
         if (verticalList && showScrollBarItr != data.end() && !showScrollBarItr->second.empty()) {
             auto arg = StringParseHelper(showScrollBarItr->second);
             if (static_cast<bool>(arg)) {
-                if (!listScrollViewTemplate || !Object::IsNativeObjectAlive(listScrollViewTemplate))
-                    listScrollViewTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>().FirstOrDefault()->textPageScrollView;
-
-                auto textScrollView = Object::Instantiate(listScrollViewTemplate, tableData->get_transform(), false);
+                auto textScrollView = Object::Instantiate(get_textPageTemplate(), tableData->get_transform(), false);
 
                 auto pageUpButton = textScrollView->pageUpButton;
                 auto pageDownButton = textScrollView->pageDownButton;
