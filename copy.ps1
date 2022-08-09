@@ -13,13 +13,13 @@ if ($docs.IsPresent) {
 }
 if (-not ($LastExitCode -eq 0)) {
     echo "build failed, not copying"
-    exit
+    exit $LastExitCode
 }
 
 if ($debug.IsPresent) {
-    & adb push build/debug/libbsqml.so /sdcard/Android/data/com.beatgames.beatsaber/files/mods/libbsqml.so
+    & adb push build/debug/libbsml.so /sdcard/Android/data/com.beatgames.beatsaber/files/mods/libbsml.so
 } else {
-    & adb push build/libbsqml.so /sdcard/Android/data/com.beatgames.beatsaber/files/mods/libbsqml.so
+    & adb push build/libbsml.so /sdcard/Android/data/com.beatgames.beatsaber/files/mods/libbsml.so
 }
 
 & adb shell am force-stop com.beatgames.beatsaber

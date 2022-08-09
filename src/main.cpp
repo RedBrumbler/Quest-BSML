@@ -8,8 +8,6 @@
 #include "BSML/Parsing/BSMLDocParser.hpp"
 #include "BSML/Tags/BSMLTag.hpp"
 
-#include "TestViewController.hpp"
-
 using namespace BSML;
 
 ModInfo modInfo{MOD_ID, VERSION};
