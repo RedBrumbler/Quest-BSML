@@ -20,7 +20,7 @@ namespace BSML {
     static BSMLNodeParser<ModifierTag> modifierTagParser({"modifier", "modifier-toggle"});
     
     GlobalNamespace::GameplayModifierToggle* get_gameplayModifierToggleTemplate() {
-        static SafePtr<GlobalNamespace::GameplayModifierToggle> gameplayModifierToggleTemplate;
+        static SafePtrUnity<GlobalNamespace::GameplayModifierToggle> gameplayModifierToggleTemplate;
         if (!gameplayModifierToggleTemplate)
             gameplayModifierToggleTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayModifierToggle*>().FirstOrDefault();
         return gameplayModifierToggleTemplate.ptr();
