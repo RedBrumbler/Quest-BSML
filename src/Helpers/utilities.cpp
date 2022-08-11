@@ -48,7 +48,7 @@ namespace BSML::Utilities {
         
         UnityEngine::Sprite* sprite = nullptr;
 
-        if (spriteCache->TryGetValue(name, byref(sprite)) && sprite && Object::IsNativeObjectAlive(sprite))
+        if (spriteCache->TryGetValue(name, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value)
             return sprite;
 
         for (auto x : Resources::FindObjectsOfTypeAll<Sprite*>())
@@ -73,7 +73,7 @@ namespace BSML::Utilities {
         
         UnityEngine::Texture* texture = nullptr;
 
-        if (textureCache->TryGetValue(name, byref(texture)) && texture && Object::IsNativeObjectAlive(texture))
+        if (textureCache->TryGetValue(name, byref(texture)) && texture && texture->m_CachedPtr.m_value)
             return texture;
 
         for (auto x : Resources::FindObjectsOfTypeAll<Texture*>())
@@ -219,7 +219,7 @@ namespace BSML::Utilities {
         if (!imageCache) imageCache.emplace(Dictionary<StringW, UnityEngine::Sprite*>::New_ctor());
         
         UnityEngine::Sprite* sprite = nullptr;
-        if (spriteCache->TryGetValue(path, byref(sprite)) && sprite && Object::IsNativeObjectAlive(sprite)) {
+        if (spriteCache->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value) {
             // we got a sprite, use it
             image->set_sprite(sprite);
             if (onFinished) onFinished();
@@ -359,23 +359,23 @@ namespace BSML::Utilities {
     /// end of based on thing
 
     namespace ImageResources {
-        UnityEngine::Sprite* blankSprite = nullptr;
+        SafePtrUnity<UnityEngine::Sprite> blankSprite;
         UnityEngine::Sprite* GetBlankSprite() {
-            if (!blankSprite || !Object::IsNativeObjectAlive(blankSprite)) {
+            if (!blankSprite) {
                 auto texture = Texture2D::get_blackTexture();
                 blankSprite = Sprite::Create(texture, Rect(0.0f, 0.0f, texture->get_width(), texture->get_height()), Vector2(0.5f, 0.5f), 100.0f, 1u, SpriteMeshType::FullRect, Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
                 blankSprite->set_name("BlankSprite");
-                Object::DontDestroyOnLoad(blankSprite);
+                Object::DontDestroyOnLoad(blankSprite.ptr());
             }
-            return blankSprite;
+            return blankSprite.ptr();
         }
         
-        UnityEngine::Sprite* whitePixelSprite = nullptr;
+        SafePtrUnity<UnityEngine::Sprite> whitePixelSprite;
         UnityEngine::Sprite* GetWhitePixel() {
-            if (!whitePixelSprite || !Object::IsNativeObjectAlive(whitePixelSprite)) {
-                FindSpriteCached("WhitePixel");
+            if (!whitePixelSprite) {
+                whitePixelSprite = FindSpriteCached("WhitePixel");
             }
-            return whitePixelSprite;
+            return whitePixelSprite.ptr();
         }
     }
 }

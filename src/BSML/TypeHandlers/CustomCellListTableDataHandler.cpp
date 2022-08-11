@@ -7,7 +7,6 @@
 #include "HMUI/VerticalScrollIndicator.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
-#include "GlobalNamespace/ReleaseInfoViewController.hpp"
 
 using namespace UnityEngine;
 
@@ -15,8 +14,8 @@ extern HMUI::TableView::TableType stringToTableType(const std::string& str);
 
 namespace BSML {
     static CustomCellListTableDataHandler customCellListTableDataHandler{};
+    HMUI::TextPageScrollView* get_textPageTemplate();
 
-    HMUI::TextPageScrollView* customListScrollViewTemplate = nullptr;
     CustomCellListTableDataHandler::Base::PropMap CustomCellListTableDataHandler::get_props() const {
         return {
             { "selectCell", {"select-cell"}},
@@ -78,10 +77,7 @@ namespace BSML {
         if (verticalList && showScrollBarItr != data.end() && !showScrollBarItr->second.empty()) {
             auto arg = StringParseHelper(showScrollBarItr->second);
             if (static_cast<bool>(arg)) {
-                if (!customListScrollViewTemplate || !Object::IsNativeObjectAlive(customListScrollViewTemplate))
-                    customListScrollViewTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>().FirstOrDefault()->textPageScrollView;
-
-                auto textScrollView = Object::Instantiate(customListScrollViewTemplate, tableData->get_transform(), false);
+                auto textScrollView = Object::Instantiate(get_textPageTemplate(), tableData->get_transform(), false);
 
                 auto pageUpButton = textScrollView->pageUpButton;
                 auto pageDownButton = textScrollView->pageDownButton;

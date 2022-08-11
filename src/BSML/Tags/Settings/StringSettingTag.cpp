@@ -20,14 +20,17 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<StringSettingTag> stringSettingTagParser({"string-setting"});
-    GlobalNamespace::FormattedFloatListSettingsValueController* valueControllerTemplate = nullptr;
+    GlobalNamespace::FormattedFloatListSettingsValueController* get_stringValueControllerTemplate() {
+        static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsValueController> stringValueControllerTemplate;
+        if (!stringValueControllerTemplate) {
+            stringValueControllerTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>().FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "VRRenderingScale"; });
+        }
+        return stringValueControllerTemplate.ptr();
+    }
 
     UnityEngine::GameObject* StringSettingTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating StringSetting");
-        if (!valueControllerTemplate || !Object::IsNativeObjectAlive(valueControllerTemplate)) {
-            valueControllerTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>().FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "VRRenderingScale"; });
-        }
-        auto baseSetting = Object::Instantiate(valueControllerTemplate, parent, false);
+        auto baseSetting = Object::Instantiate(get_stringValueControllerTemplate(), parent, false);
         baseSetting->set_name("BSMLStringSetting");
         
         auto gameObject = baseSetting->get_gameObject();

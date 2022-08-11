@@ -25,15 +25,16 @@
 
 namespace BSML {
     static BSMLNodeParser<ScrollViewTag> scrollViewTagParser({"scroll-view"});
-
-    HMUI::TextPageScrollView* scrollViewTemplate = nullptr;
-
-    UnityEngine::GameObject* ScrollViewTag::CreateObject(UnityEngine::Transform* parent) const {
-        if (!scrollViewTemplate || !UnityEngine::Object::IsNativeObjectAlive(scrollViewTemplate)) {
+    HMUI::TextPageScrollView* get_scrollViewTemplate() {
+        static SafePtrUnity<HMUI::TextPageScrollView> scrollViewTemplate;
+        if (!scrollViewTemplate) {
             scrollViewTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>().FirstOrDefault()->textPageScrollView;
         }
+        return scrollViewTemplate.ptr();
+    }
 
-        HMUI::TextPageScrollView* textScrollView = UnityEngine::Object::Instantiate(scrollViewTemplate, parent);
+    UnityEngine::GameObject* ScrollViewTag::CreateObject(UnityEngine::Transform* parent) const {
+        HMUI::TextPageScrollView* textScrollView = UnityEngine::Object::Instantiate(get_scrollViewTemplate(), parent);
         textScrollView->set_name("BSMLScrollView");
         UnityEngine::UI::Button* pageUpButton = textScrollView->pageUpButton;
         UnityEngine::UI::Button* pageDownButton = textScrollView->pageDownButton;

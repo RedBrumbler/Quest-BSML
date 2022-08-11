@@ -22,18 +22,23 @@ using namespace VRUIControls;
 
 namespace BSML {
     static BSMLNodeParser<ModalTag> modalTagParser({"modal"});
-    HMUI::ModalView* modalViewTemplate = nullptr;
-    UnityEngine::GameObject* ModalTag::CreateObject(UnityEngine::Transform* parent) const {
-        DEBUG("Creating Modal");
-        if (!modalViewTemplate || !Object::IsNativeObjectAlive(modalViewTemplate)) {
+
+    HMUI::ModalView* get_modalViewTemplate() {
+        static SafePtrUnity<HMUI::ModalView> modalViewTemplate;
+        if (!modalViewTemplate) {
             modalViewTemplate = Resources::FindObjectsOfTypeAll<HMUI::ModalView*>().FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "DropdownTableView"; });
         }
+        return modalViewTemplate.ptr();
+    }
 
-        // we use our own custom modalView type, this differs from PC BSML but it just makes it easier to set things up
+    UnityEngine::GameObject* ModalTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating Modal");
+        auto modalViewTemplate = get_modalViewTemplate();
         auto copy = Object::Instantiate(modalViewTemplate, parent, false);
         auto gameObject = copy->get_gameObject();
         gameObject->SetActive(false);
         gameObject->set_name("BSMLModalView");
+        // we use our own custom modalView type, this differs from PC BSML but it just makes it easier to set things up
         auto modalView = gameObject->AddComponent<BSML::ModalView*>();
 
         

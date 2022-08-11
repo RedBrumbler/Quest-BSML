@@ -18,14 +18,18 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ModifierTag> modifierTagParser({"modifier", "modifier-toggle"});
-    GlobalNamespace::GameplayModifierToggle* gameplayModifierToggleTemplate = nullptr;
+    
+    GlobalNamespace::GameplayModifierToggle* get_gameplayModifierToggleTemplate() {
+        static SafePtrUnity<GlobalNamespace::GameplayModifierToggle> gameplayModifierToggleTemplate;
+        if (!gameplayModifierToggleTemplate)
+            gameplayModifierToggleTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayModifierToggle*>().FirstOrDefault();
+        return gameplayModifierToggleTemplate.ptr();
+    }
 
     UnityEngine::GameObject* ModifierTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Modifier");
 
-        if (!gameplayModifierToggleTemplate || !Object::IsNativeObjectAlive(gameplayModifierToggleTemplate))
-            gameplayModifierToggleTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayModifierToggle*>().FirstOrDefault();
-
+        auto gameplayModifierToggleTemplate = get_gameplayModifierToggleTemplate();
         auto baseModifier = Object::Instantiate(gameplayModifierToggleTemplate, parent, false);
         baseModifier->set_name("BSMLModifier");
 

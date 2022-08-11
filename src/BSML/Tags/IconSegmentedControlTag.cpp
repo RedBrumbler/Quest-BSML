@@ -14,11 +14,9 @@ using namespace UnityEngine;
 namespace BSML {
     static BSMLNodeParser<IconSegmentedControlTag> iconSegmentedControlTag({"icon-segments"});
     
-    HMUI::IconSegmentedControl* iconSegmentedControlTemplate = nullptr;
-
-    UnityEngine::GameObject* IconSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
-        DEBUG("Creating IconSegmentedControl");
-        if (!iconSegmentedControlTemplate || !Object::IsNativeObjectAlive(iconSegmentedControlTemplate)) {
+    HMUI::IconSegmentedControl* get_iconSegmentedControlTemplate() {
+        static SafePtrUnity<HMUI::IconSegmentedControl> iconSegmentedControlTemplate;
+        if (!iconSegmentedControlTemplate) {
             iconSegmentedControlTemplate = Resources::FindObjectsOfTypeAll<HMUI::IconSegmentedControl*>().FirstOrDefault(
                 [](auto x) { 
                     auto name = x->get_name();
@@ -26,7 +24,13 @@ namespace BSML {
                     return x->container != nullptr;
                 });
         }
+        return iconSegmentedControlTemplate.ptr();
+    }
 
+    UnityEngine::GameObject* IconSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating IconSegmentedControl");
+
+        auto iconSegmentedControlTemplate = get_iconSegmentedControlTemplate();
         auto iconSegmentedControl = Object::Instantiate(iconSegmentedControlTemplate, parent, false);
         iconSegmentedControl->dataSource = nullptr;
 

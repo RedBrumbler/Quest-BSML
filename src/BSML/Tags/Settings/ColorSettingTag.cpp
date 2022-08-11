@@ -25,16 +25,31 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ColorSettingTag> colorSettingTagParser({"color-setting"});
-    GlobalNamespace::FormattedFloatListSettingsValueController* baseSettings = nullptr;
-    Image* colorImage = nullptr;
+    
+    GlobalNamespace::FormattedFloatListSettingsValueController* get_baseSettings() {
+        static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsValueController> baseSettings;
+        if (!baseSettings) {
+            baseSettings = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>().FirstOrDefault([](auto x){ return x->get_name() == "VRRenderingScale"; });
+        }
+        return baseSettings.ptr();
+    }
+
+    Image* get_colorImage() {
+        static SafePtrUnity<Image> colorImage;
+        if (!colorImage)
+            colorImage = Resources::FindObjectsOfTypeAll<Image*>().FirstOrDefault([](auto x) {
+                if (x->get_name() != "ColorImage") return false;
+                auto sprite = x->get_sprite();
+                if (!sprite) return false;
+                return sprite->get_name() == "NoteCircle";
+            });
+        return colorImage.ptr();
+    }
 
     UnityEngine::GameObject* ColorSettingTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating ColorSetting");
-        if (!baseSettings || !Object::IsNativeObjectAlive(baseSettings)) {
-            baseSettings = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>().FirstOrDefault([](auto x){ return x->get_name() == "VRRenderingScale"; });
-        }
 
-        auto baseSetting = Object::Instantiate(baseSettings, parent, false);
+        auto baseSetting = Object::Instantiate(get_baseSettings(), parent, false);
         auto gameObject = baseSetting->get_gameObject();
         auto externalComponents = gameObject->AddComponent<BSML::ExternalComponents*>();
         gameObject->SetActive(false);
@@ -67,16 +82,9 @@ namespace BSML {
         layoutElement->set_preferredWidth(90.0f);
         externalComponents->Add(layoutElement);
 
-        if (!colorImage || !Object::IsNativeObjectAlive(colorImage))
-            colorImage = Resources::FindObjectsOfTypeAll<Image*>().FirstOrDefault([](auto x) {
-                if (x->get_name() != "ColorImage") return false;
-                auto sprite = x->get_sprite();
-                if (!sprite) return false;
-                return sprite->get_name() == "NoteCircle";
-            });
-        colorSetting->colorImage = Object::Instantiate(colorImage, valuePick->get_transform(), false);
+        colorSetting->colorImage = Object::Instantiate(get_colorImage(), valuePick->get_transform(), false);
         colorSetting->colorImage->set_name("BSMLCurrentColor");
-        auto colorImageTransform = reinterpret_cast<RectTransform*>(colorImage->get_transform());
+        auto colorImageTransform = reinterpret_cast<RectTransform*>(colorSetting->colorImage->get_transform());
         colorImageTransform->set_anchoredPosition({0, 0});
         colorImageTransform->set_sizeDelta({5, 5});
         colorImageTransform->set_anchorMin({0.2f, 0.5f});

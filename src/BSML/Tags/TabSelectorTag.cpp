@@ -13,10 +13,9 @@ using namespace UnityEngine;
 namespace BSML {
     static BSMLNodeParser<TabSelectorTag> tabSelectorTagParser({"tab-select", "tab-selector"});
 
-    HMUI::TextSegmentedControl* tabSelectorTagTemplate = nullptr;
-    UnityEngine::GameObject* TabSelectorTag::CreateObject(UnityEngine::Transform* parent) const {
-        DEBUG("Creating TabSelector");
-        if (!tabSelectorTagTemplate || !Object::IsNativeObjectAlive(tabSelectorTagTemplate)) {
+    HMUI::TextSegmentedControl* get_tabSelectorTagTemplate() {
+        static SafePtrUnity<HMUI::TextSegmentedControl> tabSelectorTagTemplate;
+        if (!tabSelectorTagTemplate) {
             tabSelectorTagTemplate = Resources::FindObjectsOfTypeAll<HMUI::TextSegmentedControl*>().FirstOrDefault(
                 [](auto x) { 
                     auto parent = x->get_transform()->get_parent();
@@ -25,13 +24,16 @@ namespace BSML {
                     return x->container != nullptr;
                 });
         }
-
-        auto textSegmentedControl = Object::Instantiate(tabSelectorTagTemplate, parent, false);
+        return tabSelectorTagTemplate.ptr();
+    }
+    UnityEngine::GameObject* TabSelectorTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating TabSelector");
+        auto textSegmentedControl = Object::Instantiate(get_tabSelectorTagTemplate(), parent, false);
         textSegmentedControl->dataSource = nullptr;
 
         auto gameObject = textSegmentedControl->get_gameObject();
         gameObject->set_name("BSMLTabSelector");
-        textSegmentedControl->container = tabSelectorTagTemplate->container;
+        textSegmentedControl->container = get_tabSelectorTagTemplate()->container;
 
         auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
         transform->set_anchoredPosition({0, 0});

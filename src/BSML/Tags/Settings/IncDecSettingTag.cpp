@@ -12,19 +12,22 @@
 #include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
-GlobalNamespace::FormattedFloatListSettingsValueController* valueControllerTemplate = nullptr;
-
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
+    GlobalNamespace::FormattedFloatListSettingsValueController* get_incdecValueControllerTemplate() {
+        static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsValueController> incdecValueControllerTemplate;
+        if (!incdecValueControllerTemplate) {
+            incdecValueControllerTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>().First([](auto x){ return x->get_name() == "VRRenderingScale";});
+        }
+        return incdecValueControllerTemplate.ptr();
+    }
+
     UnityEngine::GameObject* IncDecSettingTagBase::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating IncDecSetting");
-        if (!valueControllerTemplate || !Object::IsNativeObjectAlive(valueControllerTemplate)) {
-            valueControllerTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>().First([](auto x){ return x->get_name() == "VRRenderingScale";});
-        }
 
-        auto baseSetting = Object::Instantiate(valueControllerTemplate, parent, false);
+        auto baseSetting = Object::Instantiate(get_incdecValueControllerTemplate(), parent, false);
         auto gameObject = baseSetting->get_gameObject();
         Object::Destroy(baseSetting);
         gameObject->SetActive(false);

@@ -20,34 +20,34 @@ using namespace GlobalNamespace;
 #define CacheNotFoundWarningLog(type) WARNING("Can't find '{}'! (This shouldn't happen and can cause unexpected behaviour)", #type)
 
 namespace BSML::Helpers {
-    PhysicsRaycasterWithCache* physicsRaycaster = nullptr;
+    SafePtr<PhysicsRaycasterWithCache> physicsRaycaster;
     PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache()
     {
         if(!physicsRaycaster)
             physicsRaycaster = Resources::FindObjectsOfTypeAll<MainMenuViewController*>().First()->GetComponent<VRGraphicRaycaster*>()->physicsRaycaster;
         if(!physicsRaycaster)
             CacheNotFoundWarningLog(PhysicsRaycasterWithCache);
-        return physicsRaycaster;
+        return physicsRaycaster.ptr();
     }
 
-    DiContainer* diContainer = nullptr;
+    SafePtr<DiContainer> diContainer;
     DiContainer* GetDiContainer()
     {
         if(!diContainer)
             diContainer = Resources::FindObjectsOfTypeAll<TextSegmentedControl*>().FirstOrDefault([](TextSegmentedControl* x) { return x->get_transform()->get_parent()->get_name() == "PlayerStatisticsViewController" && x->container; })->container;
         if(!diContainer)
             CacheNotFoundWarningLog(DiContainer);
-        return diContainer;
+        return diContainer.ptr();
     }
 
-    HoverHintController* hoverHintController;
+    SafePtrUnity<HoverHintController> hoverHintController;
     HoverHintController* GetHoverHintController() 
     {
-        if(!hoverHintController || !Object::IsNativeObjectAlive(hoverHintController))
+        if(!hoverHintController)
             hoverHintController = Resources::FindObjectsOfTypeAll<HoverHintController*>().FirstOrDefault();
         if(!hoverHintController)
             CacheNotFoundWarningLog(HoverHintController);
-        return hoverHintController;
+        return hoverHintController.ptr();
     }
 
     IVRPlatformHelper* platformHelper = nullptr;
@@ -60,41 +60,41 @@ namespace BSML::Helpers {
         return platformHelper;
     }
 
-    TMP_FontAsset* mainTextFont = nullptr;
+    SafePtrUnity<TMP_FontAsset> mainTextFont;
     TMP_FontAsset* GetMainTextFont() {
-        if (!mainTextFont || !Object::IsNativeObjectAlive(mainTextFont))
-                    mainTextFont = Resources::FindObjectsOfTypeAll<TMP_FontAsset*>().FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF"; });
+        if (!mainTextFont)
+            mainTextFont = Resources::FindObjectsOfTypeAll<TMP_FontAsset*>().FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF"; });
         if(!mainTextFont)
             CacheNotFoundWarningLog(TMP_FontAsset);
-        return mainTextFont;
+        return mainTextFont.ptr();
     }
 
-    Material* mainUIFontMaterial = nullptr;
+    SafePtrUnity<Material> mainUIFontMaterial;
     Material* GetMainUIFontMaterial() {
-        if (!mainUIFontMaterial || !Object::IsNativeObjectAlive(mainUIFontMaterial))
+        if (!mainUIFontMaterial)
             mainUIFontMaterial = Resources::FindObjectsOfTypeAll<Material*>().FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF Curved Softer"; });
         if(!mainUIFontMaterial)
             CacheNotFoundWarningLog(Material);
-        return mainUIFontMaterial;
+        return mainUIFontMaterial.ptr();
     }
 
-    Material* noGlowUIMat = nullptr;
+    SafePtrUnity<Material> noGlowUIMat;
     Material* GetUINoGlowMat() {
-        if (!noGlowUIMat || !Object::IsNativeObjectAlive(noGlowUIMat)) {
+        if (!noGlowUIMat) {
             noGlowUIMat = Resources::FindObjectsOfTypeAll<Material*>().FirstOrDefault([](auto x){ return x->get_name() == "UINoGlow"; });
         }
         if(!noGlowUIMat)
             CacheNotFoundWarningLog(Material);
-        return noGlowUIMat;
+        return noGlowUIMat.ptr();
     }
 
-    MainFlowCoordinator* mainFlowCoordinator = nullptr;
+    SafePtrUnity<MainFlowCoordinator> mainFlowCoordinator;
     MainFlowCoordinator* GetMainFlowCoordinator()
     {
-        if (!mainFlowCoordinator || !Object::IsNativeObjectAlive(mainFlowCoordinator))
+        if (!mainFlowCoordinator)
             mainFlowCoordinator = Resources::FindObjectsOfTypeAll<MainFlowCoordinator*>().FirstOrDefault();
         if(!mainFlowCoordinator)
             CacheNotFoundWarningLog(MainFlowCoordinator);
-        return mainFlowCoordinator;
+        return mainFlowCoordinator.ptr();
     }
 }

@@ -22,26 +22,33 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<DropdownListSettingTag> dropdownListSettingTagParser({"dropdown-list-setting"});
-    GameObject* dropdownTemplate = nullptr;
-    GameObject* safePrefab = nullptr;
-
-    UnityEngine::GameObject* DropdownListSettingTag::CreateObject(UnityEngine::Transform* parent) const {
-        DEBUG("Creating DropdownListSetting");
-
-        if (!dropdownTemplate || !Object::IsNativeObjectAlive(dropdownTemplate) || !safePrefab || !Object::IsNativeObjectAlive(safePrefab)) {
+    
+    GameObject* get_dropdownTemplate() {
+        static SafePtrUnity<GameObject> dropdownTemplate;
+        if (!dropdownTemplate) {
             dropdownTemplate = Resources::FindObjectsOfTypeAll<HMUI::SimpleTextDropdown*>().FirstOrDefault([](auto x){ 
                 auto parent = x->get_transform()->get_parent();
                 if (!parent) return false;
                 return parent->get_name() == "NormalLevels";
             })->get_transform()->get_parent()->get_gameObject();
-
-            safePrefab = Object::Instantiate(dropdownTemplate);
-            Object::DontDestroyOnLoad(safePrefab);
+        }
+        return dropdownTemplate.ptr();
+    }
+    GameObject* get_safePrefab() {
+        static SafePtrUnity<GameObject> safePrefab;
+        if (!safePrefab) {
+            safePrefab = Object::Instantiate(get_dropdownTemplate());
+            Object::DontDestroyOnLoad(safePrefab.ptr());
             safePrefab->SetActive(false);
             safePrefab->set_name("BSMLDropdownListPrefab");
         }
+        return safePrefab.ptr();
+    }
 
-        auto gameObject = Object::Instantiate(safePrefab, parent, false);
+    UnityEngine::GameObject* DropdownListSettingTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating DropdownListSetting");
+
+        auto gameObject = Object::Instantiate(get_safePrefab(), parent, false);
         auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
         auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
         externalComponents->Add(transform);

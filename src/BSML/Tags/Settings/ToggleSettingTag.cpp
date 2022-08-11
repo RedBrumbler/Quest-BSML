@@ -21,12 +21,10 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ToggleSettingTag> toggleSettingTagParser({"toggle-setting", "bool-setting", "checkbox-setting", "checkbox"});
-    GameObject* toggleTemplate = nullptr;
 
-    UnityEngine::GameObject* ToggleSettingTag::CreateObject(UnityEngine::Transform* parent) const {
-        DEBUG("Creating ToggleSetting");
-
-        if (!toggleTemplate || !Object::IsNativeObjectAlive(toggleTemplate)) {
+    GameObject* get_toggleTemplate() {
+        static SafePtrUnity<GameObject> toggleTemplate;
+        if (!toggleTemplate) {
             auto foundToggle = Resources::FindObjectsOfTypeAll<Toggle*>().FirstOrDefault([](auto x){
                 if (!x) return false;
                 auto parent = x->get_transform()->get_parent();
@@ -35,8 +33,13 @@ namespace BSML {
             });
             toggleTemplate = foundToggle ? foundToggle->get_transform()->get_parent()->get_gameObject() : nullptr;
         }
+        return toggleTemplate.ptr();
+    }
 
-        auto go = Object::Instantiate(toggleTemplate, parent, false);
+    UnityEngine::GameObject* ToggleSettingTag::CreateObject(UnityEngine::Transform* parent) const {
+        DEBUG("Creating ToggleSetting");
+
+        auto go = Object::Instantiate(get_toggleTemplate(), parent, false);
         go->SetActive(false);
         auto transform = reinterpret_cast<UnityEngine::RectTransform*>(go->get_transform());
         
