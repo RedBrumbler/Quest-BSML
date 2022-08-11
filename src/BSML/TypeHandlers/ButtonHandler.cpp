@@ -36,7 +36,7 @@ namespace BSML {
         
         auto button = reinterpret_cast<Button*>(componentType.component);
         auto host = parserParams.get_host();
-        auto event = Button::ButtonClickedEvent::New_ctor();
+        auto event = button->get_onClick();
 
         // it was a button!
         auto onClickItr = componentType.data.find("onClick");
@@ -51,7 +51,5 @@ namespace BSML {
         if (clickEventItr != componentType.data.end() && !clickEventItr->second.empty()) {
             // TODO: events
         }
-
-        button->set_onClick(event);
     }
 }
