@@ -41,9 +41,8 @@ namespace BSML {
         auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
         transform->set_anchoredPosition({0, 0});
         int childCount = transform->get_childCount();
-        for (int i = 0; i < childCount; i++) {
-            // as we destroy children, the count goes down, so if we keep getting child 0 we get all of them
-            Object::Destroy(transform->GetChild(0)->get_gameObject());
+        for (int i = 1; i <= childCount; i++) {
+            Object::DestroyImmediate(transform->GetChild(childCount - i)->get_gameObject());
         }
 
         Object::Destroy(gameObject->GetComponent<GlobalNamespace::BeatmapDifficultySegmentedControlController*>());
