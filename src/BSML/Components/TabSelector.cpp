@@ -118,7 +118,8 @@ namespace BSML {
             usableTabs->EnsureCapacity(get_pageCount());
 
             int start = get_pageCount() * currentPage;
-            for (int i = start; i < start + pageCount; i++) {
+            int end = std::min(start + pageCount, visibleTabs->get_Count());
+            for (int i = start; i < end; i++) {
                 usableTabs->Add(visibleTabs[i]);
             }
 
