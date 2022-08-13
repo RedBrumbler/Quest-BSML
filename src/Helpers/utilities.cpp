@@ -206,6 +206,11 @@ namespace BSML::Utilities {
 
     SafePtr<Dictionary<StringW, UnityEngine::Sprite*>> imageCache;
     void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished) {
+        if (!image) {
+            ERROR("Can't set null image!");
+            return;
+        }
+
         INFO("Setting image {}", path);
         if (path->get_Length() > 1 && path[0] == '#') { // it's a base game sprite that is requested
             auto imgName = path->Substring(1);
@@ -219,7 +224,7 @@ namespace BSML::Utilities {
         if (!imageCache) imageCache.emplace(Dictionary<StringW, UnityEngine::Sprite*>::New_ctor());
         
         UnityEngine::Sprite* sprite = nullptr;
-        if (spriteCache->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value) {
+        if (imageCache->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value) {
             // we got a sprite, use it
             image->set_sprite(sprite);
             if (onFinished) onFinished();
@@ -249,7 +254,7 @@ namespace BSML::Utilities {
                     auto sprite = LoadSpriteFromTexture(texture);
                     sprite->get_texture()->set_wrapMode(TextureWrapMode::Clamp);
                     image->set_sprite(sprite);
-                    spriteCache->Add(path, sprite);
+                    imageCache->Add(path, sprite);
                 }
 
                 if (onFinished)
