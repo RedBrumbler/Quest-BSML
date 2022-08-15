@@ -73,8 +73,13 @@ namespace BSML {
 
         //Copy Image: some methods are probably not needed
 		background->set_alphaHitTestMinimumThreshold(bgTemplate->get_alphaHitTestMinimumThreshold());
-		UnityEngine::Color backgroundColor = bgTemplate->get_color();
-		background->set_color(backgroundColor);
+		background->set_color(bgTemplate->get_color());
+		background->set_color0(bgTemplate->get_color0());
+		background->set_color1(bgTemplate->get_color1());
+		background->set_gradient(bgTemplate->get_gradient());
+		background->gradientDirection = bgTemplate->gradientDirection;
+        background->flipGradientColors = bgTemplate->flipGradientColors;
+        background->skew = bgTemplate->skew;
 		background->set_eventAlphaThreshold(bgTemplate->get_eventAlphaThreshold());
 		background->set_fillAmount(bgTemplate->get_fillAmount());
 		background->set_fillCenter(bgTemplate->get_fillCenter());
