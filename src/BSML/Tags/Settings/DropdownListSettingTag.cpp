@@ -13,6 +13,9 @@
 #include "HMUI/SimpleTextDropdown.hpp"
 #include "HMUI/ScrollView.hpp"
 #include "HMUI/ModalView.hpp"
+#include "HMUI/TableView.hpp"
+#include "HMUI/TableView_CellsGroup.hpp"
+#include "HMUI/TableCell.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "VRUIControls/VRGraphicRaycaster.hpp"
@@ -34,6 +37,7 @@ namespace BSML {
         }
         return dropdownTemplate.ptr();
     }
+
     GameObject* get_safePrefab() {
         static SafePtrUnity<GameObject> safePrefab;
         if (!safePrefab) {
@@ -81,6 +85,16 @@ namespace BSML {
         
         dropdown->get_gameObject()->SetActive(true);
         gameObject->SetActive(true);
+
+        dropdown->tableView->preallocatedCells = Array<HMUI::TableView::CellsGroup*>::NewLength(0);
+        dropdown->tableView->visibleCells->Clear();
+
+        auto cont = dropdown->get_transform()->Find("DropdownTableView/Viewport/Content");
+        int childCount = cont ? cont->get_childCount() : 0;
+        for (int i = childCount - 1; i >= 0; i--) {
+            cont->GetChild(i)->get_gameObject()->SetActive(false);
+        }
+
         return gameObject;
     }
 }
