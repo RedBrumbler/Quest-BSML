@@ -3,7 +3,7 @@
 #include "custom-types/shared/macros.hpp"
 #include "BaseSetting.hpp"
 #include "BSML/Components/Keyboard/ModalKeyboard.hpp"
-#include "BSML/GenericSettingWrapper.hpp"
+#include "../../GenericSettingWrapper.hpp"
 
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "UnityEngine/UI/Button.hpp"

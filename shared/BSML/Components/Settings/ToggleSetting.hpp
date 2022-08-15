@@ -3,7 +3,7 @@
 #include "custom-types/shared/macros.hpp"
 #include "UnityEngine/UI/Toggle.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
-#include "BSML/GenericSettingWrapper.hpp"
+#include "../../GenericSettingWrapper.hpp"
 #include "BaseSetting.hpp"
 
 DECLARE_CLASS_CUSTOM(BSML, ToggleSetting, BSML::BaseSetting,
