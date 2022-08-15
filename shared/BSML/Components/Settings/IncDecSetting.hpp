@@ -4,7 +4,7 @@
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "UnityEngine/UI/Button.hpp"
 #include "internal_macros.hpp"
-#include "BSML/GenericSettingWrapper.hpp"
+#include "../../GenericSettingWrapper.hpp"
 #include "BaseSetting.hpp"
 
 DECLARE_CLASS_CUSTOM(BSML, IncDecSetting, BSML::BaseSetting,

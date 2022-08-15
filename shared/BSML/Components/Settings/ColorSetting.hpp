@@ -2,7 +2,7 @@
 
 #include "BaseSetting.hpp"
 #include "BSML/Components/ModalColorPicker.hpp"
-#include "BSML/GenericSettingWrapper.hpp"
+#include "../../GenericSettingWrapper.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
 DECLARE_CLASS_CUSTOM(BSML, ColorSetting, BSML::BaseSetting,
