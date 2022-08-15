@@ -7,7 +7,7 @@
 #include "GlobalNamespace/HSVPanelController.hpp"
 #include "GlobalNamespace/ColorChangeUIEventType.hpp"
 #include "UnityEngine/UI/Image.hpp"
-#include "BSML/GenericSettingWrapper.hpp"
+#include "../GenericSettingWrapper.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, ModalColorPicker, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
