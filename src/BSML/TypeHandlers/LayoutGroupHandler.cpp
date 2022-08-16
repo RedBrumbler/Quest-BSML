@@ -60,10 +60,10 @@ namespace BSML {
 
         // if any padding values are found, override them
         layoutGroup->set_padding(UnityEngine::RectOffset::New_ctor(
-            padTopItr == data.end()     ? originalPadding->get_left()   : StringParseHelper(padTopItr->second), 
-            padBottomItr == data.end()  ? originalPadding->get_right()  : StringParseHelper(padBottomItr->second),
-            padLeftItr == data.end()    ? originalPadding->get_top()    : StringParseHelper(padLeftItr->second), 
-            padRightItr == data.end()   ? originalPadding->get_bottom() : StringParseHelper(padRightItr->second) 
+            padLeftItr == data.end()     ? originalPadding->get_left()   : StringParseHelper(padLeftItr->second), 
+            padRightItr == data.end()    ? originalPadding->get_right()  : StringParseHelper(padRightItr->second),
+            padTopItr == data.end()      ? originalPadding->get_top()    : StringParseHelper(padTopItr->second), 
+            padBottomItr == data.end()   ? originalPadding->get_bottom() : StringParseHelper(padBottomItr->second) 
         ));
 
         auto childAlignItr = data.find("childAlign");
