@@ -7,6 +7,7 @@ DECLARE_CLASS_CODEGEN(BSML, ModalView, HMUI::ModalView,
     DECLARE_INSTANCE_FIELD(Il2CppObject*, host);
     DECLARE_INSTANCE_FIELD(bool, moveToCenter);
     DECLARE_INSTANCE_FIELD(bool, dismissOnBlockerClicked);
+    DECLARE_INSTANCE_METHOD(void, Awake);
 
     public:
     DECLARE_INSTANCE_METHOD(void, Show);
