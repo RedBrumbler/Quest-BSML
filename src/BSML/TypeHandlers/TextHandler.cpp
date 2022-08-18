@@ -84,7 +84,7 @@ namespace BSML {
         return {
             {"text", {"text", "label"}},
             {"fontSize", {"font-size"}},
-            {"fontColor", {"font-color"}},
+            {"fontColor", {"font-color", "color"}},
             {"faceColor", {"face-color"}},
             {"outlineColor", {"outline-color"}},
             {"outlineWidth", {"outline-width"}},
