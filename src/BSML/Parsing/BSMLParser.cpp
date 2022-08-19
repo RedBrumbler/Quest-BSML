@@ -89,6 +89,12 @@ namespace BSML {
             parserParams->AddValue(key, value);
         }
 
+        auto actions = BSMLAction::MakeActions(host);
+        for (auto& [key, action] : actions) {
+            INFO("Got action: {}", key);
+            parserParams->AddAction(key, action);
+        }
+
         root->HandleChildren(parent, *parserParams, components);
         for (auto comp : components) {
             comp->typeHandler->HandleTypeAfterParse(*comp, *parserParams);
