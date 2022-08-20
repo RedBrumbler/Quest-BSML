@@ -24,6 +24,7 @@ namespace BSML {
         if (!firstActivation) return;
         DEBUG("DidActivate");
         SetTitle("Mod Settings", HMUI::ViewController::AnimationType::In);
+        set_showBackButton(true);
         navigationController = Helpers::CreateViewController<HMUI::NavigationController*>();
         auto parser = parse_and_construct(IncludedAssets::SettingsButtons_bsml, navigationController->get_transform(), this);
         parserParams = parser->parserParams;
@@ -33,6 +34,10 @@ namespace BSML {
 
         SetViewControllerToNavigationController(navigationController, settingsMenuListViewController);
         ProvideInitialViewControllers(navigationController, nullptr, nullptr, nullptr, nullptr);
+    }
+
+    void ModSettingsFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController) {
+        Cancel();
     }
 
     void ModSettingsFlowCoordinator::ShowInitial() {
