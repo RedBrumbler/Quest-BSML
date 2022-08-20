@@ -12,15 +12,9 @@
 DEFINE_TYPE(BSML, ScrollViewContent);
 
 namespace BSML {
-
-    HMUI::ScrollView* scrollView = nullptr;
-    bool dirty = false;
-
     void ScrollViewContent::Start() {
         UnityEngine::UI::LayoutRebuilder::ForceRebuildLayoutImmediate(reinterpret_cast<UnityEngine::RectTransform*>(get_transform()));
-        StopAllCoroutines();
         StartCoroutine(custom_types::Helpers::CoroutineHelper::New(SetupScrollView()));
-
     }
 
     void ScrollViewContent::OnEnable() {
@@ -43,11 +37,19 @@ namespace BSML {
         while (rectTransform->get_sizeDelta().y == -1) {
             co_yield nullptr;
         }
+
+        while (!scrollView || !scrollView->m_CachedPtr.m_value) {
+            co_yield nullptr;
+        }
         UpdateScrollView();
         co_return;
     }
 
     void ScrollViewContent::UpdateScrollView() {
+        if (!scrollView || !scrollView->m_CachedPtr.m_value) {
+            return;
+        }
+
         scrollView->SetContentSize(reinterpret_cast<UnityEngine::RectTransform*>(get_transform()->GetChild(0))->get_rect().get_height());
         scrollView->RefreshButtons();
     }
