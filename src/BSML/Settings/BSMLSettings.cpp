@@ -109,14 +109,10 @@ namespace BSML {
         modFC->isAnimating = true;
 
         auto fc = Helpers::GetMainFlowCoordinator()->YoungestChildFlowCoordinatorOrSelf();
-        DEBUG("Presenting our mod settings flow coordinator on {}", fmt::ptr(fc));
         fc->PresentFlowCoordinator(modFC, MakeSystemAction([modFC]{
-            DEBUG("Inside callback");
             modFC->ShowInitial();
-            DEBUG("set isanimating false");
             modFC->isAnimating = false;
         }), HMUI::ViewController::AnimationDirection::Horizontal, false, false);
-        DEBUG("Present settings done!");
     }
 
     custom_types::Helpers::Coroutine BSMLSettings::AddButtonToMainScreen() {

@@ -30,11 +30,9 @@ namespace BSML {
 
         settingsMenuListViewController = Helpers::CreateViewController<SettingsMenuListViewController*>();
         settingsMenuListViewController->clickedMenu = [this](auto menu) { this->OpenMenu(menu); };
-        DEBUG("SetViewControllerToNavigationController: {}, {}", fmt::ptr(navigationController), fmt::ptr(settingsMenuListViewController));
+
         SetViewControllerToNavigationController(navigationController, settingsMenuListViewController);
-        DEBUG("ProvideInitialViewControllers");
         ProvideInitialViewControllers(navigationController, nullptr, nullptr, nullptr, nullptr);
-        DEBUG("Done");
     }
 
     void ModSettingsFlowCoordinator::ShowInitial() {
@@ -60,6 +58,7 @@ namespace BSML {
         if (bottomButtons && bottomButtons->m_CachedPtr.m_value) {
             bottomButtons->get_gameObject()->SetActive(menu->showExtraButtons);
         }
+
         OpenMenu(menu->get_viewController(), false, false);
     }
 
@@ -76,10 +75,10 @@ namespace BSML {
         bool wasActive = activeController && activeController->m_CachedPtr.m_value;
         if (wasActive)
             PopViewControllerFromNavigationController(navigationController, nullptr, true);
-        auto delegate = MakeSystemAction([this]{
-            this->isPresenting = false;
-            if (this->bottomButtons && this->bottomButtons->m_CachedPtr.m_value) {
-                this->bottomButtons->SetAsLastSibling();
+        auto delegate = MakeSystemAction([&isPresenting = this->isPresenting, bottomButtons = this->bottomButtons, navigationController = this->navigationController]{
+            isPresenting = false;
+            if (bottomButtons && bottomButtons->m_CachedPtr.m_value) {
+                bottomButtons->SetAsLastSibling();
             }
         });
         PushViewControllerToNavigationController(navigationController, viewController, delegate, wasActive);
