@@ -30,6 +30,7 @@ namespace BSML {
     }
 
     void GameplaySetup::Setup() {
+        DEBUG("Setup");
         auto menus = get_menus();
         if (menus.size() == 0) return;
         gameplaySetupViewController = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplaySetupViewController*>().FirstOrDefault();
@@ -72,6 +73,7 @@ namespace BSML {
     }
 
     void GameplaySetup::GameplaySetupDidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
+        DEBUG("DidActivate");
         layoutGroup->m_RectChildren->Clear();
 
         MenuType menuType = MenuType::Custom;
@@ -91,9 +93,13 @@ namespace BSML {
     }
 
     void GameplaySetup::GameplaySetupDidDeactivate(bool removedFromHierarchy, bool screenSystemDisabling) {
+        DEBUG("DidDeactivate");
         tabSelector->textSegmentedControl->SelectCellWithNumber(0);
+        DEBUG("disable vanillaTab");
         vanillaTab->get_gameObject()->SetActive(true);
+        DEBUG("disable modsTab");
         modsTab->get_gameObject()->SetActive(false);
+        DEBUG("Done");
     }
 
     void GameplaySetup::ClickedOffModal() {

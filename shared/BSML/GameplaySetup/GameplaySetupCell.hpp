@@ -15,4 +15,6 @@ DECLARE_CLASS_CODEGEN(BSML, GameplaySetupCell, HMUI::TableCell,
     DECLARE_INSTANCE_METHOD(StringW, get_name);
     DECLARE_INSTANCE_METHOD(bool, get_visible);
     DECLARE_INSTANCE_METHOD(void, set_visible, bool value);
+
+    DECLARE_DEFAULT_CTOR();
 )
