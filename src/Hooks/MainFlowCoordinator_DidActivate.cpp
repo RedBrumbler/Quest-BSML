@@ -3,12 +3,13 @@
 
 #include "GlobalNamespace/MainFlowCoordinator.hpp"
 #include "BSML/MenuButtons/MenuButtons.hpp"
+#include "BSML/Settings/BSMLSettings.hpp"
 
 MAKE_AUTO_HOOK_MATCH(MainFlowCoordinator_DidActivate, &GlobalNamespace::MainFlowCoordinator::DidActivate, void, GlobalNamespace::MainFlowCoordinator* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
     INFO("MainFlowCoordinator_DidActivate");
     if (firstActivation) {
-        auto btns = BSML::MenuButtons::get_instance();
-        btns->Setup();
+        BSML::MenuButtons::get_instance()->Setup();
+        BSML::BSMLSettings::get_instance()->Setup();
     }
 
     MainFlowCoordinator_DidActivate(self, firstActivation, addedToHierarchy, screenSystemEnabling);

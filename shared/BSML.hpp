@@ -37,5 +37,18 @@ namespace BSML {
         /// @param button the button to unregister
         /// @return true if successful, false if failed
         bool UnRegisterMenuButton(MenuButton* button);
+
+        /// @brief register a menu for the settings menu
+        /// @param name the name displayed for your settings
+        /// @param content_key the key for the BSML content to use for your settings
+        /// @param host the host object, used as host for your BSML content
+        /// @param showExtraButtons whether to show the extra apply / cancel buttons
+        /// @return true if successful, false if failed
+        bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool showExtraButtons = false);
+
+        /// @brief remove a menu from the settings menu
+        /// @param host the host object used when registering your menu
+        /// @return true if successful, false if failed
+        bool UnRegisterSettingsMenu(Il2CppObject* host);
     }
 }

@@ -16,6 +16,7 @@ namespace BSML {
         auto error = doc.Parse(str.data());
         if (error != tinyxml2::XML_SUCCESS) {
             ERROR("Error parsing BSML document: {}", tinyxml2::XMLDocument::ErrorIDToName(error));
+            DEBUG("Printing the XML file:\n{}", str);
             std::string validString = fmt::format("<vertical bg='round-rect-panel' pad='5' spacing='4' pref-height='20' vertical-fit='PreferredSize'><text font-size='6' text='ERROR PARSING BSML FILE' align='Center'/><text text='{}' align='Center'/></vertical>", tinyxml2::XMLDocument::ErrorIDToName(error));
             doc.Parse(validString.c_str());
         }

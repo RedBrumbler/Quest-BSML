@@ -1,4 +1,5 @@
 #include "BSML/ComponentTypeWithData.hpp"
+#include "logging.hpp"
 
 std::string BSMLValueToString(BSML::BSMLValue* v, Il2CppTypeEnum type);
 
@@ -10,7 +11,6 @@ namespace BSML {
             for (const auto& alias : vec) {
                 auto itr = allParams.find(alias);
                 if (itr == allParams.end()) continue;
-
                 if (!itr->second.empty() && itr->second[0] == '~') {
                     // if start with ~ look the value up in the parserParams values
                     auto key = itr->second.substr(1);
@@ -23,6 +23,8 @@ namespace BSML {
                         }
 
                         continue;
+                    } else {
+                        ERROR("Could not find value for '{}'", key);
                     }
                     // if the value was not found we assign the actual name to the prop so it can at least try to be used
                 } 

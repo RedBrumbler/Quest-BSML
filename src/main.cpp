@@ -4,6 +4,7 @@
 #include "hooking.hpp"
 
 #include "BSMLDataCache.hpp"
+#include "assets.hpp"
 #include "BSML/Parsing/BSMLDocParser.hpp"
 #include "BSML/Tags/BSMLTag.hpp"
 
@@ -23,4 +24,8 @@ extern "C" void load() {
     custom_types::Register::AutoRegister();
     
     Hooks::InstallHooks(BSML::Logging::getLogger());
+}
+
+BSML_DATACACHE(settings_about) {
+    return IncludedAssets::SettingsAbout_bsml;
 }
