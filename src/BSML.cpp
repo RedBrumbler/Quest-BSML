@@ -1,6 +1,7 @@
 #include "BSML.hpp"
 #include "BSML/MenuButtons/MenuButtons.hpp"
 #include "BSML/Settings/BSMLSettings.hpp"
+#include "BSML/GameplaySetup/GameplaySetup.hpp"
 
 extern "C" void load();
 
@@ -41,6 +42,14 @@ namespace BSML {
 
         bool UnRegisterSettingsMenu(Il2CppObject* host) {
             return BSMLSettings::get_instance()->RemoveSettingsMenu(host);
+        }
+
+        bool RegisterGameplaySetupTab(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType) {
+            return BSML::GameplaySetup::get_instance()->AddTab(name, content_key, host, menuType);
+        }
+
+        bool UnRegisterGameplaySetupTab(std::string_view name) {
+            return BSML::GameplaySetup::get_instance()->RemoveTab(name);
         }
     }
 }

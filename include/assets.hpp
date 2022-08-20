@@ -43,6 +43,9 @@ struct IncludedAsset {
 
 namespace IncludedAssets {
 
+	DECLARE_FILE(GameplaySetup_bsml)
+	DECLARE_FILE(GameplaySetupCell_bsml)
+	DECLARE_FILE(GameplayTabError_bsml)
 	DECLARE_FILE(MainLeftScreen_bsml)
 	DECLARE_FILE(SettingsAbout_bsml)
 	DECLARE_FILE(SettingsButtons_bsml)
@@ -50,5 +53,6 @@ namespace IncludedAssets {
 	DECLARE_FILE(SettingsList_bsml)
 	DECLARE_FILE(mods_idle_png)
 	DECLARE_FILE(mods_selected_png)
+	DECLARE_FILE(visibility_png)
 
 }
