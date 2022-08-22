@@ -68,8 +68,7 @@ namespace BSML {
             this->GameplaySetupDidDeactivate(removedFromHierarchy, screenSystemDisabling);
         }));
         gameplaySetupViewController->add_didDeactivateEvent(didDeactivate);
-        listModal->host = this;
-        listModal->onBlockerClicked = ___ClickedOffModal_MethodRegistrator.get();
+        listModal->onHide = std::bind(&GameplaySetup::ClickedOffModal, this);
     }
 
     void GameplaySetup::GameplaySetupDidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {

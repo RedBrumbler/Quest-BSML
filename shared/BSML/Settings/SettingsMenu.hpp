@@ -23,6 +23,5 @@ DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo,
         static SettingsMenu* Make_new(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons = false);
         std::string_view get_content();
         std::shared_ptr<BSMLParserParams> parserParams;
-    protected:
         static void SetupViewControllerTransform(HMUI::ViewController* viewController);
 )
