@@ -9,7 +9,7 @@ DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo,
     DECLARE_INSTANCE_FIELD(StringW, name);
     DECLARE_INSTANCE_FIELD(StringW, content_key);
     DECLARE_INSTANCE_FIELD(Il2CppObject*, host);
-    DECLARE_INSTANCE_FIELD(bool, showExtraButtons);
+    DECLARE_INSTANCE_FIELD(bool, enableExtraButtons);
     DECLARE_INSTANCE_FIELD(bool, didSetup);
     DECLARE_INSTANCE_FIELD(HMUI::ViewController*, viewController);
     DECLARE_INSTANCE_METHOD(HMUI::ViewController*, get_viewController);
@@ -20,7 +20,7 @@ DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo,
     DECLARE_SIMPLE_DTOR();
 
     public:
-        static SettingsMenu* Make_new(std::string_view name, std::string_view content_key, Il2CppObject* host, bool showExtraButtons = false);
+        static SettingsMenu* Make_new(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons = false);
         std::string_view get_content();
         std::shared_ptr<BSMLParserParams> parserParams;
     protected:

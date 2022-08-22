@@ -45,12 +45,12 @@ namespace BSML {
         r->set_anchorMax({0.5f, 1});
     }
 
-    SettingsMenu* SettingsMenu::Make_new(std::string_view name, std::string_view content, Il2CppObject* host, bool showExtraButtons) {
+    SettingsMenu* SettingsMenu::Make_new(std::string_view name, std::string_view content, Il2CppObject* host, bool enableExtraButtons) {
         auto self = SettingsMenu::New_ctor();
 
         self->text = name;
         self->name = name;
-        self->showExtraButtons = showExtraButtons;
+        self->enableExtraButtons = enableExtraButtons;
         self->content_key = content;
         self->host = host;
 

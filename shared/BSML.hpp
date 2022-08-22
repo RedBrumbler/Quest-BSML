@@ -45,9 +45,9 @@ namespace BSML {
         /// @param name the name displayed for your settings
         /// @param content_key the key for the BSML content to use for your settings
         /// @param host the host object, used as host for your BSML content
-        /// @param showExtraButtons whether to show the extra apply / cancel buttons
+        /// @param enableExtraButtons whether to enable the extra ok / cancel buttons
         /// @return true if successful, false if failed
-        bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool showExtraButtons = false);
+        bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons = false);
 
         /// @brief remove a menu from the settings menu
         /// @param host the host object used when registering your menu

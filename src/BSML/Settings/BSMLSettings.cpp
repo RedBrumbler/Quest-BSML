@@ -67,7 +67,7 @@ namespace BSML {
         isInitialized = true;
     }
 
-    bool BSMLSettings::AddSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool showExtraButtons) {
+    bool BSMLSettings::AddSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons) {
         auto menus = get_settingsMenus();
         // if we find the same entry, early return
         if (std::find_if(menus.begin(), menus.end(), [&name](auto x){ return x->text == name;}) != menus.end()) {
@@ -79,7 +79,7 @@ namespace BSML {
             menus->Add(SettingsMenu::Make_new("BSML", MOD_ID "_settings_about", this, false));
         }
 
-        auto menu = SettingsMenu::Make_new(name, content_key, host, showExtraButtons);
+        auto menu = SettingsMenu::Make_new(name, content_key, host, enableExtraButtons);
         menus->Add(menu);
         if (isInitialized) {
             menu->Setup();

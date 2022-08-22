@@ -61,7 +61,10 @@ namespace BSML {
         }
 
         if (bottomButtons && bottomButtons->m_CachedPtr.m_value) {
-            bottomButtons->get_gameObject()->SetActive(menu->showExtraButtons);
+            auto btns = bottomButtons->GetComponentsInChildren<UnityEngine::UI::Button*>();
+            for (auto btn : btns) {
+                btn->set_interactable(menu->enableExtraButtons);
+            }
         }
 
         OpenMenu(menu->get_viewController(), false, false);
