@@ -10,6 +10,8 @@ namespace BSML {
             {"id", {"id"}},
             {"onChange", {"on-change"}},
             {"value", {"value"}},
+            { "setEvent", {"set-event"}},
+            { "getEvent", {"get-event"}},
             {"applyOnChange", {"apply-on-change"}}
         };
     }
@@ -55,14 +57,41 @@ namespace BSML {
             } else ERROR("Action '{}' could not be found", onChangeItr->second);
         }
 
+        auto applyMinfo = il2cpp_utils::FindMethodUnsafe(component, "ApplyValue", 0);
+        auto receiveMinfo = il2cpp_utils::FindMethodUnsafe(component, "ReceiveValue", 0);
+
         auto idItr = data.find("id");
         if (idItr != data.end()) {
             std::string id = idItr->second;
-            auto applyMinfo = il2cpp_utils::FindMethodUnsafe(component, "ApplyValue", 0);
-            auto receiveMinfo = il2cpp_utils::FindMethodUnsafe(component, "ReceiveValue", 0);
 
             if (applyMinfo) parserParams.AddAction(id + "#Apply", new BSMLAction(component, applyMinfo));
             if (receiveMinfo) parserParams.AddAction(id + "#Receive", new BSMLAction(component, receiveMinfo));
+        }
+
+        if (applyMinfo) {
+            auto setEventItr = data.find("setEvent");
+            std::string setEventName = "apply";
+            if (setEventItr != data.end()) {
+                setEventName = setEventItr->second;
+            }
+            parserParams.AddEvent(setEventName, 
+                [component, applyMinfo]{ 
+                    il2cpp_utils::RunMethod(component, applyMinfo); 
+                }
+            );
+        }
+        
+        if (receiveMinfo) {
+            auto getEventItr = data.find("getEvent");
+            std::string getEventName = "cancel";
+            if (getEventItr != data.end()) {
+                getEventName = getEventItr->second;
+            }
+            parserParams.AddEvent(getEventName, 
+                [component, receiveMinfo]{ 
+                    il2cpp_utils::RunMethod(component, receiveMinfo); 
+                }
+            );
         }
 
         Base::HandleType(componentType, parserParams);

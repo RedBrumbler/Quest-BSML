@@ -12,7 +12,6 @@ namespace BSML {
         highlightColor = UnityEngine::Color(0.60f, 0.80f, 1.0f, 1.0f);
         defaultColor = UnityEngine::Color(1.0f, 1.0f, 1.0f, 1.0f);
 
-        onClick = nullptr;
         onEnter = nullptr;
         onExit = nullptr;
 
@@ -33,7 +32,7 @@ namespace BSML {
         INFO("Click");
         if (buttonClickedSignal) buttonClickedSignal->Raise();
         set_isHighlighted(false);
-        if (onClick) onClick();
+        if (onClick.size() > 0) onClick.invoke();
     }
 
     void ClickableImage::OnPointerEnter(UnityEngine::EventSystems::PointerEventData* eventData) {

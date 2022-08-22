@@ -25,13 +25,20 @@ namespace BSML {
         auto onClickItr = componentType.data.find("onClick");
         if (onClickItr != componentType.data.end() && !onClickItr->second.empty()) {
             auto action = parserParams.TryGetAction(onClickItr->second);
-            if (action) clickableText->onClick = action->GetFunction();
+            if (action) clickableText->onClick += action->GetFunction();
             else ERROR("Action '{}' could not be found", onClickItr->second);
         }
 
         auto clickEventItr = componentType.data.find("click-event");
         if (clickEventItr != componentType.data.end() && !clickEventItr->second.empty()) {
-            // TODO: events
+            auto parserEvent = parserParams.GetEvent(clickEventItr->second);
+            clickableText->onClick += [parserEvent](){
+                if (!parserEvent.expired()) {
+                    parserEvent.lock()->Invoke();
+                } else {
+                    ERROR("Event pointer expired, are you saving your parser params?");
+                }
+            };
         }
 
         Base::HandleTypeAfterParse(componentType, parserParams);

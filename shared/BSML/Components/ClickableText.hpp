@@ -49,7 +49,7 @@ ___DECLARE_TYPE_WRAPPER_INHERITANCE(BSML, ClickableText, Il2CppTypeEnum::IL2CPP_
     DECLARE_CTOR(ctor);
 
     public:
-        std::function<void()> onClick;
+        UnorderedEventCallback<> onClick;
         std::function<void()> onEnter;
         std::function<void()> onExit;
 

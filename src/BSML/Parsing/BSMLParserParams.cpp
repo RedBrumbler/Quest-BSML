@@ -87,6 +87,15 @@ namespace BSML {
         }
     }
 
+    std::weak_ptr<BSMLEvent> BSMLParserParams::GetEvent(const std::string& key) {
+        auto itr = events.find(key);
+        if (itr != events.end()) {
+            return itr->second;
+        } else {
+            return events.emplace(key, std::make_shared<BSMLEvent>()).first->second;
+        }
+    }
+
     void BSMLParserParams::EmitEvent(const std::string& key) {
         auto itr = events.find(key);
         if (itr == events.end()) return;
@@ -98,7 +107,7 @@ namespace BSML {
         if (itr != events.end()) {
             itr->second->Add(event);
         } else {
-            events.emplace(key, new BSMLEvent(event));
+            events.emplace(key, std::make_shared<BSMLEvent>(event));
         }
     }
 

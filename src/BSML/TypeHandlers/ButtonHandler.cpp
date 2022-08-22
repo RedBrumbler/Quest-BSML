@@ -49,7 +49,15 @@ namespace BSML {
 
         auto clickEventItr = componentType.data.find("click-event");
         if (clickEventItr != componentType.data.end() && !clickEventItr->second.empty()) {
-            // TODO: events
+            auto parserEvent = parserParams.GetEvent(clickEventItr->second);
+            auto action = MakeUnityAction([parserEvent](){
+                if (!parserEvent.expired()) {
+                    parserEvent.lock()->Invoke();
+                } else {
+                    ERROR("Event pointer expired, are you saving your parser params?");
+                }
+            });
+            event->AddListener(action);
         }
     }
 }
