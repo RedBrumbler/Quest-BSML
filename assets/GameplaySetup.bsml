@@ -16,10 +16,12 @@
             <tab id='tab' tags='mod-tab' tab-name='~name' anchor-max-y='0.75'/>
         </macro.for-each>
     <modal id='listModal' clickerino-offerino-closerino='true' size-delta-x='65' size-delta-y='35'>
-        <loading-indicator id='loading' preserve-aspect='true' pref-width='20' pref-height='20' />
-        <horizontal anchor-pos-x='-2' horizontal-fit='PreferredSize' vertical-fit='PreferredSize' pref-width='55' pref-height='32'>
-            <list id='modsList' show-scrollbar='true' stick-scrolling='true' pref-width='55' pref-height='32' />
-        </horizontal>
+        <stack child-align='MiddleCenter'>
+            <loading-indicator id='loading' preserve-aspect='true' pref-width='20' pref-height='20'/>
+            <horizontal anchor-pos-x='-2' horizontal-fit='PreferredSize' vertical-fit='PreferredSize' pref-width='55' pref-height='32'>
+                <list id='modsList' show-scrollbar='true' stick-scrolling='true' pref-width='55' pref-height='32' visible-cells='4'/>
+            </horizontal>
+        </stack>
     </modal>
     </tab>
 </bg>
