@@ -1,6 +1,6 @@
 <bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/RedBrumbler/Quest-BSML-Docs/gh-pages/schema.xsd'>
     <vertical child-control-height='false'>
-        <horizontal bg='panel-top' pad-left='10' pad-right='10' horizontal-fit='PreferredSize'>
+        <horizontal bg='panel-top' pad-left='20' pad-right='20' horizontal-fit='PreferredSize'>
             <text text='Mods' align='Center' font-size='10'></text>
         </horizontal>
         <macro.if value='anyButtons'>
