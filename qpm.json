@@ -48,6 +48,11 @@
       "id": "tinyxml2",
       "versionRange": "^9.0.4",
       "additionalData": {}
+    },
+    {
+      "id": "gif-lib",
+      "versionRange": "^5.2.2",
+      "additionalData": {}
     }
   ],
   "additionalData": {}

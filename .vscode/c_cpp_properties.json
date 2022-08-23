@@ -14,6 +14,7 @@
           "${workspaceFolder}/extern/includes/libil2cpp/il2cpp/libil2cpp",
           "${workspaceFolder}/extern/includes/questui/shared/cppcodec",
           "${workspaceFolder}/submodules/css-color-parser-cpp",
+          "${workspaceFolder}/submodules/EasyGifReader",
           "${workspaceFolder}/extern/includes/codegen/include",
           "${workspaceFolder}/extern/includes/fmt/fmt/include",
           "${workspaceFolder}/extern/includes",
