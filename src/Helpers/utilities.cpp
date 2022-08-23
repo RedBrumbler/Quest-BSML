@@ -19,6 +19,12 @@
 #include "UnityEngine/TextureWrapMode.hpp"
 #include "UnityEngine/Networking/UnityWebRequest.hpp"
 #include "UnityEngine/Networking/DownloadHandler.hpp"
+#include "UnityEngine/Networking/UnityWebRequestAsyncOperation.hpp"
+
+#include "BSML/Animations/AnimationStateUpdater.hpp"
+#include "BSML/Animations/AnimationController.hpp"
+#include "BSML/Animations/AnimationControllerData.hpp"
+#include "BSML/Animations/AnimationLoader.hpp"
 
 #include "csscolorparser.hpp"
 
@@ -36,7 +42,6 @@ using namespace UnityEngine;
 using namespace UnityEngine::Networking;
 
 namespace BSML::Utilities {
-
 
     template<typename T, typename U>
     using Dictionary = System::Collections::Generic::Dictionary_2<T, U>;
@@ -165,24 +170,29 @@ namespace BSML::Utilities {
         return LoadSpriteFromTexture(DownScaleTexture(sprite->get_texture(), options));
     }
 
-    custom_types::Helpers::Coroutine GetDataCoroutine(System::Uri* uri, std::function<void(ArrayW<uint8_t>)> onFinished) {
+    custom_types::Helpers::Coroutine DownloadDataCoroutine(StringW uri, std::function<void(ArrayW<uint8_t>)> onFinished) {
         if (!onFinished) {
             ERROR("Can't get data async without a callback to use it with");
             co_return;
         }
+
+        DEBUG("GetReq");
         auto www = UnityWebRequest::Get(uri);
+        DEBUG("SendReq");
         co_yield reinterpret_cast<System::Collections::IEnumerator*>(www->SendWebRequest());
-        if (onFinished) onFinished(www->get_downloadHandler()->GetData());
+        DEBUG("Got data, callback");
+        if (onFinished) 
+            onFinished(www->get_downloadHandler()->GetData());
         co_return;
     }
 
-    void GetData(System::Uri* uri, std::function<void(ArrayW<uint8_t>)> onFinished) {
-        INFO("Getting data from uri: {}", uri->get_LocalPath());
+    void DownloadData(StringW uri, std::function<void(ArrayW<uint8_t>)> onFinished) {
+        INFO("Getting data from uri: {}", uri);
         if (!onFinished) {
             ERROR("Can't get data async without a callback to use it with");
             return;
         }
-        coro(GetDataCoroutine(uri, onFinished));
+        coro(DownloadDataCoroutine(uri, onFinished));
     }
 
     void GetData(StringW key, std::function<void(ArrayW<uint8_t>)> onFinished) {
@@ -197,7 +207,10 @@ namespace BSML::Utilities {
 
     bool IsAnimated(StringW str)
     {
-        return str->EndsWith(".gif", System::StringComparison::OrdinalIgnoreCase) || str->EndsWith(".apng", System::StringComparison::OrdinalIgnoreCase);
+        return  str->EndsWith(".gif", System::StringComparison::OrdinalIgnoreCase) || 
+                str->EndsWith("_gif", System::StringComparison::OrdinalIgnoreCase) ||
+                str->EndsWith(".apng", System::StringComparison::OrdinalIgnoreCase)||
+                str->EndsWith("_apng", System::StringComparison::OrdinalIgnoreCase);
     }
 
     void SetImage(UnityEngine::UI::Image* image, StringW path) {
@@ -209,6 +222,11 @@ namespace BSML::Utilities {
         if (!image) {
             ERROR("Can't set null image!");
             return;
+        }
+
+        auto oldStateUpdater = image->GetComponent<AnimationStateUpdater*>();
+        if (oldStateUpdater) {
+            Object::DestroyImmediate(oldStateUpdater);
         }
 
         INFO("Setting image {}", path);
@@ -233,12 +251,50 @@ namespace BSML::Utilities {
             imageCache->Remove(path);
         }
 
+        auto animationController = AnimationController::get_instance();
+
         System::Uri* uri;
         bool isUri = System::Uri::TryCreate(path, System::UriKind::Absolute, byref(uri));
         // animated just means ".gif || .apng"
         // TODO: support for animated sprites in the future
         if (IsAnimated(path) || (isUri && IsAnimated(uri->get_LocalPath()))) {
-            ERROR("Can't load animated images yet!");
+            DEBUG("Adding state updater");
+            auto stateUpdater = image->get_gameObject()->AddComponent<AnimationStateUpdater*>();
+            stateUpdater->image = image;
+
+            if (loadingAnimation && false)
+                stateUpdater->set_controllerData(animationController->loadingAnimation);
+
+            DEBUG("Getting controller data");
+            Il2CppObject* data = nullptr;
+            if (animationController->registeredAnimations->TryGetValue(path, byref(data))) {
+                DEBUG("Got cached controller data");
+                stateUpdater->set_controllerData(reinterpret_cast<AnimationControllerData*>(data));
+            } else {
+                DEBUG("Data not found. starting fetch");
+                bool isGif = path->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase) || (isUri && uri->get_LocalPath()->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase));
+
+                DEBUG("Creating callback");
+                auto onDataFinished = [stateUpdater, path, onFinished, animationController, isGif](ArrayW<uint8_t> data){
+                    DEBUG("Got data: {}", data.size());
+                    AnimationLoader::Process(
+                        isGif ? AnimationLoader::AnimationType::GIF : AnimationLoader::AnimationType::APNG,
+                        data,
+                        [onFinished, stateUpdater, animationController, path](auto tex, auto uvs, auto delays){
+                            auto controllerData = animationController->Register(path, tex, uvs, delays);
+                            stateUpdater->set_controllerData(controllerData);
+                            if (onFinished) onFinished();
+                        }
+                    );
+                };
+
+                DEBUG("Getting data");
+                if (isUri) {
+                    DownloadData(path, onDataFinished);
+                } else {
+                    GetData(path, onDataFinished);
+                }
+            }
         } else { // not animated
             auto onDataFinished = [path, onFinished, image, scaleOptions](ArrayW<uint8_t> data) {
                 DEBUG("Data was gotten");
@@ -263,7 +319,7 @@ namespace BSML::Utilities {
             };
 
             if (isUri) {
-                GetData(uri, onDataFinished);
+                DownloadData(path, onDataFinished);
             } else {
                 GetData(path, onDataFinished);
             }

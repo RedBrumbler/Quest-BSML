@@ -78,7 +78,7 @@ namespace BSML::Utilities {
     /// @brief function to get data at a URI, this is not blocking as it dispatches a coroutine
     /// @param uri the URI to get data from
     /// @param onFinished what to do with the downloaded bytes
-    void GetData(System::Uri* uri, std::function<void(ArrayW<uint8_t>)> onFinished = nullptr);
+    void DownloadData(StringW uri, std::function<void(ArrayW<uint8_t>)> onFinished = nullptr);
 
     /// @brief function to get data from the key to data cache, this is blocking due to the data being available immediately
     /// @param key the key to get the data with
