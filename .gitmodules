@@ -1,3 +1,6 @@
 [submodule "css-color-parser-cpp"]
 	path = submodules/css-color-parser-cpp
 	url = https://github.com/tangrams/css-color-parser-cpp.git
+[submodule "EasyGifReader"]
+	path = submodules/EasyGifReader
+	url = https://github.com/Chlumsky/EasyGifReader.git

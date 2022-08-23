@@ -34,6 +34,7 @@ add_library(
     ${cpp_file_list}
     ${c_file_list}
     "${CMAKE_CURRENT_SOURCE_DIR}/submodules/css-color-parser-cpp/csscolorparser.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/submodules/EasyGifReader/EasyGifReader.cpp"
 )
 
 # add src dir as include dir
@@ -45,6 +46,8 @@ target_include_directories(${COMPILE_ID} PUBLIC ${SHARED_DIR})
 # codegen includes 
 target_include_directories(${COMPILE_ID} PRIVATE ${EXTERN_DIR}/includes/${CODEGEN_ID}/include)
 target_include_directories(${COMPILE_ID} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/submodules/css-color-parser-cpp/")
+target_include_directories(${COMPILE_ID} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/submodules/EasyGifReader/")
+target_include_directories(${COMPILE_ID} PRIVATE ${EXTERN_DIR}/includes/gif-lib/shared)
 
 target_link_libraries(${COMPILE_ID} PRIVATE -llog -lz)
 # add extern stuff like libs and other includes
