@@ -247,7 +247,8 @@ namespace BSML::Utilities {
             image->set_sprite(sprite);
             if (onFinished) onFinished();
             return;
-        } else {
+        } else if (sprite) {
+            INFO("Removing {} from cache as the attached sprite was invalid", path);
             imageCache->Remove(path);
         }
 
@@ -296,6 +297,7 @@ namespace BSML::Utilities {
                 }
             }
         } else { // not animated
+            DEBUG("Non animated");
             auto onDataFinished = [path, onFinished, image, scaleOptions](ArrayW<uint8_t> data) {
                 DEBUG("Data was gotten");
                 if (data.Length() > 0) {
