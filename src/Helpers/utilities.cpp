@@ -134,6 +134,7 @@ namespace BSML::Utilities {
         auto originalWidth = tex->get_width();
         auto originalHeight = tex->get_height();
 
+        // Skip if nothing is needed
         if (originalWidth + originalHeight <= options.width + options.height)
             return tex;
 
@@ -141,14 +142,14 @@ namespace BSML::Utilities {
         auto newHeight = options.height;
         if (options.maintainRatio) {
             auto ratio = (float)originalWidth / (float)originalHeight;
-            auto scale = originalWidth > originalHeight ? originalWidth : originalHeight;
+            auto scale = options.width > options.height ? options.width : options.height;
 
             if (scale * ratio <= originalWidth) {
-                originalWidth = scale * ratio;
-                originalHeight = scale;
+                newWidth = scale * ratio;
+                newHeight = scale;
             } else {
-                originalWidth = scale;
-                originalHeight = scale * ratio;
+                newWidth = scale;
+                newHeight = (int) (scale / ratio);
             }
         }
 
