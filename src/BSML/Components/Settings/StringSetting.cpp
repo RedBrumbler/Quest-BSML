@@ -67,8 +67,8 @@ namespace BSML {
     }
 
     void StringSetting::ReceiveValue() {
-        if (genericSetting) 
-            set_text(genericSetting->GetValue<Il2CppString*>());
+        if (!genericSetting) return; 
+        set_text(genericSetting->GetValue<Il2CppString*>());
     }
 
 }
