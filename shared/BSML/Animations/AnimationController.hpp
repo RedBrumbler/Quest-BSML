@@ -15,6 +15,7 @@ DECLARE_CLASS_CODEGEN(BSML, AnimationController, UnityEngine::MonoBehaviour,
     using StringToAnimDataDictionary = System::Collections::Generic::Dictionary_2<StringW, Il2CppObject*>;
     DECLARE_INSTANCE_FIELD(StringToAnimDataDictionary*, registeredAnimations);
     DECLARE_INSTANCE_METHOD(AnimationControllerData*, Register, StringW key, UnityEngine::Texture2D* texture, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays);
+    DECLARE_INSTANCE_METHOD(bool, Unregister, StringW key);
     DECLARE_INSTANCE_METHOD(void, InitializeLoadingAnimation);
     DECLARE_INSTANCE_METHOD(void, Update);
     

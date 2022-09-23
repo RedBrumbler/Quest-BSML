@@ -21,17 +21,34 @@ namespace BSML {
         registeredAnimations = StringToAnimDataDictionary::New_ctor();
     }
 
+    bool AnimationController::Unregister(StringW key) {
+        union {
+            Il2CppObject* obj = nullptr;
+            AnimationControllerData* animationData;
+        };
+
+        if (!registeredAnimations->TryGetValue(key, byref(obj))) {
+            // it wasn't in the dict
+            return false;
+        }
+
+        return registeredAnimations->Remove(key);
+    }
+    
     AnimationControllerData* AnimationController::Register(StringW key, UnityEngine::Texture2D* texture, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays) {
         DEBUG("Registering {}", key);
-        Il2CppObject* animationData = nullptr;
-        if (!registeredAnimations->TryGetValue(key, byref(animationData))) {
-            animationData = AnimationControllerData::Make_new(texture, uvs, delays);
+        union {
+            Il2CppObject* obj = nullptr;
+            AnimationControllerData* animationData;
+        };
+        if (!registeredAnimations->TryGetValue(key, byref(obj))) {
+            animationData = AnimationControllerData::Make_new(key, texture, uvs, delays);
             registeredAnimations->Add(key, animationData);
         } else {
             INFO("key {} was already registered, destroying texture and returning", key);
             UnityEngine::Object::Destroy(texture);
         }
-        return reinterpret_cast<AnimationControllerData*>(animationData);
+        return animationData;
     }
 
     void AnimationController::InitializeLoadingAnimation() {

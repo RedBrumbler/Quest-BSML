@@ -296,6 +296,11 @@ namespace BSML::Utilities {
                             isGif ? AnimationLoader::AnimationType::GIF : AnimationLoader::AnimationType::APNG,
                             data,
                             [onFinished, stateUpdater, animationController, path](auto tex, auto uvs, auto delays){
+                                if (!tex) {
+                                    ERROR("Failed to parse animation");
+                                    if (onFinished) onFinished();
+                                    return;
+                                }
                                 auto controllerData = animationController->Register(path, tex, uvs, delays);
                                 stateUpdater->set_controllerData(controllerData);
                                 if (onFinished) onFinished();

@@ -32,7 +32,14 @@ namespace BSML {
             case AnimationType::GIF:
                 sharedStarter->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(
                     GifDecoder::Process(data, 
-                    [sharedStarter, onProcessed](auto animationInfo){ 
+                    [sharedStarter, onProcessed](auto animationInfo){
+                        if (!animationInfo || animationInfo->isFailed) {
+                            ERROR("Got nullptr animation info, or parsing failed!");
+                            // if it wasn't null, we should clean it up or we get memory leaks
+                            if (animationInfo) delete animationInfo;
+                            if (onProcessed) onProcessed(nullptr, ArrayW<UnityEngine::Rect>(), ArrayW<float>());
+                            return;
+                        }
                         DEBUG("Processed Data, processing animation info");
                         sharedStarter->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(ProcessAnimationInfo(animationInfo, onProcessed)));
                     })));
@@ -66,6 +73,7 @@ namespace BSML {
                         )
                     )
                 );
+                co_yield reinterpret_cast<System::Collections::IEnumerator*>(waitUntil);
                 lastThrottleTime = UnityEngine::Time::get_realtimeSinceStartup();
             }
             auto& currentFrameInfo = animationInfo->frames.at(i);

@@ -10,6 +10,7 @@ namespace BSML {
         public:
             ~AnimationInfo();
             bool isInitialized = false;
+            bool isFailed = false;
             int frameCount = 0;
             std::vector<FrameInfo*> frames;
     };

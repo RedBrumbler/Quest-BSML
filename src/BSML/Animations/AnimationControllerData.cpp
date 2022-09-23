@@ -1,4 +1,5 @@
 #include "BSML/Animations/AnimationControllerData.hpp"
+#include "BSML/Animations/AnimationController.hpp"
 
 #include "Helpers/utilities.hpp"
 
@@ -10,10 +11,12 @@ DEFINE_TYPE(BSML, AnimationControllerData);
 
 
 namespace BSML {
-    AnimationControllerData* AnimationControllerData::Make_new(UnityEngine::Texture2D* tex, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays) {
+    AnimationControllerData* AnimationControllerData::Make_new(StringW key, UnityEngine::Texture2D* tex, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays) {
         auto self = AnimationControllerData::New_ctor();
+        self->key = key;
         self->_isPlaying = true;
         self->isDelayConsistent = true;
+        self->autoDestructible = true;
         auto time = std::chrono::system_clock::now();
         auto milis = std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch());
         self->lastSwitch = milis.count();
@@ -61,6 +64,35 @@ namespace BSML {
             activeImages = List<UnityEngine::UI::Image*>::New_ctor();
         }
         return activeImages;
+    }
+
+    ListWrapper<Il2CppObject*> AnimationControllerData::get_updaters() {
+        if (!updaters) {
+            updaters = List<Il2CppObject*>::New_ctor();
+        }
+        return updaters;
+    }
+
+    void AnimationControllerData::Add(UnityEngine::UI::Image* image) {
+        get_activeImages()->Add(image);
+    }
+
+    void AnimationControllerData::AddUpdater(Il2CppObject* updater) {
+        get_updaters()->Add(updater);
+    }
+
+    void AnimationControllerData::Remove(UnityEngine::UI::Image* image) {
+        get_activeImages()->Remove(image);
+    }
+
+    void AnimationControllerData::RemoveUpdater(Il2CppObject* updater) {
+        get_updaters()->Remove(updater);
+        if (get_updaters().size() == 0 && autoDestructible) {
+            // unregister self from anim control, there are no gifs left that use this data
+            // we know this because the updaters list is updated when the data is changed.
+            // FIXME: what if someone swaps controller data manually? then this will cause issues! probably tell them to use autoDestructible = false temporarily or something?
+            BSML::AnimationController::get_instance()->Unregister(key);
+        }
     }
 
     bool AnimationControllerData::get_isPlaying() {

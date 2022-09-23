@@ -10,8 +10,10 @@ namespace BSML {
     void AnimationStateUpdater::set_controllerData(AnimationControllerData* value) {
         if (controllerData) {
             OnDisable();
+            controllerData->RemoveUpdater(this);
         }
         controllerData = value;
+        controllerData->AddUpdater(this);
         if (get_isActiveAndEnabled()) {
             OnEnable();
         }
@@ -19,19 +21,20 @@ namespace BSML {
 
     void AnimationStateUpdater::OnEnable() {
         if (controllerData && image) {
-            controllerData->get_activeImages()->Add(image);
+            controllerData->Add(image);
         }
     }
 
     void AnimationStateUpdater::OnDisable() {
         if (controllerData && image) {
-            controllerData->get_activeImages()->Remove(image);
+            controllerData->Remove(image);
         }
     }
 
     void AnimationStateUpdater::OnDestroy() {
         if (controllerData && image) {
-            controllerData->get_activeImages()->Remove(image);
+            controllerData->Remove(image);
+            controllerData->RemoveUpdater(this);
         }
     }
 }

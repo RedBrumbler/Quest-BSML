@@ -50,7 +50,7 @@ namespace BSML {
         auto waitFunc = MakeDelegate<System::Func_1<bool>*>(
             std::function<bool()>(
                 [animationInfo]() -> bool {
-                    return animationInfo->isInitialized;
+                    return animationInfo->isInitialized || animationInfo->isFailed;
                 }
             )
         );
@@ -99,6 +99,7 @@ namespace BSML {
                 animationInfo->frames.emplace_back(currentFrame);
             }
         } catch (EasyGifReader::Error gifError) {
+            animationInfo->isFailed = true;
             ERROR("Gif error: {}", errToString(gifError));
         }
     }
