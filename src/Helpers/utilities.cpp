@@ -141,14 +141,15 @@ namespace BSML::Utilities {
         auto newHeight = options.height;
         if (options.maintainRatio) {
             auto ratio = (float)originalWidth / (float)originalHeight;
-            auto scale = originalWidth > originalHeight ? originalWidth : originalHeight;
+            auto scale = newWidth > newHeight ? newWidth : newHeight;
 
-            if (scale * ratio <= originalWidth) {
-                originalWidth = scale * ratio;
-                originalHeight = scale;
+            auto scaledRatio = scale * ratio;
+            if (scaledRatio <= originalWidth) {
+                newWidth = scaledRatio;
+                newHeight = scale;
             } else {
-                originalWidth = scale;
-                originalHeight = scale * ratio;
+                newWidth = scale;
+                newHeight = scaledRatio;
             }
         }
 
