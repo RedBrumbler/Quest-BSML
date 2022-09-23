@@ -177,13 +177,21 @@ namespace BSML::Utilities {
             co_return;
         }
 
-        DEBUG("GetReq");
         auto www = UnityWebRequest::Get(uri);
-        DEBUG("SendReq");
-        co_yield reinterpret_cast<System::Collections::IEnumerator*>(www->SendWebRequest());
-        DEBUG("Got data, callback");
-        if (onFinished) 
-            onFinished(www->get_downloadHandler()->GetData());
+        // timeout after 10 seconds
+        www->set_timeout(10);
+        auto op = www->SendWebRequest();
+        co_yield reinterpret_cast<System::Collections::IEnumerator*>(op);
+        
+        ArrayW<uint8_t> data;
+        if (www->get_isNetworkError() || www->get_isHttpError()) {
+            ERROR("Getting image returned error: {}", www->get_error());
+            data = nullptr;
+        } else {
+            data = www->get_downloadHandler()->GetData();
+        }
+        onFinished(data);
+
         co_return;
     }
 
@@ -197,12 +205,18 @@ namespace BSML::Utilities {
     }
 
     void GetData(StringW key, std::function<void(ArrayW<uint8_t>)> onFinished) {
+        if (!onFinished) {
+            ERROR("Can't get data async without a callback to use it with");
+            return;
+        }
+
         INFO("Getting data from key: {}", key);
         auto entry = DataCache::Get(key);
         if (entry) {
             onFinished(entry->get_data());
         } else {
             ERROR("Could not find entry for key: {}", key);
+            onFinished(nullptr);
         }
     }
 
@@ -277,16 +291,19 @@ namespace BSML::Utilities {
 
                 DEBUG("Creating callback");
                 auto onDataFinished = [stateUpdater, path, onFinished, animationController, isGif](ArrayW<uint8_t> data){
-                    DEBUG("Got data: {}", data.size());
-                    AnimationLoader::Process(
-                        isGif ? AnimationLoader::AnimationType::GIF : AnimationLoader::AnimationType::APNG,
-                        data,
-                        [onFinished, stateUpdater, animationController, path](auto tex, auto uvs, auto delays){
-                            auto controllerData = animationController->Register(path, tex, uvs, delays);
-                            stateUpdater->set_controllerData(controllerData);
-                            if (onFinished) onFinished();
-                        }
-                    );
+                    if (data) {
+                        AnimationLoader::Process(
+                            isGif ? AnimationLoader::AnimationType::GIF : AnimationLoader::AnimationType::APNG,
+                            data,
+                            [onFinished, stateUpdater, animationController, path](auto tex, auto uvs, auto delays){
+                                auto controllerData = animationController->Register(path, tex, uvs, delays);
+                                stateUpdater->set_controllerData(controllerData);
+                                if (onFinished) onFinished();
+                            }
+                        );
+                    } else if (onFinished) {
+                        onFinished();
+                    }
                 };
 
                 DEBUG("Getting data");
@@ -299,7 +316,7 @@ namespace BSML::Utilities {
         } else { // not animated
             auto onDataFinished = [path, onFinished, image, scaleOptions](ArrayW<uint8_t> data) {
                 DEBUG("Data was gotten");
-                if (data.Length() > 0) {
+                if (data && data.Length() > 0) {
                     auto texture = LoadTextureRaw(data);
                     if (scaleOptions.shouldScale) {
                         auto scaledTexture = DownScaleTexture(texture, scaleOptions);
