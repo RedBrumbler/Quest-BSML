@@ -61,7 +61,6 @@ namespace BSML::Utilities {
     /// @return downscaled sprite
     UnityEngine::Sprite* DownScaleSprite(UnityEngine::Sprite* sprite, const ScaleOptions& options);
 
-
     /// @brief sets the sprite from a path, this does not yet bother with animated textures so it will only work with base textures
     /// @param image the image to set the sprite on
     /// @param path the path, basegame name, or URI to an image
@@ -74,6 +73,12 @@ namespace BSML::Utilities {
     /// @param scaleOptions the scale options to use, if any
     /// @param onFinished a callback to call when the image is finished loading, if any
     void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished = nullptr);
+
+    /// @brief removes a sprite from the internal cache, optionally marks the sprite to be destroyed.
+    /// @param path the key for the image to remove from cache
+    /// @param destroySprite whether or not to also mark the sprite to be destroyed
+    /// @return whether or not the sprite was in cache
+    bool RemoveImage(StringW path, bool destroySprite = true);
 
     /// @brief function to get data at a URI, this is not blocking as it dispatches a coroutine
     /// @param uri the URI to get data from

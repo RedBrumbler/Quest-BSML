@@ -233,6 +233,11 @@ namespace BSML::Utilities {
     }
 
     SafePtr<Dictionary<StringW, UnityEngine::Sprite*>> imageCache;
+    Dictionary<StringW, UnityEngine::Sprite*>* get_imageCache() {
+        if (!imageCache) imageCache.emplace(Dictionary<StringW, UnityEngine::Sprite*>::New_ctor());
+        return imageCache.ptr();
+    }
+
     void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished) {
         if (!image) {
             ERROR("Can't set null image!");
@@ -254,16 +259,18 @@ namespace BSML::Utilities {
             return;
         }
 
-        if (!imageCache) imageCache.emplace(Dictionary<StringW, UnityEngine::Sprite*>::New_ctor());
         
         UnityEngine::Sprite* sprite = nullptr;
-        if (imageCache->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value) {
-            // we got a sprite, use it
-            image->set_sprite(sprite);
-            if (onFinished) onFinished();
-            return;
-        } else {
-            imageCache->Remove(path);
+        if (get_imageCache()->TryGetValue(path, byref(sprite))) {
+            if (sprite && sprite->m_CachedPtr.m_value) {
+                // we got a sprite, use it
+                image->set_sprite(sprite);
+                if (onFinished) onFinished();
+                return;
+            } else {
+                // sprite wasn't valid anymore, remove it
+                get_imageCache()->Remove(path);
+            }
         }
 
         auto animationController = AnimationController::get_instance();
@@ -277,7 +284,7 @@ namespace BSML::Utilities {
             auto stateUpdater = image->get_gameObject()->AddComponent<AnimationStateUpdater*>();
             stateUpdater->image = image;
 
-            if (loadingAnimation && false)
+            if (loadingAnimation && animationController->loadingAnimation)
                 stateUpdater->set_controllerData(animationController->loadingAnimation);
 
             DEBUG("Getting controller data");
@@ -333,7 +340,7 @@ namespace BSML::Utilities {
                     auto sprite = LoadSpriteFromTexture(texture);
                     sprite->get_texture()->set_wrapMode(TextureWrapMode::Clamp);
                     image->set_sprite(sprite);
-                    imageCache->Add(path, sprite);
+                    get_imageCache()->Add(path, sprite);
                 }
 
                 if (onFinished)
@@ -347,6 +354,20 @@ namespace BSML::Utilities {
                 GetData(path, onDataFinished);
             }
         }
+    }
+
+    bool RemoveImage(StringW path, bool destroySprite) {
+        UnityEngine::Sprite* sprite = nullptr;
+        if (get_imageCache()->TryGetValue(path, byref(sprite))) {
+            get_imageCache()->Remove(path);
+            if (destroySprite) {
+                if (sprite && sprite->m_CachedPtr.m_value) {
+                    UnityEngine::Object::Destroy(sprite);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     UnityEngine::Texture2D* LoadTextureRaw(ArrayW<uint8_t> data) {
