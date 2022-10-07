@@ -82,8 +82,8 @@ namespace BSML {
     }
 
     void DropdownListSetting::ReceiveValue() {
-        if (genericSetting)
-            set_Value(genericSetting->GetValue<Il2CppObject*>());
+        if (!genericSetting) return;
+        set_Value(genericSetting->GetValue<Il2CppObject*>());
     }
 
     void DropdownListSetting::ApplyValue() {

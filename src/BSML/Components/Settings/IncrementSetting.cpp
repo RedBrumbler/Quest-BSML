@@ -61,8 +61,7 @@ namespace BSML {
 
     void IncrementSetting::ReceiveValue() {
         if (!genericSetting) return;
-
-        currentValue = genericSetting->GetValue<float>();
+        set_Value(genericSetting->GetValue<float>());
     }
 
     void IncrementSetting::ApplyValue() {

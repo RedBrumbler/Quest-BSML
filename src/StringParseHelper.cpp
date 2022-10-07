@@ -45,8 +45,14 @@ std::optional<UnityEngine::Color> StringParseHelper::tryParseColor() const {
 std::optional<UnityEngine::Color32> StringParseHelper::tryParseColor32() const {
     return BSML::Utilities::ParseHTMLColor32Opt(*this);
 }
+const MethodInfo* minfo_from_name_in_parents(Il2CppClass* klass, const char* name, int argc) {
+    if (!klass) return nullptr;
+    auto minfo = il2cpp_functions::class_get_method_from_name(klass, name, argc);
+    if (minfo) return minfo;
+    return il2cpp_functions::class_get_method_from_name(klass->parent, name, argc);
+}
 const MethodInfo* StringParseHelper::asMethodInfo(Il2CppObject* host, int argCount) const {
-    return il2cpp_functions::class_get_method_from_name(host->klass, data(), argCount);
+    return minfo_from_name_in_parents(host->klass, data(), argCount);
 }
 const MethodInfo* StringParseHelper::asSetter(Il2CppObject* host) const {
     auto name = "set_" + this->operator std::string();
