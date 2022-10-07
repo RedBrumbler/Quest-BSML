@@ -27,12 +27,12 @@ namespace BSML {
 
         auto showEventItr = data.find("showEvent");
         if (showEventItr != data.end()) {
-            // TODO: events
+            parserParams.AddEvent(showEventItr->second, std::bind(&BSML::ModalView::Show, modalView));
         }
 
         auto hideEventItr = data.find("hideEvent");
         if (hideEventItr != data.end()) {
-            // TODO: events
+            parserParams.AddEvent(hideEventItr->second, std::bind(&BSML::ModalView::Hide, modalView));
         }
 
         auto idItr = data.find("id");

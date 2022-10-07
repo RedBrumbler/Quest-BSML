@@ -23,16 +23,12 @@
     {
       "id": "codegen",
       "versionRange": "^0.25.0",
-      "additionalData": {
-        "includeQmod": false
-      }
+      "additionalData": {}
     },
     {
       "id": "custom-types",
       "versionRange": "^0.15.18",
-      "additionalData": {
-        "includeQmod": false
-      }
+      "additionalData": {}
     },
     {
       "id": "modloader",

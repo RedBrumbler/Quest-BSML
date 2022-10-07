@@ -1,9 +1,14 @@
 #include "BSML/Parsing/BSMLParserParams.hpp"
 #include "BSML/Parsing/BSMLNode.hpp"
+#include "logging.hpp"
 
 namespace BSML {
     BSMLParserParams::~BSMLParserParams() {
         for (auto& pair : values) {
+            delete pair.second;
+        }
+
+        for (auto& pair : actions) {
             delete pair.second;
         }
     }
@@ -79,6 +84,30 @@ namespace BSML {
         } else {
             delete itr->second;
             itr->second = action;
+        }
+    }
+
+    std::weak_ptr<BSMLEvent> BSMLParserParams::GetEvent(const std::string& key) {
+        auto itr = events.find(key);
+        if (itr != events.end()) {
+            return itr->second;
+        } else {
+            return events.emplace(key, std::make_shared<BSMLEvent>()).first->second;
+        }
+    }
+
+    void BSMLParserParams::EmitEvent(const std::string& key) {
+        auto itr = events.find(key);
+        if (itr == events.end()) return;
+        itr->second->Invoke();
+    }
+
+    void BSMLParserParams::AddEvent(const std::string& key, std::function<void(void)> event) {
+        auto itr = events.find(key);
+        if (itr != events.end()) {
+            itr->second->Add(event);
+        } else {
+            events.emplace(key, std::make_shared<BSMLEvent>(event));
         }
     }
 

@@ -25,7 +25,7 @@ namespace BSML {
             valueId = std::string(valueId.substr(1));
         }
 
-        INFO("Getting value from parser params");
+        INFO("Getting value '{}' from parser params", valueId);
         auto value = parserParams.TryGetValue(valueId);
         if (value) {
             INFO("Got value!");

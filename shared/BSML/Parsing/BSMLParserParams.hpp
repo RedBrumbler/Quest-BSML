@@ -3,6 +3,9 @@
 #include "UnityEngine/GameObject.hpp"
 #include "BSMLValue.hpp"
 #include "BSMLAction.hpp"
+#include "BSMLEvent.hpp"
+
+#include "System/Action.hpp"
 
 #include <map>
 #include <vector>
@@ -57,12 +60,27 @@ namespace BSML {
             /// @param value the value to save
             void AddAction(const std::string& key, BSMLAction* action);
 
+            /// @brief Gets a weak ptr for the event you are looking for
+            /// @param key the key for the event
+            /// @return weak ptr for event, this will always be a valid weak ptr, but check if it is expired before using it
+            std::weak_ptr<BSMLEvent> GetEvent(const std::string& key);
+
+            /// @brief runs the functions for the passed event
+            /// @param key the key to invoke
+            void EmitEvent(const std::string& key);
+
+            /// @brief adds the BSMLEvent to the map
+            /// @param key the key the event is saved to
+            /// @param event the function to run for the specific event
+            void AddEvent(const std::string& key, std::function<void(void)> event);
+            
             /// @brief get the host object
             Il2CppObject* get_host();
         private:
             std::map<std::string, std::vector<UnityEngine::GameObject*>> objectsWithIds;
             std::map<std::string, BSMLValue*> values;
             std::map<std::string, BSMLAction*> actions;
+            std::map<std::string, std::shared_ptr<BSMLEvent>> events;
             Il2CppObject* host;
     };
 }

@@ -9,6 +9,7 @@ namespace BSML {
     }
 
     void ModalView::Show() {
+        
         this->::HMUI::ModalView::Show(true, moveToCenter, nullptr);
     }
 
@@ -17,8 +18,8 @@ namespace BSML {
     }
 
     void ModalView::BlockerClicked() {
-        if (onBlockerClicked) {
-            il2cpp_utils::RunMethod(host, onBlockerClicked);
+        if (onHide) {
+            onHide();
         }
 
         if (dismissOnBlockerClicked) {

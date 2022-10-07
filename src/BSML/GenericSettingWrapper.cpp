@@ -3,7 +3,7 @@
 DEFINE_TYPE(BSML, GenericSettingWrapper);
 
 void BSML::GenericSettingWrapper::ctor() {
-    applyOnChange = true;
+    applyOnChange = false;
     valueInfo = nullptr;
     setterInfo = nullptr;
     getterInfo = nullptr;
@@ -17,4 +17,3 @@ Il2CppObject* BSML::GenericSettingWrapper::get_onChangeHost() {
 Il2CppObject* BSML::GenericSettingWrapper::get_host() {
     return host ? host : onChangeHost;
 }
-
