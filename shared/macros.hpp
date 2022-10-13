@@ -8,6 +8,7 @@ DECLARE_INSTANCE_FIELD(type, _##name);                                          
 public:                                                                                                                 \
 type get_##name();                                                                                                      \
 ___CREATE_INSTANCE_METHOD(get_##name, "get_" #name, METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_HIDE_BY_SIG, nullptr);   \
+public:                                                                                                                 \
 void set_##name(type value);                                                                                            \
 ___CREATE_INSTANCE_METHOD(set_##name, "set_" #name, METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_HIDE_BY_SIG, nullptr)
 
