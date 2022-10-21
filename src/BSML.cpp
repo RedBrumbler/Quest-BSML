@@ -36,7 +36,7 @@ namespace BSML {
     
         bool UnRegisterMenuButton(MenuButton* button) {
             Init();
-            return MenuButtons::get_instance()->Registerbutton(button);
+            return MenuButtons::get_instance()->UnRegisterbutton(button);
         }
 
         bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons) {
