@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/ButtonIconImage.hpp"
+#include "../Components/ButtonIconImage.hpp"
 
 namespace BSML {
     class ButtonIconHandler : public TypeHandler<BSML::ButtonIconImage*> {

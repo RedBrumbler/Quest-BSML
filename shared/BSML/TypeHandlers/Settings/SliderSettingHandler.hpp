@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../TypeHandler.hpp"
-#include "BSML/Components/Settings/SliderSetting.hpp"
+#include "../../Components/Settings/SliderSetting.hpp"
 
 namespace BSML {
     class SliderSettingHandler : public TypeHandler<BSML::SliderSetting*> {

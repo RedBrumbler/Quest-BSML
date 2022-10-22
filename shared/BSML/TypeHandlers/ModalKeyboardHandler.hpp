@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/Keyboard/ModalKeyboard.hpp"
+#include "../Components/Keyboard/ModalKeyboard.hpp"
 
 namespace BSML {
     class ModalKeyboardHandler : public TypeHandler<BSML::ModalKeyboard*> {

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../BSMLTag.hpp"
-
-#include "BSML/Components/Settings/IncDecSetting.hpp"
+#include "../../Components/Settings/IncDecSetting.hpp"
 
 namespace BSML {
     class IncDecSettingTagBase : public BSMLTag {

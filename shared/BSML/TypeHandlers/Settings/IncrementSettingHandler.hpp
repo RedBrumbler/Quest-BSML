@@ -3,7 +3,7 @@
 #pragma once
 
 #include "../TypeHandler.hpp"
-#include "BSML/Components/Settings/IncrementSetting.hpp"
+#include "../../Components/Settings/IncrementSetting.hpp"
 
 namespace BSML {
     class IncrementSettingHandler : public TypeHandler<BSML::IncrementSetting*> {

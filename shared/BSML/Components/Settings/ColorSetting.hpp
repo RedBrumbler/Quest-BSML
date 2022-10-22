@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BaseSetting.hpp"
-#include "BSML/Components/ModalColorPicker.hpp"
+#include "../ModalColorPicker.hpp"
 #include "../../GenericSettingWrapper.hpp"
 #include "UnityEngine/UI/Button.hpp"
 

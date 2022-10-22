@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/ModalColorPicker.hpp"
+#include "../Components/ModalColorPicker.hpp"
 
 namespace BSML {
     class ModalColorPickerHandler : public TypeHandler<BSML::ModalColorPicker*> {

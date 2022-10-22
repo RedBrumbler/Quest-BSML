@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/TabSelector.hpp"
+#include "../Components/TabSelector.hpp"
 
 namespace BSML {
     class TabSelectorHandler : public TypeHandler<BSML::TabSelector*> {

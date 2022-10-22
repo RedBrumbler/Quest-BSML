@@ -2,7 +2,7 @@
 
 #include "custom-types/shared/macros.hpp"
 #include "BaseSetting.hpp"
-#include "BSML/Components/Keyboard/ModalKeyboard.hpp"
+#include "../Keyboard/ModalKeyboard.hpp"
 #include "../../GenericSettingWrapper.hpp"
 
 #include "TMPro/TextMeshProUGUI.hpp"

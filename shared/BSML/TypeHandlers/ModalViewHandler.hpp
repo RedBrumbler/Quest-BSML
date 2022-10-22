@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/ModalView.hpp"
+#include "../Components/ModalView.hpp"
 
 namespace BSML {
     class ModalViewHandler : public TypeHandler<BSML::ModalView*> {

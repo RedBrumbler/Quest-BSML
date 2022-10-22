@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/ScrollableContainer.hpp"
+#include "../Components/ScrollableContainer.hpp"
 
 namespace BSML {
     class ScrollableContainerHandler : public TypeHandler<BSML::ScrollableContainer*> {

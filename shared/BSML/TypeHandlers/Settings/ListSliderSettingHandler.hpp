@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../TypeHandler.hpp"
-#include "BSML/Components/Settings/ListSliderSetting.hpp"
+#include "../../Components/Settings/ListSliderSetting.hpp"
 
 namespace BSML {
     class ListSliderSettingHandler : public TypeHandler<BSML::ListSliderSetting*> {

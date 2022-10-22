@@ -6,7 +6,7 @@
 #include "HMUI/TextSegmentedControl.hpp"
 #include "HMUI/SegmentedControl.hpp"
 #include "Tab.hpp"
-#include "BSML/Parsing/BSMLParserParams.hpp"
+#include "../Parsing/BSMLParserParams.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, TabSelector, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(HMUI::TextSegmentedControl*, textSegmentedControl);
