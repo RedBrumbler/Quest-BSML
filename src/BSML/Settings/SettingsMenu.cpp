@@ -12,6 +12,10 @@
 DEFINE_TYPE(BSML, SettingsMenu);
 
 namespace BSML {
+    bool SettingsMenu::get_didSetup() {
+        return viewController && viewController->m_CachedPtr.m_value;
+    }
+
     HMUI::ViewController* SettingsMenu::get_viewController() {
         if (!viewController || !viewController->m_CachedPtr.m_value) {
             Setup();
@@ -25,7 +29,6 @@ namespace BSML {
         SetupViewControllerTransform(viewController);
         auto parser = parse_and_construct(get_content(), viewController->get_transform(), host);
         parserParams = parser->parserParams;
-        didSetup = true;
     }
 
     std::string_view SettingsMenu::get_content() {

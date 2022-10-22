@@ -55,7 +55,7 @@ namespace BSML {
     }
 
     void ModSettingsFlowCoordinator::OpenMenu(SettingsMenu* menu) {
-        if (!menu->didSetup) {
+        if (!menu->get_didSetup()) {
             menu->Setup();
             menu->parserParams->AddEvent("back", std::bind(&ModSettingsFlowCoordinator::Back, this));
         }
@@ -115,7 +115,7 @@ namespace BSML {
         auto menus = BSMLSettings::get_instance()->get_settingsMenus();
         for (auto cell : menus) {
             auto menu = reinterpret_cast<SettingsMenu*>(cell);
-            if (menu->didSetup) {
+            if (menu->get_didSetup() && menu->parserParams) {
                 menu->parserParams->EmitEvent(std::string(ev));
             }
         }
