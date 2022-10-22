@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/PageButton.hpp"
+#include "../Components/PageButton.hpp"
 
 namespace BSML {
     class PageButtonHandler : public TypeHandler<BSML::PageButton*> {

@@ -2,7 +2,7 @@
 
 
 #include "../Settings/IncDecSettingTag.hpp"
-#include "BSML/Components/Settings/ListSetting.hpp"
+#include "../../Components/Settings/ListSetting.hpp"
 
 namespace BSML {
     class ListSettingTag : public IncDecSettingTag<BSML::ListSetting*> {

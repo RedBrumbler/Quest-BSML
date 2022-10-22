@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/ClickableText.hpp"
+#include "../Components/ClickableText.hpp"
 
 namespace BSML {
     class ClickableTextHandler : public TypeHandler<BSML::ClickableText*> {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/Backgroundable.hpp"
+#include "../Components/Backgroundable.hpp"
 
 namespace BSML {
     class BackgroundableHandler : public TypeHandler<Backgroundable*> {

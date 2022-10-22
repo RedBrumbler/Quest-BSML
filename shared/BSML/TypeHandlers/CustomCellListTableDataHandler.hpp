@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/CustomCellListTableData.hpp"
+#include "../Components/CustomCellListTableData.hpp"
 
 namespace BSML {
     class CustomCellListTableDataHandler : public TypeHandler<BSML::CustomCellListTableData*> {

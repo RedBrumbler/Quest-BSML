@@ -3,7 +3,7 @@
 #pragma once
 
 #include "../TypeHandler.hpp"
-#include "BSML/Components/Settings/BaseSetting.hpp"
+#include "../../Components/Settings/BaseSetting.hpp"
 
 // note: this is analogous to GenericSettingHandler, but due to this being quest,
 // there are some issues with the way we have to do things.

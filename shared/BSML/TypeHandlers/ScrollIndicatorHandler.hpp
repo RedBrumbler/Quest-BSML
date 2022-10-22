@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSML/Components/ScrollIndicator.hpp"
+#include "../Components/ScrollIndicator.hpp"
 #include "TypeHandler.hpp"
 
 namespace BSML {

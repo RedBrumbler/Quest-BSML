@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Settings/GenericSliderSettingTag.hpp"
-#include "BSML/Components/Settings/ListSliderSetting.hpp"
+#include "../../Components/Settings/ListSliderSetting.hpp"
 
 namespace BSML {
     class ListSliderSettingTag : public GenericSliderSettingTag<BSML::ListSliderSetting*> {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Settings/IncDecSettingTag.hpp"
-#include "BSML/Components/Settings/IncrementSetting.hpp"
+#include "../../Components/Settings/IncrementSetting.hpp"
 
 namespace BSML {
     class IncrementSettingTag : public IncDecSettingTag<BSML::IncrementSetting*> {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../TypeHandler.hpp"
-#include "BSML/Components/Settings/DropdownListSetting.hpp"
+#include "../../Components/Settings/DropdownListSetting.hpp"
 
 namespace BSML {
     class DropdownListSettingHandler : public TypeHandler<BSML::DropdownListSetting*> {

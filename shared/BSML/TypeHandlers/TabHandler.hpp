@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeHandler.hpp"
-#include "BSML/Components/Tab.hpp"
+#include "../Components/Tab.hpp"
 
 namespace BSML {
     class TabHandler : public TypeHandler<BSML::Tab*> {
