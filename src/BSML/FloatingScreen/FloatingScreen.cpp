@@ -160,7 +160,7 @@ namespace BSML {
     }
 
     void FloatingScreen::OnDestroy() {
-        HMUI::Screen::OnDestroy();
+        isBeingDestroyed = true;
         VRPointerEnabledPatch::OnPointerEnabled -= {&FloatingScreen::OnPointerCreated, this};
     }
 
