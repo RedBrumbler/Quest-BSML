@@ -58,9 +58,16 @@ namespace BSML {
         auto fieldInfo = il2cpp_functions::class_get_field_from_name(parserParams.host->klass, id.c_str());
         if (fieldInfo) {
             auto fieldSystemType = il2cpp_utils::GetSystemType(il2cpp_functions::field_get_type(fieldInfo));
-            auto component = GetExternalComponent(currentObject, externalComponents, fieldSystemType);
-            if (component) {
-                SetHostField(parserParams.host, component);
+            static auto gameObjectSystemType = csTypeOf(UnityEngine::GameObject*);
+            if (gameObjectSystemType == fieldSystemType) {
+                // if the field is of type GameObject, set the field to the current object value
+                SetHostField(parserParams.host, currentObject);
+            } else { 
+                // if the field is not a GameObject, try to find the type of the field with the GetExternalComponent method, and set that on the field
+                auto component = GetExternalComponent(currentObject, externalComponents, fieldSystemType);
+                if (component) {
+                    SetHostField(parserParams.host, component);
+                }
             }
         }
         
