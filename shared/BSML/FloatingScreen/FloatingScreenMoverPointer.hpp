@@ -21,7 +21,6 @@ DECLARE_CLASS_CODEGEN(BSML, FloatingScreenMoverPointer, UnityEngine::MonoBehavio
     DECLARE_INSTANCE_FIELD(UnityEngine::Quaternion, _grabRot);
     DECLARE_INSTANCE_FIELD(UnityEngine::Vector3, _realPos);
     DECLARE_INSTANCE_FIELD(UnityEngine::Quaternion, _realRot);
-    DECLARE_INSTANCE_FIELD(GlobalNamespace::FirstPersonFlyingController*, _fpfc);
 
     DECLARE_INSTANCE_METHOD(void, Update); 
     DECLARE_INSTANCE_METHOD(void, OnDestroy);
@@ -33,6 +32,4 @@ DECLARE_CLASS_CODEGEN(BSML, FloatingScreenMoverPointer, UnityEngine::MonoBehavio
         FloatingScreen* _floatingScreen;
         static constexpr const float MinScrollDistance = 0.25f;
         static constexpr const float MaxLaserDistance = 50.0f;
-    private:
-        bool get_isFpfc();
 )

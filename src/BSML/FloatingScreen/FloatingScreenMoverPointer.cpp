@@ -47,7 +47,6 @@ namespace BSML {
         _realPos = floatingScreen->get_transform()->get_position();
         _realRot = floatingScreen->get_transform()->get_rotation();
         _vrPointer = pointer;
-        _fpfc = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::FirstPersonFlyingController*>().FirstOrDefault();
     }
 
     void FloatingScreenMoverPointer::Init(FloatingScreen* floatingScreen) {
@@ -55,15 +54,11 @@ namespace BSML {
         Init(floatingScreen, vrPointer);
     }
 
-    bool FloatingScreenMoverPointer::get_isFpfc() {
-        return _fpfc && _fpfc->m_CachedPtr.m_value && _fpfc->get_enabled();
-    }
-
     void FloatingScreenMoverPointer::Update() {
         auto pointer = _vrPointer;
         if (pointer && pointer->m_CachedPtr.m_value && pointer->vrController && pointer->vrController->m_CachedPtr.m_value) {
             auto vrController = pointer->vrController;
-            if (vrController->get_triggerValue() > 0.9f || UnityEngine::Input::GetMouseButton(0)) {
+            if (vrController->get_triggerValue() > 0.9f) {
                 if (_grabbingController && _grabbingController->m_CachedPtr.m_value) return;
                 ExtendedRaycastHit hit;
                 if (UnityEngine::Physics::Raycast(vrController->get_position(), vrController->get_forward(), ByRef<UnityEngine::RaycastHit>(&hit), MaxLaserDistance)) {
@@ -79,12 +74,9 @@ namespace BSML {
 
         // if:
         // - no grabbing controller, or
-        // - fpfc & controller pressed, or
-        // - fpfc & mouse pressed
+        // - controller pressed
         // early return
-        if (!(_grabbingController && _grabbingController->m_CachedPtr.m_value) || 
-            (!get_isFpfc() && _grabbingController->get_triggerValue() > 0.9f) || 
-            (get_isFpfc() && UnityEngine::Input::GetMouseButton(0))) return;
+        if (!(_grabbingController && _grabbingController->m_CachedPtr.m_value) || _grabbingController->get_triggerValue() > 0.9f) return;
 
         _grabbingController = nullptr;
         _floatingScreen->OnHandleReleased(pointer);
