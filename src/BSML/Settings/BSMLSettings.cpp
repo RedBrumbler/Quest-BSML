@@ -143,6 +143,7 @@ namespace BSML {
         buttonSpriteSwap->normalStateSprite = normal;
         buttonSpriteSwap->highlightStateSprite = hover;
         buttonSpriteSwap->pressedStateSprite = hover;
+        button->get_transform()->SetAsFirstSibling();
         co_return;
     }
 }
