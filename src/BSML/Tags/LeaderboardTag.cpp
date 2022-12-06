@@ -1,6 +1,7 @@
 #include "BSML/Tags/LeaderboardTag.hpp"
 #include "GlobalNamespace/LeaderboardTableView.hpp"
 #include "GlobalNamespace/LeaderboardTableCell.hpp"
+#include "GlobalNamespace/LoadingControl.hpp"
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Object.hpp"
@@ -25,6 +26,10 @@ namespace BSML {
         table->GetComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
         for (auto tableCell : table->GetComponentsInChildren<GlobalNamespace::LeaderboardTableCell*>()) 
             UnityEngine::Object::Destroy(tableCell->get_gameObject());
+        
+        auto loadingControl = table->GetComponentInChildren<GlobalNamespace::LoadingControl*>();
+        if (loadingControl) loadingControl->Hide();
+
         return table->get_gameObject();
     }
 }
