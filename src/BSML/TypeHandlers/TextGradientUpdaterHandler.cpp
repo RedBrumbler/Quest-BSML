@@ -5,9 +5,9 @@ namespace BSML {
 
     TextGradientUpdaterHandler::Base::PropMap TextGradientUpdaterHandler::get_props() const {
         return {
-            { "gradientScrollSpeed", {"gradient-speed", "gradient-scroll-speed"}},
-            { "gradientScrollRepeat", {"gradient-section", "gradient-scroll-section", "gradient-repeat"}},
-            { "gradientColors", {"gradient", "gradient-colors"}}
+            { "gradientScrollSpeed",  {"gradient-speed", "gradient-scroll-speed"}},
+            { "gradientScrollRepeat", {"gradient-repeat", "gradient-scroll-repeat"}},
+            { "gradientColors",       {"gradient-colors", "gradient"}}
         };
     }
 
