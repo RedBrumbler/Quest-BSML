@@ -34,6 +34,8 @@ namespace BSML {
     void TextGradientUpdater::ctor() {
         scrollSpeed = 0;
         scrollRepeat = 1;
+        stepSize = 1;
+        fixedStep = false;
         gradient = nullptr;
     }
 
@@ -70,9 +72,16 @@ namespace BSML {
                     for (int i = 0; i < materialCount; i++) {
                         auto& colors = textInfo->meshInfo[i].colors32;
                         auto size = colors.size();
-                        for (int j = 0; j < size; j++) {
-                            float t = (float)j / (float)size;
-                            colors[j] = gradient->Sample(currentPos + t * scrollRepeat);
+                        if (fixedStep) {
+                            for (int j = 0; j < size; j++) {
+                                float t = j * stepSize * 0.01f;
+                                colors[j] = gradient->Sample(currentPos + t);
+                            }
+                        } else {
+                            for (int j = 0; j < size; j++) {
+                                float t = (float)j / (float)size;
+                                colors[j] = gradient->Sample(currentPos + t * scrollRepeat);
+                            }
                         }
                     }
                 }

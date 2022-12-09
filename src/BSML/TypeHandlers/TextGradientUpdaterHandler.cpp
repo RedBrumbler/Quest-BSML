@@ -7,7 +7,9 @@ namespace BSML {
         return {
             { "gradientScrollSpeed",  {"gradient-speed", "gradient-scroll-speed"}},
             { "gradientScrollRepeat", {"gradient-repeat", "gradient-scroll-repeat"}},
-            { "gradientColors",       {"gradient-colors", "gradient"}}
+            { "gradientColors",       {"gradient-colors", "gradient"}},
+            { "gradientFixedStep",    {"gradient-fixed-step"}},
+            { "gradientStepSize",     {"gradient-step-size", "gradient-fixed-step-size"}}
         };
     }
 
@@ -15,7 +17,9 @@ namespace BSML {
         return {
             { "gradientScrollSpeed",    [](auto component, auto value){ component->scrollSpeed = value; }},
             { "gradientScrollRepeat",   [](auto component, auto value){ component->scrollRepeat = value; }},
-            { "gradientColors",         [](auto component, auto value){ component->set_gradient(BSML::Gradient::Parse(value)); }}
+            { "gradientColors",         [](auto component, auto value){ component->set_gradient(BSML::Gradient::Parse(value)); }},
+            { "gradientFixedStep",      [](auto component, auto value){ component->fixedStep = value; }},
+            { "gradientStepSize",       [](auto component, auto value){ component->stepSize = value; }}
         };
     }
 }
