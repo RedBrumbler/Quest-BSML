@@ -8,6 +8,7 @@
 
 struct StringParseHelper : std::string_view {
     // pass the normal constructors through to the base, these are the only ones we need
+    StringParseHelper(const std::string_view& str) : std::string_view(str) {}
     StringParseHelper(const char* str) : std::string_view(str) {}
     StringParseHelper(const char* str, size_type len) : std::string_view(str, len) {}
     StringParseHelper(const std::string& str) : std::string_view(str.c_str(), str.size()) {}
