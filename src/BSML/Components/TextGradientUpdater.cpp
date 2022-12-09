@@ -32,7 +32,7 @@ inline UnityEngine::Color32 operator*(float lhs, UnityEngine::Color32 rhs) {
 
 namespace BSML {
     void TextGradientUpdater::ctor() {
-        scrollSpeed = 1;
+        scrollSpeed = 0;
         scrollRepeat = 1;
         gradient = nullptr;
     }
