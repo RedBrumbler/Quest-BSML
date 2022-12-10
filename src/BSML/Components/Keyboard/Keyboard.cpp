@@ -230,13 +230,13 @@ namespace BSML {
         void Keyboard::Enter(Key* key) {
             StringW typedText = key->kb->keyboardText->get_text();
             if (enterPressed)
-                enterPressed(typedText);
+                enterPressed(typedText ? typedText : "");
             key->kb->keyboardText->set_text("");
         }
 
         void Keyboard::Backspace(Key* key) {
             auto text = key->kb->keyboardText->get_text();
-            int length = text->get_Length();
+            int length = text ? text->get_Length() : 0;
             if (length > 0) {
                 key->kb->keyboardText->set_text(text->Remove(length -1));
             }
