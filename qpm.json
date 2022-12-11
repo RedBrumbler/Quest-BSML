@@ -7,7 +7,11 @@
     "version": "0.2.8",
     "url": "https://github.com/RedBrumbler/Quest-BSML",
     "additionalData": {
-      "overrideSoName": "libbsml.so"
+      "soLink": "https://github.com/RedBrumbler/Quest-BSML/releases/download/v0.2.8/libbsml.so",
+      "debugSoLink": "https://github.com/RedBrumbler/Quest-BSML/releases/download/v0.2.8/debug_libbsml.so",
+      "overrideSoName": "libbsml.so",
+      "modLink": "https://github.com/RedBrumbler/Quest-BSML/releases/download/v0.2.8/BSML.qmod",
+      "branchName": "version-v0.2.8"
     }
   },
   "dependencies": [
