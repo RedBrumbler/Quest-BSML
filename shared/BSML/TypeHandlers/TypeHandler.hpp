@@ -1,6 +1,6 @@
 #pragma once
 
-#include "StringParseHelper.hpp"
+#include "../../StringParseHelper.hpp"
 #include "../ComponentTypeWithData.hpp"
 #include "../Parsing/BSMLParserParams.hpp"
 #include "UnityEngine/Component.hpp"
