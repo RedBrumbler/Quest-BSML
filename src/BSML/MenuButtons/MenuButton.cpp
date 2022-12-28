@@ -8,9 +8,8 @@ namespace BSML {
         auto self = MenuButton::New_ctor();
         self->_interactable = true;
         self->text = label;
-        if (!hoverHint.empty()) {
-            self->hoverHint = hoverHint;
-        }
+
+        self->hoverHint = hoverHint;
 
         if (onClick) {
             self->onClick = onClick;
