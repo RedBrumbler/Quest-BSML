@@ -38,32 +38,38 @@ inline uint32_t make_black_transparent(const uint32_t& v) {
 namespace BSML {
 
     custom_types::Helpers::Coroutine GifDecoder::Process(ArrayW<uint8_t> data, std::function<void(AnimationInfo*)> onFinished) {
+        co_yield custom_types::Helpers::CoroutineHelper::New(Process(data, onFinished, [](){
+            ERROR("Unhandled gif processing error ocurred!");
+        }));
+        co_return;
+    }
+
+    custom_types::Helpers::Coroutine GifDecoder::Process(ArrayW<uint8_t> data, std::function<void(AnimationInfo*)> onFinished, std::function<void()> onError) {
         auto animationInfo = new AnimationInfo();
         auto taskDelegate = MakeSystemAction(
-            [data, animationInfo]() {
-                GifDecoder::ProcessingThread(data, animationInfo);
+            [data, animationInfo, onError]() {
+                GifDecoder::ProcessingThread(data, animationInfo, onError);
             }
         );
 
         System::Threading::Tasks::Task::Run(taskDelegate);
 
-        auto waitFunc = MakeDelegate<System::Func_1<bool>*>(
-            std::function<bool()>(
-                [animationInfo]() -> bool {
-                    return animationInfo->isInitialized;
-                }
-            )
-        );
+        while (!animationInfo->isInitialized) co_yield nullptr;
 
-        co_yield reinterpret_cast<System::Collections::IEnumerator*>(UnityEngine::WaitUntil::New_ctor(waitFunc));
-        if (onFinished) 
+        if (onFinished)
             onFinished(animationInfo);
-        else 
+        else
             ERROR("Nullptr onFinished given!");
         co_return;
     }
 
     void GifDecoder::ProcessingThread(ArrayW<uint8_t> gifData, AnimationInfo* animationInfo) {
+        ProcessingThread(gifData, animationInfo, [](){
+            ERROR("Unhandled Gif Processing Error ocurred!");
+        });
+    }
+
+    void GifDecoder::ProcessingThread(ArrayW<uint8_t> gifData, AnimationInfo* animationInfo, std::function<void()> onError) {
         DEBUG("Open gif");
         try {
             auto gifReader = EasyGifReader::openMemory(gifData.begin(), gifData.size());
@@ -100,6 +106,7 @@ namespace BSML {
             }
         } catch (EasyGifReader::Error gifError) {
             ERROR("Gif error: {}", errToString(gifError));
+            if (onError) onError();
         }
     }
 }

@@ -9,6 +9,14 @@
 #include "System/Uri.hpp"
 
 namespace BSML::Utilities {
+    enum class ImageLoadError {
+        None,
+        NetworkError,
+        GetDataError,
+        GifParsingError,
+        Unknown
+    };
+
     /// @brief Finds a sprite by name.
     UnityEngine::Sprite* FindSpriteCached(StringW name);
 
@@ -75,14 +83,23 @@ namespace BSML::Utilities {
     /// @param onFinished a callback to call when the image is finished loading, if any
     void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished = nullptr);
 
+    /// @brief sets the sprite from a path, this does not yet bother with animated textures so it will only work with base textures
+    /// @param image the image to set the sprite on
+    /// @param path the path, basegame name, or URI to an image
+    /// @param loadingAnimation currently unused, but might eventually be used for a loading animation while stuff is downloading
+    /// @param scaleOptions the scale options to use, if any
+    /// @param onFinished a callback to call when the image is finished loading, if any
+    /// @param onError a callback to call when there was an error
+    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError);
+
     /// @brief function to get data at a URI, this is not blocking as it dispatches a coroutine
     /// @param uri the URI to get data from
-    /// @param onFinished what to do with the downloaded bytes
+    /// @param onFinished what to do with the downloaded bytes, passed nullptr on fail
     void DownloadData(StringW uri, std::function<void(ArrayW<uint8_t>)> onFinished = nullptr);
 
     /// @brief function to get data from the key to data cache, this is blocking due to the data being available immediately
     /// @param key the key to get the data with
-    /// @param onFinished what to do with the downloaded bytes
+    /// @param onFinished what to do with the downloaded bytes, onFinished is ran with a nullptr argument if not found
     void GetData(StringW key, std::function<void(ArrayW<uint8_t>)> onFinished = nullptr);
 
     /// @brief Function to load a sprite from a data array
@@ -140,3 +157,26 @@ namespace BSML::Utilities {
         UnityEngine::Sprite* GetWhitePixel();
     }
 }
+
+#if __has_include("fmt/core.h")
+#include <fmt/core.h>
+template <> struct fmt::formatter<::BSML::Utilities::ImageLoadError> : formatter<string_view> {
+    // parse is inherited from formatter<string_view>.
+    template <typename FormatContext>
+    auto format(::BSML::Utilities::ImageLoadError e, FormatContext& ctx) {
+        switch(e) {
+            case ::BSML::Utilities::ImageLoadError::None:
+                return formatter<string_view>::format("None", ctx);
+            case ::BSML::Utilities::ImageLoadError::NetworkError:
+                return formatter<string_view>::format("NetworkError", ctx);
+            case ::BSML::Utilities::ImageLoadError::GetDataError:
+                return formatter<string_view>::format("GetDataError", ctx);
+            case ::BSML::Utilities::ImageLoadError::GifParsingError:
+                return formatter<string_view>::format("GifParsingError", ctx);
+            default: [[fallthrough]];
+            case ::BSML::Utilities::ImageLoadError::Unknown:
+                return formatter<string_view>::format("Unknown", ctx);
+        }
+    }
+};
+#endif

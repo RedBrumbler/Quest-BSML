@@ -50,14 +50,14 @@ namespace BSML::Helpers {
         return hoverHintController.ptr();
     }
 
-    IVRPlatformHelper* platformHelper = nullptr;
+    SafePtr<IVRPlatformHelper> platformHelper;
     IVRPlatformHelper* GetIVRPlatformHelper()
     {
         if (!platformHelper)
             platformHelper = Resources::FindObjectsOfTypeAll<LevelCollectionTableView*>().First()->GetComponentInChildren<ScrollView*>()->platformHelper;
         if (!platformHelper)
             CacheNotFoundWarningLog(IVRPlatformHelper);
-        return platformHelper;
+        return platformHelper.ptr();
     }
 
     SafePtrUnity<TMP_FontAsset> mainTextFont;
