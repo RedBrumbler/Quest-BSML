@@ -21,17 +21,51 @@ namespace BSML {
         registeredAnimations = StringToAnimDataDictionary::New_ctor();
     }
 
+    bool AnimationController::Unregister(StringW key) {
+        AnimationControllerData* data;
+        if (TryGetAnimationControllerData(key, data)) { // we found it
+            if (CanUnregister(data)) { // we can unregister
+                registeredAnimations->Remove(key);
+                return true;
+            } else { // we're not allowed to unregister
+                INFO("Was not able to unregister key {} because CanUnregister returned false, are you still using this animation somewhere?", key);
+                return false;
+            }
+        } else { // not registered
+            INFO("Can't unregister key {} as it's not registered", key);
+            return false;
+        }
+    }
+
+    bool AnimationController::CanUnregister(AnimationControllerData* animationData) {
+        return animationData ? animationData->IsBeingUsed() : true;
+    }
+
+    bool AnimationController::TryGetAnimationControllerData(StringW key, AnimationControllerData*& out) {
+        union {
+            Il2CppObject* data = nullptr;
+            AnimationControllerData* animationData;
+        };
+
+        if (registeredAnimations->TryGetValue(key, byref(data))) {
+            out = animationData;
+            return true;
+        }
+        out = nullptr;
+        return false;
+    }
+
     AnimationControllerData* AnimationController::Register(StringW key, UnityEngine::Texture2D* texture, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays) {
         DEBUG("Registering {}", key);
-        Il2CppObject* animationData = nullptr;
-        if (!registeredAnimations->TryGetValue(key, byref(animationData))) {
+        AnimationControllerData* animationData;
+        if (!TryGetAnimationControllerData(key, animationData)) {
             animationData = AnimationControllerData::Make_new(texture, uvs, delays);
             registeredAnimations->Add(key, animationData);
         } else {
             INFO("key {} was already registered, destroying texture and returning", key);
             UnityEngine::Object::Destroy(texture);
         }
-        return reinterpret_cast<AnimationControllerData*>(animationData);
+        return animationData;
     }
 
     void AnimationController::InitializeLoadingAnimation() {
@@ -43,11 +77,25 @@ namespace BSML {
         auto milis = std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch());
         auto now = milis.count();
         auto enumerator = registeredAnimations->GetEnumerator();
+
+        std::set<std::string> toUnregister = {};
         while (enumerator.MoveNext()) {
-            auto current = reinterpret_cast<AnimationControllerData*>(enumerator.get_Current().get_Value());
+            auto curItr = enumerator.get_Current();
+            auto current = reinterpret_cast<AnimationControllerData*>(curItr.get_Value());
+
+            // if it's not being used, skip it and add it to the list to unregister
+            if (!current->IsBeingUsed()) {
+                toUnregister.emplace(curItr.get_Key());
+                continue;
+            }
+
             if (current->get_isPlaying()) {
                 current->CheckFrame(now);
             }
+        }
+
+        for (auto& v : toUnregister) {
+            Unregister(v);
         }
     }
 }

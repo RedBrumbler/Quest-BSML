@@ -19,6 +19,9 @@ DECLARE_CLASS_CODEGEN(BSML, AnimationController, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_METHOD(void, Update);
     
     public:
+        bool TryGetAnimationControllerData(StringW key, AnimationControllerData*& out);
+        bool Unregister(StringW key);
+        bool CanUnregister(AnimationControllerData* animationData);
         static AnimationController* get_instance();
         DECLARE_CTOR(ctor);
     protected:
