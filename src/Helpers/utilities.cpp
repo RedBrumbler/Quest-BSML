@@ -286,7 +286,7 @@ namespace BSML::Utilities {
         }
     }
 
-    void SetandLoadImageNonAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+    void SetAndLoadImageNonAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
         auto errorType = uri.first ? ImageLoadError::NetworkError : ImageLoadError::GetDataError;
         auto onDataFinished = [path, onFinished, onError, errorType, image, scaleOptions](ArrayW<uint8_t> data) {
             // somehow data was failed to be gotten
@@ -362,7 +362,7 @@ namespace BSML::Utilities {
         if (IsAnimated(path) || (isUri && IsAnimated(uri->get_LocalPath()))) {
             SetAndLoadImageAnimated(image, path, loadingAnimation, {isUri, uri}, onFinished, onError);
         } else { // not animated
-            SetandLoadImageNonAnimated(image, path, loadingAnimation, scaleOptions, {isUri, uri}, onFinished, onError);
+            SetAndLoadImageNonAnimated(image, path, loadingAnimation, scaleOptions, {isUri, uri}, onFinished, onError);
         }
     }
 
@@ -428,7 +428,7 @@ namespace BSML::Utilities {
                 }
             }
         }
-        
+
         myIter = nullptr;
         ::FieldInfo* field = nullptr;
         void* value = nullptr;
@@ -445,7 +445,7 @@ namespace BSML::Utilities {
 
         return CopyFieldsAndProperties(comp, other, klass->parent);
     }
-    
+
     /// based on https://answers.unity.com/questions/530178/how-to-get-a-component-from-an-object-and-add-it-t.html
     UnityEngine::Component* GetCopyOfComponent(UnityEngine::Component* comp, UnityEngine::Component* other) {
         auto klass = comp->klass;
@@ -470,7 +470,7 @@ namespace BSML::Utilities {
             }
             return blankSprite.ptr();
         }
-        
+
         SafePtrUnity<UnityEngine::Sprite> whitePixelSprite;
         UnityEngine::Sprite* GetWhitePixel() {
             if (!whitePixelSprite) {
