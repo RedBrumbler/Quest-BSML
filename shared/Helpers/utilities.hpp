@@ -69,6 +69,10 @@ namespace BSML::Utilities {
     /// @return downscaled sprite
     UnityEngine::Sprite* DownScaleSprite(UnityEngine::Sprite* sprite, const ScaleOptions& options);
 
+    /// @brief Removes an image from the internal cache if it exists, make sure it's not used anymore!
+    /// @param path the image to remove
+    /// @return whether the path was in the cache
+    bool RemoveImage(StringW path);
 
     /// @brief sets the sprite from a path, this does not yet bother with animated textures so it will only work with base textures
     /// @param image the image to set the sprite on

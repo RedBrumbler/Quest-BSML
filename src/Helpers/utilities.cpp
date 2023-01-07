@@ -236,6 +236,17 @@ namespace BSML::Utilities {
         return bsmlSetImageCache.ptr();
     }
 
+    bool RemoveImage(StringW path) {
+        auto cache = get_bsmlSetImageCache();
+        UnityEngine::Sprite* img = nullptr;
+        if (cache->TryGetValue(path, byref(img))) {
+            cache->Remove(path);
+            if (img && img->m_CachedPtr.m_value) UnityEngine::Object::DestroyImmediate(img);
+            return true;
+        }
+        return false;
+    }
+
     void SetAndLoadImageAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
         auto animationController = AnimationController::get_instance();
 
