@@ -263,6 +263,7 @@ namespace BSML::Utilities {
         };
         if (animationController->registeredAnimations->TryGetValue(path, byref(data))) {
             stateUpdater->set_controllerData(animationControllerData);
+            if (onFinished) onFinished();
         } else {
             bool isGif = path->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase) || (uri.first && uri.second->get_LocalPath()->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase));
             auto animType = isGif ? AnimationLoader::AnimationType::GIF : AnimationLoader::AnimationType::APNG;
