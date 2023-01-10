@@ -2,8 +2,6 @@
 
 #include "BSMLTag.hpp"
 
-using namespace UnityEngine;
-
 namespace BSML {
     class TextPageScrollViewTag : public BSMLTag {
         public:
