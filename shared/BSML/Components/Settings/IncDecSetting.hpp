@@ -3,7 +3,6 @@
 #include "custom-types/shared/macros.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "UnityEngine/UI/Button.hpp"
-#include "internal_macros.hpp"
 #include "../../GenericSettingWrapper.hpp"
 #include "BaseSetting.hpp"
 
