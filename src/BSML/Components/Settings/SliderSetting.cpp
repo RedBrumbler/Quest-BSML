@@ -60,7 +60,13 @@ namespace BSML {
         lastValue = value;
 
         if (genericSetting) {
-            genericSetting->OnChange<int>(value);
+            if (isInt) {
+                genericSetting->OnChange<int>(value);
+            } else {
+                genericSetting->OnChange<float>(value);
+            }
+
+            if (onChange) onChange(value);
             if (genericSetting->applyOnChange) ApplyValue();
         }
     }

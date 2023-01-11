@@ -24,5 +24,6 @@ DECLARE_CLASS_CUSTOM(BSML, SliderSetting, BSML::SliderSettingBase,
     public:
         static std::map<HMUI::RangeValuesTextSlider*, BSML::SliderSetting*> remappers;
 
+        std::function<void(float)> onChange = nullptr;
         std::function<StringW(float)> formatter = nullptr;
 )
