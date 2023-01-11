@@ -27,6 +27,7 @@ DECLARE_CLASS_CUSTOM(BSML, IncrementSetting, BSML::IncDecSetting,
 
     DECLARE_CTOR(ctor);
 
+    std::function<void(float)> onChange = nullptr;
     /* set a formatter if you want to give your own format to the setting */
     std::function<StringW(float)> formatter = nullptr;
 )

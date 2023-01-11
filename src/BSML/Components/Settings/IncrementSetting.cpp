@@ -48,12 +48,12 @@ namespace BSML {
         UpdateState();
 
         if (genericSetting) {
-            
             if (isInt) {
                 genericSetting->OnChange(ConvertToInt(currentValue));
             } else {
                 genericSetting->OnChange(currentValue);
             }
+            if (onChange) onChange(currentValue);
             if (genericSetting->applyOnChange) ApplyValue();
         }
         

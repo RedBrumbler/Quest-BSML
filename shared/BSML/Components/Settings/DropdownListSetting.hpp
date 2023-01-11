@@ -29,5 +29,6 @@ DECLARE_CLASS_CUSTOM(BSML, DropdownListSetting, BSML::BaseSetting,
     DECLARE_CTOR(ctor);
 
     public:
+        std::function<void(Il2CppObject*)> onChange = nullptr;
         std::function<StringW(Il2CppObject*)> formatter = nullptr;
 )
