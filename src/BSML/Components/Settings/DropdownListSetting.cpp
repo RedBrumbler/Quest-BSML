@@ -76,7 +76,9 @@ namespace BSML {
         this->index = index;
         UpdateState();
         if (genericSetting) {
-            genericSetting->OnChange(get_Value());
+            auto v = get_Value();
+            genericSetting->OnChange(v);
+            if (onChange) onChange(v);
             if (genericSetting->applyOnChange) ApplyValue();
         }
     }

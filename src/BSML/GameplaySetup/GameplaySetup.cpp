@@ -92,13 +92,13 @@ namespace BSML {
     }
 
     void GameplaySetup::GameplaySetupDidDeactivate(bool removedFromHierarchy, bool screenSystemDisabling) {
-        DEBUG("DidDeactivate");
-        tabSelector->textSegmentedControl->SelectCellWithNumber(0);
-        DEBUG("disable vanillaTab");
-        vanillaTab->get_gameObject()->SetActive(true);
-        DEBUG("disable modsTab");
-        modsTab->get_gameObject()->SetActive(false);
-        DEBUG("Done");
+        DEBUG("DidDeactivate(removedFromHierarchy: {}, screenSystemDisabling: {})", removedFromHierarchy, screenSystemDisabling);
+
+        if (!screenSystemDisabling) {
+            tabSelector->textSegmentedControl->SelectCellWithNumber(0);
+            vanillaTab->get_gameObject()->SetActive(true);
+            modsTab->get_gameObject()->SetActive(false);
+        }
     }
 
     void GameplaySetup::ClickedOffModal() {
