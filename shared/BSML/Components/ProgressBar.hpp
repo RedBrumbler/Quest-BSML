@@ -30,5 +30,5 @@ DECLARE_CLASS_CODEGEN(BSML, ProgressBar, UnityEngine::MonoBehaviour,
         void SetProgress(float progress);
         void SetProgress(float progress, bool showBar);
 
-        static ProgressBar* CreateProgressBar(UnityEngine::Transform* parent, UnityEngine::Vector3 position, UnityEngine::Vector3 scale, UnityEngine::Vector3 rotation, StringW mainText, StringW subText1 = "", StringW subText2 = "");
+        static ProgressBar* CreateProgressBar(UnityEngine::Vector3 position, UnityEngine::Vector3 scale, UnityEngine::Vector3 rotation, StringW mainText, StringW subText1 = "", StringW subText2 = "");
 )

@@ -80,8 +80,7 @@ namespace BSML {
         get_gameObject()->SetActive(showBar);
     }
 
-    ProgressBar* ProgressBar::CreateProgressBar(UnityEngine::Transform* parent, UnityEngine::Vector3 position, UnityEngine::Vector3 scale, UnityEngine::Vector3 rotation, StringW mainText, StringW subText1, StringW subText2) {
-        // todo: make this a bsml file parse? idk if that's a good idea
+    ProgressBar* ProgressBar::CreateProgressBar(UnityEngine::Vector3 position, UnityEngine::Vector3 scale, UnityEngine::Vector3 rotation, StringW mainText, StringW subText1, StringW subText2) {
         auto bar = UnityEngine::GameObject::New_ctor("LoadingStatus")->AddComponent<ProgressBar*>();
         auto barGameObject = bar->get_gameObject();
         auto barObjectTransform = bar->get_transform();
