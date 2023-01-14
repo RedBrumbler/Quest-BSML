@@ -1,4 +1,5 @@
 #include "BSML/FlowCoordinators/MainMenuHolderFlowCoordinator.hpp"
+#include "BSML.hpp"
 
 #include "custom-types/shared/delegate.hpp"
 #include "logging.hpp"
@@ -66,8 +67,9 @@ namespace BSML {
         csType(csType),
         setupFunc(nullptr),
         registrationType(registrationType),
-        viewController(nullptr)
-    {}
+        viewController(nullptr) {
+        BSML::Events::onGameDidRestart += {&MainMenuRegistration::OnGameDidRestart, this};
+    }
 
     MainMenuRegistration::MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const std::function<void(HMUI::ViewController*, bool, bool, bool)> setupFunc) :
         title(title),
@@ -76,8 +78,21 @@ namespace BSML {
         csType(csTypeOf(HMUI::ViewController*)),
         setupFunc(setupFunc),
         registrationType(RegistrationType::Method),
-        viewController(nullptr)
-    {}
+        viewController(nullptr) {
+        BSML::Events::onGameDidRestart += {&MainMenuRegistration::OnGameDidRestart, this};
+    }
+
+    MainMenuRegistration::~MainMenuRegistration() {
+        BSML::Events::onGameDidRestart -= {&MainMenuRegistration::OnGameDidRestart, this};
+    }
+
+    void MainMenuRegistration::OnGameDidRestart() {
+        if (viewController && viewController->m_CachedPtr.m_value) {
+            UnityEngine::Object::DestroyImmediate(viewController);
+        }
+
+        viewController = nullptr;
+    }
 
     void MainMenuRegistration::Present() {
         auto presentOn = BSML::Helpers::GetMainFlowCoordinator()->YoungestChildFlowCoordinatorOrSelf();

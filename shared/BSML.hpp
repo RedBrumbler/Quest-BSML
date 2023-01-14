@@ -10,7 +10,6 @@
 #include <functional>
 
 namespace BSML {
-
     /// @brief Intialize BSML for it's hooks
     void Init();
 
@@ -124,5 +123,10 @@ namespace BSML {
         inline void RegisterMainMenu(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, T viewControllerDidActivate = nullptr) {
             return RegisterMainMenuViewControllerMethod(title, buttonText, hoverhint, viewControllerDidActivate);
         }
+    }
+
+    namespace Events {
+        /// @brief Event that gets invoked right before MenuTransitionsHelper::RestartGame ( Game Restart )
+        extern UnorderedEventCallback<> onGameDidRestart;
     }
 }

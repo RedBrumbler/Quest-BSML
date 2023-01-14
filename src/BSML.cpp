@@ -80,4 +80,8 @@ namespace BSML {
             RegisterMenuButton(reg->buttonText, reg->hoverHint, std::bind(&MainMenuRegistration::Present, reg));
         }
     }
+
+    namespace Events {
+        UnorderedEventCallback<> onGameDidRestart;
+    }
 }

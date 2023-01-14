@@ -21,6 +21,7 @@ namespace BSML {
 
             MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const System::Type* csType, const RegistrationType registrationType);
             MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const std::function<void(HMUI::ViewController*, bool, bool, bool)> setupFunc);
+            ~MainMenuRegistration();
 
             void Present();
 
@@ -40,6 +41,7 @@ namespace BSML {
             friend class MainMenuHolderFlowCoordinator;
             friend void ::BSML::Register::AddMainMenuRegistration(MainMenuRegistration* reg);
 
+            void OnGameDidRestart();
             void PresentWithFlowCoordinator(HMUI::FlowCoordinator* presentOn);
             void PresentWithViewController(HMUI::FlowCoordinator* presentOn);
             void PresentWithMethod(HMUI::FlowCoordinator* presentOn);
