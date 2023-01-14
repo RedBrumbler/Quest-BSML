@@ -1,20 +1,24 @@
 #pragma once
 
 #include "UnityEngine/Transform.hpp"
+#include "HMUI/ViewController.hpp"
+#include "HMUI/FlowCoordinator.hpp"
 #include "BSML/Parsing/BSMLParser.hpp"
 #include "BSML/MenuButtons/MenuButton.hpp"
 #include "BSML/GameplaySetup/MenuType.hpp"
 
+#include <functional>
+
 namespace BSML {
-    
-    /// @brief Intialize BSML for it's hooks 
+
+    /// @brief Intialize BSML for it's hooks
     void Init();
-    
-    /// @brief parse a string containing a BSML doc 
+
+    /// @brief parse a string containing a BSML doc
     /// @return BSMLNode pointer to parsed hierarchy
     std::shared_ptr<BSMLParser> parse(std::string_view str);
 
-    /// @brief parse a string containing a BSML doc 
+    /// @brief parse a string containing a BSML doc
     /// @param str the string to parse
     /// @param parent what to parent to
     /// @param host the host object, this would contain the various fields and properties your bsml expects to be able to access
@@ -29,12 +33,12 @@ namespace BSML {
         /// @param onClick what to run when you click the button
         /// @return the created MenuButton*, or nullptr if it failed
         MenuButton* RegisterMenuButton(std::string_view text, std::string_view hoverHint = "", std::function<void(void)> onClick = nullptr);
-    
+
         /// @brief register a menu button for the left main menu
         /// @param button the button to register
         /// @return true if successful, false if failed
         bool RegisterMenuButton(MenuButton* button);
-    
+
         /// @brief unregister a menu button for the left main menu
         /// @param button the button to unregister
         /// @return true if successful, false if failed
@@ -67,5 +71,58 @@ namespace BSML {
         /// @param name the name of the tab to remove
         /// @return true if successful, false if failed
         bool UnRegisterGameplaySetupTab(std::string_view name);
+
+        /// @brief Registers a main menu button that opens a flow coordinator
+        /// @param buttonText the text of the button
+        /// @param hoverhint the hover hint of the button
+        /// @param flowCoordinatorType csType of the flow coordinator
+        void RegisterMainMenuFlowCoordinator(const std::string_view& buttonText, const std::string_view& hoverhint, System::Type* flowCoordinatorType);
+
+        /// @brief Registers a main menu button that opens a view controller
+        /// @param title the title displayed above the view controller
+        /// @param buttonText the text of the button
+        /// @param hoverhint the hover hint of the button
+        /// @param viewControllerType csType of the flow coordinator
+        void RegisterMainMenuViewController(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, System::Type* viewControllerType);
+
+        /// @brief Registers a main menu button that opens a view controller
+        /// @param title the title displayed above the view controller
+        /// @param buttonText the text of the button
+        /// @param hoverhint the hover hint of the button
+        /// @param viewControllerDidActivate callback ran when the view controller you want to create is opened
+        void RegisterMainMenuViewControllerMethod(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate);
+
+        /// @brief Register a view controller type to be displayed when clicking a main menu button
+        /// @tparam T the type of the view controller
+        /// @param title the title to be displayed above the view controller
+        /// @param buttonText the button text
+        /// @param hoverhint the hoverhint for the button
+        template<typename T>
+        requires(std::is_convertible_v<T, HMUI::ViewController*>)
+        inline void RegisterMainMenu(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint) {
+            return RegisterMainMenuViewController(title, buttonText, hoverhint, csTypeOf(T));
+        }
+
+        /// @brief Register a flow coordinator type to be displayed when clicking a main menu button
+        /// @tparam T the type of the flow coordinator
+        /// @param buttonText the button text
+        /// @param hoverhint the hoverhint for the button
+        template<typename T>
+        requires(std::is_convertible_v<T, HMUI::FlowCoordinator*>)
+        inline void RegisterMainMenu(const std::string_view& buttonText, const std::string_view& hoverhint) {
+            return RegisterMainMenuFlowCoordinator(buttonText, hoverhint, csTypeOf(T));
+        }
+
+        /// @brief Register a callback to run on a view controller when clicking a main menu button
+        /// @tparam T your method type
+        /// @param title the title to be displayed above the view controller
+        /// @param buttonText the button text
+        /// @param hoverhint the hoverhint for the button
+        /// @param viewControllerDidActivate the callback to execute
+        template<typename T>
+        requires(std::is_constructible_v<std::function<void(HMUI::ViewController*, bool, bool, bool)>, T>)
+        inline void RegisterMainMenu(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, T viewControllerDidActivate = nullptr) {
+            return RegisterMainMenuViewControllerMethod(title, buttonText, hoverhint, viewControllerDidActivate);
+        }
     }
 }
