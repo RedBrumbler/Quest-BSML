@@ -137,7 +137,7 @@ namespace BSML {
         /// @param hoverhint the hoverhint for the button
         template<typename T>
         requires(std::is_convertible_v<T, HMUI::ViewController*>)
-        inline void RegisterMainMenu(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint) {
+        static inline void RegisterMainMenu(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint) {
             return RegisterMainMenuViewController(title, buttonText, hoverhint, csTypeOf(T));
         }
 
@@ -147,7 +147,7 @@ namespace BSML {
         /// @param hoverhint the hoverhint for the button
         template<typename T>
         requires(std::is_convertible_v<T, HMUI::FlowCoordinator*>)
-        inline void RegisterMainMenu(const std::string_view& buttonText, const std::string_view& hoverhint) {
+        static inline void RegisterMainMenu(const std::string_view& buttonText, const std::string_view& hoverhint) {
             return RegisterMainMenuFlowCoordinator(buttonText, hoverhint, csTypeOf(T));
         }
 
@@ -159,7 +159,7 @@ namespace BSML {
         /// @param viewControllerDidActivate the callback to execute
         template<typename T>
         requires(std::is_constructible_v<std::function<void(HMUI::ViewController*, bool, bool, bool)>, T>)
-        inline void RegisterMainMenu(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, T viewControllerDidActivate = nullptr) {
+        static inline void RegisterMainMenu(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, T viewControllerDidActivate = nullptr) {
             return RegisterMainMenuViewControllerMethod(title, buttonText, hoverhint, viewControllerDidActivate);
         }
     }
