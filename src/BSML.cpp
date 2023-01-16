@@ -43,7 +43,19 @@ namespace BSML {
 
         bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons) {
             Init();
-            return BSMLSettings::get_instance()->AddSettingsMenu(name, content_key, host, enableExtraButtons);
+            return BSMLSettings::get_instance()->TryAddSettingsMenu(name, content_key, host, enableExtraButtons);
+        }
+
+        bool RegisterSettingsMenu(std::string_view name, System::Type* csType, MenuSource menuSource, bool enableExtraButtons) {
+            Init();
+            if (menuSource != BSML::MenuSource::ViewController && menuSource != BSML::MenuSource::FlowCoordinator)
+                throw std::runtime_error("Menu Source was not view controller or flow coordinator!");
+            return BSMLSettings::get_instance()->TryAddSettingsMenu(csType, name, menuSource, enableExtraButtons);
+        }
+
+        bool RegisterSettingsMenu(std::string_view name, std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate, bool enableExtraButtons) {
+            Init();
+            return BSMLSettings::get_instance()->TryAddSettingsMenu(viewControllerDidActivate, name, enableExtraButtons);
         }
 
         bool UnRegisterSettingsMenu(Il2CppObject* host) {
@@ -62,18 +74,22 @@ namespace BSML {
         }
 
         void RegisterMainMenuFlowCoordinator(const std::string_view& buttonText, const std::string_view& hoverhint, System::Type* flowCoordinatorType) {
+            Init();
             AddMainMenuRegistration(new MainMenuRegistration("", buttonText, hoverhint, flowCoordinatorType, MainMenuRegistration::RegistrationType::FlowCoordinator));
         }
 
         void RegisterMainMenuViewController(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, System::Type* viewControllerType) {
+            Init();
             AddMainMenuRegistration(new MainMenuRegistration(title, buttonText, hoverhint, viewControllerType, MainMenuRegistration::RegistrationType::ViewController));
         }
 
         void RegisterMainMenuViewControllerMethod(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate) {
+            Init();
             AddMainMenuRegistration(new MainMenuRegistration(title, buttonText, hoverhint, viewControllerDidActivate));
         }
 
         void AddMainMenuRegistration(MainMenuRegistration* reg) {
+            Init();
             DEBUG("Registering {}", reg->buttonText);
 
             MainMenuRegistration::registrations.emplace_back(reg);

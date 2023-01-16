@@ -67,27 +67,60 @@ namespace BSML {
         isInitialized = true;
     }
 
-    bool BSMLSettings::AddSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons) {
+    void BSMLSettings::TryAddBSMLMenu() {
         auto menus = get_settingsMenus();
-        // if we find the same entry, early return
-        if (std::find_if(menus.begin(), menus.end(), [&name](auto x){ return x->text == name;}) != menus.end()) {
-            return false;
-        }
-
         if (menus.size() == 0) {
             // add bsml about
             menus->Add(SettingsMenu::Make_new("BSML", MOD_ID "_settings_about", this, false));
         }
+    }
 
-        auto menu = SettingsMenu::Make_new(name, content_key, host, enableExtraButtons);
+    bool BSMLSettings::TryAddSettingsMenu(SettingsMenu* menu) {
+        auto menus = get_settingsMenus();
+        // if we find the same menu, return false
+        if (std::find_if(menus.begin(), menus.end(), [&menu](auto x){ return x->text == menu->name;}) != menus.end()) {
+            return false;
+        }
+
+        // this one didn't exist yet, so check if we should add the bsml menu (first)
+        TryAddBSMLMenu();
+
         menus->Add(menu);
         if (isInitialized) {
+            // per definition this is a new menu, so we can run setup if we're already initialized
             menu->Setup();
         }
+
         if (button && button->m_CachedPtr.m_value) {
             button->get_gameObject()->SetActive(true);
         }
+        return true;
+    }
 
+    bool BSMLSettings::TryAddSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons) {
+        auto menu = SettingsMenu::Make_new(name, content_key, host, enableExtraButtons);
+        if (!TryAddSettingsMenu(menu)) {
+            menu->Finalize();
+            return false;
+        }
+        return true;
+    }
+
+    bool BSMLSettings::TryAddSettingsMenu(System::Type* csType, std::string_view name, MenuSource menuType, bool showExtraButtons) {
+        auto menu = SettingsMenu::Make_new(name, csType, menuType, showExtraButtons);
+        if (!TryAddSettingsMenu(menu)) {
+            menu->Finalize();
+            return false;
+        }
+        return true;
+    }
+
+    bool BSMLSettings::TryAddSettingsMenu(std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate, std::string_view name, bool showExtraButtons) {
+        auto menu = SettingsMenu::Make_new(name, viewControllerDidActivate, showExtraButtons);
+        if (!TryAddSettingsMenu(menu)) {
+            menu->Finalize();
+            return false;
+        }
         return true;
     }
 

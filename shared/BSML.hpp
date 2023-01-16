@@ -7,6 +7,8 @@
 #include "BSML/MenuButtons/MenuButton.hpp"
 #include "BSML/GameplaySetup/MenuType.hpp"
 
+#include <memory>
+#include <string>
 #include <functional>
 
 namespace BSML {
@@ -51,6 +53,43 @@ namespace BSML {
         /// @param enableExtraButtons whether to enable the extra ok / cancel buttons
         /// @return true if successful, false if failed
         bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons = false);
+
+        /// @brief register a menu for the settings menu
+        /// @param csType the type of your view controller, keep in mind this should inherit HMUI::ViewController*
+        /// @param name the name displayed for your settings
+        /// @param menuType what kind of source is used for the menu content
+        /// @param enableExtraButtons whether to enable the extra ok / cancel buttons
+        /// @throw throws if menuType is anything other than ViewController or FlowCoordinator
+        /// @return true if successful, false if failed
+        bool RegisterSettingsMenu(std::string_view name, System::Type* csType, MenuSource menuSource, bool enableExtraButtons = false);
+
+        /// @brief register a menu for the settings menu
+        /// @tparam T the type of your view controller, keep in mind this should inherit HMUI::ViewController*
+        /// @param name the name displayed for your settings
+        /// @param enableExtraButtons whether to enable the extra ok / cancel buttons
+        /// @return true if successful, false if failed
+        template<typename T>
+        requires(std::is_convertible_v<T, HMUI::ViewController*>)
+        static inline bool RegisterSettingsMenu(std::string_view name, bool enableExtraButtons = false) {
+            return RegisterSettingsMenu(name, csTypeOf(T), MenuSource::ViewController, enableExtraButtons);
+        }
+
+        /// @brief register a menu for the settings menu
+        /// @tparam T the type of your flowCoordinator, keep in mind this should inherit HMUI::FlowCoordinator*
+        /// @param name the name displayed for your settings
+        /// @return true if successful, false if failed
+        template<typename T>
+        requires(std::is_convertible_v<T, HMUI::FlowCoordinator*>)
+        static inline bool RegisterSettingsMenu(std::string_view name) {
+            return RegisterSettingsMenu(name, csTypeOf(T), MenuSource::FlowCoordinator, false);
+        }
+
+        /// @brief register a menu for the settings menu
+        /// @param name the name displayed for your settings
+        /// @param viewControllerDidActivate callback ran when the view controller you want to create is opened
+        /// @param enableExtraButtons whether to enable the extra ok / cancel buttons
+        /// @return true if successful, false if failed
+        bool RegisterSettingsMenu(std::string_view name, std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate, bool enableExtraButtons);
 
         /// @brief remove a menu from the settings menu
         /// @param host the host object used when registering your menu

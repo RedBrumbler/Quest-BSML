@@ -57,7 +57,8 @@ namespace BSML {
     void ModSettingsFlowCoordinator::OpenMenu(SettingsMenu* menu) {
         if (!menu->get_didSetup()) {
             menu->Setup();
-            menu->parserParams->AddEvent("back", std::bind(&ModSettingsFlowCoordinator::Back, this));
+            if (menu->menuSource == MenuSource::BSMLContent)
+                menu->parserParams->AddEvent("back", std::bind(&ModSettingsFlowCoordinator::Back, this));
         }
 
         if (bottomButtons && bottomButtons->m_CachedPtr.m_value) {
@@ -67,13 +68,17 @@ namespace BSML {
             }
         }
 
-        OpenMenu(menu->get_viewController(), false, false);
+        if (menu->menuSource == MenuSource::FlowCoordinator) {
+            settingsMenuListViewController->list->tableView->SelectCellWithIdx(0, true);
+            PresentFlowCoordinator(menu->flowCoordinator, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, false, false);
+        } else {
+            OpenMenu(menu->get_viewController(), false, false);
+        }
     }
 
     void ModSettingsFlowCoordinator::OpenMenu(HMUI::ViewController* viewController, bool isSubmenu, bool isBack) {
         if (isPresenting) return;
-        if (!isBack)
-        {
+        if (!isBack) {
             if (isSubmenu)
                 submenuStack->Push(activeController);
             else

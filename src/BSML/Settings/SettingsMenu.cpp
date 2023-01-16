@@ -8,16 +8,18 @@
 
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Vector2.hpp"
+#include "HMUI/ViewController_DidActivateDelegate.hpp"
+#include "custom-types/shared/delegate.hpp"
 
 DEFINE_TYPE(BSML, SettingsMenu);
 
 namespace BSML {
     bool SettingsMenu::get_didSetup() {
-        return viewController && viewController->m_CachedPtr.m_value;
+        return viewController && viewController->m_CachedPtr.m_value || flowCoordinator && flowCoordinator->m_CachedPtr.m_value;
     }
 
     HMUI::ViewController* SettingsMenu::get_viewController() {
-        if (!viewController || !viewController->m_CachedPtr.m_value) {
+        if (!get_didSetup()) {
             Setup();
         }
         return viewController;
@@ -25,10 +27,25 @@ namespace BSML {
 
     void SettingsMenu::Setup() {
         DEBUG("Setup");
-        viewController = Helpers::CreateViewController<HMUI::ViewController*>();
-        SetupViewControllerTransform(viewController);
-        auto parser = parse_and_construct(get_content(), viewController->get_transform(), host);
-        parserParams = parser->parserParams;
+        switch (menuSource) {
+            case MenuSource::BSMLContent:
+                viewController = Helpers::CreateViewController<HMUI::ViewController*>();
+                SetupViewControllerTransform(viewController);
+                parserParams = parse_and_construct(get_content(), viewController->get_transform(), host)->parserParams;
+                break;
+            case MenuSource::FlowCoordinator:
+                flowCoordinator = Helpers::CreateFlowCoordinator(csType);
+                break;
+            case MenuSource::ViewController:
+                viewController = Helpers::CreateViewController(csType);
+                SetupViewControllerTransform(viewController);
+                break;
+            case MenuSource::Method:
+                viewController = Helpers::CreateViewController<HMUI::ViewController*>();
+                SetupViewControllerTransform(viewController);
+                viewController->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(viewController, viewControllerDidActivate));
+                break;
+        }
     }
 
     std::string_view SettingsMenu::get_content() {
@@ -40,7 +57,7 @@ namespace BSML {
         auto data = entry->get_data();
         return std::string_view(reinterpret_cast<char*>(data.begin()), size_t(data.size()));
     }
-    
+
     void SettingsMenu::SetupViewControllerTransform(HMUI::ViewController* viewController) {
         auto r = viewController->get_rectTransform();
         r->set_sizeDelta({110, 0});
@@ -56,7 +73,33 @@ namespace BSML {
         self->enableExtraButtons = enableExtraButtons;
         self->content_key = content;
         self->host = host;
+        self->menuSource = MenuSource::BSMLContent;
 
         return self;
     }
+
+    SettingsMenu* SettingsMenu::Make_new(std::string_view name, System::Type* csType, MenuSource menuSource, bool enableExtraButtons) {
+        auto self = SettingsMenu::New_ctor();
+
+        self->text = name;
+        self->name = name;
+        self->enableExtraButtons = enableExtraButtons;
+        self->csType = csType;
+        self->menuSource = menuSource;
+
+        return self;
+    }
+
+    SettingsMenu* SettingsMenu::Make_new(std::string_view name, std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate, bool enableExtraButtons) {
+        auto self = SettingsMenu::New_ctor();
+
+        self->text = name;
+        self->name = name;
+        self->enableExtraButtons = enableExtraButtons;
+        self->viewControllerDidActivate = viewControllerDidActivate;
+        self->menuSource = MenuSource::Method;
+
+        return self;
+    }
+
 }
