@@ -39,7 +39,7 @@ namespace BSML {
         self->name = name;
         self->menuType = menuType;
         self->didActivate = didActivate;
-        self->menuSource = MenuSource::Component;
+        self->menuSource = MenuSource::Method;
 
         return self;
     }
