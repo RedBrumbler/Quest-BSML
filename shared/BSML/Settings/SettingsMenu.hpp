@@ -5,7 +5,7 @@
 #include "HMUI/ViewController.hpp"
 #include "../Components/CustomListTableData.hpp"
 #include "../Parsing/BSMLParserParams.hpp"
-#include "MenuSource.hpp"
+#include "../MenuSource.hpp"
 
 DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo,
     public:

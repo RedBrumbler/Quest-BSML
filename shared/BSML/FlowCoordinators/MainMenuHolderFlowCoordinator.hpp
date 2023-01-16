@@ -4,6 +4,7 @@
 #include "custom-types/shared/coroutine.hpp"
 #include "HMUI/FlowCoordinator.hpp"
 #include "HMUI/ViewController.hpp"
+#include "../MenuSource.hpp"
 
 namespace BSML {
     class MainMenuRegistration;
@@ -13,13 +14,7 @@ namespace BSML {
 
     class MainMenuRegistration {
         public:
-            enum class RegistrationType {
-                FlowCoordinator,
-                ViewController,
-                Method
-            };
-
-            MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const System::Type* csType, const RegistrationType registrationType);
+            MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const System::Type* csType, const MenuSource registrationType);
             MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const std::function<void(HMUI::ViewController*, bool, bool, bool)> setupFunc);
             ~MainMenuRegistration();
 
@@ -34,7 +29,7 @@ namespace BSML {
             };
             const System::Type* csType;
             const std::function<void(HMUI::ViewController*, bool, bool, bool)> setupFunc;
-            const RegistrationType registrationType;
+            const MenuSource registrationType;
 
             static MainMenuRegistration* get_registration(const std::string_view& buttonText);
         private:

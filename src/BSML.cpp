@@ -75,12 +75,12 @@ namespace BSML {
 
         void RegisterMainMenuFlowCoordinator(const std::string_view& buttonText, const std::string_view& hoverhint, System::Type* flowCoordinatorType) {
             Init();
-            AddMainMenuRegistration(new MainMenuRegistration("", buttonText, hoverhint, flowCoordinatorType, MainMenuRegistration::RegistrationType::FlowCoordinator));
+            AddMainMenuRegistration(new MainMenuRegistration("", buttonText, hoverhint, flowCoordinatorType, MenuSource::FlowCoordinator));
         }
 
         void RegisterMainMenuViewController(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, System::Type* viewControllerType) {
             Init();
-            AddMainMenuRegistration(new MainMenuRegistration(title, buttonText, hoverhint, viewControllerType, MainMenuRegistration::RegistrationType::ViewController));
+            AddMainMenuRegistration(new MainMenuRegistration(title, buttonText, hoverhint, viewControllerType, MenuSource::ViewController));
         }
 
         void RegisterMainMenuViewControllerMethod(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate) {

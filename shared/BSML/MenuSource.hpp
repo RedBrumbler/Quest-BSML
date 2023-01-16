@@ -6,7 +6,8 @@ namespace BSML {
         BSMLContent,
         FlowCoordinator,
         ViewController,
-        Method
+        Method,
+        Component,
     };
 }
 

@@ -60,7 +60,7 @@ namespace BSML {
         return nullptr;
     }
 
-    MainMenuRegistration::MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const System::Type* csType, const RegistrationType registrationType) :
+    MainMenuRegistration::MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const System::Type* csType, const MenuSource registrationType) :
         title(title),
         buttonText(buttonText),
         hoverHint(hoverHint),
@@ -77,7 +77,7 @@ namespace BSML {
         hoverHint(hoverHint),
         csType(csTypeOf(HMUI::ViewController*)),
         setupFunc(setupFunc),
-        registrationType(RegistrationType::Method),
+        registrationType(MenuSource::Method),
         viewController(nullptr) {
         BSML::Events::onGameDidRestart += {&MainMenuRegistration::OnGameDidRestart, this};
     }
@@ -97,15 +97,19 @@ namespace BSML {
     void MainMenuRegistration::Present() {
         auto presentOn = BSML::Helpers::GetMainFlowCoordinator()->YoungestChildFlowCoordinatorOrSelf();
         switch (registrationType) {
-            case RegistrationType::FlowCoordinator:
+            case MenuSource::FlowCoordinator:
                 PresentWithFlowCoordinator(presentOn);
                 break;
-            case RegistrationType::ViewController:
+            case MenuSource::ViewController:
                 PresentWithViewController(presentOn);
                 break;
-            case RegistrationType::Method:
+            case MenuSource::Method:
                 PresentWithMethod(presentOn);
                 break;
+            case MenuSource::BSMLContent: [[fallthrough]];
+            case MenuSource::Component:
+                // TODO: should this be supported somehow?
+                throw std::runtime_error("Invalid menu source in main menu registration!");
         }
     }
 

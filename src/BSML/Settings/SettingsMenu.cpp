@@ -45,6 +45,8 @@ namespace BSML {
                 SetupViewControllerTransform(viewController);
                 viewController->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(viewController, viewControllerDidActivate));
                 break;
+            case MenuSource::Component:
+                throw std::runtime_error("Invalid menusource passed to settings menu!");
         }
     }
 

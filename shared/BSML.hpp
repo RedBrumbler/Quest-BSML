@@ -6,6 +6,7 @@
 #include "BSML/Parsing/BSMLParser.hpp"
 #include "BSML/MenuButtons/MenuButton.hpp"
 #include "BSML/GameplaySetup/MenuType.hpp"
+#include "BSML/MenuSource.hpp"
 
 #include <memory>
 #include <string>
@@ -104,6 +105,30 @@ namespace BSML {
         /// @param menuType where your tab should be displayed. Default is All
         /// @return true if successful, false if failed
         bool RegisterGameplaySetupTab(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType = MenuType::All);
+
+        /// @brief register a tab for the gameplay setup menu
+        /// @param csType C# type of your component you want to register, should inherit MonoBehaviour!
+        /// @param name the name to display
+        /// @param menuType where your tab should be displayed. Default is All
+        /// @return true if successful, false if failed
+        bool RegisterGameplaySetupTab(System::Type* csType, std::string_view name, MenuType menuType = MenuType::All);
+
+        /// @brief concept to ensure the passed type has a void DidActivate(bool)
+        template<typename T>
+        concept WithDidActivate = requires(T a) {
+            { a->DidActivate(false) } -> std::same_as<void>;
+        };
+
+        /// @brief register a tab for the gameplay setup menu
+        /// @param csType C# type of your component you want to register
+        /// @param name the name to display
+        /// @param menuType where your tab should be displayed. Default is All
+        /// @return true if successful, false if failed
+        template<WithDidActivate T>
+        requires(std::is_convertible_v<T, UnityEngine::MonoBehaviour*>)
+        static inline bool RegisterGameplaySetupTab(std::string_view name, MenuType menuType = MenuType::All) {
+            return RegisterGameplaySetupTab(csTypeOf(T), name, menuType);
+        }
 
         /// @brief remove a tab from the settings menu
         /// @param name the name of the tab to remove
