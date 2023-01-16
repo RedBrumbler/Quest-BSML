@@ -68,6 +68,16 @@ namespace BSML {
             return BSML::GameplaySetup::get_instance()->AddTab(name, content_key, host, menuType);
         }
 
+        bool RegisterGameplaySetupTab(System::Type* csType, std::string_view name, MenuType menuType) {
+            Init();
+            return BSML::GameplaySetup::get_instance()->AddTab(csType, name, menuType);
+        }
+
+        bool RegisterGameplaySetupTab(std::string_view name, std::function<void(UnityEngine::GameObject*, bool)> didActivate, MenuType menuType) {
+            Init();
+            return BSML::GameplaySetup::get_instance()->AddTab(didActivate, name, menuType);
+        }
+
         bool UnRegisterGameplaySetupTab(std::string_view name) {
             Init();
             return BSML::GameplaySetup::get_instance()->RemoveTab(name);

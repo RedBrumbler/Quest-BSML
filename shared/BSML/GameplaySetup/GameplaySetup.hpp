@@ -48,6 +48,8 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, Il2CppObject, classof(HMUI
     DECLARE_DEFAULT_CTOR();
     public:
         bool AddTab(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType = MenuType::All);
+        bool AddTab(System::Type* csType, std::string_view name, MenuType menuType = MenuType::All);
+        bool AddTab(std::function<void(UnityEngine::GameObject*, bool)> didActivate, std::string_view name, MenuType menuType = MenuType::All);
         void SetTabVisibility(std::string_view name, bool isVisible);
         bool RemoveTab(std::string_view name);
 
