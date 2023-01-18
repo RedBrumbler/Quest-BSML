@@ -384,7 +384,7 @@ namespace BSML::Utilities {
         if (IsAnimated(path) || (isUri && IsAnimated(uri->get_LocalPath()))) {
             SetAndLoadImageAnimated(image, path, loadingAnimation, {isUri, uri}, onFinished, onError);
         } else { // not animated
-            SetAndLoadImageNonAnimated(image, path, loadingAnimation, scaleOptions, {isUri, uri}, cached, onFinished, onError);
+            SetAndLoadImageNonAnimated(image, path, loadingAnimation, scaleOptions, cached, {isUri, uri}, onFinished, onError);
         }
     }
 
