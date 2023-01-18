@@ -217,15 +217,21 @@ namespace BSML::Utilities {
                 str->EndsWith("_apng", System::StringComparison::OrdinalIgnoreCase);
     }
 
+    void DefaultImageLoadErrorHandler(ImageLoadError err) {
+        if (err != ImageLoadError::None)
+            ERROR("Unhandled Load Image error {}, Use the SetImage method that takes an error handler to handle it correctly!", err);
+    }
+
     void SetImage(UnityEngine::UI::Image* image, StringW path) {
-        SetImage(image, path, true, ScaleOptions());
+        SetImage(image, path, true, ScaleOptions(), true, nullptr, DefaultImageLoadErrorHandler);
+    }
+
+    void SetImage(UnityEngine::UI::Image* image, StringW path, bool cached) {
+        SetImage(image, path, true, ScaleOptions(), cached, nullptr, DefaultImageLoadErrorHandler);
     }
 
     void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished) {
-        SetImage(image, path, loadingAnimation, scaleOptions, onFinished, [](auto err){
-            if (err != ImageLoadError::None)
-                ERROR("Unhandled Load Image error {}, Use the SetImage method that takes an error handler to handle it correctly!", err);
-        });
+        SetImage(image, path, loadingAnimation, scaleOptions, true, onFinished, DefaultImageLoadErrorHandler);
     }
 
     Dictionary<StringW, UnityEngine::Sprite*>* get_bsmlSetImageCache() {
@@ -298,9 +304,9 @@ namespace BSML::Utilities {
         }
     }
 
-    void SetAndLoadImageNonAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+    void SetAndLoadImageNonAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
         auto errorType = uri.first ? ImageLoadError::NetworkError : ImageLoadError::GetDataError;
-        auto onDataFinished = [path, onFinished, onError, errorType, image, scaleOptions](ArrayW<uint8_t> data) {
+        auto onDataFinished = [path, onFinished, onError, errorType, image, scaleOptions, cached](ArrayW<uint8_t> data) {
             // somehow data was failed to be gotten
             if (!data) {
                 if (onError) onError(errorType);
@@ -319,7 +325,7 @@ namespace BSML::Utilities {
                 auto sprite = LoadSpriteFromTexture(texture);
                 sprite->get_texture()->set_wrapMode(TextureWrapMode::Clamp);
                 image->set_sprite(sprite);
-                get_bsmlSetImageCache()->Add(path, sprite);
+                if (cached) get_bsmlSetImageCache()->Add(path, sprite);
             }
 
             if (onFinished)
@@ -335,7 +341,11 @@ namespace BSML::Utilities {
     }
 
     void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
-        if (!image) {
+        SetImage(image, path, loadingAnimation, scaleOptions, true, onFinished, onError);
+    }
+
+    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+                if (!image) {
             ERROR("Can't set null image!");
             return;
         }
@@ -374,7 +384,7 @@ namespace BSML::Utilities {
         if (IsAnimated(path) || (isUri && IsAnimated(uri->get_LocalPath()))) {
             SetAndLoadImageAnimated(image, path, loadingAnimation, {isUri, uri}, onFinished, onError);
         } else { // not animated
-            SetAndLoadImageNonAnimated(image, path, loadingAnimation, scaleOptions, {isUri, uri}, onFinished, onError);
+            SetAndLoadImageNonAnimated(image, path, loadingAnimation, scaleOptions, {isUri, uri}, cached, onFinished, onError);
         }
     }
 
