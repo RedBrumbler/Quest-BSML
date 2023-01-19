@@ -1,4 +1,5 @@
 #include "BSML/Animations/AnimationControllerData.hpp"
+#include "logging.hpp"
 
 #include "Helpers/utilities.hpp"
 
@@ -8,10 +9,11 @@
 
 DEFINE_TYPE(BSML, AnimationControllerData);
 
-
 namespace BSML {
     AnimationControllerData* AnimationControllerData::Make_new(UnityEngine::Texture2D* tex, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays) {
         auto self = AnimationControllerData::New_ctor();
+        self->animationStateUpdaters = {};
+
         self->_isPlaying = true;
         self->isDelayConsistent = true;
         auto time = std::chrono::system_clock::now();
@@ -56,6 +58,15 @@ namespace BSML {
         return self;
     }
 
+    void AnimationControllerData::dtor() {
+        if (sprite && sprite->m_CachedPtr.m_value) {
+            UnityEngine::Object::DestroyImmediate(sprite->get_texture());
+            UnityEngine::Object::DestroyImmediate(sprite);
+        }
+
+        Finalize();
+    }
+
     ListWrapper<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {
         if (!activeImages) {
             activeImages = List<UnityEngine::UI::Image*>::New_ctor();
@@ -88,5 +99,32 @@ namespace BSML {
         for (auto image : get_activeImages()) {
             image->set_sprite(sprites[uvIndex]);
         }
+    }
+
+    bool AnimationControllerData::IsBeingUsed() {
+        return !animationStateUpdaters.empty(); // if no anim updaters exist with this data, it's not being used
+    }
+
+    bool AnimationControllerData::Add(AnimationStateUpdater* animationStateUpdater) {
+        auto itr = animationStateUpdaters.find(animationStateUpdater);
+        if (itr == animationStateUpdaters.end()) {
+            animationStateUpdaters.emplace(animationStateUpdater);
+            return true;
+        } else {
+            ERROR("Trying to register {} twice!", fmt::ptr(animationStateUpdater));
+            return false;
+        }
+    }
+
+    bool AnimationControllerData::Remove(AnimationStateUpdater* animationStateUpdater) {
+        auto itr = animationStateUpdaters.find(animationStateUpdater);
+        if (itr != animationStateUpdaters.end()) {
+            animationStateUpdaters.erase(itr);
+            return true;
+        } else {
+            ERROR("Trying to remove {} twice!", fmt::ptr(animationStateUpdater));
+            return false;
+        }
+
     }
 }

@@ -165,7 +165,7 @@ namespace BSML::Utilities {
         RenderTexture::ReleaseTemporary(renderTexture);
         return copy;
     }
-    
+
     UnityEngine::Sprite* DownScaleSprite(Sprite* sprite, const ScaleOptions& options) {
         return LoadSpriteFromTexture(DownScaleTexture(sprite->get_texture(), options));
     }
@@ -176,13 +176,12 @@ namespace BSML::Utilities {
             co_return;
         }
 
-        DEBUG("GetReq");
         auto www = UnityWebRequest::Get(uri);
-        DEBUG("SendReq");
-        co_yield reinterpret_cast<System::Collections::IEnumerator*>(www->SendWebRequest());
-        DEBUG("Got data, callback");
-        if (onFinished) 
-            onFinished(www->get_downloadHandler()->GetData());
+        auto req = www->SendWebRequest();
+        while (!req->get_isDone()) co_yield nullptr;
+
+        onFinished((www->get_isNetworkError() || www->get_isHttpError()) ? nullptr : www->get_downloadHandler()->GetData());
+
         co_return;
     }
 
@@ -196,30 +195,157 @@ namespace BSML::Utilities {
     }
 
     void GetData(StringW key, std::function<void(ArrayW<uint8_t>)> onFinished) {
+        if (!onFinished) {
+            ERROR("Can't get data from datacache without a callback to use it with");
+            return;
+        }
         INFO("Getting data from key: {}", key);
         auto entry = DataCache::Get(key);
         if (entry) {
             onFinished(entry->get_data());
         } else {
             ERROR("Could not find entry for key: {}", key);
+            onFinished(nullptr);
         }
     }
 
     bool IsAnimated(StringW str)
     {
-        return  str->EndsWith(".gif", System::StringComparison::OrdinalIgnoreCase) || 
+        return  str->EndsWith(".gif", System::StringComparison::OrdinalIgnoreCase) ||
                 str->EndsWith("_gif", System::StringComparison::OrdinalIgnoreCase) ||
                 str->EndsWith(".apng", System::StringComparison::OrdinalIgnoreCase)||
                 str->EndsWith("_apng", System::StringComparison::OrdinalIgnoreCase);
     }
 
-    void SetImage(UnityEngine::UI::Image* image, StringW path) {
-        SetImage(image, path, true, ScaleOptions());
+    void DefaultImageLoadErrorHandler(ImageLoadError err) {
+        if (err != ImageLoadError::None)
+            ERROR("Unhandled Load Image error {}, Use the SetImage method that takes an error handler to handle it correctly!", err);
     }
 
-    SafePtr<Dictionary<StringW, UnityEngine::Sprite*>> imageCache;
+    void SetImage(UnityEngine::UI::Image* image, StringW path) {
+        SetImage(image, path, true, ScaleOptions(), true, nullptr, DefaultImageLoadErrorHandler);
+    }
+
+    void SetImage(UnityEngine::UI::Image* image, StringW path, bool cached) {
+        SetImage(image, path, true, ScaleOptions(), cached, nullptr, DefaultImageLoadErrorHandler);
+    }
+
     void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished) {
-        if (!image) {
+        SetImage(image, path, loadingAnimation, scaleOptions, true, onFinished, DefaultImageLoadErrorHandler);
+    }
+
+    Dictionary<StringW, UnityEngine::Sprite*>* get_bsmlSetImageCache() {
+        static SafePtr<Dictionary<StringW, UnityEngine::Sprite*>> bsmlSetImageCache;
+        if (!bsmlSetImageCache) {
+            bsmlSetImageCache = Dictionary<StringW, UnityEngine::Sprite*>::New_ctor();
+        }
+        return bsmlSetImageCache.ptr();
+    }
+
+    bool RemoveImage(StringW path) {
+        auto cache = get_bsmlSetImageCache();
+        UnityEngine::Sprite* img = nullptr;
+        if (cache->TryGetValue(path, byref(img))) {
+            cache->Remove(path);
+            if (img && img->m_CachedPtr.m_value) UnityEngine::Object::DestroyImmediate(img);
+            return true;
+        }
+        return false;
+    }
+
+    void SetAndLoadImageAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+        auto animationController = AnimationController::get_instance();
+
+        auto stateUpdater = image->get_gameObject()->AddComponent<AnimationStateUpdater*>();
+        stateUpdater->image = image;
+
+        if (loadingAnimation && false)
+            stateUpdater->set_controllerData(animationController->loadingAnimation);
+
+        // check if we already have it, union because easier
+        union {
+            Il2CppObject* data = nullptr;
+            AnimationControllerData* animationControllerData;
+        };
+        if (animationController->registeredAnimations->TryGetValue(path, byref(data))) {
+            stateUpdater->set_controllerData(animationControllerData);
+            if (onFinished) onFinished();
+        } else {
+            bool isGif = path->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase) || (uri.first && uri.second->get_LocalPath()->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase));
+            auto animType = isGif ? AnimationLoader::AnimationType::GIF : AnimationLoader::AnimationType::APNG;
+
+            auto errorType = uri.first ? ImageLoadError::NetworkError : ImageLoadError::GetDataError;
+            auto onDataFinished = [stateUpdater, path, onFinished, onError, errorType, animationController, animType](ArrayW<uint8_t> data){
+                // somehow data was failed to be gotten
+                if (!data) {
+                    if (onError) onError(errorType);
+                    return;
+                }
+
+                AnimationLoader::Process(
+                    animType,
+                    data,
+                    [stateUpdater, path, onFinished, animationController](auto tex, auto uvs, auto delays){
+                        auto controllerData = animationController->Register(path, tex, uvs, delays);
+                        stateUpdater->set_controllerData(controllerData);
+                        if (onFinished) onFinished();
+                    },
+                    [onError](){
+                        if (onError) onError(ImageLoadError::GifParsingError);
+                    }
+                );
+            };
+
+            if (uri.first) {
+                DownloadData(uri.second->get_AbsoluteUri(), onDataFinished);
+            } else {
+                GetData(path, onDataFinished);
+            }
+        }
+    }
+
+    void SetAndLoadImageNonAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+        auto errorType = uri.first ? ImageLoadError::NetworkError : ImageLoadError::GetDataError;
+        auto onDataFinished = [path, onFinished, onError, errorType, image, scaleOptions, cached](ArrayW<uint8_t> data) {
+            // somehow data was failed to be gotten
+            if (!data) {
+                if (onError) onError(errorType);
+                return;
+            }
+
+            if (data.Length() > 0) {
+                auto texture = LoadTextureRaw(data);
+                if (scaleOptions.shouldScale) {
+                    auto scaledTexture = DownScaleTexture(texture, scaleOptions);
+                    if (scaledTexture != texture) {
+                        Object::DestroyImmediate(texture);
+                        texture = scaledTexture;
+                    }
+                }
+                auto sprite = LoadSpriteFromTexture(texture);
+                sprite->get_texture()->set_wrapMode(TextureWrapMode::Clamp);
+                image->set_sprite(sprite);
+                if (cached) get_bsmlSetImageCache()->Add(path, sprite);
+            }
+
+            if (onFinished)
+                onFinished();
+            DEBUG("Done!");
+        };
+
+        if (uri.first) {
+            DownloadData(uri.second->get_AbsoluteUri(), onDataFinished);
+        } else {
+            GetData(path, onDataFinished);
+        }
+    }
+
+    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+        SetImage(image, path, loadingAnimation, scaleOptions, true, onFinished, onError);
+    }
+
+    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+                if (!image) {
             ERROR("Can't set null image!");
             return;
         }
@@ -229,7 +355,6 @@ namespace BSML::Utilities {
             Object::DestroyImmediate(oldStateUpdater);
         }
 
-        INFO("Setting image {}", path);
         if (path->get_Length() > 1 && path[0] == '#') { // it's a base game sprite that is requested
             auto imgName = path->Substring(1);
             image->set_sprite(FindSpriteCached(imgName));
@@ -239,92 +364,27 @@ namespace BSML::Utilities {
             return;
         }
 
-        if (!imageCache) imageCache.emplace(Dictionary<StringW, UnityEngine::Sprite*>::New_ctor());
-        
         UnityEngine::Sprite* sprite = nullptr;
-        if (imageCache->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value) {
+        if (get_bsmlSetImageCache()->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value) {
             // we got a sprite, use it
             image->set_sprite(sprite);
             if (onFinished) onFinished();
             return;
         } else if (sprite) {
             INFO("Removing {} from cache as the attached sprite was invalid", path);
-            imageCache->Remove(path);
+            get_bsmlSetImageCache()->Remove(path);
         }
 
         auto animationController = AnimationController::get_instance();
 
-        System::Uri* uri;
+        System::Uri* uri = nullptr;
         bool isUri = System::Uri::TryCreate(path, System::UriKind::Absolute, byref(uri));
         // animated just means ".gif || .apng"
         // TODO: support for animated sprites in the future
         if (IsAnimated(path) || (isUri && IsAnimated(uri->get_LocalPath()))) {
-            DEBUG("Adding state updater");
-            auto stateUpdater = image->get_gameObject()->AddComponent<AnimationStateUpdater*>();
-            stateUpdater->image = image;
-
-            if (loadingAnimation && false)
-                stateUpdater->set_controllerData(animationController->loadingAnimation);
-
-            DEBUG("Getting controller data");
-            Il2CppObject* data = nullptr;
-            if (animationController->registeredAnimations->TryGetValue(path, byref(data))) {
-                DEBUG("Got cached controller data");
-                stateUpdater->set_controllerData(reinterpret_cast<AnimationControllerData*>(data));
-            } else {
-                DEBUG("Data not found. starting fetch");
-                bool isGif = path->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase) || (isUri && uri->get_LocalPath()->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase));
-
-                DEBUG("Creating callback");
-                auto onDataFinished = [stateUpdater, path, onFinished, animationController, isGif](ArrayW<uint8_t> data){
-                    DEBUG("Got data: {}", data.size());
-                    AnimationLoader::Process(
-                        isGif ? AnimationLoader::AnimationType::GIF : AnimationLoader::AnimationType::APNG,
-                        data,
-                        [onFinished, stateUpdater, animationController, path](auto tex, auto uvs, auto delays){
-                            auto controllerData = animationController->Register(path, tex, uvs, delays);
-                            stateUpdater->set_controllerData(controllerData);
-                            if (onFinished) onFinished();
-                        }
-                    );
-                };
-
-                DEBUG("Getting data");
-                if (isUri) {
-                    DownloadData(path, onDataFinished);
-                } else {
-                    GetData(path, onDataFinished);
-                }
-            }
+            SetAndLoadImageAnimated(image, path, loadingAnimation, {isUri, uri}, onFinished, onError);
         } else { // not animated
-            DEBUG("Non animated");
-            auto onDataFinished = [path, onFinished, image, scaleOptions](ArrayW<uint8_t> data) {
-                DEBUG("Data was gotten");
-                if (data.Length() > 0) {
-                    auto texture = LoadTextureRaw(data);
-                    if (scaleOptions.shouldScale) {
-                        auto scaledTexture = DownScaleTexture(texture, scaleOptions);
-                        if (scaledTexture != texture) {
-                            Object::DestroyImmediate(texture);
-                            texture = scaledTexture;
-                        }
-                    }
-                    auto sprite = LoadSpriteFromTexture(texture);
-                    sprite->get_texture()->set_wrapMode(TextureWrapMode::Clamp);
-                    image->set_sprite(sprite);
-                    imageCache->Add(path, sprite);
-                }
-
-                if (onFinished)
-                    onFinished();
-                DEBUG("Done!");
-            };
-
-            if (isUri) {
-                DownloadData(path, onDataFinished);
-            } else {
-                GetData(path, onDataFinished);
-            }
+            SetAndLoadImageNonAnimated(image, path, loadingAnimation, scaleOptions, cached, {isUri, uri}, onFinished, onError);
         }
     }
 
@@ -390,7 +450,7 @@ namespace BSML::Utilities {
                 }
             }
         }
-        
+
         myIter = nullptr;
         ::FieldInfo* field = nullptr;
         void* value = nullptr;
@@ -407,7 +467,7 @@ namespace BSML::Utilities {
 
         return CopyFieldsAndProperties(comp, other, klass->parent);
     }
-    
+
     /// based on https://answers.unity.com/questions/530178/how-to-get-a-component-from-an-object-and-add-it-t.html
     UnityEngine::Component* GetCopyOfComponent(UnityEngine::Component* comp, UnityEngine::Component* other) {
         auto klass = comp->klass;
@@ -432,7 +492,7 @@ namespace BSML::Utilities {
             }
             return blankSprite.ptr();
         }
-        
+
         SafePtrUnity<UnityEngine::Sprite> whitePixelSprite;
         UnityEngine::Sprite* GetWhitePixel() {
             if (!whitePixelSprite) {

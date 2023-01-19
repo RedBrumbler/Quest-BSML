@@ -4,34 +4,37 @@ DEFINE_TYPE(BSML, AnimationStateUpdater);
 
 namespace BSML {
     AnimationControllerData* AnimationStateUpdater::get_controllerData() {
-        return controllerData;
+        return _controllerData;
     }
 
     void AnimationStateUpdater::set_controllerData(AnimationControllerData* value) {
-        if (controllerData) {
+        if (_controllerData) {
             OnDisable();
+            _controllerData->Remove(this);
         }
-        controllerData = value;
+        _controllerData = value;
+        if (_controllerData) _controllerData->Add(this);
+
         if (get_isActiveAndEnabled()) {
             OnEnable();
         }
     }
 
     void AnimationStateUpdater::OnEnable() {
-        if (controllerData && image) {
-            controllerData->get_activeImages()->Add(image);
+        if (_controllerData && image) {
+            _controllerData->get_activeImages()->Add(image);
         }
     }
 
     void AnimationStateUpdater::OnDisable() {
-        if (controllerData && image) {
-            controllerData->get_activeImages()->Remove(image);
+        if (_controllerData && image) {
+            _controllerData->get_activeImages()->Remove(image);
         }
     }
 
     void AnimationStateUpdater::OnDestroy() {
-        if (controllerData && image) {
-            controllerData->get_activeImages()->Remove(image);
+        if (_controllerData && image) {
+            _controllerData->get_activeImages()->Remove(image);
         }
     }
 }

@@ -52,6 +52,9 @@ namespace BSML {
         auto values = BSMLValue::MakeValues(host);
         for (auto& [key, value] : values) {
             INFO("Got value: {}", key);
+            INFO("finfo: {}", (bool)value->fieldInfo);
+            INFO("sinfo: {}", (bool)value->setterInfo);
+            INFO("ginfo: {}", (bool)value->getterInfo);
             parserParams->AddValue(key, value);
         }
 
@@ -71,7 +74,7 @@ namespace BSML {
         for (auto component : components) {
             delete component;
         }
-        
+
         components.clear();
 
         auto postParseMinfo = il2cpp_functions::class_get_method_from_name(host->klass, "PostParse", 0);
@@ -105,7 +108,7 @@ namespace BSML {
             delete component;
         }
         components.clear();
-        
+
         auto postParseMinfo = il2cpp_functions::class_get_method_from_name(host->klass, "PostParse", 0);
         if (postParseMinfo) il2cpp_utils::RunMethod(host, postParseMinfo);
 
