@@ -24,10 +24,15 @@ DECLARE_CLASS_CODEGEN(BSML, BSMLSettings, Il2CppObject,
 
     DECLARE_DEFAULT_CTOR();
     public:
-        bool AddSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool showExtraButtons = false);
+        bool TryAddSettingsMenu(SettingsMenu* menu);
+        bool TryAddSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool showExtraButtons = false);
+        bool TryAddSettingsMenu(System::Type* csType, std::string_view name, MenuSource menuType, bool showExtraButtons = false);
+        bool TryAddSettingsMenu(std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate, std::string_view name, bool showExtraButtons = false);
+
         bool RemoveSettingsMenu(Il2CppObject* host);
         static BSMLSettings* get_instance();
     protected:
+        void TryAddBSMLMenu();
         custom_types::Helpers::Coroutine AddButtonToMainScreen();
         static SafePtr<BSMLSettings> instance;
 )

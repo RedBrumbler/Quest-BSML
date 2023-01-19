@@ -133,6 +133,26 @@ namespace BSML {
         return true;
     }
 
+    bool GameplaySetup::AddTab(System::Type* csType, std::string_view name, MenuType menuType) {
+        auto menus = get_menus();
+        auto menu = std::find_if(menus.begin(), menus.end(), [name](auto x){ return reinterpret_cast<GameplaySetupMenu*>(x)->name == name; });
+        if (menu != menus.end()) {
+            return false;
+        }
+        menus->Add(GameplaySetupMenu::Make_new(csType, name, menuType));
+        return true;
+    }
+
+    bool GameplaySetup::AddTab(std::function<void(UnityEngine::GameObject*, bool)> didActivate, std::string_view name, MenuType menuType) {
+        auto menus = get_menus();
+        auto menu = std::find_if(menus.begin(), menus.end(), [name](auto x){ return reinterpret_cast<GameplaySetupMenu*>(x)->name == name; });
+        if (menu != menus.end()) {
+            return false;
+        }
+        menus->Add(GameplaySetupMenu::Make_new(didActivate, name, menuType));
+        return true;
+    }
+
     void GameplaySetup::SetTabVisibility(std::string_view name, bool isVisible) {
         if (!gameplaySetupViewController || !gameplaySetupViewController->m_CachedPtr.m_value || !gameplaySetupViewController->get_isActiveAndEnabled()) {
             return;

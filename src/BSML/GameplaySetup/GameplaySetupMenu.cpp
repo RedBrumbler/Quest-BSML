@@ -1,4 +1,5 @@
 #include "BSML/GameplaySetup/GameplaySetupMenu.hpp"
+#include "BSML/GameplaySetup/GameplaySetupTabActivator.hpp"
 #include "config.hpp"
 #include "logging.hpp"
 
@@ -16,18 +17,62 @@ namespace BSML {
         self->content_key = content_key;
         self->host = host;
         self->menuType = menuType;
+        self->menuSource = MenuSource::BSMLContent;
 
         return self;
     }
 
+    GameplaySetupMenu* GameplaySetupMenu::Make_new(System::Type* csType, std::string_view name, BSML::MenuType menuType) {
+        auto self = GameplaySetupMenu::New_ctor();
+
+        self->name = name;
+        self->menuType = menuType;
+        self->csType = csType;
+        self->menuSource = MenuSource::Component;
+
+        return self;
+    }
+
+    GameplaySetupMenu* GameplaySetupMenu::Make_new(std::function<void(UnityEngine::GameObject*, bool)> didActivate, std::string_view name, BSML::MenuType menuType) {
+        auto self = GameplaySetupMenu::New_ctor();
+
+        self->name = name;
+        self->menuType = menuType;
+        self->didActivate = didActivate;
+        self->menuSource = MenuSource::Method;
+
+        return self;
+    }
+
+
     void GameplaySetupMenu::Setup() {
-        std::string_view content;
-        if (get_content(content)) {
-            DEBUG("Got content! parsing...");
-            parse_and_construct(content, tab->get_transform(), host);
-        } else { // there was an error
-            DEBUG("Error getting content, was the content key correctly given?");
-            parse_and_construct(content, tab->get_transform(), tab);
+        switch (menuSource) {
+            case MenuSource::BSMLContent: {
+                std::string_view content;
+                if (get_content(content)) {
+                    DEBUG("Got content! parsing...");
+                    parse_and_construct(content, tab->get_transform(), host);
+                } else { // there was an error
+                    DEBUG("Error getting content, was the content key correctly given?");
+                    parse_and_construct(content, tab->get_transform(), tab);
+                }
+                break;
+            }
+            case MenuSource::Method: {
+                    auto activator = tab->get_gameObject()->AddComponent<GameplaySetupTabActivator*>();
+                    activator->didActivate = didActivate;
+                    activator->menuSource = menuSource;
+                }
+                break;
+            case MenuSource::Component: {
+                    auto activator = tab->get_gameObject()->AddComponent<GameplaySetupTabActivator*>();
+                    activator->mb = reinterpret_cast<UnityEngine::MonoBehaviour*>(tab->get_gameObject()->AddComponent(csType));
+                    activator->menuSource = menuSource;
+                }
+                break;
+            case MenuSource::ViewController: [[fallthrough]];
+            case MenuSource::FlowCoordinator:
+                throw std::runtime_error("Invalid menu source passed to gameplay setup!");
         }
     }
 
