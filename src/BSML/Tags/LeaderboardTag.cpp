@@ -13,14 +13,18 @@ using namespace UnityEngine;
 namespace BSML {
     static BSMLNodeParser<LeaderboardTag> leaderboardTagParser({"leaderboard", "custom-leaderboard"});
 
-    UnityEngine::GameObject* LeaderboardTag::CreateObject(UnityEngine::Transform* parent) const {
+    GlobalNamespace::LeaderboardTableView* get_leaderboardTemplate() {
         static SafePtrUnity<GlobalNamespace::LeaderboardTableView> leaderboardTemplate;
         if (!leaderboardTemplate) {
             leaderboardTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::LeaderboardTableView*>().First([](auto x) {
                 return x->get_name() == "LeaderboardTableView";
             });
         }
-        auto table = Object::Instantiate(leaderboardTemplate.ptr(), parent, false);
+        return leaderboardTemplate.ptr();
+    }
+
+    UnityEngine::GameObject* LeaderboardTag::CreateObject(UnityEngine::Transform* parent) const {
+        auto table = Object::Instantiate(get_leaderboardTemplate(), parent, false);
         table->set_name("BSMLLeaderboard");
         table->cellPrefab->scoreText->set_enableWordWrapping(false);
         table->GetComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
