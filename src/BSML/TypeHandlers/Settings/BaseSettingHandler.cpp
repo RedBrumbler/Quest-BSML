@@ -23,7 +23,6 @@ namespace BSML {
     void BaseSettingHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto component = componentType.component;
         auto& data = componentType.data;
-        auto host = parserParams.get_host();
 
         auto genericSettings = il2cpp_utils::GetFieldValue<GenericSettingWrapper*>(component, "genericSetting").value_or(nullptr);
         if (!genericSettings) {

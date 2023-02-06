@@ -35,7 +35,6 @@ namespace BSML {
         Base::HandleTypeAfterParse(componentType, parserParams);
         
         auto button = reinterpret_cast<Button*>(componentType.component);
-        auto host = parserParams.get_host();
         auto event = button->get_onClick();
 
         // it was a button!

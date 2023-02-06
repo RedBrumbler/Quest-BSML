@@ -15,7 +15,6 @@ namespace BSML {
 
     void AsHostMacro::Execute(UnityEngine::Transform* parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
         INFO("Executing ashost macro");
-        auto host = parserParams.get_host();
         auto hostItr = data.find("host");
         if (hostItr != data.end()) {
             int count = StringParseHelper(hostItr->second);

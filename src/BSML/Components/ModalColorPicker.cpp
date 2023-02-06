@@ -29,13 +29,13 @@ namespace BSML {
 
     void ModalColorPicker::CancelPressed() {
         if (cancel) cancel();
-        if (onCancelInfo) il2cpp_utils::RunMethod(host, onCancelInfo);
+        if (host && onCancelInfo) il2cpp_utils::RunMethod(host, onCancelInfo);
         modalView->Hide();
     }
 
     void ModalColorPicker::DonePressed() {
         if (done) done(currentColor);
-        if (onDoneInfo) il2cpp_utils::RunMethod(host, onDoneInfo, currentColor);
+        if (host && onDoneInfo) il2cpp_utils::RunMethod(host, onDoneInfo, currentColor);
         if (genericSetting)
             genericSetting->SetValue(currentColor);
         modalView->Hide();
@@ -43,7 +43,7 @@ namespace BSML {
 
     void ModalColorPicker::OnChange(UnityEngine::Color value, GlobalNamespace::ColorChangeUIEventType type) {
         if (onChange) onChange(value);
-        if (colorChangeInfo) il2cpp_utils::RunMethod(host, colorChangeInfo, currentColor);
+        if (host && colorChangeInfo) il2cpp_utils::RunMethod(host, colorChangeInfo, currentColor);
         if (genericSetting)
             genericSetting->OnChange(value);
         set_currentColor(value);

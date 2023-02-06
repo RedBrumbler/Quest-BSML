@@ -49,7 +49,7 @@ namespace BSML {
         std::vector<ComponentTypeWithData*> components;
 
         INFO("Making values from host fields, props and methods");
-        auto values = BSMLValue::MakeValues(host);
+        auto values = host ? BSMLValue::MakeValues(host) : std::map<std::string, BSML::BSMLValue *>{};
         for (auto& [key, value] : values) {
             INFO("Got value: {}", key);
             INFO("finfo: {}", (bool)value->fieldInfo);
@@ -58,12 +58,12 @@ namespace BSML {
             parserParams->AddValue(key, value);
         }
 
-        auto actions = BSMLAction::MakeActions(host);
+        auto actions = host ? BSMLAction::MakeActions(host) : std::map<std::string, BSML::BSMLAction*>{};
         for (auto& [key, action] : actions) {
             INFO("Got action: {}", key);
             parserParams->AddAction(key, action);
         }
-        
+
         /// when making from a new "root" we skip the root itself
         root->HandleChildren(parent, *parserParams, components);
 
@@ -77,8 +77,10 @@ namespace BSML {
 
         components.clear();
 
-        auto postParseMinfo = il2cpp_functions::class_get_method_from_name(host->klass, "PostParse", 0);
-        if (postParseMinfo) il2cpp_utils::RunMethod(host, postParseMinfo);
+        if (host) {
+            auto postParseMinfo = il2cpp_functions::class_get_method_from_name(host->klass, "PostParse", 0);
+            if (postParseMinfo) il2cpp_utils::RunMethod(host, postParseMinfo);
+        }
     }
 
     std::shared_ptr<BSMLParserParams> BSMLParser::Construct(const BSMLNode* root, UnityEngine::Transform* parent, Il2CppObject* host) {
@@ -87,13 +89,13 @@ namespace BSML {
         std::vector<ComponentTypeWithData*> components;
 
         INFO("Making values from host fields, props and methods");
-        auto values = BSMLValue::MakeValues(host);
+        auto values = host ? BSMLValue::MakeValues(host) : std::map<std::string, BSML::BSMLValue *>{};
         for (auto& [key, value] : values) {
             INFO("Got value: {}", key);
             parserParams->AddValue(key, value);
         }
 
-        auto actions = BSMLAction::MakeActions(host);
+        auto actions = host ? BSMLAction::MakeActions(host) : std::map<std::string, BSML::BSMLAction*>{};
         for (auto& [key, action] : actions) {
             INFO("Got action: {}", key);
             parserParams->AddAction(key, action);
@@ -109,8 +111,10 @@ namespace BSML {
         }
         components.clear();
 
-        auto postParseMinfo = il2cpp_functions::class_get_method_from_name(host->klass, "PostParse", 0);
-        if (postParseMinfo) il2cpp_utils::RunMethod(host, postParseMinfo);
+        if (host) {
+            auto postParseMinfo = il2cpp_functions::class_get_method_from_name(host->klass, "PostParse", 0);
+            if (postParseMinfo) il2cpp_utils::RunMethod(host, postParseMinfo);
+        }
 
         return parserParams;
     }
