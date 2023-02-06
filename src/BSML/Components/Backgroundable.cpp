@@ -131,6 +131,25 @@ namespace BSML {
         background->set_color1(color1);
     }
 
+    void Backgroundable::ApplyColor0(UnityEngine::Color color) {
+        if (!background) {
+            ERROR("No background exists yet!");
+            return;
+        }
+
+        ApplyGradient(color, background->get_color1());
+    }
+
+    void Backgroundable::ApplyColor1(UnityEngine::Color color) {
+        if (!background) {
+            ERROR("No background exists yet!");
+            return;
+        }
+
+        ApplyGradient(background->get_color0(), color);
+    }
+
+
     void Backgroundable::ApplyAlpha(float alpha) {
         if (!background) {
             ERROR("No background exists yet!");
