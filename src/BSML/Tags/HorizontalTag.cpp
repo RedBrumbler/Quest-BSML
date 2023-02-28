@@ -1,7 +1,6 @@
 #include "BSML/Tags/HorizontalTag.hpp"
 #include "BSML/Components/Backgroundable.hpp"
 #include "logging.hpp"
-#include "internal_macros.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"

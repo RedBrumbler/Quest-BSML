@@ -2,7 +2,6 @@
 #include "BSML/TypeHandlers/TypeHandler.hpp"
 #include "BSML/Components/ExternalComponents.hpp"
 
-#include "internal_macros.hpp"
 #include "logging.hpp"
 
 #include "UnityEngine/GameObject.hpp"
@@ -102,6 +101,13 @@ namespace BSML {
             if (il2cpp_utils::IsConvertibleFrom(fieldInfo->type, &value->klass->byval_arg))
                 il2cpp_functions::field_set_value(host, fieldInfo, value);
         }
+    }
+
+    #define GET_BSML_STRING(identifier, store)                      \
+    {                                                               \
+        const char* temp_##store = nullptr;                         \
+        if (!elem.QueryStringAttribute(identifier, &temp_##store))  \
+            store = std::string_view(temp_##store);                 \
     }
 
     void BSMLTag::parse(const tinyxml2::XMLElement& elem) {

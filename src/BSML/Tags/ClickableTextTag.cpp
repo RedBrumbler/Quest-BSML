@@ -3,7 +3,6 @@
 #include "Helpers/getters.hpp"
 #include "Helpers/creation.hpp"
 #include "logging.hpp"
-#include "internal_macros.hpp"
 
 #include "HMUI/Touchable.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"

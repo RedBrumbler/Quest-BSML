@@ -1,6 +1,5 @@
 #include "BSML/Tags/VerticalTag.hpp"
 #include "logging.hpp"
-#include "internal_macros.hpp"
 
 #include "BSML/Components/Backgroundable.hpp"
 #include "UnityEngine/GameObject.hpp"
