@@ -15,7 +15,6 @@ namespace BSML {
 
     void IfMacro::Execute(UnityEngine::Transform* parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
         INFO("Executing if macro");
-        auto host = parserParams.get_host();
         auto valueItr = data.find("value");
         if (valueItr == data.end()) return;
 

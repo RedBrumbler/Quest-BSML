@@ -20,7 +20,6 @@ namespace BSML {
 
     void ClickableImageHandler::HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto clickableImage = reinterpret_cast<ClickableImage*>(componentType.component);
-        auto host = parserParams.get_host();
 
         auto onClickItr = componentType.data.find("onClick");
         if (onClickItr != componentType.data.end() && !onClickItr->second.empty()) {

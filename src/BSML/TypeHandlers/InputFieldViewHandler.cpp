@@ -24,7 +24,6 @@ namespace BSML {
 
         auto fieldView = reinterpret_cast<HMUI::InputFieldView*>(componentType.component);
         auto& data = componentType.data;
-        auto host = parserParams.get_host();
 
         auto onChangeItr = data.find("onChange");
         if (onChangeItr != data.end() && !onChangeItr->second.empty()) {

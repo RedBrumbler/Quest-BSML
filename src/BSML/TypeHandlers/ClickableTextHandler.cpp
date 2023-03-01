@@ -20,7 +20,6 @@ namespace BSML {
 
     void ClickableTextHandler::HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto clickableText = reinterpret_cast<ClickableText*>(componentType.component);
-        auto host = parserParams.get_host();
 
         auto onClickItr = componentType.data.find("onClick");
         if (onClickItr != componentType.data.end() && !onClickItr->second.empty()) {
