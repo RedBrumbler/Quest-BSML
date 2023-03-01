@@ -1,6 +1,7 @@
 #include "BSML/Components/CustomListTableData.hpp"
 #include "Helpers/utilities.hpp"
 
+#include "GlobalNamespace/LayoutWidthLimiter.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
@@ -29,10 +30,18 @@ namespace BSML {
                 auto tableCell = GetTableCell();
                 auto nameText = tableCell->songNameText;
                 auto authorText = tableCell->songAuthorText;
-                
+
                 tableCell->songBpmText->get_gameObject()->SetActive(false);
                 tableCell->songDurationText->get_gameObject()->SetActive(false);
                 tableCell->favoritesBadgeImage->get_gameObject()->SetActive(false);
+
+                // new stuff in 1.28.0 that needs to be disabled
+                // TODO: make it a feature to make this usable?
+                tableCell->updatedBadgeGo->SetActive(false);
+                tableCell->promoBadgeGo->SetActive(false);
+                tableCell->promoBackgroundGo->SetActive(false);
+                tableCell->layoutWidthLimiter->set_limitWidth(false);
+
                 static ConstString bpmIcon("BpmIcon");
                 tableCell->get_transform()->Find(bpmIcon)->get_gameObject()->SetActive(false);
 
