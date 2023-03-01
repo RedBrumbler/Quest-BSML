@@ -4,7 +4,7 @@
   "info": {
     "name": "BSML",
     "id": "bsml",
-    "version": "0.2.11",
+    "version": "0.3.1",
     "url": "https://github.com/RedBrumbler/Quest-BSML",
     "additionalData": {
       "overrideSoName": "libbsml.so"
