@@ -25,7 +25,7 @@ namespace BSML {
     /// @param parent what to parent to
     /// @param host the host object, this would contain the various fields and properties your bsml expects to be able to access
     /// @return parserparams result
-    std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, Il2CppObject* host);
+    std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, Il2CppObject* host = nullptr);
 
     namespace Register {
         /* Menu buttons are the buttons on the left in the main menu */
