@@ -92,7 +92,11 @@ struct StringParseHelper : std::string_view {
     /// @return field info for the getter this string view would point to on host klass, nullptr if not found
     FieldInfo* asFieldInfo(Il2CppObject* host) const;
 
-    /// @brief a method to make the string view this helper refers to, a lowercase string
+    /// @brief a method to make the string view this helper refers to a lowercase string
     /// @return string of this helper, lowercase
     std::string toLower() const;
+
+    /// @brief a method to make the string view this helper refers to an uppercase string
+    /// @return string of this helper, uppercase
+    std::string toUpper() const;
 };
