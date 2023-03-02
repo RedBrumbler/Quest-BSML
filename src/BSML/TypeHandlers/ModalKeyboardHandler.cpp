@@ -19,7 +19,6 @@ namespace BSML {
 
     void ModalKeyboardHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto modalKeyboard = reinterpret_cast<BSML::ModalKeyboard*>(componentType.component);
-        auto host = parserParams.get_host();
         auto& data = componentType.data;
 
         auto valueItr = data.find("value");

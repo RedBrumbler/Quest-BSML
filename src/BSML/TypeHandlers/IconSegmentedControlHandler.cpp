@@ -21,7 +21,6 @@ namespace BSML {
     void IconSegmentedControlHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto textControl = reinterpret_cast<HMUI::IconSegmentedControl*>(componentType.component);
         auto& data = componentType.data;
-        auto host = parserParams.get_host();
 
         auto dataItr = data.find("data");
         if (dataItr != data.end() && !dataItr->second.empty()) {
