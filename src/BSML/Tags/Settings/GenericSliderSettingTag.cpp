@@ -33,6 +33,9 @@ namespace BSML {
         auto slider = gameObject->GetComponentInChildren<HMUI::CustomFormatRangeValuesSlider*>();
         sliderSetting->slider = slider;
 
+        // highlight color to be not red
+        slider->m_Colors.set_highlightedColor({1, 1, 1, 0.2});
+
         slider->set_name("BSMLSlider");
         slider->GetComponentInChildren<TMPro::TextMeshProUGUI*>()->set_enableWordWrapping(false);
         slider->enableDragging = true;
@@ -55,7 +58,7 @@ namespace BSML {
 
         auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
         externalComponents->Add(text);
-        
+
         return gameObject;
     }
 }
