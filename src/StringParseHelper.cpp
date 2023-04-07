@@ -11,7 +11,7 @@ std::string StringParseHelper::toLower() const {
 
 std::string StringParseHelper::toUpper() const {
     std::string ret{data(), size()};
-    std::transform(ret.begin(), ret.end(), ret.begin(), ::toUpper);
+    std::transform(ret.begin(), ret.end(), ret.begin(), ::toupper);
     return ret;
 }
 
