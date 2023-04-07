@@ -3,7 +3,7 @@
 #include "logging.hpp"
 
 #include "GlobalNamespace/SharedCoroutineStarter.hpp"
-#include "System/Collections/Generic/Dictionary_2.hpp" 
+#include "System/Collections/Generic/Dictionary_2.hpp"
 #include "UnityEngine/ImageConversion.hpp"
 #include "UnityEngine/Rect.hpp"
 #include "UnityEngine/SpriteMeshType.hpp"
@@ -50,7 +50,7 @@ namespace BSML::Utilities {
     Sprite* FindSpriteCached(StringW name) {
         if (!spriteCache)
             spriteCache.emplace(Dictionary<StringW, UnityEngine::Sprite*>::New_ctor());
-        
+
         UnityEngine::Sprite* sprite = nullptr;
 
         if (spriteCache->TryGetValue(name, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value)
@@ -75,7 +75,7 @@ namespace BSML::Utilities {
     Texture* FindTextureCached(StringW name) {
         if (!textureCache)
             textureCache.emplace(Dictionary<StringW, UnityEngine::Texture*>::New_ctor());
-        
+
         UnityEngine::Texture* texture = nullptr;
 
         if (textureCache->TryGetValue(name, byref(texture)) && texture && texture->m_CachedPtr.m_value)
@@ -99,7 +99,7 @@ namespace BSML::Utilities {
     std::optional<UnityEngine::Color> ParseHTMLColorOpt(std::string_view str) {
         std::string val{str};
         bool valid = false;
-        auto color = CSSColorParser::parse(val, valid);
+        auto color = CSSColorParser::parseRGBA(val, valid);
         if (!valid) return std::nullopt;
         return UnityEngine::Color{
             (float)color.r / 255.0f,
@@ -157,7 +157,7 @@ namespace BSML::Utilities {
         auto currentRT = RenderTexture::get_active();
         auto renderTexture = RenderTexture::GetTemporary(rect.get_width(), rect.get_height(), 32, RenderTextureFormat::Default, RenderTextureReadWrite::Default);
         Graphics::Blit(tex, renderTexture);
-    
+
         RenderTexture::set_active(renderTexture);
         copy->ReadPixels(rect, 0, 0);
         copy->Apply();
