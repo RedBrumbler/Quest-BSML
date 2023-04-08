@@ -2,10 +2,16 @@
 #include "Helpers/utilities.hpp"
 #include "logging.hpp"
 
-/// makes a string that's lowercase
-inline std::string StringParseHelper::toLower() const {
+/// makes a string thats lowercase
+std::string StringParseHelper::toLower() const {
     std::string ret{data(), size()};
     std::transform(ret.begin(), ret.end(), ret.begin(), ::tolower);
+    return ret;
+}
+
+std::string StringParseHelper::toUpper() const {
+    std::string ret{data(), size()};
+    std::transform(ret.begin(), ret.end(), ret.begin(), ::toupper);
     return ret;
 }
 
