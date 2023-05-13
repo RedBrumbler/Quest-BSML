@@ -9,9 +9,7 @@
 #include "UnityEngine/EventSystems/IPointerExitHandler.hpp"
 #include "UnityEngine/EventSystems/PointerEventData.hpp"
 
-#define INTERFACES { classof(::UnityEngine::EventSystems::IPointerEnterHandler*), classof(::UnityEngine::EventSystems::IPointerExitHandler*) }
-
-___DECLARE_TYPE_WRAPPER_INHERITANCE(BSML, FloatingScreenHandle, Il2CppTypeEnum::IL2CPP_TYPE_CLASS, UnityEngine::MonoBehaviour, "BSML", INTERFACES, 0, nullptr,
+DECLARE_CLASS_CODEGEN_INTERFACES(BSML, FloatingScreenHandle, UnityEngine::MonoBehaviour, std::vector<Il2CppClass*>({classof(::UnityEngine::EventSystems::IPointerEnterHandler*), classof(::UnityEngine::EventSystems::IPointerExitHandler*)}),
     DECLARE_INSTANCE_FIELD(UnityEngine::Material*, originalMaterial);
     DECLARE_INSTANCE_FIELD(UnityEngine::MeshRenderer*, renderer);
 
@@ -23,5 +21,3 @@ ___DECLARE_TYPE_WRAPPER_INHERITANCE(BSML, FloatingScreenHandle, Il2CppTypeEnum::
         static SafePtrUnity<UnityEngine::Material> hoverMaterial;
         static UnityEngine::Material* get_hoverMaterial();
 )
-
-#undef INTERFACES
