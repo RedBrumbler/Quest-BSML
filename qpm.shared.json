@@ -8,7 +8,11 @@
       "version": "0.3.3",
       "url": "https://github.com/RedBrumbler/Quest-BSML",
       "additionalData": {
-        "overrideSoName": "libbsml.so"
+        "soLink": "https://github.com/RedBrumbler/Quest-BSML/releases/download/v0.3.3/libbsml.so",
+        "debugSoLink": "https://github.com/RedBrumbler/Quest-BSML/releases/download/v0.3.3/debug_libbsml.so",
+        "overrideSoName": "libbsml.so",
+        "modLink": "https://github.com/RedBrumbler/Quest-BSML/releases/download/v0.3.3/BSML.qmod",
+        "branchName": "version-v0.3.3"
       }
     },
     "dependencies": [
@@ -59,22 +63,22 @@
     ],
     "workspace": {
       "scripts": {
-        "build": [
-          "pwsh ./scripts/build.ps1"
+        "copy": [
+          "pwsh ./scripts/copy.ps1"
         ],
         "clean": [
           "pwsh ./scripts/build.ps1 -clean"
         ],
-        "copy": [
-          "pwsh ./scripts/copy.ps1"
-        ],
-        "log": [
-          "pwsh ./scripts/log.ps1"
+        "build": [
+          "pwsh ./scripts/build.ps1"
         ],
         "qmod": [
           "pwsh ./scripts/build.ps1 -clean",
           "qpm qmod build --isLibrary true",
           "pwsh ./scripts/createqmod.ps1 BSML -clean"
+        ],
+        "log": [
+          "pwsh ./scripts/log.ps1"
         ]
       }
     }
