@@ -11,7 +11,7 @@ namespace BSML {
             {"id", {"id"}},
             {"maskOverflow", {"mask-overflow"}},
             {"alignBottom", { "align-bottom"}},
-            {"onUpdateToBottom", { "on-update-to-bottom"}},
+            {"scrollToBottomOnUpdate", { "scroll-to-bottom-on-update"}},
         };
     }
 
@@ -19,7 +19,7 @@ namespace BSML {
         return {
             {"maskOverflow", [](auto component, auto value){ component->set_maskOverflow(value); }},
             {"alignBottom", [](auto component, auto value){ component->set_alignBottom(value); }},
-            {"onUpdateToBottom", [](auto component, auto value){ component->onUpdateToBottom = value; }}
+            {"scrollToBottomOnUpdate", [](auto component, auto value){ component->scrollToBottomOnUpdate = value; }}
         };
     }
 
