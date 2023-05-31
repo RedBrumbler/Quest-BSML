@@ -10,7 +10,7 @@ DECLARE_CLASS_CODEGEN(BSML, ScrollableContainer, HMUI::ScrollView,
     DECLARE_INSTANCE_FIELD(bool, maskOverflow);
     DECLARE_INSTANCE_FIELD(float, contentHeight);
     DECLARE_INSTANCE_FIELD(bool, runScrollAnim);
-    DECLARE_INSTANCE_FIELD(bool, scrollToBottomOnUpdate);
+    DECLARE_INSTANCE_FIELD(bool, onUpdateToBottom);
     DECLARE_INSTANCE_FIELD(System::Action*, upButtonAction);
     DECLARE_INSTANCE_FIELD(System::Action*, downButtonAction);
 

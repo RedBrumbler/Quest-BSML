@@ -91,7 +91,7 @@ namespace BSML {
     void ScrollableContainer::ContentSizeUpdated() {
         RefreshContent();
         RefreshButtons();
-        this->ScrollTo(scrollToBottomOnUpdate ? std::numeric_limits<float>::max() : 0, false);
+        this->ScrollTo(onUpdateToBottom ? std::numeric_limits<float>::max() : 0, false);
     }
 
     void ScrollableContainer::Update() {
