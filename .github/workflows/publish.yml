@@ -183,7 +183,7 @@ jobs:
 
     - name: Commit Changed package info
       run: |
-        git add qpm.json qpm.shared.json mod.json
+        git add qpm.json qpm.shared.json mod.json --force
         git commit -m "Updated qpm.json" --allow-empty
 
     - name: Get Commit ID
