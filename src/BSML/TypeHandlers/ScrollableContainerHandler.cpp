@@ -11,7 +11,7 @@ namespace BSML {
             {"id", {"id"}},
             {"maskOverflow", {"mask-overflow"}},
             {"alignBottom", { "align-bottom"}},
-            {"scrollToBottomOnUpdate", { "update-to-bottom"}},
+            {"scrollToBottomOnUpdate", { "on-update-to-bottom"}},
         };
     }
 
