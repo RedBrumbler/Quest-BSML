@@ -5,7 +5,7 @@
     "info": {
       "name": "BSML",
       "id": "bsml",
-      "version": "0.2.11",
+      "version": "0.3.3",
       "url": "https://github.com/RedBrumbler/Quest-BSML",
       "additionalData": {
         "overrideSoName": "libbsml.so"
@@ -62,19 +62,19 @@
         "build": [
           "pwsh ./scripts/build.ps1"
         ],
-        "log": [
-          "pwsh ./scripts/log.ps1"
-        ],
         "clean": [
           "pwsh ./scripts/build.ps1 -clean"
+        ],
+        "copy": [
+          "pwsh ./scripts/copy.ps1"
+        ],
+        "log": [
+          "pwsh ./scripts/log.ps1"
         ],
         "qmod": [
           "pwsh ./scripts/build.ps1 -clean",
           "qpm qmod build --isLibrary true",
           "pwsh ./scripts/createqmod.ps1 BSML -clean"
-        ],
-        "copy": [
-          "pwsh ./scripts/copy.ps1"
         ]
       }
     }
