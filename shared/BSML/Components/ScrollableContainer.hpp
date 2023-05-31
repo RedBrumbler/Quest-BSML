@@ -10,12 +10,13 @@ DECLARE_CLASS_CODEGEN(BSML, ScrollableContainer, HMUI::ScrollView,
     DECLARE_INSTANCE_FIELD(bool, maskOverflow);
     DECLARE_INSTANCE_FIELD(float, contentHeight);
     DECLARE_INSTANCE_FIELD(bool, runScrollAnim);
+    DECLARE_INSTANCE_FIELD(bool, scrollToBottomOnUpdate);
     DECLARE_INSTANCE_FIELD(System::Action*, upButtonAction);
     DECLARE_INSTANCE_FIELD(System::Action*, downButtonAction);
 
     DECLARE_INSTANCE_METHOD(bool, get_alignBottom);
     DECLARE_INSTANCE_METHOD(void, set_alignBottom, bool value);
-    
+
     DECLARE_INSTANCE_METHOD(bool, get_maskOverflow);
     DECLARE_INSTANCE_METHOD(void, set_maskOverflow, bool value);
 
@@ -34,8 +35,11 @@ DECLARE_CLASS_CODEGEN(BSML, ScrollableContainer, HMUI::ScrollView,
     DECLARE_INSTANCE_METHOD(void, ScrollToWorldPosition, UnityEngine::Vector3 worldPosition, float pageRelativePosition, bool animated);
     DECLARE_INSTANCE_METHOD(void, ScrollToWorldPositionIfOutsideArea, UnityEngine::Vector3 worldPosition, float pageRelativePosition, float relativeBoundaryStart, float relativeBoundaryEnd, bool animated);
     DECLARE_INSTANCE_METHOD(void, ScrollTo, float dstPosY, bool animated);
+    DECLARE_INSTANCE_METHOD(void, ScrollToNormalized, float dstPosY, bool animated);
     DECLARE_INSTANCE_METHOD(void, PageUpButtonPressed);
     DECLARE_INSTANCE_METHOD(void, PageDownButtonPressed);
     DECLARE_INSTANCE_METHOD(void, SetDestinationPosY, float value);
 
+    public:
+        float get_maxPosition();
 )

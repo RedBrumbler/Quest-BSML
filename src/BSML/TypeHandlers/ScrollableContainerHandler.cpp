@@ -11,13 +11,15 @@ namespace BSML {
             {"id", {"id"}},
             {"maskOverflow", {"mask-overflow"}},
             {"alignBottom", { "align-bottom"}},
+            {"scrollToBottomOnUpdate", { "update-to-bottom"}},
         };
     }
 
     ScrollableContainerHandler::Base::SetterMap ScrollableContainerHandler::get_setters() const {
         return {
             {"maskOverflow", [](auto component, auto value){ component->set_maskOverflow(value); }},
-            {"alignBottom", [](auto component, auto value){ component->set_alignBottom(value); }}
+            {"alignBottom", [](auto component, auto value){ component->set_alignBottom(value); }},
+            {"scrollToBottomOnUpdate", [](auto component, auto value){ component->scrollToBottomOnUpdate = value; }}
         };
     }
 

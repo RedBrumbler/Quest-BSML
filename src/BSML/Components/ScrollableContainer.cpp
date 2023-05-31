@@ -46,7 +46,6 @@ namespace BSML {
     }
 
     void ScrollableContainer::Awake() {
-        INFO("Awake");
         buttonBinder = HMUI::ButtonBinder::New_ctor();
 
         RefreshContent();
@@ -74,7 +73,6 @@ namespace BSML {
     }
 
     void ScrollableContainer::RefreshContent() {
-        INFO("Refreshing Content");
         SetContentSize(contentRectTransform->get_rect().get_height());
         contentHeight = contentRectTransform->get_rect().get_height();
         RefreshBindings();
@@ -82,7 +80,6 @@ namespace BSML {
     }
 
     void ScrollableContainer::RefreshButtons() {
-        INFO("Refreshing Button");
         if (pageUpButton) {
             pageUpButton->set_interactable(destinationPos > 0);
         }
@@ -94,7 +91,7 @@ namespace BSML {
     void ScrollableContainer::ContentSizeUpdated() {
         RefreshContent();
         RefreshButtons();
-        this->ScrollTo(0, false);
+        this->ScrollTo(scrollToBottomOnUpdate ? std::numeric_limits<float>::max() : 0, false);
     }
 
     void ScrollableContainer::Update() {
@@ -138,8 +135,7 @@ namespace BSML {
     }
 
     void ScrollableContainer::ScrollDown(bool animated) {
-        float dstPosY = contentHeight - viewport->get_rect().get_height();
-        this->ScrollTo(dstPosY, animated);
+        this->ScrollTo(get_maxPosition(), animated);
     }
 
     void ScrollableContainer::ScrollToWorldPosition(UnityEngine::Vector3 worldPosition, float pageRelativePosition, bool animated) {
@@ -161,6 +157,10 @@ namespace BSML {
         ScrollTo(num, animated);
     }
 
+    void ScrollableContainer::ScrollToNormalized(float dstPosY, bool animated) {
+        ScrollTo(std::clamp(dstPosY, 0.0f, 1.0f) * get_maxPosition(), animated);
+    }
+
     void ScrollableContainer::ScrollTo(float dstPosY, bool animated) {
         SetDestinationPosY(dstPosY);
         if (!animated)
@@ -170,7 +170,6 @@ namespace BSML {
     }
 
     void ScrollableContainer::PageUpButtonPressed() {
-        INFO("Up");
         float num = destinationPos;
         switch (scrollType)
         {
@@ -195,16 +194,14 @@ namespace BSML {
                     break;
                 }
         }
-        INFO("ScrollTo {}", num);
+
         ScrollTo(num, true);
         RefreshButtons();
         set_enabled(true);
     }
 
     void ScrollableContainer::PageDownButtonPressed() {
-        INFO("Down");
         float num = destinationPos;
-        INFO("scrollType {}", scrollType.value);
         switch (scrollType)
         {
             case ScrollType::PageSize:
@@ -227,14 +224,14 @@ namespace BSML {
                     break;
                 }
         }
-        INFO("ScrollTo {}", num);
+
         ScrollTo(num, true);
         RefreshButtons();
         set_enabled(true);
     }
 
     void ScrollableContainer::SetDestinationPosY(float value) {
-        float maxPosition = contentHeight - viewport->get_rect().get_height();
+        float maxPosition = get_maxPosition();
         if (maxPosition < 0 && !alignBottom) maxPosition = 0.0f;
         destinationPos = min(maxPosition, max(0.0f, value));
     }
@@ -259,5 +256,9 @@ namespace BSML {
 
     float ScrollableContainer::get_scrollPageHeight() {
         return viewport ? viewport->get_rect().get_height() : 0.0f;
+    }
+
+    float ScrollableContainer::get_maxPosition() {
+        return contentHeight - viewport->get_rect().get_height();
     }
 }
