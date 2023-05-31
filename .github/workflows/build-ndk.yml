@@ -3,7 +3,7 @@ name: NDK build
 on:
   workflow_dispatch:
   push:
-    branches: 
+    branches:
       - 'master'
     paths-ignore:
       - '**.yml'
@@ -28,14 +28,14 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
       name: Checkout
       with:
         submodules: true
         lfs: true
-    
+
     - uses: seanmiddleditch/gha-setup-ninja@v3
 
     - name: Create ndkpath.txt
@@ -49,22 +49,26 @@ jobs:
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
         workflow: cargo-build.yml
-        name: linux-qpm-rust
+        name: linux-qpm
         path: QPM
-        repo: RedBrumbler/QuestPackageManager-Rust
-        
+        repo: QuestPackageManager/QPM.CLI
+
+    - name: Put QPM on path
+      run: |
+        chmod +x ./QPM/qpm
+        echo "${GITHUB_WORKSPACE}/QPM" >> $GITHUB_PATH
+
     - name: QPM Collapse
       run: |
-        chmod +x ./QPM/qpm-rust
-        ./QPM/qpm-rust collapse
-    
+        qpm collapse
+
     - name: QPM Dependencies Cache
       id: cache-qpm-deps
       uses: actions/cache@v2
       env:
         cache-name: cache-qpm-deps
       with:
-        path: /home/runner/.local/share/QPM-Rust/cache
+        path: /home/runner/.local/share/QPM-RS/cache
         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('qpm.json') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -73,10 +77,7 @@ jobs:
 
     - name: QPM Restore
       run: |
-        ./QPM/qpm-rust restore
-        
-    - name: Run QPM legacy fix
-      run: ./QPM/qpm-rust cache legacy-fix
+        qpm restore
 
     - name: List Post Restore
       run: |
@@ -85,17 +86,12 @@ jobs:
         echo libs:
         ls -la ${GITHUB_WORKSPACE}/extern/libs
         echo cache:
-        ls -la $HOME/.local/share/QPM-Rust/cache
-      
-    - name: Build
+        ls -la $HOME/.local/share/QPM-RS/cache
+
+    - name: Build & Create Qmod
       run: |
         cd ${GITHUB_WORKSPACE}
-        ./QPM/qpm-rust qmod build --isLibrary true
-        pwsh -Command ./build.ps1
-
-    - name: Create Qmod
-      run: |
-        pwsh -Command ./createqmod.ps1 ${{env.qmodName}}
+        qpm s qmod
 
     - name: Get Library Name
       id: libname
@@ -104,7 +100,7 @@ jobs:
         pattern="lib${module_id}*.so"
         files=( $pattern )
         echo ::set-output name=NAME::"${files[0]}"
-    
+
     - name: Upload non-debug artifact
       uses: actions/upload-artifact@v2
       with:

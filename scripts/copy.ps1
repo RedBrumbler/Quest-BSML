@@ -7,9 +7,9 @@ param (
     [Switch]$docs
 )
 if ($docs.IsPresent) {
-    & ./build.ps1 -docs
+    & $PSScriptRoot/build.ps1 -docs
 } else {
-    & ./build.ps1
+    & $PSScriptRoot/build.ps1
 }
 if (-not ($LastExitCode -eq 0)) {
     echo "build failed, not copying"
@@ -27,5 +27,5 @@ if ($debug.IsPresent) {
 Start-Sleep -Seconds 1.0
 & adb shell am start com.beatgames.beatsaber/com.unity3d.player.UnityPlayerActivity
 if ($log.IsPresent) {
-    & ./log.ps1
+    & $PSScriptRoot/log.ps1
 }
