@@ -6,7 +6,7 @@
 config_t config;
 
 Configuration& get_config() {
-    static Configuration config({MOD_ID, VERSION, 0});
+    static Configuration config({MOD_ID, VERSION, GIT_COMMIT});
     config.Load();
     return config;
 }

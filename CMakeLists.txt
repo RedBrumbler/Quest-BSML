@@ -33,13 +33,13 @@ string(STRIP "${GIT_MODIFIED}" GIT_MODIFIED)
 
 message(STATUS "GIT_USER: ${GIT_USER}")
 message(STATUS "GIT_BRANCH: ${GIT_BRANCH}")
-message(STATUS "GIT_COMMIT: ${GIT_COMMIT}")
+message(STATUS "GIT_COMMIT: 0x${GIT_COMMIT}")
 message(STATUS "GIT_MODIFIED: ${GIT_MODIFIED}")
 
 # set git defines
 add_compile_definitions(GIT_USER=\"${GIT_USER}\")
 add_compile_definitions(GIT_BRANCH=\"${GIT_BRANCH}\")
-add_compile_definitions(GIT_COMMIT=\"${GIT_COMMIT}\")
+add_compile_definitions(GIT_COMMIT=0x${GIT_COMMIT})
 add_compile_definitions(GIT_MODIFIED=${GIT_MODIFIED})
 
 # compile definitions used
