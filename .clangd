@@ -13,4 +13,4 @@ CompileFlags:
         - -DMOD_ID="BSQML"
         - -DVERSION="0.1.0"
         - -DGIT_BRANCH="intellisense"
-        - -DGIT_COMMIT="000"
+        - -DGIT_COMMIT=0x00000000
