@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED 20)
 # Enable link time optimization
 # In my experience, this can be highly unstable but it nets a huge size optimization and likely performance
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 # define that stores the actual source directory
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -18,6 +19,29 @@ set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # compile options used
 add_compile_options(-frtti -fPIE -fPIC -fexceptions)
+
+# get git info
+execute_process(COMMAND git config user.name OUTPUT_VARIABLE GIT_USER)
+execute_process(COMMAND git branch --show-current OUTPUT_VARIABLE GIT_BRANCH)
+execute_process(COMMAND git rev-parse --short HEAD OUTPUT_VARIABLE GIT_COMMIT)
+execute_process(COMMAND git diff-index --quiet HEAD RESULT_VARIABLE GIT_MODIFIED)
+
+string(STRIP ${GIT_USER} GIT_USER)
+string(STRIP ${GIT_BRANCH} GIT_BRANCH)
+string(STRIP ${GIT_COMMIT} GIT_COMMIT)
+string(STRIP ${GIT_MODIFIED} GIT_MODIFIED)
+
+message(STATUS "GIT_USER: ${GIT_USER}")
+message(STATUS "GIT_BRANCH: ${GIT_BRANCH}")
+message(STATUS "GIT_COMMIT: ${GIT_COMMIT}")
+message(STATUS "GIT_MODIFIED: ${GIT_MODIFIED}")
+
+# set git defines
+add_compile_definitions(GIT_USER=\"${GIT_USER}\")
+add_compile_definitions(GIT_BRANCH=\"${GIT_BRANCH}\")
+add_compile_definitions(GIT_COMMIT=\"${GIT_COMMIT}\")
+add_compile_definitions(GIT_MODIFIED=${GIT_MODIFIED})
+
 # compile definitions used
 add_compile_definitions(VERSION=\"${MOD_VERSION}\")
 add_compile_definitions(MOD_ID=\"${MOD_ID}\")
@@ -29,7 +53,7 @@ RECURSE_FILES(c_file_list ${SOURCE_DIR}/*.c)
 
 # add all src files to compile
 add_library(
-    ${COMPILE_ID} 
+    ${COMPILE_ID}
     SHARED
     ${cpp_file_list}
     ${c_file_list}
@@ -43,7 +67,7 @@ target_include_directories(${COMPILE_ID} PRIVATE ${SOURCE_DIR})
 target_include_directories(${COMPILE_ID} PRIVATE ${INCLUDE_DIR})
 # add shared dir as include dir
 target_include_directories(${COMPILE_ID} PUBLIC ${SHARED_DIR})
-# codegen includes 
+# codegen includes
 target_include_directories(${COMPILE_ID} PRIVATE ${EXTERN_DIR}/includes/${CODEGEN_ID}/include)
 target_include_directories(${COMPILE_ID} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/submodules/css-color-parser-cpp/")
 target_include_directories(${COMPILE_ID} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/submodules/EasyGifReader/")
@@ -57,7 +81,7 @@ add_custom_command(TARGET ${COMPILE_ID} POST_BUILD
             COMMAND ${CMAKE_STRIP} -g -S -d --strip-all
             "lib${COMPILE_ID}.so" -o "stripped_lib${COMPILE_ID}.so"
             COMMENT "Strip debug symbols done on final binary.")
-        
+
 add_custom_command(TARGET ${COMPILE_ID} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory debug
         COMMENT "Make directory for debug symbols"

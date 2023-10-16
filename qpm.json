@@ -18,7 +18,7 @@
     },
     {
       "id": "beatsaber-hook",
-      "versionRange": "^3.14.0",
+      "versionRange": "^4.0.0",
       "additionalData": {
         "extraFiles": [
           "src/inline-hook"
@@ -36,9 +36,12 @@
       "additionalData": {}
     },
     {
-      "id": "modloader",
-      "versionRange": "^1.2.3",
-      "additionalData": {}
+      "id": "scotland2",
+      "versionRange": "^0.1.2",
+      "additionalData": {
+        "includeQmod": false,
+        "private": true
+      }
     },
     {
       "id": "paper",
