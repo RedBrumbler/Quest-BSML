@@ -97,7 +97,7 @@ namespace BSML {
     auto MakeSystemAction(Il2CppObject* instance, const MethodInfo* methodInfo) {
         if (methodInfo->parameters_count != sizeof...(Targs)) {
             std::stringstream strm;
-            strm << "Argcount mismatch between methodInfo and Targs: " << methodInfo->parameters_count << sizeof...(Targs);
+            strm << "Argcount mismatch between methodInfo and Targs: " << methodInfo->parameters_count << "!=" << sizeof...(Targs);
             throw std::runtime_error(strm.str());
         }
         return MakeSystemAction<Targs...>(std::function<void(Targs...)>([instance, methodInfo](Targs... args){
@@ -141,7 +141,9 @@ namespace BSML {
     template<typename...Targs>
     auto MakeUnityAction(Il2CppObject* instance, const MethodInfo* methodInfo) {
         if (methodInfo->parameters_count != sizeof...(Targs)) {
-            throw std::runtime_error(fmt::format("Argcount mismatch between methodInfo and Targs: {} != {}", methodInfo->parameters_count, sizeof...(Targs)));
+            std::stringstream strm;
+            strm << "Argcount mismatch between methodInfo and Targs: " << methodInfo->parameters_count << "!=" << sizeof...(Targs);
+            throw std::runtime_error(strm.str());
         }
         return MakeUnityAction<Targs...>(std::function<void(Targs...)>([instance, methodInfo](Targs... args){
             il2cpp_utils::RunMethod(instance, methodInfo, args...);
