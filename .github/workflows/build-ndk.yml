@@ -43,50 +43,13 @@ jobs:
         echo "$ANDROID_NDK_LATEST_HOME" > ${GITHUB_WORKSPACE}/ndkpath.txt
         cat ${GITHUB_WORKSPACE}/ndkpath.txt
 
-    - name: Get QPM
-      if: steps.cache-qpm.outputs.cache-hit != 'true'
-      uses: dawidd6/action-download-artifact@v2
+    - name: Setup qpm
+      uses: Fernthedev/qpm-action@main
       with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
-        workflow: cargo-build.yml
-        name: linux-qpm
-        path: QPM
-        repo: QuestPackageManager/QPM.CLI
-
-    - name: Put QPM on path
-      run: |
-        chmod +x ./QPM/qpm
-        echo "${GITHUB_WORKSPACE}/QPM" >> $GITHUB_PATH
-
-    - name: QPM Collapse
-      run: |
-        qpm collapse
-
-    - name: QPM Dependencies Cache
-      id: cache-qpm-deps
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-qpm-deps
-      with:
-        path: /home/runner/.local/share/QPM-RS/cache
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('qpm.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-
-    - name: QPM Restore
-      run: |
-        qpm restore
-
-    - name: List Post Restore
-      run: |
-        echo includes:
-        ls -la ${GITHUB_WORKSPACE}/extern/includes
-        echo libs:
-        ls -la ${GITHUB_WORKSPACE}/extern/libs
-        echo cache:
-        ls -la $HOME/.local/share/QPM-RS/cache
+        workflow_token: ${{ secrets.GITHUB_TOKEN }}
+        restore: true
+        cache: true
+        publish: false
 
     - name: Build & Create Qmod
       run: |
@@ -99,7 +62,7 @@ jobs:
         cd ./build/
         pattern="lib${module_id}*.so"
         files=( $pattern )
-        echo ::set-output name=NAME::"${files[0]}"
+        echo "NAME=${files[0]}" >> ${GITHUB_OUTPUT}
 
     - name: Upload non-debug artifact
       uses: actions/upload-artifact@v2

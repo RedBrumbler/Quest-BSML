@@ -6,7 +6,7 @@
 config_t config;
 
 Configuration& get_config() {
-    static Configuration config({MOD_ID, VERSION});
+    static Configuration config({MOD_ID, VERSION, GIT_COMMIT});
     config.Load();
     return config;
 }
@@ -27,7 +27,7 @@ void SaveConfig() {
     }
 
     doc.AddMember("hiddenTabs", hiddenTabs, allocator);
-    
+
     get_config().Write();
     INFO("Saved Configuration!");
 }
@@ -35,7 +35,7 @@ void SaveConfig() {
 bool LoadConfig() {
     bool foundEverything = true;
     rapidjson::Document& doc = get_config().config;
-    
+
     auto hiddenTabsItr = doc.FindMember("hiddenTabs");
     if (hiddenTabsItr != doc.MemberEnd()) {
         for (auto& tab : hiddenTabsItr->value.GetArray()) {
@@ -43,7 +43,7 @@ bool LoadConfig() {
         }
     } else
         foundEverything = false;
-    
+
     if (foundEverything)
         INFO("Loaded Configuration!");
     return foundEverything;

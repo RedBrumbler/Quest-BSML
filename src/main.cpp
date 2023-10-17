@@ -1,20 +1,31 @@
-#include "modloader/shared/modloader.hpp"
+#include "scotland2/shared/loader.hpp"
 #include "beatsaber-hook/shared/utils/typedefs.h"
-#include "logging.hpp"
 #include "hooking.hpp"
+#include "logging.hpp"
 
 #include "BSMLDataCache.hpp"
 #include "assets.hpp"
 #include "config.hpp"
-#include "BSML/Parsing/BSMLDocParser.hpp"
-#include "BSML/Tags/BSMLTag.hpp"
+#include "custom-types/shared/register.hpp"
 
+namespace BSML {}
 using namespace BSML;
 
-ModInfo modInfo{MOD_ID, VERSION};
+modloader::ModInfo modInfo{MOD_ID, VERSION, GIT_COMMIT};
 
-extern "C" void setup(ModInfo& info) {
-    info = modInfo;
+namespace BSML {
+    Logger& Logging::getLogger() {
+        static Logger* logger = new Logger(modInfo, LoggerOptions(false, true));
+        return *logger;
+    }
+}
+
+extern "C" void setup(CModInfo* info) {
+    info->version = VERSION;
+    info->id = MOD_ID;
+    info->version_long = GIT_COMMIT;
+
+    modInfo.assign(*info);
 }
 
 static bool isLoaded = false;
@@ -22,6 +33,8 @@ static bool isLoaded = false;
 extern "C" void load() {
     if (isLoaded) return;
     isLoaded = true;
+
+    INFO("Loading BSML built from branch '" GIT_BRANCH "' and commit {}", GIT_COMMIT);
 
     if (!LoadConfig())
         SaveConfig();

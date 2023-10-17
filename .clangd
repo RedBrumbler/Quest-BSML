@@ -1,0 +1,16 @@
+CompileFlags:
+    Add:
+        - -I./extern/includes/
+        - -I./extern/includes/codegen/include/
+        - -I./extern/includes/libil2cpp/il2cpp/libil2cpp/
+        - -I./include/
+        - -I./shared/
+        - -I./include/submodules/css-color-parser-cpp/
+        - -I./include/submodules/EasyGifReader/
+        - --sysroot=S:/NDK/android-ndk-r26/toolchains/llvm/prebuilt/windows-x86_64/sysroot
+        - -std=c++20
+        - -DUNITY_2019
+        - -DMOD_ID="BSQML"
+        - -DVERSION="0.1.0"
+        - -DGIT_BRANCH="intellisense"
+        - -DGIT_COMMIT=0x00000000
