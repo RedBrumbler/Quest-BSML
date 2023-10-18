@@ -67,7 +67,7 @@ jobs:
       run: |
         url=$(echo "$response" | jq -r '.upload_url')
         echo $url
-        echo "::set-output name=upload_url::$url"
+        echo "upload_url=$url" >> ${GITHUB_OUTPUT}
       env:
           response:  ${{ steps.get_release.outputs.data }}
 
@@ -77,7 +77,7 @@ jobs:
         cd ./build/
         pattern="lib${module_id}*.so"
         files=( $pattern )
-        echo ::set-output name=NAME::"${files[0]}"
+        echo "NAME=${files[0]}" >> ${GITHUB_OUTPUT}
 
     - name: Upload Release Asset
       id: upload_release_asset
