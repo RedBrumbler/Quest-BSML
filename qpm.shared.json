@@ -12,6 +12,27 @@
         "cmake": true
       }
     },
+    "workspace": {
+      "scripts": {
+        "build": [
+          "pwsh ./scripts/build.ps1"
+        ],
+        "clean": [
+          "pwsh ./scripts/build.ps1 -clean"
+        ],
+        "copy": [
+          "pwsh ./scripts/copy.ps1"
+        ],
+        "log": [
+          "pwsh ./scripts/log.ps1"
+        ],
+        "qmod": [
+          "pwsh ./scripts/build.ps1 -clean",
+          "qpm qmod build --isLibrary true",
+          "pwsh ./scripts/createqmod.ps1 BSML -clean"
+        ]
+      }
+    },
     "dependencies": [
       {
         "id": "libil2cpp",
@@ -29,12 +50,12 @@
       },
       {
         "id": "codegen",
-        "versionRange": "^0.33.0",
+        "versionRange": "^0.34.1",
         "additionalData": {}
       },
       {
         "id": "custom-types",
-        "versionRange": "^0.15.24",
+        "versionRange": "^0.15.27",
         "additionalData": {}
       },
       {
@@ -60,28 +81,7 @@
         "versionRange": "^5.2.2",
         "additionalData": {}
       }
-    ],
-    "workspace": {
-      "scripts": {
-        "qmod": [
-          "pwsh ./scripts/build.ps1 -clean",
-          "qpm qmod build --isLibrary true",
-          "pwsh ./scripts/createqmod.ps1 BSML -clean"
-        ],
-        "build": [
-          "pwsh ./scripts/build.ps1"
-        ],
-        "clean": [
-          "pwsh ./scripts/build.ps1 -clean"
-        ],
-        "log": [
-          "pwsh ./scripts/log.ps1"
-        ],
-        "copy": [
-          "pwsh ./scripts/copy.ps1"
-        ]
-      }
-    }
+    ]
   },
   "restoredDependencies": [
     {
@@ -111,16 +111,17 @@
     {
       "dependency": {
         "id": "custom-types",
-        "versionRange": "=0.15.25",
+        "versionRange": "=0.15.27",
         "additionalData": {
-          "soLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.25/libcustom-types.so",
-          "debugSoLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.25/debug_libcustom-types.so",
+          "soLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.27/libcustom-types.so",
+          "debugSoLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.27/debug_libcustom-types.so",
           "overrideSoName": "libcustom-types.so",
-          "modLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.25/CustomTypes.qmod",
-          "branchName": "version/v0_15_25"
+          "modLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.27/CustomTypes.qmod",
+          "branchName": "version/v0_15_27",
+          "cmake": true
         }
       },
-      "version": "0.15.25"
+      "version": "0.15.27"
     },
     {
       "dependency": {
@@ -139,28 +140,29 @@
     {
       "dependency": {
         "id": "beatsaber-hook",
-        "versionRange": "=4.0.0",
+        "versionRange": "=4.0.1",
         "additionalData": {
-          "soLink": "https://github.com/sc2ad/beatsaber-hook/releases/download/v4.0.0/libbeatsaber-hook_4_0_0.so",
-          "debugSoLink": "https://github.com/sc2ad/beatsaber-hook/releases/download/v4.0.0/debug_libbeatsaber-hook_4_0_0.so",
-          "branchName": "version/v4_0_0"
+          "soLink": "https://github.com/sc2ad/beatsaber-hook/releases/download/v4.0.1/libbeatsaber-hook_4_0_1.so",
+          "debugSoLink": "https://github.com/sc2ad/beatsaber-hook/releases/download/v4.0.1/debug_libbeatsaber-hook_4_0_1.so",
+          "branchName": "version/v4_0_1"
         }
       },
-      "version": "4.0.0"
+      "version": "4.0.1"
     },
     {
       "dependency": {
         "id": "codegen",
-        "versionRange": "=0.33.1",
+        "versionRange": "=0.34.1",
         "additionalData": {
-          "soLink": "https://github.com/sc2ad/BeatSaber-Quest-Codegen/releases/download/v0.33.1/libcodegen.so",
-          "debugSoLink": "https://github.com/sc2ad/BeatSaber-Quest-Codegen/releases/download/v0.33.1/debug_libcodegen.so",
+          "soLink": "https://github.com/sc2ad/BeatSaber-Quest-Codegen/releases/download/v0.34.1/libcodegen.so",
+          "debugSoLink": "https://github.com/sc2ad/BeatSaber-Quest-Codegen/releases/download/v0.34.1/debug_libcodegen.so",
           "overrideSoName": "libcodegen.so",
-          "modLink": "https://github.com/sc2ad/BeatSaber-Quest-Codegen/releases/download/v0.33.1/Codegen.qmod",
-          "branchName": "version/v0_33_1"
+          "modLink": "https://github.com/sc2ad/BeatSaber-Quest-Codegen/releases/download/v0.34.1/Codegen.qmod",
+          "branchName": "version/v0_34_1",
+          "cmake": true
         }
       },
-      "version": "0.33.1"
+      "version": "0.34.1"
     },
     {
       "dependency": {

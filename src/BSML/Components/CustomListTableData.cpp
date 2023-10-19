@@ -1,7 +1,6 @@
 #include "BSML/Components/CustomListTableData.hpp"
 #include "Helpers/utilities.hpp"
 
-#include "GlobalNamespace/LayoutWidthLimiter.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
@@ -39,8 +38,6 @@ namespace BSML {
                 // TODO: make it a feature to make this usable?
                 tableCell->updatedBadgeGo->SetActive(false);
                 tableCell->promoBadgeGo->SetActive(false);
-                tableCell->promoBackgroundGo->SetActive(false);
-                tableCell->layoutWidthLimiter->set_limitWidth(false);
 
                 static ConstString bpmIcon("BpmIcon");
                 tableCell->get_transform()->Find(bpmIcon)->get_gameObject()->SetActive(false);
