@@ -55,7 +55,7 @@
       },
       {
         "id": "custom-types",
-        "versionRange": "^0.15.26",
+        "versionRange": "^0.15.27",
         "additionalData": {}
       },
       {
@@ -111,15 +111,17 @@
     {
       "dependency": {
         "id": "custom-types",
-        "versionRange": "=0.15.26",
+        "versionRange": "=0.15.27",
         "additionalData": {
-          "soLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.1.0/libtypepatching.so",
-          "debugSoLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.1.0/libtypepatching_debug.so",
+          "soLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.27/libcustom-types.so",
+          "debugSoLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.27/debug_libcustom-types.so",
           "overrideSoName": "libcustom-types.so",
+          "modLink": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.27/CustomTypes.qmod",
+          "branchName": "version/v0_15_27",
           "cmake": true
         }
       },
-      "version": "0.15.26"
+      "version": "0.15.27"
     },
     {
       "dependency": {
