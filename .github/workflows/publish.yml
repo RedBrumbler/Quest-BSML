@@ -7,7 +7,7 @@ on:
 
 env:
     module_id: bsml
-    qmodName: BSML
+    qmod_name: BSML
 
 jobs:
   publish:
@@ -108,6 +108,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
-        asset_path: ./${{env.qmodName}}.qmod
-        asset_name: ${{env.qmodName}}.qmod
+        asset_path: ./${{env.qmod_name}}.qmod
+        asset_name: ${{env.qmod_name}}.qmod
         asset_content_type: application/octet-stream
