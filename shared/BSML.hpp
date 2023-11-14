@@ -5,6 +5,7 @@
 #include "HMUI/FlowCoordinator.hpp"
 #include "BSML/Parsing/BSMLParser.hpp"
 #include "BSML/MenuButtons/MenuButton.hpp"
+#include "BSML/Toast/Toast.hpp"
 #include "BSML/GameplaySetup/MenuType.hpp"
 #include "BSML/MenuSource.hpp"
 
@@ -199,5 +200,17 @@ namespace BSML {
     namespace Events {
         /// @brief Event that gets invoked right before MenuTransitionsHelper::RestartGame ( Game Restart )
         extern UnorderedEventCallback<> onGameDidRestart;
+    }
+
+    namespace Notifications {
+        /// @brief Enqueue a toast to be displayed on the notifications screen from bsml
+        /// @param title title of the toast
+        /// @param image image to be displayed besides the notification
+        /// @param onClick callback to execute when the toast is clicked
+        void EnqueueToast(std::string_view title, UnityEngine::Sprite* image = nullptr, std::function<void()> onClick = nullptr);
+
+        /// @brief Enqueue a toast to be displayed on the notifications screen from bsml
+        /// @param toast the toast to enqueue
+        void EnqueueToast(const BSML::Toast& toast);
     }
 }

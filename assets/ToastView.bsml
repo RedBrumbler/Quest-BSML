@@ -1,0 +1,12 @@
+<bg id='root' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/RedBrumbler/Quest-BSML-Docs/gh-pages/schema.xsd'>
+    <vertical pad='4' bg='round-rect-panel' bg-alpha='0.8'>
+        <horizontal>
+            <img id='image' src='#WhitePixel'/>
+            <vertical>
+                <text id='title' text='Title'/>
+                <text id='subtext' text='subtext which is a bit longer, giving some more info'/>
+            </vertical>
+        </horizontal>
+        <img id='progressBar' src='#WhitePixel'/>
+    </vertical>
+</bg>

@@ -12,7 +12,7 @@ struct IncludedAsset {
         array->max_length = end - start - 33;
         *(end - 1)= '\0';
     }
-    
+
     operator ArrayW<uint8_t>() const {
         init();
         return array;
@@ -21,7 +21,7 @@ struct IncludedAsset {
     operator std::string_view() const {
         return { reinterpret_cast<char*>(array->values), array->Length() };
     }
-    
+
     operator std::span<uint8_t>() const {
         return { array->values, array->Length() };
     }
@@ -51,6 +51,7 @@ namespace IncludedAssets {
 	DECLARE_FILE(SettingsButtons_bsml)
 	DECLARE_FILE(SettingsError_bsml)
 	DECLARE_FILE(SettingsList_bsml)
+	DECLARE_FILE(ToastView_bsml)
 	DECLARE_FILE(mods_idle_png)
 	DECLARE_FILE(mods_selected_png)
 	DECLARE_FILE(visibility_png)
