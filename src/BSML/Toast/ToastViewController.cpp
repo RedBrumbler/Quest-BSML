@@ -172,6 +172,7 @@ namespace BSML {
         // setup for next toast
         phase = Hidden;
         wasClicked = false;
+        delete toast.imageSetup;
         toastQueue.pop();
         displayRoutine = nullptr;
         co_return;
