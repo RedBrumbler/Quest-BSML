@@ -167,7 +167,6 @@ namespace BSML {
         // setup for next toast
         phase = Hidden;
         wasClicked = false;
-        toastQueue.pop();
         displayRoutine = nullptr;
         co_return;
     }
@@ -177,13 +176,27 @@ namespace BSML {
         if (!toastQueue.empty() && !displayRoutine && initialized) {
             std::lock_guard<std::mutex> lock(queueMutex);
             displayRoutine = coro(ToastRoutine(toastQueue.front()));
-            toastQueue.pop();
+            toastQueue.pop_front();
         }
     }
 
-    void ToastViewController::Enqueue(const BSML::Toast& toast) {
+    int ToastViewController::Enqueue(const BSML::Toast& toast) {
         std::lock_guard<std::mutex> lock(queueMutex);
-        toastQueue.push(toast);
+        toastQueue.push_front(toast);
+        toastQueue.front().handle = toastHandle;
+
+        // may overflow: allowed and encouraged (please submit INT_MAX toasts)
+        return toastHandle++;
+    }
+
+    bool ToastViewController::Dequeue(int handle) {
+        std::lock_guard<std::mutex> lock(queueMutex);
+        auto itr = std::find_if(toastQueue.begin(), toastQueue.end(), [handle](const auto& t){ return t.handle == handle; });
+        if (itr != toastQueue.end()) {
+            toastQueue.erase(itr);
+            return true;
+        }
+        return false;
     }
 
     void ToastViewController::Clicked() {

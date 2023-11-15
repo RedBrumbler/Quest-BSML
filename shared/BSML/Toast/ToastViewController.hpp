@@ -11,7 +11,7 @@
 #include "Toast.hpp"
 #include "../FloatingScreen/FloatingScreen.hpp"
 #include "../Components/Clickable.hpp"
-#include <queue>
+#include <deque>
 #include <mutex>
 
 DECLARE_CLASS_CODEGEN(BSML, ToastViewController, HMUI::ViewController,
@@ -40,13 +40,16 @@ DECLARE_CLASS_CODEGEN(BSML, ToastViewController, HMUI::ViewController,
 
 public:
     float animationSpeed = 10.0f;
-    void Enqueue(const BSML::Toast& toast);
+    int Enqueue(const BSML::Toast& toast);
+    bool Dequeue(int handle);
+
     static ToastViewController* get_instance();
     static ToastViewController* instance;
 
 private:
+    int toastHandle = 0;
     std::mutex queueMutex;
-    std::queue<BSML::Toast> toastQueue;
+    std::deque<BSML::Toast> toastQueue;
 
     enum ToastingPhase {
         Hidden,

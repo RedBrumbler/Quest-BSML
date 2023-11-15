@@ -113,12 +113,20 @@ namespace BSML {
     }
 
     namespace Notifications {
-        void EnqueueToast(const BSML::Toast& toast) {
-            ToastViewController::get_instance()->Enqueue(toast);
+        int EnqueueToast(const BSML::Toast& toast) {
+            return ToastViewController::get_instance()->Enqueue(toast);
         }
 
-        void EnqueueToast(std::string_view title, UnityEngine::Sprite* image, std::function<void()> onClick) {
-            EnqueueToast(BSML::Toast{.title = std::string(title), .imageSetup = ImageSetup::FromImage(image), .onClick = onClick });
+        int EnqueueToast(std::string_view title, UnityEngine::Sprite* image, std::function<void()> onClick) {
+            BSML::Toast toast;
+            toast.title = std::string(title);
+            toast.imageSetup = ImageSetup::FromImage(image);
+            toast.onClick = onClick;
+            return EnqueueToast(toast);
+        }
+
+        bool DequeueToast(int handle) {
+            return ToastViewController::get_instance()->Dequeue(handle);
         }
     }
 }

@@ -207,10 +207,17 @@ namespace BSML {
         /// @param title title of the toast
         /// @param image image to be displayed besides the notification
         /// @param onClick callback to execute when the toast is clicked
-        void EnqueueToast(std::string_view title, UnityEngine::Sprite* image = nullptr, std::function<void()> onClick = nullptr);
+        /// @return toast handle, in case you decide to dequeue it
+        int EnqueueToast(std::string_view title, UnityEngine::Sprite* image = nullptr, std::function<void()> onClick = nullptr);
 
         /// @brief Enqueue a toast to be displayed on the notifications screen from bsml
         /// @param toast the toast to enqueue
-        void EnqueueToast(const BSML::Toast& toast);
+        /// @return toast handle, in case you decide to dequeue it
+        int EnqueueToast(const BSML::Toast& toast);
+
+        /// @brief Removes a toast from the queue by the return you got when you enqueued it
+        /// @param handle the return value from enqueue toast
+        /// @return whether it was found and dequeued (true) or not (false)
+        bool DequeueToast(int handle);
     }
 }

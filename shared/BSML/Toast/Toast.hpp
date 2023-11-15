@@ -34,6 +34,8 @@ namespace BSML {
     inline std::shared_ptr<ImageSetup> ImageSetup::FromPath(std::string_view path) { return std::make_shared<BSMLImage>(path); }
 
     struct Toast {
+        Toast() {};
+        Toast(std::string_view title, std::string_view subtext, std::shared_ptr<ImageSetup> imageSetup, float displayTime, std::function<void()> onClick, UnityEngine::Color accentColor) : title(title), subtext(subtext), imageSetup(imageSetup), displayTime(displayTime), onClick(onClick), accentColor(accentColor) {}
         /// @brief title of the toast, big text at the top
         std::string title = "";
         /// @brief subtext, smaller text
@@ -51,5 +53,8 @@ namespace BSML {
         static Toast error(std::string_view subtext, std::function<void()> onClick = nullptr);
         static Toast info(std::string_view subtext, std::function<void()> onClick = nullptr);
         static Toast debug(std::string_view subtext, std::function<void()> onClick = nullptr);
+        private:
+            friend class ToastViewController;
+            int handle = 0;
     };
 }
