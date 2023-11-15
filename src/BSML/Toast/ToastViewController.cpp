@@ -98,7 +98,12 @@ namespace BSML {
 
         subtext->get_gameObject()->SetActive(!toast.subtext.empty());
         subtext->set_text(toast.subtext);
-        image->set_sprite(toast.image);
+        if (toast.imageSetup) {
+            toast.imageSetup->apply(image);
+        } else {
+            // TODO: clear image or set default
+            image->set_sprite(nullptr);
+        }
         toast.accentColor.a = 1.0f;
         accent->set_color(toast.accentColor);
 
