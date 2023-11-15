@@ -54,6 +54,10 @@ namespace IncludedAssets {
 	DECLARE_FILE(ToastView_bsml)
 	DECLARE_FILE(mods_idle_png)
 	DECLARE_FILE(mods_selected_png)
+	DECLARE_FILE(toast_debug_png)
+	DECLARE_FILE(toast_error_png)
+	DECLARE_FILE(toast_info_png)
+	DECLARE_FILE(toast_warning_png)
 	DECLARE_FILE(visibility_png)
 
 }

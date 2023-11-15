@@ -23,6 +23,8 @@ DECLARE_CLASS_CODEGEN(BSML, ToastViewController, HMUI::ViewController,
     DECLARE_INSTANCE_METHOD(void, PostParse);
     DECLARE_INSTANCE_METHOD(void, OnDestroy);
     DECLARE_INSTANCE_METHOD(void, Update);
+    DECLARE_INSTANCE_METHOD(void, OnApplicationFocus, bool hasFocus);
+    DECLARE_INSTANCE_METHOD(void, OnApplicationPause, bool pauseStatus);
 
     DECLARE_INSTANCE_FIELD_PRIVATE(UnityEngine::Vector2, originalPosition);
     DECLARE_INSTANCE_FIELD_PRIVATE(BSML::Clickable*, clickable);
@@ -54,7 +56,7 @@ private:
     };
 
     ToastingPhase phase = Hidden;
-    bool wasClicked = false, initialized = false, pointerOnToast = false;
+    bool wasClicked = false, initialized = false, pointerOnToast = false, isPaused = false;
 
     custom_types::Helpers::Coroutine NextToastRoutine();
     void GameRestart();

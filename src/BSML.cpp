@@ -118,7 +118,7 @@ namespace BSML {
         }
 
         void EnqueueToast(std::string_view title, UnityEngine::Sprite* image, std::function<void()> onClick) {
-            EnqueueToast(BSML::Toast{.title = std::string(title), .subtext = "", .image = image, .displayTime = 5.0f, .onClick = onClick });
+            EnqueueToast(BSML::Toast{.title = std::string(title), .imageSetup = ImageSetup::FromImage(image), .onClick = onClick });
         }
     }
 }

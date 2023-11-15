@@ -1,5 +1,6 @@
 #include "BSML/Toast/ToastViewController.hpp"
 #include "BSML/FloatingScreen/FloatingScreen.hpp"
+#include "Helpers/utilities.hpp"
 #include "BSML.hpp"
 
 #include "UnityEngine/Time.hpp"
@@ -18,7 +19,7 @@ namespace BSML {
     ToastViewController* ToastViewController::get_instance() {
         if (instance && instance->m_CachedPtr.m_value) return instance;
         INFO("Creating new instance of ToastViewController");
-        auto screen = FloatingScreen::CreateFloatingScreenWithViewcontroller<ToastViewController*>({90, 45}, false, {0, 3, 5}, {}, 0, false);
+        auto screen = FloatingScreen::CreateFloatingScreenWithViewcontroller<ToastViewController*>({90, 45}, false, {0, 3.5, 4.5}, {}, 160.0f, false);
         UnityEngine::Object::DontDestroyOnLoad(screen->get_gameObject());
 
         instance = reinterpret_cast<ToastViewController*>(screen->rootViewController);
@@ -81,15 +82,6 @@ namespace BSML {
         phase = Appearing;
         DEBUG("Phase switch to appearing");
 
-        INFO("clickable:    {}", fmt::ptr(clickable));
-        INFO("toastGroup:   {}", fmt::ptr(toastGroup));
-        INFO("root:         {}", fmt::ptr(root));
-        INFO("accent:       {}", fmt::ptr(accent));
-        INFO("image:        {}", fmt::ptr(image));
-        INFO("title:        {}", fmt::ptr(title));
-        INFO("subtext:      {}", fmt::ptr(subtext));
-        INFO("progressBar:  {}", fmt::ptr(progressBar));
-
         auto t = reinterpret_cast<UnityEngine::RectTransform*>(root->get_transform());
         auto original_position = t->get_anchoredPosition();
         // setup internal toast view to have correct text
@@ -101,8 +93,7 @@ namespace BSML {
         if (toast.imageSetup) {
             toast.imageSetup->apply(image);
         } else {
-            // TODO: clear image or set default
-            image->set_sprite(nullptr);
+            BSML::Utilities::SetImage(image, "#InfoIcon");
         }
         toast.accentColor.a = 1.0f;
         accent->set_color(toast.accentColor);
@@ -133,7 +124,7 @@ namespace BSML {
             float progress = t / toast.displayTime;
             progressBar->set_fillAmount(1 - std::clamp(progress, 0.0f, 1.0f));
 
-            while(pointerOnToast) { // while hovering, freeze the countdown
+            while(pointerOnToast || isPaused) { // while hovering, freeze the countdown
                 if (wasClicked) { // if clicked, execute the onclick here
                     progressBar->set_fillAmount(1.0f);
                     if (toast.onClick != nullptr) toast.onClick();
@@ -172,7 +163,6 @@ namespace BSML {
         // setup for next toast
         phase = Hidden;
         wasClicked = false;
-        delete toast.imageSetup;
         toastQueue.pop();
         displayRoutine = nullptr;
         co_return;
@@ -182,7 +172,6 @@ namespace BSML {
         // if we have toasts to display, aren't displaying one right now, and are ready to display
         if (!toastQueue.empty() && !displayRoutine && initialized) {
             std::lock_guard<std::mutex> lock(queueMutex);
-            INFO("popping from queue of length: {}", toastQueue.size());
             displayRoutine = coro(NextToastRoutine());
         }
     }
@@ -205,5 +194,12 @@ namespace BSML {
 
     void ToastViewController::Exit() {
         pointerOnToast = false;
+    }
+
+    void ToastViewController::OnApplicationFocus(bool hasFocus) {
+        isPaused = !hasFocus;
+    }
+    void ToastViewController::OnApplicationPause(bool pauseStatus) {
+        isPaused = pauseStatus;
     }
 }
