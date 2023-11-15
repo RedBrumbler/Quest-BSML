@@ -79,9 +79,7 @@ namespace BSML {
         subLayout->set_preferredHeight(20.0f);
     }
 
-    custom_types::Helpers::Coroutine ToastViewController::NextToastRoutine() {
-        if (toastQueue.empty()) co_return;
-        auto& toast = toastQueue.front();
+    custom_types::Helpers::Coroutine ToastViewController::ToastRoutine(BSML::Toast toast) {
         // should probably do better guarding here tbh, but due to how routines are sequential you wouldn't actually get any sort of race conditions :copium:
         while (phase != Hidden) co_yield nullptr;
 
@@ -94,12 +92,12 @@ namespace BSML {
         root->SetActive(false);
         title->set_text(toast.title);
 
-        subtext->get_gameObject()->SetActive(!toast.subtext.empty());
         subtext->set_text(toast.subtext);
         if (toast.imageSetup) {
             toast.imageSetup->apply(image);
         } else {
-            BSML::Utilities::SetImage(image, "#InfoIcon");
+            // no image setup was given, just default to the info image
+            BSML::Utilities::SetImage(image, MOD_ID "_toast_info_png");
         }
         toast.accentColor.a = 1.0f;
         accent->set_color(toast.accentColor);
@@ -178,7 +176,8 @@ namespace BSML {
         // if we have toasts to display, aren't displaying one right now, and are ready to display
         if (!toastQueue.empty() && !displayRoutine && initialized) {
             std::lock_guard<std::mutex> lock(queueMutex);
-            displayRoutine = coro(NextToastRoutine());
+            displayRoutine = coro(ToastRoutine(toastQueue.front()));
+            toastQueue.pop();
         }
     }
 

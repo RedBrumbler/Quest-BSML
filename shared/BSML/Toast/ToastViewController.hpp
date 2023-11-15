@@ -58,7 +58,7 @@ private:
     ToastingPhase phase = Hidden;
     bool wasClicked = false, initialized = false, pointerOnToast = false, isPaused = false;
 
-    custom_types::Helpers::Coroutine NextToastRoutine();
+    custom_types::Helpers::Coroutine ToastRoutine(BSML::Toast toast);
     void GameRestart();
     void Clicked();
     void Enter();
