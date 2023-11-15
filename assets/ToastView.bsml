@@ -1,11 +1,11 @@
 <bg id='root' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/RedBrumbler/Quest-BSML-Docs/gh-pages/schema.xsd' anchor-pos-y='2.5'>
-    <vertical pad='5' bg='round-rect-panel' pref-height='40' pref-width='90' vertical-fit='PreferredSize'>
+    <vertical pad='3' bg='round-rect-panel' pref-height='40' pref-width='90' vertical-fit='PreferredSize'>
         <horizontal pad-left='2' spacing='5'>
             <stack preferred-height='20' preferred-width='15'  vertical-fit='PreferredSize' horizontal-fit='PreferredSize'>
                 <img id='image' src='#WhitePixel' preserve-aspect='true'/>
             </stack>
-            <vertical pref-width='60' pref-height='30'>
-                <text id='title' text='Title' font-size='6'/>
+            <vertical pref-width='60' pref-height='30' spacing='5'>
+                <text id='title' text='Title' font-size='6' underlined='true'/>
                 <text id='subtext' text='subtext which is a bit longer, giving some more info' overflow-mode='Ellipsis' font-size='4'/>
             </vertical>
         </horizontal>

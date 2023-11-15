@@ -4,6 +4,7 @@
 #include "BSML.hpp"
 
 #include "UnityEngine/Time.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 #include "GlobalNamespace/SharedCoroutineStarter.hpp"
 
 #include "logging.hpp"
@@ -71,6 +72,11 @@ namespace BSML {
         progressBar->set_color({1, 1, 1, 0.5f});
 
         initialized = true;
+
+        auto titleLayout = title->get_gameObject()->AddComponent<UnityEngine::UI::LayoutElement*>();
+        titleLayout->set_preferredHeight(5.0f);
+        auto subLayout = subtext->get_gameObject()->AddComponent<UnityEngine::UI::LayoutElement*>();
+        subLayout->set_preferredHeight(20.0f);
     }
 
     custom_types::Helpers::Coroutine ToastViewController::NextToastRoutine() {

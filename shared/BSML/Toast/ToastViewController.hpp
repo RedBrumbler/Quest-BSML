@@ -39,7 +39,7 @@ DECLARE_CLASS_CODEGEN(BSML, ToastViewController, HMUI::ViewController,
     DECLARE_CTOR(ctor);
 
 public:
-    float animationSpeed = 5.0f;
+    float animationSpeed = 10.0f;
     void Enqueue(const BSML::Toast& toast);
     static ToastViewController* get_instance();
     static ToastViewController* instance;
