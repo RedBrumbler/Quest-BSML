@@ -3,6 +3,7 @@
 #include "BSML/MenuButtons/MenuButtons.hpp"
 #include "BSML/Settings/BSMLSettings.hpp"
 #include "BSML/GameplaySetup/GameplaySetup.hpp"
+#include "BSML/Toast/ToastViewController.hpp"
 #include "BSML/FlowCoordinators/MainMenuHolderFlowCoordinator.hpp"
 
 extern "C" void load();
@@ -109,5 +110,23 @@ namespace BSML {
 
     namespace Events {
         UnorderedEventCallback<> onGameDidRestart;
+    }
+
+    namespace Notifications {
+        int EnqueueToast(const BSML::Toast& toast) {
+            return ToastViewController::get_instance()->Enqueue(toast);
+        }
+
+        int EnqueueToast(std::string_view title, UnityEngine::Sprite* image, std::function<void()> onClick) {
+            BSML::Toast toast;
+            toast.title = std::string(title);
+            toast.imageSetup = ImageSetup::FromImage(image);
+            toast.onClick = onClick;
+            return EnqueueToast(toast);
+        }
+
+        bool DequeueToast(int handle) {
+            return ToastViewController::get_instance()->Dequeue(handle);
+        }
     }
 }
