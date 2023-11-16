@@ -58,6 +58,11 @@
       "id": "gif-lib",
       "versionRange": "^5.2.2",
       "additionalData": {}
+    },
+    {
+      "id": "kaleb",
+      "versionRange": "^0.1.2",
+      "additionalData": {}
     }
   ],
   "workspace": {

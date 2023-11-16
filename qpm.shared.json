@@ -80,6 +80,11 @@
         "id": "gif-lib",
         "versionRange": "^5.2.2",
         "additionalData": {}
+      },
+      {
+        "id": "kaleb",
+        "versionRange": "^0.1.2",
+        "additionalData": {}
       }
     ]
   },
@@ -107,6 +112,23 @@
         }
       },
       "version": "1.2.14"
+    },
+    {
+      "dependency": {
+        "id": "kaleb",
+        "versionRange": "=0.1.2",
+        "additionalData": {
+          "headersOnly": true,
+          "branchName": "version/v0_1_2",
+          "compileOptions": {
+            "cppFlags": [
+              "-DKALEB_VERSION=\"0.1.2\""
+            ]
+          },
+          "cmake": false
+        }
+      },
+      "version": "0.1.2"
     },
     {
       "dependency": {
