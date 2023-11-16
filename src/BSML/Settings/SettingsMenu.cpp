@@ -53,7 +53,7 @@ namespace BSML {
     std::string_view SettingsMenu::get_content() {
         auto entry = DataCache::Get(content_key);
         if (!entry) {
-            return IncludedAssets::SettingsError_bsml;
+            return Assets::Settings::Error_bsml;
         }
 
         auto data = entry->get_data();

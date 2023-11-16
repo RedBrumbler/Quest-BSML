@@ -50,7 +50,7 @@ namespace BSML {
         textSegmentedControl->set_sizeDelta({0, 6});
         layoutGroup = textSegmentedControl->GetComponent<UnityEngine::UI::LayoutGroup*>();
 
-        parse_and_construct(IncludedAssets::GameplaySetup_bsml, t, this);
+        parse_and_construct(Assets::GameplayMenu::GameplaySetup_bsml, t, this);
 
         modsList->tableView->SetDataSource(this->i_DataSource(), false);
         listParsed = false;
@@ -186,7 +186,7 @@ namespace BSML {
             cell->set_interactable(true);
             cell->set_reuseIdentifier(reuseIdentifier);
 
-            parse_and_construct(IncludedAssets::GameplaySetupCell_bsml, cell->get_transform(), cell);
+            parse_and_construct(Assets::GameplayMenu::GameplaySetupCell_bsml, cell->get_transform(), cell);
         }
 
         return cell;

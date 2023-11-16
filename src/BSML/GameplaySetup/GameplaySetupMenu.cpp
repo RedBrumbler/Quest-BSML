@@ -91,7 +91,7 @@ namespace BSML {
     bool GameplaySetupMenu::get_content(std::string_view& content) {
         auto entry = DataCache::Get(content_key);
         if (!entry) {
-            content = IncludedAssets::GameplayTabError_bsml;
+            content = Assets::GameplayMenu::GameplayTabError_bsml;
             return false;
         }
         auto data = entry->get_data();

@@ -21,6 +21,6 @@ namespace BSML {
 
     void MenuButtonsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if (!firstActivation) return;
-        parse_and_construct(IncludedAssets::MainLeftScreen_bsml, get_transform(), this);
+        parse_and_construct(Assets::MainLeftScreen_bsml, get_transform(), this);
     }
 }
