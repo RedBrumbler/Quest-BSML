@@ -116,19 +116,19 @@
     {
       "dependency": {
         "id": "kaleb",
-        "versionRange": "=0.1.2",
+        "versionRange": "=0.1.5",
         "additionalData": {
           "headersOnly": true,
-          "branchName": "version/v0_1_2",
+          "branchName": "version/v0_1_5",
           "compileOptions": {
             "cppFlags": [
-              "-DKALEB_VERSION=\"0.1.2\""
+              "-DKALEB_VERSION=\"0.1.5\""
             ]
           },
           "cmake": false
         }
       },
-      "version": "0.1.2"
+      "version": "0.1.5"
     },
     {
       "dependency": {
