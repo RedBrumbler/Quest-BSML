@@ -26,7 +26,7 @@ namespace BSML {
         SetTitle("Mod Settings", HMUI::ViewController::AnimationType::In);
         set_showBackButton(true);
         navigationController = Helpers::CreateViewController<HMUI::NavigationController*>();
-        auto parser = parse_and_construct(IncludedAssets::SettingsButtons_bsml, navigationController->get_transform(), this);
+        auto parser = parse_and_construct(Assets::Settings::Buttons_bsml, navigationController->get_transform(), this);
         parserParams = parser->parserParams;
 
         settingsMenuListViewController = Helpers::CreateViewController<SettingsMenuListViewController*>();

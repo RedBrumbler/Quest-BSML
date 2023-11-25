@@ -3,6 +3,7 @@ include(qpm_defines.cmake)
 
 cmake_minimum_required(VERSION 3.22)
 project(${COMPILE_ID})
+include(${EXTERN_DIR}/includes/kaleb/shared/cmake/assets.cmake)
 
 # c++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -73,7 +74,8 @@ target_include_directories(${COMPILE_ID} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/in
 target_include_directories(${COMPILE_ID} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/submodules/EasyGifReader/")
 target_include_directories(${COMPILE_ID} PRIVATE ${EXTERN_DIR}/includes/gif-lib/shared)
 
-target_link_libraries(${COMPILE_ID} PRIVATE -llog -lz)
+add_assets(${COMPILE_ID}-assets STATIC ${CMAKE_CURRENT_LIST_DIR}/assets ${INCLUDE_DIR}/assets.hpp)
+target_link_libraries(${COMPILE_ID} PRIVATE -llog -lz ${COMPILE_ID}-assets)
 # add extern stuff like libs and other includes
 include(extern.cmake)
 
@@ -117,5 +119,3 @@ add_custom_command(TARGET ${COMPILE_ID} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy ${a_file} debug/${file}
     COMMENT "Copy a files for ndk stack")
 endforeach()
-
-include(assets_include.cmake)

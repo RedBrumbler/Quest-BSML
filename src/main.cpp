@@ -43,17 +43,17 @@ extern "C" void load() {
 }
 
 BSML_DATACACHE(settings_about) {
-    return IncludedAssets::SettingsAbout_bsml;
+    return Assets::Settings::About_bsml;
 }
 
 BSML_DATACACHE(mods_idle) {
-    return IncludedAssets::mods_idle_png;
+    return Assets::mods_idle_png;
 }
 
 BSML_DATACACHE(mods_selected) {
-    return IncludedAssets::mods_selected_png;
+    return Assets::mods_selected_png;
 }
 
 BSML_DATACACHE(visibility) {
-    return IncludedAssets::visibility_png;
+    return Assets::visibility_png;
 }
