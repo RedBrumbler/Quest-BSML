@@ -46,7 +46,7 @@
     },
     {
       "id": "paper",
-      "versionRange": "^1.2.9",
+      "versionRange": "^3.0.0",
       "additionalData": {}
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "id": "kaleb",
-      "versionRange": "^0.1.2",
+      "versionRange": "^0.1.6",
       "additionalData": {}
     }
   ],
