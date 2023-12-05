@@ -11,17 +11,17 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<BackgroundTag> backgroundTagParser({"background", "bg", "div"});
-    UnityEngine::GameObject* BackgroundTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject BackgroundTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Background");
         auto gameObject = GameObject::New_ctor("BSMLBackground");
-        gameObject->get_transform()->SetParent(parent, false);
-        gameObject->AddComponent<ContentSizeFitter*>();
-        gameObject->AddComponent<Backgroundable*>();
+        gameObject.transform.SetParent(parent, false);
+        gameObject.AddComponent<ContentSizeFitter>();
+        gameObject.AddComponent<Backgroundable>();
 
-        auto rectTransform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
-        rectTransform->set_anchorMin({0, 0});
-        rectTransform->set_anchorMax({1, 1});
-        rectTransform->set_sizeDelta({0, 0});
+        RectTransform rectTransform {gameObject.transform.convert()};
+        rectTransform.anchorMin = {0, 0};
+        rectTransform.anchorMax = {1, 1};
+        rectTransform.sizeDelta = {0, 0};
 
         return gameObject;
     }

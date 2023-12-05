@@ -6,7 +6,7 @@ namespace BSML {
     struct BSMLStringValue : public BSMLValue {
         std::string value;
 
-        void SetValue(Il2CppObject* val) override;
-        Il2CppObject* GetValue() override;
+        void SetValue(bs_hook::Il2CppWrapperType val) override;
+        bs_hook::Il2CppWrapperType GetValue() override;
     };
 }

@@ -7,7 +7,7 @@ namespace BSML {
     void GameplaySetupTabActivator::OnEnable() {
         switch (menuSource) {
             case MenuSource::Method:
-                if (didActivate) didActivate(get_gameObject(), !_activatedBefore);
+                if (didActivate) didActivate(gameObject, !_activatedBefore);
                 break;
             case MenuSource::Component:
                 if (mb) {
@@ -25,7 +25,7 @@ namespace BSML {
     }
 
     void GameplaySetupTabActivator::OnDisable() {
-        if (mb && mb->m_CachedPtr.m_value && menuSource == MenuSource::Component) {
+        if (mb && mb.m_CachedPtr && menuSource == MenuSource::Component) {
             auto* didDeactivate = il2cpp_functions::class_get_method_from_name(il2cpp_utils::ExtractClass (mb), "DidDeactivate", 0);
             if (didDeactivate) il2cpp_utils::RunMethod(mb, didDeactivate);
         }

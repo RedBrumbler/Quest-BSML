@@ -5,17 +5,17 @@
 #include "HMUI/HoverHint.hpp"
 #include "Helpers/getters.hpp"
 
-void AddHoverHint(UnityEngine::RectTransform* rectTransform, const std::string& text) {
-    auto hoverHint = rectTransform->GetComponent<HMUI::HoverHint*>();
+void AddHoverHint(UnityEngine::RectTransform rectTransform, const std::string& text) {
+    auto hoverHint = rectTransform->GetComponent<HMUI::HoverHint>();
     if (!hoverHint) {
-        hoverHint = rectTransform->get_gameObject()->AddComponent<HMUI::HoverHint*>();
+        hoverHint = rectTransform.gameObject.AddComponent<HMUI::HoverHint>();
     }
-    hoverHint->set_text(text);
-    hoverHint->hoverHintController = BSML::Helpers::GetHoverHintController();
+    hoverHint.text = text;
+    hoverHint.hoverHintController = BSML::Helpers::GetHoverHintController();
 }
 
 // for now, because I wanna have the option later
-void AddHoverHintKey(UnityEngine::RectTransform* rectTransform, const std::string& key) {
+void AddHoverHintKey(UnityEngine::RectTransform rectTransform, const std::string& key) {
     AddHoverHint(rectTransform, key);
 }
 
@@ -42,19 +42,19 @@ namespace BSML {
 
     RectTransformHandler::Base::SetterMap RectTransformHandler::get_setters() const {
         return {
-            {"anchorMinX",      [](auto component, auto value){ component->set_anchorMin(UnityEngine::Vector2(value, component->get_anchorMin().y)); }},
-            {"anchorMinY",      [](auto component, auto value){ component->set_anchorMin(UnityEngine::Vector2(component->get_anchorMin().x, value)); }},
-            {"anchorMaxX",      [](auto component, auto value){ component->set_anchorMax(UnityEngine::Vector2(value, component->get_anchorMax().y)); }},
-            {"anchorMaxY",      [](auto component, auto value){ component->set_anchorMax(UnityEngine::Vector2(component->get_anchorMax().x, value)); }},
-            {"anchorPosX",      [](auto component, auto value){ component->set_anchoredPosition(UnityEngine::Vector2(value, component->get_anchoredPosition().y)); }},
-            {"anchorPosY",      [](auto component, auto value){ component->set_anchoredPosition(UnityEngine::Vector2(component->get_anchoredPosition().x, value)); }},
-            {"sizeDeltaX",      [](auto component, auto value){ component->set_sizeDelta(UnityEngine::Vector2(value, component->get_sizeDelta().y)); }},
-            {"sizeDeltaY",      [](auto component, auto value){ component->set_sizeDelta(UnityEngine::Vector2(component->get_sizeDelta().x, value)); }},
-            {"pivotX",          [](auto component, auto value){ component->set_pivot(UnityEngine::Vector2(value, component->get_pivot().y)); }},
-            {"pivotY",          [](auto component, auto value){ component->set_pivot(UnityEngine::Vector2(component->get_pivot().x, value)); }},
+            {"anchorMinX",      [](auto component, auto value){ component.anchorMin = UnityEngine::Vector2(value, component.anchorMin.y); }},
+            {"anchorMinY",      [](auto component, auto value){ component.anchorMin = UnityEngine::Vector2(component.anchorMin.x, value); }},
+            {"anchorMaxX",      [](auto component, auto value){ component.anchorMax = UnityEngine::Vector2(value, component.anchorMax.y); }},
+            {"anchorMaxY",      [](auto component, auto value){ component.anchorMax = UnityEngine::Vector2(component.anchorMax.x, value); }},
+            {"anchorPosX",      [](auto component, auto value){ component.anchoredPosition = UnityEngine::Vector2(value, component.anchoredPosition.y); }},
+            {"anchorPosY",      [](auto component, auto value){ component.anchoredPosition = UnityEngine::Vector2(component.anchoredPosition.x, value); }},
+            {"sizeDeltaX",      [](auto component, auto value){ component.sizeDelta = UnityEngine::Vector2(value, component.sizeDelta.y); }},
+            {"sizeDeltaY",      [](auto component, auto value){ component.sizeDelta = UnityEngine::Vector2(component.sizeDelta.x, value); }},
+            {"pivotX",          [](auto component, auto value){ component.pivot = UnityEngine::Vector2(value, component.pivot.y); }},
+            {"pivotY",          [](auto component, auto value){ component.pivot = UnityEngine::Vector2(component.pivot.x, value); }},
             {"hoverHint",       [](auto component, auto value){ AddHoverHint(component, value); }},
             {"hoverHintKey",    [](auto component, auto value){ AddHoverHintKey(component, value); }},
-            {"active",          [](auto component, auto value){ component->get_gameObject()->SetActive(value); }}
+            {"active",          [](auto component, auto value){ component.gameObject.SetActive(value); }}
         };
     }
 }

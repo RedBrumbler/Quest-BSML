@@ -1,5 +1,5 @@
-#include "BSML/Settings/SettingsMenu.hpp"
 #include "logging.hpp"
+#include "BSML/Settings/SettingsMenu.hpp"
 
 #include "Helpers/creation.hpp"
 #include "BSML.hpp"
@@ -15,35 +15,35 @@ DEFINE_TYPE(BSML, SettingsMenu);
 
 namespace BSML {
     bool SettingsMenu::get_didSetup() {
-        return viewController && viewController->m_CachedPtr.m_value || flowCoordinator && flowCoordinator->m_CachedPtr.m_value;
+        return _viewController && _viewController.m_CachedPtr || flowCoordinator && flowCoordinator.m_CachedPtr;
     }
 
-    HMUI::ViewController* SettingsMenu::get_viewController() {
+    HMUI::ViewController SettingsMenu::get_viewController() {
         if (!get_didSetup()) {
             Setup();
         }
-        return viewController;
+        return _viewController;
     }
 
     void SettingsMenu::Setup() {
         DEBUG("Setup");
         switch (menuSource) {
             case MenuSource::BSMLContent:
-                viewController = Helpers::CreateViewController<HMUI::ViewController*>();
-                SetupViewControllerTransform(viewController);
-                parserParams = parse_and_construct(get_content(), viewController->get_transform(), host)->parserParams;
+                _viewController = Helpers::CreateViewController<HMUI::ViewController>();
+                SetupViewControllerTransform(_viewController);
+                parserParams = parse_and_construct(get_content(), _viewController.transform, host)->parserParams;
                 break;
             case MenuSource::FlowCoordinator:
                 flowCoordinator = Helpers::CreateFlowCoordinator(csType);
                 break;
             case MenuSource::ViewController:
-                viewController = Helpers::CreateViewController(csType);
-                SetupViewControllerTransform(viewController);
+                _viewController = Helpers::CreateViewController(csType);
+                SetupViewControllerTransform(_viewController);
                 break;
             case MenuSource::Method:
-                viewController = Helpers::CreateViewController<HMUI::ViewController*>();
-                SetupViewControllerTransform(viewController);
-                viewController->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(viewController, viewControllerDidActivate));
+                _viewController = Helpers::CreateViewController<HMUI::ViewController>();
+                SetupViewControllerTransform(_viewController);
+                _viewController.add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate>(_viewController, viewControllerDidActivate));
                 break;
             case MenuSource::Component:
                 throw std::runtime_error("Invalid menusource passed to settings menu!");
@@ -60,46 +60,46 @@ namespace BSML {
         return std::string_view(reinterpret_cast<char*>(data.begin()), size_t(data.size()));
     }
 
-    void SettingsMenu::SetupViewControllerTransform(HMUI::ViewController* viewController) {
-        auto r = viewController->get_rectTransform();
-        r->set_sizeDelta({110, 0});
-        r->set_anchorMin({0.5f, 0});
-        r->set_anchorMax({0.5f, 1});
+    void SettingsMenu::SetupViewControllerTransform(HMUI::ViewController _viewController) {
+        auto r = _viewController.rectTransform;
+        r.sizeDelta = {110, 0};
+        r.anchorMin = {0.5f, 0};
+        r.anchorMax = {0.5f, 1};
     }
 
-    SettingsMenu* SettingsMenu::Make_new(std::string_view name, std::string_view content, Il2CppObject* host, bool enableExtraButtons) {
+    SettingsMenu SettingsMenu::Make_new(std::string_view name, std::string_view content, bs_hook::Il2CppWrapperType host, bool enableExtraButtons) {
         auto self = SettingsMenu::New_ctor();
 
-        self->text = name;
-        self->name = name;
-        self->enableExtraButtons = enableExtraButtons;
-        self->content_key = content;
-        self->host = host;
-        self->menuSource = MenuSource::BSMLContent;
+        self.text = name;
+        self.name = name;
+        self.enableExtraButtons = enableExtraButtons;
+        self.content_key = content;
+        self.host = host;
+        self.menuSource = MenuSource::BSMLContent;
 
         return self;
     }
 
-    SettingsMenu* SettingsMenu::Make_new(std::string_view name, System::Type* csType, MenuSource menuSource, bool enableExtraButtons) {
+    SettingsMenu SettingsMenu::Make_new(std::string_view name, System::Type csType, MenuSource menuSource, bool enableExtraButtons) {
         auto self = SettingsMenu::New_ctor();
 
-        self->text = name;
-        self->name = name;
-        self->enableExtraButtons = enableExtraButtons;
-        self->csType = csType;
-        self->menuSource = menuSource;
+        self.text = name;
+        self.name = name;
+        self.enableExtraButtons = enableExtraButtons;
+        self.csType = csType;
+        self.menuSource = menuSource;
 
         return self;
     }
 
-    SettingsMenu* SettingsMenu::Make_new(std::string_view name, std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate, bool enableExtraButtons) {
+    SettingsMenu SettingsMenu::Make_new(std::string_view name, std::function<void(HMUI::ViewController, bool, bool, bool)> viewControllerDidActivate, bool enableExtraButtons) {
         auto self = SettingsMenu::New_ctor();
 
-        self->text = name;
-        self->name = name;
-        self->enableExtraButtons = enableExtraButtons;
-        self->viewControllerDidActivate = viewControllerDidActivate;
-        self->menuSource = MenuSource::Method;
+        self.text = name;
+        self.name = name;
+        self.enableExtraButtons = enableExtraButtons;
+        self.viewControllerDidActivate = viewControllerDidActivate;
+        self.menuSource = MenuSource::Method;
 
         return self;
     }

@@ -12,8 +12,8 @@ namespace BSML {
 
     ProgressBarHandler::Base::SetterMap ProgressBarHandler::get_setters() const {
         return {
-            { "subText1", [](auto component, auto value){ component->subText1->set_text(value); }},
-            { "subText2", [](auto component, auto value){ component->subText2->set_text(value); }}
+            { "subText1", [](auto component, auto value){ component.subText1.text = value; }},
+            { "subText2", [](auto component, auto value){ component.subText2.text = value; }}
         };
     }
 }

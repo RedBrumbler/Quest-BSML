@@ -4,9 +4,9 @@
 #include "HMUI/IconSegmentedControl.hpp"
 
 namespace BSML {
-    class IconSegmentedControlHandler : public TypeHandler<HMUI::IconSegmentedControl*> {
+    class IconSegmentedControlHandler : public TypeHandler<HMUI::IconSegmentedControl> {
         public:
-            using Base = TypeHandler<HMUI::IconSegmentedControl*>;
+            using Base = TypeHandler<HMUI::IconSegmentedControl>;
             IconSegmentedControlHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

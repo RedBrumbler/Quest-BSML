@@ -21,27 +21,28 @@ namespace BSML {
     int get_atlasSizeLimit() {
         using GetMaxTextureSize = function_ptr_t<int>;
         static auto getMaxTextureSize = reinterpret_cast<GetMaxTextureSize>(il2cpp_functions::resolve_icall("UnityEngine.SystemInfo::GetMaxTextureSize"));
-        static int maxSize = getMaxTextureSize();
+        static int maxSize = getMaxTextureSize ? getMaxTextureSize() : 4096;
         return maxSize >= 4096 ? 4096 : maxSize;
     }
 
-    void AnimationLoader::Process(AnimationType type, ArrayW<uint8_t> data, std::function<void(UnityEngine::Texture2D*, ArrayW<UnityEngine::Rect>, ArrayW<float>)> onProcessed) {
+    void AnimationLoader::Process(AnimationType type, ArrayW<uint8_t> data, std::function<void(UnityEngine::Texture2D, ArrayW<UnityEngine::Rect>, ArrayW<float>)> onProcessed) {
         Process(type, data, onProcessed, [](){
             ERROR("Error happened while processing Animation, and error was not handled!");
         });
     }
 
-    void AnimationLoader::Process(AnimationType type, ArrayW<uint8_t> data, std::function<void(UnityEngine::Texture2D*, ArrayW<UnityEngine::Rect>, ArrayW<float>)> onProcessed, std::function<void()> onError) {
+    void AnimationLoader::Process(AnimationType type, ArrayW<uint8_t> data, std::function<void(UnityEngine::Texture2D, ArrayW<UnityEngine::Rect>, ArrayW<float>)> onProcessed, std::function<void()> onError) {
+        // FIXME: is shared starter still a thing?
         auto sharedStarter = GlobalNamespace::SharedCoroutineStarter::get_instance();
         DEBUG("Starting animation decode");
         switch (type) {
             case AnimationType::GIF:
-                sharedStarter->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(
+                sharedStarter.StartCoroutine(custom_types::Helpers::CoroutineHelper::New(
                     GifDecoder::Process(
                         data,
                         [sharedStarter, onProcessed](auto animationInfo){
                             DEBUG("Processed Data, processing animation info");
-                            sharedStarter->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(ProcessAnimationInfo(animationInfo, onProcessed)));
+                            sharedStarter.StartCoroutine(custom_types::Helpers::CoroutineHelper::New(ProcessAnimationInfo(animationInfo, onProcessed)));
                         },
                         onError
                     )));
@@ -55,11 +56,11 @@ namespace BSML {
         }
     }
 
-    custom_types::Helpers::Coroutine AnimationLoader::ProcessAnimationInfo(AnimationInfo* animationInfo, std::function<void(UnityEngine::Texture2D*, ArrayW<UnityEngine::Rect>, ArrayW<float>)> onProcessed) {
+    custom_types::Helpers::Coroutine AnimationLoader::ProcessAnimationInfo(AnimationInfo* animationInfo, std::function<void(UnityEngine::Texture2D, ArrayW<UnityEngine::Rect>, ArrayW<float>)> onProcessed) {
         DEBUG("ProcessAnimInfo");
         int textureSize = get_atlasSizeLimit(), width = 0, height = 0;
-        UnityEngine::Texture2D* texture = nullptr;
-        auto textureList = ArrayW<UnityEngine::Texture2D*>(animationInfo->frameCount);
+        UnityEngine::Texture2D texture{nullptr};
+        auto textureList = ArrayW<UnityEngine::Texture2D>(animationInfo->frameCount);
         ArrayW<float> delays = ArrayW<float>(animationInfo->frameCount);
 
         float lastThrottleTime = UnityEngine::Time::get_realtimeSinceStartup();
@@ -86,8 +87,8 @@ namespace BSML {
             delays[i] = currentFrameInfo->delay;
 
             auto frameTexture = UnityEngine::Texture2D::New_ctor(currentFrameInfo->width, currentFrameInfo->height, UnityEngine::TextureFormat::RGBA32, false);
-            frameTexture->set_wrapMode(UnityEngine::TextureWrapMode::Clamp);
-            frameTexture->LoadRawTextureData(currentFrameInfo->colors.ptr());
+            frameTexture.wrapMode = UnityEngine::TextureWrapMode::Clamp;
+            frameTexture.LoadRawTextureData(currentFrameInfo->colors.ptr());
 
             textureList[i] = frameTexture;
 
@@ -102,11 +103,11 @@ namespace BSML {
         }
 
         // note to self, no longer readable = true means you can't encode the texture to png!
-        auto atlas = texture->PackTextures(textureList, 2, textureSize, true);
+        auto atlas = texture.PackTextures(textureList, 2, textureSize, true);
 
         // cleanup
         for (auto t : textureList) {
-            if (t && t->m_CachedPtr.m_value)
+            if (t && t.m_CachedPtr.m_value)
                 UnityEngine::Object::DestroyImmediate(t);
         }
 

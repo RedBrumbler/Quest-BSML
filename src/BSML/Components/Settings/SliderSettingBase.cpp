@@ -15,46 +15,46 @@ namespace BSML {
     }
 
     bool SliderSettingBase::get_interactable() {
-        return slider ? slider->get_interactable() : false;
+        return slider ? slider.interactable : false;
     }
 
     void SliderSettingBase::set_interactable(bool value) {
         if (slider) {
-            slider->set_interactable(value);
+            slider.interactable = value;
 
             if (showButtons) {
-                set_enableInc(value);
-                set_enableDec(value);
+                enableInc = value;
+                enableDec = value;
             }
         }
     }
 
     void SliderSettingBase::set_enableDec(bool value) {
         if (decButton) {
-            decButton->set_interactable(value);
+            decButton.interactable = value;
         }
     }
 
     void SliderSettingBase::set_enableInc(bool value) {
         if (incButton) {
-            incButton->set_interactable(value);
+            incButton.interactable = value;
         }
     }
 
     void SliderSettingBase::BaseSetup() {
-        incButton = slider->incButton;
-        decButton = slider->decButton;
-        
+        incButton = slider.incButton;
+        decButton = slider.decButton;
+
         if (!showButtons) {
-            slider->get_image()->set_sprite(Utilities::FindSpriteCached("RoundRect10"));
-            UnityEngine::Object::Destroy(incButton->get_gameObject());
-            UnityEngine::Object::Destroy(decButton->get_gameObject());
-            auto transform = reinterpret_cast<UnityEngine::RectTransform*>(slider->get_transform());
-            transform->set_sizeDelta({38, 0});
-            auto bgRect = reinterpret_cast<UnityEngine::RectTransform*>(transform->Find("BG"));
-            bgRect->set_sizeDelta({0, 6});
-            auto slidingAreaRect = reinterpret_cast<UnityEngine::RectTransform*>(transform->Find("SlidingArea"));
-            slidingAreaRect->set_sizeDelta({-4, -4});
+            slider.image.sprite = Utilities::FindSpriteCached("RoundRect10");
+            UnityEngine::Object::Destroy(incButton.gameObject);
+            UnityEngine::Object::Destroy(decButton.gameObject);
+            UnityEngine::RectTransform transform {slider.transform.convert()};
+            transform.sizeDelta = {38, 0};
+            UnityEngine::RectTransform bgRect {transform.Find("BG").convert()};
+            bgRect.sizeDelta = {0, 6};
+            UnityEngine::RectTransform slidingAreaRect {transform.Find("SlidingArea").convert()};
+            slidingAreaRect.sizeDelta = {-4, -4};
         }
     }
 }

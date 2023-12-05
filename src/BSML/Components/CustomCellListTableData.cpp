@@ -20,42 +20,44 @@ namespace BSML {
     }
 
     int CustomCellListTableData::NumberOfCells() {
-        return data ? data->get_Count() : 0;
+        return data ? data.Count : 0;
     }
 
-    HMUI::TableCell* CustomCellListTableData::CellForIdx(HMUI::TableView* tableView, int idx) {
-        if (data->get_Count() < idx) return nullptr;
-        auto cell = reinterpret_cast<BSML::CustomCellTableCell*>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
+    HMUI::TableCell CustomCellListTableData::CellForIdx(HMUI::TableView tableView, int idx) {
+        if (data.Count < idx) return HMUI::TableCell{nullptr};
+        auto cell = BSML::CustomCellTableCell(tableView.DequeueReusableCellForIdentifier(reuseIdentifier).convert());
         auto cellData = data[idx];
         if (!cell) {
             cell = NewCellForData(cellData);
         } else {
-            cell->dataObject = cellData;
-            cell->Reused();
+            cell.dataObject = cellData;
+            cell.Reused();
         }
 
-        cell->set_reuseIdentifier(reuseIdentifier);
-        cell->set_interactable(clickableCells);
-        
+        cell.reuseIdentifier = reuseIdentifier;
+        cell.interactable = clickableCells;
+
         return cell;
     }
 
-    BSML::CustomCellTableCell* CustomCellListTableData::NewCellForData(Il2CppObject* data) {
+    BSML::CustomCellTableCell CustomCellListTableData::NewCellForData(bs_hook::Il2CppWrapperType data) {
         auto cellGo = GameObject::New_ctor("BSMLCustomCellTableCell");
-        auto cell = cellGo->AddComponent<BSML::CustomCellTableCell*>();
-        
+        auto cell = cellGo.AddComponent<BSML::CustomCellTableCell>();
+
         if (clickableCells) {
-            cellGo->AddComponent<HMUI::Touchable*>();
-            cell->set_interactable(true);
+            cellGo.AddComponent<HMUI::Touchable>();
+            cell.interactable = true;
         }
-        
-        auto parser = parse_and_construct(bsmlString, cellGo->get_transform(), cell);
-        cell->parserParams = parser->parserParams;
-        cell->dataObject = data;
-        cell->SetupPostParse(*parser->parserParams);
+
+        auto parser = parse_and_construct(bsmlString, cellGo.transform, cell);
+        cell.parserParams = parser->parserParams;
+        cell.dataObject = data;
+        cell.SetupPostParse(*parser->parserParams);
 
         return cell;
     }
 
-    HMUI::TableView::IDataSource* CustomCellListTableData::i_IDataSource() { return reinterpret_cast<HMUI::TableView::IDataSource*>(this); }
+    CustomCellListTableData::operator HMUI::TableView::IDataSource() {
+        return HMUI::TableView::IDataSource(convert());
+    }
 }

@@ -11,26 +11,26 @@ namespace BSML {
     void SettingsMenuListViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if (firstActivation) {
             DEBUG("DidActivate");
-            parse_and_construct(Assets::Settings::List_bsml, get_transform(), this);
+            parse_and_construct(Assets::Settings::List_bsml, transform, *this);
 
-            auto r = get_rectTransform();
-            r->set_sizeDelta({35, 0});
-            r->set_anchorMin({0.5f, 0});
-            r->set_anchorMax({0.5f, 1});
+            auto r = rectTransform;
+            r.sizeDelta = {35, 0};
+            r.anchorMin = {0.5f, 0};
+            r.anchorMax = {0.5f, 1};
         }
 
         DEBUG("Update Data: {}", fmt::ptr(list));
-        if (list && list->m_CachedPtr.m_value) {
-            list->data = BSMLSettings::get_instance()->get_settingsMenus();
-            if (list->tableView && list->tableView->m_CachedPtr.m_value) {
-                list->tableView->ReloadData();
+        if (list && list.m_CachedPtr) {
+            list.data = BSMLSettings::get_instance().settingsMenus;
+            if (list.tableView && list.tableView.m_CachedPtr) {
+                list.tableView.ReloadData();
             }
         }
     }
 
-    void SettingsMenuListViewController::SettingsClick(HMUI::TableView* tableView, int idx) {
+    void SettingsMenuListViewController::SettingsClick(HMUI::TableView tableView, int idx) {
         INFO("Settings Click");
-        auto menu = reinterpret_cast<SettingsMenu*>(list->data[idx]);
+        SettingsMenu menu {list.data[idx].convert()};
         if (clickedMenu) clickedMenu(menu);
     }
 }

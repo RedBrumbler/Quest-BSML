@@ -4,9 +4,9 @@
 #include "TypeHandler.hpp"
 
 namespace BSML {
-    class ScrollIndicatorHandler : public TypeHandler<BSML::ScrollIndicator*> {
+    class ScrollIndicatorHandler : public TypeHandler<BSML::ScrollIndicator> {
         public:
-            using Base = TypeHandler<BSML::ScrollIndicator*>;
+            using Base = TypeHandler<BSML::ScrollIndicator>;
             ScrollIndicatorHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

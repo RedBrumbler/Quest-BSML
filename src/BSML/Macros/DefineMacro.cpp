@@ -15,7 +15,7 @@ namespace BSML {
         };
     }
 
-    void DefineMacro::Execute(UnityEngine::Transform* parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
+    void DefineMacro::Execute(UnityEngine::Transform parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
         INFO("Executing ashost macro");
         auto nameItr = data.find("name");
         if (nameItr == data.end()) {
@@ -37,7 +37,7 @@ namespace BSML {
             auto newValue = new BSMLStringValue();
             newValue->host = parserParams.get_host();
             newValue->name = name;
-            newValue->SetValue(static_cast<Il2CppObject*>(StringW(value)));
+            newValue->SetValue(StringW(value));
             parserParams.AddValue(name, newValue);
         }
     }

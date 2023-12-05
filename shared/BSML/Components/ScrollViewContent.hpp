@@ -7,9 +7,11 @@
 
 #include "UnityEngine/MonoBehaviour.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, ScrollViewContent, UnityEngine::MonoBehaviour,
-    DECLARE_INSTANCE_FIELD(HMUI::ScrollView*, scrollView);
-    DECLARE_INSTANCE_FIELD(bool, dirty);
+DECLARE_CLASS_CORDL(BSML, ScrollViewContent, UnityEngine::MonoBehaviour,
+    DECLARE_FIELDS(
+        DECLARE_INSTANCE_FIELD(HMUI::ScrollView, scrollView);
+        DECLARE_INSTANCE_FIELD(bool, dirty);
+    )
 
     DECLARE_INSTANCE_METHOD(void, Start);
     DECLARE_INSTANCE_METHOD(void, OnEnable);

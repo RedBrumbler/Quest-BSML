@@ -22,71 +22,71 @@ using namespace UnityEngine::UI;
 namespace BSML {
     static BSMLNodeParser<ScrollableContainerTag> scrollableContainerTagParser({"scrollable-container"});
 
-    UnityEngine::GameObject* ScrollableContainerTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject ScrollableContainerTag::CreateObject(UnityEngine::Transform parent) const {
         auto go = GameObject::New_ctor("BSMLScrollableContainer");
-        go->SetActive(false);
+        go.SetActive(false);
 
-        auto transform = go->AddComponent<RectTransform*>();
-        transform->SetParent(parent, false);
-        transform->set_localPosition({0, 0, 0});
-        transform->set_anchorMin({0, 0});
-        transform->set_anchorMax({1, 1});
-        transform->set_anchoredPosition({0, 0});
-        transform->set_sizeDelta({0, 0});
+        auto transform = go.AddComponent<RectTransform>();
+        transform.SetParent(parent, false);
+        transform.localPosition = {0, 0, 0};
+        transform.anchorMin = {0, 0};
+        transform.anchorMax = {1, 1};
+        transform.anchoredPosition = {0, 0};
+        transform.sizeDelta = {0, 0};
 
         auto vpgo = GameObject::New_ctor("Viewport");
-        auto viewport = vpgo->AddComponent<RectTransform*>();
-        viewport->SetParent(transform, false);
-        viewport->set_localPosition({0, 0, 0});
-        viewport->set_anchorMin({0, 0});
-        viewport->set_anchorMax({1, 1});
-        viewport->set_anchoredPosition({0, 0});
-        viewport->set_sizeDelta({0, 0});
+        auto viewport = vpgo.AddComponent<RectTransform>();
+        viewport.SetParent(transform, false);
+        viewport.localPosition = {0, 0, 0};
+        viewport.anchorMin = {0, 0};
+        viewport.anchorMax = {1, 1};
+        viewport.anchoredPosition = {0, 0};
+        viewport.sizeDelta = {0, 0};
 
-        auto vpMask = vpgo->AddComponent<Mask*>();
-        auto vpImage = vpgo->AddComponent<HMUI::ImageView*>();
-        vpMask->set_showMaskGraphic(false);
-        vpImage->set_color({1, 1, 1, 1});
-        vpImage->set_sprite(Utilities::ImageResources::GetWhitePixel());
-        vpImage->set_material(Helpers::GetUINoGlowMat());
+        auto vpMask = vpgo.AddComponent<Mask>();
+        auto vpImage = vpgo.AddComponent<HMUI::ImageView>();
+        vpMask.showMaskGraphic = false;
+        vpImage.color = {1, 1, 1, 1};
+        vpImage.sprite = Utilities::ImageResources::GetWhitePixel();
+        vpImage.material = Helpers::GetUINoGlowMat();
 
         auto contentGo = GameObject::New_ctor("Content Wrapper");
-        auto content = contentGo->AddComponent<RectTransform*>();
-        content->SetParent(viewport, false);
-        content->set_localPosition({0, 0, 0});
-        content->set_anchorMin({0, 1});
-        content->set_anchorMax({1, 1});
-        content->set_anchoredPosition({0, 0});
-        content->set_sizeDelta({0, 0});
-        content->set_pivot({0.5, 1});
+        auto content = contentGo.AddComponent<RectTransform>();
+        content.SetParent(viewport, false);
+        content.localPosition = {0, 0, 0};
+        content.anchorMin = {0, 1};
+        content.anchorMax = {1, 1};
+        content.anchoredPosition = {0, 0};
+        content.sizeDelta = {0, 0};
+        content.pivot = {0.5, 1};
 
-        auto contentFitter = contentGo->AddComponent<ContentSizeFitter*>();
-        contentFitter->set_horizontalFit(ContentSizeFitter::FitMode::Unconstrained);
-        contentFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
+        auto contentFitter = contentGo.AddComponent<ContentSizeFitter>();
+        contentFitter.horizontalFit = ContentSizeFitter::FitMode::Unconstrained;
+        contentFitter.verticalFit = ContentSizeFitter::FitMode::PreferredSize;
 
-        auto layout = contentGo->AddComponent<VerticalLayoutGroup*>();
-        layout->set_childControlHeight(false);
-        layout->set_childForceExpandHeight(false);
-        layout->set_childForceExpandWidth(false);
+        auto layout = contentGo.AddComponent<VerticalLayoutGroup>();
+        layout.childControlHeight = false;
+        layout.childForceExpandHeight = false;
+        layout.childForceExpandWidth = false;
 
-        go->AddComponent<HMUI::Touchable*>(); // Required by EventSystemListener
-        go->AddComponent<HMUI::EventSystemListener*>(); // Required by ScrollView
-        auto scrollView = go->AddComponent<ScrollableContainer*>();
-        scrollView->contentRectTransform = content;
-        scrollView->viewport = viewport;
-        scrollView->platformHelper = Helpers::GetIVRPlatformHelper();
+        go.AddComponent<HMUI::Touchable>(); // Required by EventSystemListener
+        go.AddComponent<HMUI::EventSystemListener>(); // Required by ScrollView
+        auto scrollView = go.AddComponent<ScrollableContainer>();
+        scrollView._contentRectTransform = content;
+        scrollView.viewport = viewport;
+        scrollView._platformHelper = Helpers::GetIVRPlatformHelper();
 
-        auto externalComponents = contentGo->AddComponent<ExternalComponents*>();
-        externalComponents->Add(scrollView);
-        externalComponents->Add(transform);
-        auto layoutElement = go->AddComponent<LayoutElement*>();
-        layoutElement->set_minWidth(-1);
-        layoutElement->set_preferredWidth(-1);
-        layoutElement->set_flexibleWidth(0);
+        auto externalComponents = contentGo.AddComponent<ExternalComponents>();
+        externalComponents.Add(scrollView);
+        externalComponents.Add(transform);
+        auto layoutElement = go.AddComponent<LayoutElement>();
+        layoutElement.minWidth = -1;
+        layoutElement.preferredWidth = -1;
+        layoutElement.flexibleWidth = 0;
 
-        externalComponents->Add(layoutElement);
+        externalComponents.Add(layoutElement);
 
-        go->SetActive(true);
+        go.SetActive(true);
         return contentGo;
     }
 }

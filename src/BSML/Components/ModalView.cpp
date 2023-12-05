@@ -5,16 +5,16 @@ DEFINE_TYPE(BSML, ModalView);
 
 namespace BSML {
     void ModalView::Awake() {
-        add_blockerClickedEvent(MakeSystemAction(this, ___BlockerClicked_MethodRegistrator.info));
+        add_blockerClickedEvent(MakeSystemAction(convert(), ___BlockerClicked_MethodRegistrator.info));
     }
 
     void ModalView::Show() {
-        
-        this->::HMUI::ModalView::Show(true, moveToCenter, nullptr);
+
+        this->::HMUI::ModalView::Show(true, moveToCenter, System::Action(nullptr));
     }
 
     void ModalView::Hide() {
-        this->::HMUI::ModalView::Hide(true, nullptr);
+        this->::HMUI::ModalView::Hide(true, System::Action(nullptr));
     }
 
     void ModalView::BlockerClicked() {

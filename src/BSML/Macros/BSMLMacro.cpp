@@ -17,7 +17,7 @@ namespace BSML {
         return cachedProps;
     }
 
-    void BSMLMacro::Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const {
+    void BSMLMacro::Handle(UnityEngine::Transform parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const {
         std::map<std::string, std::string> data;
 
         // for each property in this macro
@@ -41,7 +41,7 @@ namespace BSML {
                         break;
                     }
                     // if the value was not found we assign the actual name to the prop so it can at least try to be used
-                } 
+                }
                     data[key] = itr->second;
                     break;
                 }

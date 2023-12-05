@@ -8,6 +8,6 @@ namespace BSML {
             using Base = BackgroundTag;
             TabTag() : BackgroundTag() {}
         protected:
-            virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
+            virtual UnityEngine::GameObject CreateObject(UnityEngine::Transform parent) const override;
     };
 }

@@ -13,25 +13,25 @@ namespace BSML {
 
     ClickableTextHandler::Base::SetterMap ClickableTextHandler::get_setters() const {
         return {
-            { "highlightColor", [](auto component, auto value){ component->set_highlightColor(value); }},
-            { "defaultColor",   [](auto component, auto value){ component->set_defaultColor(value); }}
+            { "highlightColor", [](auto component, auto value){ component.highlightColor = value; }},
+            { "defaultColor",   [](auto component, auto value){ component.defaultColor = value; }}
         };
     }
 
     void ClickableTextHandler::HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
-        auto clickableText = reinterpret_cast<ClickableText*>(componentType.component);
+        ClickableText clickableText {componentType.component.convert()};
 
         auto onClickItr = componentType.data.find("onClick");
         if (onClickItr != componentType.data.end() && !onClickItr->second.empty()) {
             auto action = parserParams.TryGetAction(onClickItr->second);
-            if (action) clickableText->onClick += action->GetFunction();
+            if (action) clickableText.onClick += action->GetFunction();
             else ERROR("Action '{}' could not be found", onClickItr->second);
         }
 
         auto clickEventItr = componentType.data.find("click-event");
         if (clickEventItr != componentType.data.end() && !clickEventItr->second.empty()) {
             auto parserEvent = parserParams.GetEvent(clickEventItr->second);
-            clickableText->onClick += [parserEvent](){
+            clickableText.onClick += [parserEvent](){
                 if (!parserEvent.expired()) {
                     parserEvent.lock()->Invoke();
                 } else {

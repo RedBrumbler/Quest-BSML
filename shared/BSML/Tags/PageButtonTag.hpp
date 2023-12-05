@@ -7,6 +7,6 @@ namespace BSML {
         public:
             PageButtonTag() : BSMLTag() {}
         protected:
-            virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
+            virtual UnityEngine::GameObject CreateObject(UnityEngine::Transform parent) const override;
     };
 }

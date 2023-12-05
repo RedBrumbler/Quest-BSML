@@ -13,38 +13,40 @@ using namespace UnityEngine;
 namespace BSML {
     static BSMLNodeParser<TabSelectorTag> tabSelectorTagParser({"tab-select", "tab-selector"});
 
-    HMUI::TextSegmentedControl* get_tabSelectorTagTemplate() {
+    HMUI::TextSegmentedControl get_tabSelectorTagTemplate() {
         static SafePtrUnity<HMUI::TextSegmentedControl> tabSelectorTagTemplate;
         if (!tabSelectorTagTemplate) {
-            tabSelectorTagTemplate = Resources::FindObjectsOfTypeAll<HMUI::TextSegmentedControl*>().FirstOrDefault(
-                [](auto x) { 
-                    auto parent = x->get_transform()->get_parent();
+            tabSelectorTagTemplate = Resources::FindObjectsOfTypeAll<HMUI::TextSegmentedControl>().FirstOrDefault(
+                [](auto x) {
+                    auto parent = x.transform.parent;
                     if (!parent) return false;
-                    if (parent->get_name() != "PlayerStatisticsViewController") return false;
-                    return x->container != nullptr;
+                    if (parent.name != "PlayerStatisticsViewController") return false;
+                    return x.container != nullptr;
                 });
         }
-        return tabSelectorTagTemplate.ptr();
+        return HMUI::TextSegmentedControl(tabSelectorTagTemplate.ptr());
     }
-    UnityEngine::GameObject* TabSelectorTag::CreateObject(UnityEngine::Transform* parent) const {
+
+    UnityEngine::GameObject TabSelectorTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating TabSelector");
-        auto textSegmentedControl = Object::Instantiate(get_tabSelectorTagTemplate(), parent, false);
-        textSegmentedControl->dataSource = nullptr;
+        auto tabSelectorTagTemplate = get_tabSelectorTagTemplate();
+        auto textSegmentedControl = Object::Instantiate(tabSelectorTagTemplate, parent, false);
+        textSegmentedControl.dataSource = HMUI::SegmentedControl::IDataSource(nullptr);
 
-        auto gameObject = textSegmentedControl->get_gameObject();
-        gameObject->set_name("BSMLTabSelector");
-        textSegmentedControl->container = get_tabSelectorTagTemplate()->container;
+        auto gameObject = textSegmentedControl.gameObject;
+        gameObject.name = "BSMLTabSelector";
+        textSegmentedControl._container = tabSelectorTagTemplate._container;
 
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
-        transform->set_anchoredPosition({0, 0});
-        int childCount = transform->get_childCount();
+        RectTransform transform {gameObject.transform.convert()};
+        transform.anchoredPosition = {0, 0};
+        int childCount = transform.childCount;
         for (int i = 1; i <= childCount; i++) {
-            Object::DestroyImmediate(transform->GetChild(childCount - i)->get_gameObject());
+            Object::DestroyImmediate(transform.GetChild(childCount - i).gameObject);
         }
 
-        gameObject->AddComponent<TabSelector*>()->textSegmentedControl = textSegmentedControl;
-        gameObject->SetActive(true);
-        
+        gameObject.AddComponent<TabSelector>().textSegmentedControl = textSegmentedControl;
+        gameObject.SetActive(true);
+
         return gameObject;
     }
 }

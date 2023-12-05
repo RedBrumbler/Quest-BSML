@@ -18,11 +18,11 @@ namespace BSML {
             BSMLNode();
             ~BSMLNode();
 
-            virtual void Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const;
-            virtual void HandleChildren(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const;
+            virtual void Handle(UnityEngine::Transform parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const;
+            virtual void HandleChildren(UnityEngine::Transform parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const;
             bool valid() const;
             void AddChild(BSMLNode* child);
-            
+
             friend class ::BSML::BSMLDocParser;
             friend class ::BSML::BSMLNodeParserBase;
             friend class ::BSML::BSMLParser;

@@ -4,9 +4,9 @@
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 
 namespace BSML {
-    class ContentSizeFitterHandler : public TypeHandler<UnityEngine::UI::ContentSizeFitter*> {
+    class ContentSizeFitterHandler : public TypeHandler<UnityEngine::UI::ContentSizeFitter> {
         public:
-            using Base = TypeHandler<UnityEngine::UI::ContentSizeFitter*>;
+            using Base = TypeHandler<UnityEngine::UI::ContentSizeFitter>;
             ContentSizeFitterHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

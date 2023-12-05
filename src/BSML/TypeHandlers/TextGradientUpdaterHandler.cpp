@@ -15,11 +15,11 @@ namespace BSML {
 
     TextGradientUpdaterHandler::Base::SetterMap TextGradientUpdaterHandler::get_setters() const {
         return {
-            { "gradientScrollSpeed",    [](auto component, auto value){ component->scrollSpeed = value; }},
-            { "gradientScrollRepeat",   [](auto component, auto value){ component->scrollRepeat = value; }},
-            { "gradientColors",         [](auto component, auto value){ component->set_gradient(BSML::Gradient::Parse(value)); }},
-            { "gradientFixedStep",      [](auto component, auto value){ component->fixedStep = value; }},
-            { "gradientStepSize",       [](auto component, auto value){ component->stepSize = value; }}
+            { "gradientScrollSpeed",    [](auto component, auto value){ component.scrollSpeed = value; }},
+            { "gradientScrollRepeat",   [](auto component, auto value){ component.scrollRepeat = value; }},
+            { "gradientColors",         [](auto component, auto value){ component.gradient = BSML::Gradient::Parse(value); }},
+            { "gradientFixedStep",      [](auto component, auto value){ component.fixedStep = value; }},
+            { "gradientStepSize",       [](auto component, auto value){ component.stepSize = value; }}
         };
     }
 }

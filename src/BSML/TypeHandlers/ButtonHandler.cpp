@@ -26,23 +26,23 @@ namespace BSML {
 
     void ButtonHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         Base::HandleType(componentType, parserParams);
-        auto button = reinterpret_cast<Button*>(componentType.component);
+        Button button {componentType.component.convert()};
         auto event = Button::ButtonClickedEvent::New_ctor();
-        button->set_onClick(event);
+        button.onClick = event;
     }
 
     void ButtonHandler::HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         Base::HandleTypeAfterParse(componentType, parserParams);
-        
-        auto button = reinterpret_cast<Button*>(componentType.component);
-        auto event = button->get_onClick();
+
+        Button button {componentType.component.convert()};
+        auto event = button.onClick;
 
         // it was a button!
         auto onClickItr = componentType.data.find("onClick");
         if (onClickItr != componentType.data.end() && !onClickItr->second.empty()) {
             auto action = parserParams.TryGetAction(onClickItr->second);
             if (action) {
-                event->AddListener(action->GetUnityAction());
+                event.AddListener(action->GetUnityAction());
             }
         }
 
@@ -56,7 +56,7 @@ namespace BSML {
                     ERROR("Event pointer expired, are you saving your parser params?");
                 }
             });
-            event->AddListener(action);
+            event.AddListener(action);
         }
     }
 }

@@ -12,8 +12,8 @@ namespace BSML::Concepts {
     concept BSMLConvertible = std::is_convertible_v<T, U>;
 
     template<typename T>
-    concept HasGameObject = !BSMLConvertible<T, UnityEngine::GameObject*> && requires (T a) { {a->get_gameObject() } -> BSMLConvertible<UnityEngine::GameObject*>; };
+    concept HasGameObject = !BSMLConvertible<T*, UnityEngine::GameObject*> && requires (T a) { {a.get_gameObject() } -> BSMLConvertible<UnityEngine::GameObject>; };
 
     template<typename T>
-    concept HasTransform = !BSMLConvertible<T, UnityEngine::Transform*> && requires (T a) { {a->get_transform() } -> BSMLConvertible<UnityEngine::Transform*>; };
+    concept HasTransform = !BSMLConvertible<T*, UnityEngine::Transform*> && requires (T a) { {a.get_transform() } -> BSMLConvertible<UnityEngine::Transform>; };
 }

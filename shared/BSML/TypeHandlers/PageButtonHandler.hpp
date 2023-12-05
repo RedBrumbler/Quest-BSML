@@ -4,9 +4,9 @@
 #include "../Components/PageButton.hpp"
 
 namespace BSML {
-    class PageButtonHandler : public TypeHandler<BSML::PageButton*> {
+    class PageButtonHandler : public TypeHandler<BSML::PageButton> {
         public:
-            using Base = TypeHandler<BSML::PageButton*>;
+            using Base = TypeHandler<BSML::PageButton>;
             PageButtonHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

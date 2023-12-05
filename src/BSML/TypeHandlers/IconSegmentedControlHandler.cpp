@@ -19,14 +19,14 @@ namespace BSML {
     }
 
     void IconSegmentedControlHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
-        auto textControl = reinterpret_cast<HMUI::IconSegmentedControl*>(componentType.component);
+        HMUI::IconSegmentedControl textControl {componentType.component.convert()};
         auto& data = componentType.data;
 
         auto dataItr = data.find("data");
         if (dataItr != data.end() && !dataItr->second.empty()) {
             auto val = parserParams.TryGetValue(dataItr->second);
-            List<HMUI::IconSegmentedControl::DataItem*>* iconData = val ? val->GetValue<List<HMUI::IconSegmentedControl::DataItem*>*>() : nullptr;
-            static auto dataKlass = classof(List<HMUI::IconSegmentedControl::DataItem*>*);
+            List<HMUI::IconSegmentedControl::DataItem>* iconData = val ? val->GetValue<List<HMUI::IconSegmentedControl::DataItem>*>() : nullptr;
+            static auto dataKlass = classof(List<HMUI::IconSegmentedControl::DataItem>*);
             if (iconData && il2cpp_functions::class_is_assignable_from(iconData->klass, dataKlass) && iconData->get_Count() > 0) {
                 textControl->SetData(iconData->ToArray());
             } else if (iconData && !il2cpp_functions::class_is_assignable_from(iconData->klass, dataKlass)) {
@@ -41,7 +41,7 @@ namespace BSML {
         if (selectCellItr != data.end() && !selectCellItr->second.empty()) {
             auto action = parserParams.TryGetAction(selectCellItr->second);
 
-            if (action) textControl->add_didSelectCellEvent(action->GetSystemAction<HMUI::SegmentedControl*, int>());
+            if (action) textControl.add_didSelectCellEvent(action->GetSystemAction<HMUI::SegmentedControl, int>());
             else ERROR("Action '{}' could not be found", selectCellItr->second);
         }
 

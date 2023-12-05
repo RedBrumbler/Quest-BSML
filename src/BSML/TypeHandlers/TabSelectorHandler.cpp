@@ -14,17 +14,17 @@ namespace BSML {
 
     TabSelectorHandler::Base::SetterMap TabSelectorHandler::get_setters() const {
         return {
-            {"tabTag",          [](auto component, auto value){ component->tabTag = value; if (value.empty()) ERROR("Tab selector must have tab-tag!"); }},
-            {"pageCount",       [](auto component, auto value){ component->set_pageCount(value); }},
-            {"leftButtonTag",   [](auto component, auto value){ component->leftButtonTag = value; }},
-            {"rightButtonTag",  [](auto component, auto value){ component->rightButtonTag = value; }}
+            {"tabTag",          [](auto component, auto value){ component.tabTag = value; if (value.empty()) ERROR("Tab selector must have tab-tag!"); }},
+            {"pageCount",       [](auto component, auto value){ component.pageCount = value; }},
+            {"leftButtonTag",   [](auto component, auto value){ component.leftButtonTag = value; }},
+            {"rightButtonTag",  [](auto component, auto value){ component.rightButtonTag = value; }}
         };
     }
 
     void TabSelectorHandler::HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         Base::HandleTypeAfterParse(componentType, parserParams);
-        auto tabSelector = reinterpret_cast<TabSelector*>(componentType.component);
+        auto tabSelector = TabSelector(componentType.component.convert());
 
-        tabSelector->Setup(parserParams);
+        tabSelector.Setup(parserParams);
     }
 }

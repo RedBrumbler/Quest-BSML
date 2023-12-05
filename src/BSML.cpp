@@ -17,83 +17,83 @@ namespace BSML {
         return BSMLParser::parse(str);
     }
 
-    std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, Il2CppObject* host) {
+    std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, bs_hook::Il2CppWrapperType host) {
         Init();
         return BSMLParser::parse_and_construct(str, parent, host);
     }
 
     namespace Register {
-        MenuButton* RegisterMenuButton(std::string_view text, std::string_view hoverHint, std::function<void(void)> onClick) {
+        MenuButton RegisterMenuButton(std::string_view text, std::string_view hoverHint, std::function<void(void)> onClick) {
             Init();
             auto btn = MenuButton::Make_new(text, hoverHint, onClick);
             if (RegisterMenuButton(btn)) return btn;
-            btn->Finalize();
+            btn.Finalize();
             return nullptr;
         }
 
-        bool RegisterMenuButton(MenuButton* button) {
+        bool RegisterMenuButton(MenuButton button) {
             Init();
-            return MenuButtons::get_instance()->Registerbutton(button);
+            return MenuButtons::get_instance().Registerbutton(button);
         }
 
-        bool UnRegisterMenuButton(MenuButton* button) {
+        bool UnRegisterMenuButton(MenuButton button) {
             Init();
-            return MenuButtons::get_instance()->UnRegisterbutton(button);
+            return MenuButtons::get_instance().UnRegisterbutton(button);
         }
 
-        bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons) {
+        bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, bs_hook::Il2CppWrapperType host, bool enableExtraButtons) {
             Init();
-            return BSMLSettings::get_instance()->TryAddSettingsMenu(name, content_key, host, enableExtraButtons);
+            return BSMLSettings::get_instance().TryAddSettingsMenu(name, content_key, host, enableExtraButtons);
         }
 
-        bool RegisterSettingsMenu(std::string_view name, System::Type* csType, MenuSource menuSource, bool enableExtraButtons) {
+        bool RegisterSettingsMenu(std::string_view name, System::Type csType, MenuSource menuSource, bool enableExtraButtons) {
             Init();
             if (menuSource != BSML::MenuSource::ViewController && menuSource != BSML::MenuSource::FlowCoordinator)
                 throw std::runtime_error("Menu Source was not view controller or flow coordinator!");
-            return BSMLSettings::get_instance()->TryAddSettingsMenu(csType, name, menuSource, enableExtraButtons);
+            return BSMLSettings::get_instance().TryAddSettingsMenu(csType, name, menuSource, enableExtraButtons);
         }
 
-        bool RegisterSettingsMenu(std::string_view name, std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate, bool enableExtraButtons) {
+        bool RegisterSettingsMenu(std::string_view name, std::function<void(HMUI::ViewController, bool, bool, bool)> viewControllerDidActivate, bool enableExtraButtons) {
             Init();
-            return BSMLSettings::get_instance()->TryAddSettingsMenu(viewControllerDidActivate, name, enableExtraButtons);
+            return BSMLSettings::get_instance().TryAddSettingsMenu(viewControllerDidActivate, name, enableExtraButtons);
         }
 
-        bool UnRegisterSettingsMenu(Il2CppObject* host) {
+        bool UnRegisterSettingsMenu(bs_hook::Il2CppWrapperType host) {
             Init();
-            return BSMLSettings::get_instance()->RemoveSettingsMenu(host);
+            return BSMLSettings::get_instance().RemoveSettingsMenu(host);
         }
 
-        bool RegisterGameplaySetupTab(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType) {
+        bool RegisterGameplaySetupTab(std::string_view name, std::string_view content_key, bs_hook::Il2CppWrapperType host, MenuType menuType) {
             Init();
-            return BSML::GameplaySetup::get_instance()->AddTab(name, content_key, host, menuType);
+            return BSML::GameplaySetup::get_instance().AddTab(name, content_key, host, menuType);
         }
 
-        bool RegisterGameplaySetupTab(System::Type* csType, std::string_view name, MenuType menuType) {
+        bool RegisterGameplaySetupTab(System::Type csType, std::string_view name, MenuType menuType) {
             Init();
-            return BSML::GameplaySetup::get_instance()->AddTab(csType, name, menuType);
+            return BSML::GameplaySetup::get_instance().AddTab(csType, name, menuType);
         }
 
-        bool RegisterGameplaySetupTab(std::string_view name, std::function<void(UnityEngine::GameObject*, bool)> didActivate, MenuType menuType) {
+        bool RegisterGameplaySetupTab(std::string_view name, std::function<void(UnityEngine::GameObject, bool)> didActivate, MenuType menuType) {
             Init();
-            return BSML::GameplaySetup::get_instance()->AddTab(didActivate, name, menuType);
+            return BSML::GameplaySetup::get_instance().AddTab(didActivate, name, menuType);
         }
 
         bool UnRegisterGameplaySetupTab(std::string_view name) {
             Init();
-            return BSML::GameplaySetup::get_instance()->RemoveTab(name);
+            return BSML::GameplaySetup::get_instance().RemoveTab(name);
         }
 
-        void RegisterMainMenuFlowCoordinator(const std::string_view& buttonText, const std::string_view& hoverhint, System::Type* flowCoordinatorType) {
+        void RegisterMainMenuFlowCoordinator(const std::string_view& buttonText, const std::string_view& hoverhint, System::Type flowCoordinatorType) {
             Init();
             AddMainMenuRegistration(new MainMenuRegistration("", buttonText, hoverhint, flowCoordinatorType, MenuSource::FlowCoordinator));
         }
 
-        void RegisterMainMenuViewController(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, System::Type* viewControllerType) {
+        void RegisterMainMenuViewController(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, System::Type viewControllerType) {
             Init();
             AddMainMenuRegistration(new MainMenuRegistration(title, buttonText, hoverhint, viewControllerType, MenuSource::ViewController));
         }
 
-        void RegisterMainMenuViewControllerMethod(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate) {
+        void RegisterMainMenuViewControllerMethod(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverhint, std::function<void(HMUI::ViewController, bool, bool, bool)> viewControllerDidActivate) {
             Init();
             AddMainMenuRegistration(new MainMenuRegistration(title, buttonText, hoverhint, viewControllerDidActivate));
         }

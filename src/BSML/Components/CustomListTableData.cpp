@@ -14,109 +14,109 @@ using namespace UnityEngine;
 
 namespace BSML {
     void CustomListTableData::ctor() {
-        data = List<CustomCellInfo*>::New_ctor();
+        data = List<CustomCellInfo>::New_ctor();
         cellSize = 8.5f;
         reuseIdentifier = "BSMLListTableCell";
 
         blackSprite = Utilities::LoadSpriteFromTexture(Texture2D::get_blackTexture(), 1);
     }
 
-    HMUI::TableCell* CustomListTableData::CellForIdx(HMUI::TableView* tableView, int idx) {
+    HMUI::TableCell CustomListTableData::CellForIdx(HMUI::TableView tableView, int idx) {
         auto cellInfo = data[idx];
-        if (!cellInfo) return nullptr; 
-        switch (get_listStyle()) {
+        if (!cellInfo) return nullptr;
+        switch (listStyle) {
             case ListStyle::List: {
                 auto tableCell = GetTableCell();
-                auto nameText = tableCell->songNameText;
-                auto authorText = tableCell->songAuthorText;
+                auto nameText = tableCell.songNameText;
+                auto authorText = tableCell.songAuthorText;
 
-                tableCell->songBpmText->get_gameObject()->SetActive(false);
-                tableCell->songDurationText->get_gameObject()->SetActive(false);
-                tableCell->favoritesBadgeImage->get_gameObject()->SetActive(false);
+                tableCell.songBpmText.gameObject.SetActive(false);
+                tableCell.songDurationText.gameObject.SetActive(false);
+                tableCell.favoritesBadgeImage.gameObject.SetActive(false);
 
                 // new stuff in 1.28.0 that needs to be disabled
                 // TODO: make it a feature to make this usable?
-                tableCell->updatedBadgeGo->SetActive(false);
-                tableCell->promoBadgeGo->SetActive(false);
+                tableCell.updatedBadgeGo.SetActive(false);
+                tableCell.promoBadgeGo.SetActive(false);
 
                 static ConstString bpmIcon("BpmIcon");
-                tableCell->get_transform()->Find(bpmIcon)->get_gameObject()->SetActive(false);
+                tableCell.transform.Find(bpmIcon).gameObject.SetActive(false);
 
                 if (expandCell) {
-                    nameText->get_rectTransform()->set_anchorMax({2, 0.5f});
-                    authorText->get_rectTransform()->set_anchorMax({2, 0.5f});
+                    nameText.rectTransform.anchorMax = {2, 0.5f};
+                    authorText.rectTransform.anchorMax = {2, 0.5f};
                 }
 
-                nameText->set_text(cellInfo->text);
-                authorText->set_text(cellInfo->subText ? cellInfo->subText : "");
-                tableCell->coverImage->set_sprite(cellInfo->icon ? cellInfo->icon : blackSprite);
+                nameText.text = cellInfo.text;
+                authorText.text = cellInfo.subText ? cellInfo.subText : "";
+                tableCell.coverImage.sprite = cellInfo.icon ? cellInfo.icon : blackSprite;
                 return tableCell;
             }
             case ListStyle::Box: {
                 auto tableCell = GetBoxTableCell();
-                tableCell->SetData(cellInfo->icon == nullptr ? blackSprite : cellInfo->icon);
+                tableCell.SetData(cellInfo.icon == nullptr ? blackSprite : cellInfo.icon);
                 return tableCell;
             }
             case ListStyle::Simple: {
                 auto tableCell = GetSimpleTextTableCell();
-                tableCell->text->set_richText(true);
-                tableCell->text->set_enableWordWrapping(true);
-                tableCell->set_text(cellInfo->text);
+                tableCell.text.richText = true;
+                tableCell.text.enableWordWrapping = true;
+                tableCell.text = cellInfo.text;
                 return tableCell;
             }
         }
 
-        return nullptr;
+        return HMUI::TableCell{nullptr};
     }
 
-    GlobalNamespace::LevelListTableCell* CustomListTableData::GetTableCell() {
-        auto tableCell = reinterpret_cast<GlobalNamespace::LevelListTableCell*>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
+    GlobalNamespace::LevelListTableCell CustomListTableData::GetTableCell() {
+        auto tableCell = GlobalNamespace::LevelListTableCell(tableView.DequeueReusableCellForIdentifier(reuseIdentifier).convert());
 
         if (!tableCell) {
-            if (!levelListTableCell || !levelListTableCell->m_CachedPtr.m_value) {
-                levelListTableCell = Resources::FindObjectsOfTypeAll<GlobalNamespace::LevelListTableCell*>().FirstOrDefault([](auto x){ return x->get_name() == "LevelListTableCell"; });
+            if (!levelListTableCell || !levelListTableCell.m_CachedPtr) {
+                levelListTableCell = Resources::FindObjectsOfTypeAll<GlobalNamespace::LevelListTableCell>().FirstOrDefault([](auto x){ return x.name == "LevelListTableCell"; });
             }
 
             tableCell = Object::Instantiate(levelListTableCell);
         }
 
-        tableCell->notOwned = false;
-        tableCell->set_reuseIdentifier(reuseIdentifier);
+        tableCell.notOwned = false;
+        tableCell.reuseIdentifier = reuseIdentifier;
         return tableCell;
     }
 
-    GlobalNamespace::SimpleTextTableCell* CustomListTableData::GetSimpleTextTableCell() {
-        auto tableCell = reinterpret_cast<GlobalNamespace::SimpleTextTableCell*>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
-        
+    GlobalNamespace::SimpleTextTableCell CustomListTableData::GetSimpleTextTableCell() {
+        auto tableCell = GlobalNamespace::SimpleTextTableCell(tableView.DequeueReusableCellForIdentifier(reuseIdentifier).convert());
+
         if (!tableCell) {
-            if (!simpleTextTableCell || !simpleTextTableCell->m_CachedPtr.m_value) {
-                simpleTextTableCell = Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleTextTableCell*>().FirstOrDefault([](auto x){ return x->get_name() == "SimpleTextTableCell"; });
+            if (!simpleTextTableCell || !simpleTextTableCell.m_CachedPtr) {
+                simpleTextTableCell = Resources::FindObjectsOfTypeAll<GlobalNamespace::SimpleTextTableCell>().FirstOrDefault([](auto x){ return x.name == "SimpleTextTableCell"; });
             }
 
             tableCell = Object::Instantiate(simpleTextTableCell);
         }
 
-        tableCell->set_reuseIdentifier(reuseIdentifier);
+        tableCell.reuseIdentifier = reuseIdentifier;
         return tableCell;
     }
 
-    BSML::BoxTableCell* CustomListTableData::GetBoxTableCell() {
-        auto tableCell = reinterpret_cast<BSML::BoxTableCell*>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
+    BSML::BoxTableCell CustomListTableData::GetBoxTableCell() {
+        auto tableCell = BSML::BoxTableCell(tableView.DequeueReusableCellForIdentifier(reuseIdentifier).convert());
 
         if (!tableCell) {
-            if (!levelPackCell || !levelPackCell->m_CachedPtr.m_value) {
-                levelPackCell = Resources::FindObjectsOfTypeAll<GlobalNamespace::LevelPackCell*>().FirstOrDefault([](auto x){ return x->get_name() == "AnnotatedBeatmapLevelCollectionCell"; });
+            if (!levelPackCell || !levelPackCell.m_CachedPtr) {
+                levelPackCell = Resources::FindObjectsOfTypeAll<GlobalNamespace::LevelPackCell>().FirstOrDefault([](auto x){ return x.name == "AnnotatedBeatmapLevelCollectionCell"; });
             }
             tableCell = BSML::BoxTableCell::Create(levelPackCell);
         }
-        
-        tableCell->set_reuseIdentifier(reuseIdentifier);
+
+        tableCell.reuseIdentifier = reuseIdentifier;
         return tableCell;
     }
 
 
     CustomListTableData::ListStyle CustomListTableData::get_listStyle() {
-        return static_cast<CustomListTableData::ListStyle>(listStyle);
+        return static_cast<CustomListTableData::ListStyle>(internal.listStyle);
     }
 
     float CustomListTableData::CellSize() {
@@ -124,11 +124,11 @@ namespace BSML {
     }
 
     int CustomListTableData::NumberOfCells() {
-        return data ? data->get_Count() : 0;
+        return data ? data.Count : 0;
     }
 
     void CustomListTableData::set_listStyle(CustomListTableData::ListStyle value) {
-        listStyle = static_cast<int>(value);
+        internal.listStyle = static_cast<int>(value);
 
         switch(value) {
             default: [[fallthrough]];
@@ -136,7 +136,7 @@ namespace BSML {
                 cellSize = 8.5f;
                 break;
             case ListStyle::Box:
-                cellSize = 30 + (5 * (tableView->get_tableType() == HMUI::TableView::TableType::Horizontal));
+                cellSize = 30 + (5 * (tableView.tableType == HMUI::TableView::TableType::Horizontal));
                 break;
             case ListStyle::Simple:
                 cellSize = 8.0f;
@@ -144,13 +144,11 @@ namespace BSML {
         }
     }
 
-    HMUI::TableView::IDataSource* CustomListTableData::i_IDataSource() { return reinterpret_cast<HMUI::TableView::IDataSource*>(this); }
-
-    CustomCellInfo* CustomCellInfo::construct(StringW text, StringW subText, UnityEngine::Sprite* icon) {
+    CustomCellInfo CustomCellInfo::construct(StringW text, StringW subText, UnityEngine::Sprite icon) {
         auto instance = CustomCellInfo::New_ctor();
-        instance->text = text;
-        instance->subText = subText;
-        instance->icon = icon;
+        instance.text = text;
+        instance.subText = subText;
+        instance.icon = icon;
         return instance;
     }
 

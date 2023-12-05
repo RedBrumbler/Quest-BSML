@@ -2,17 +2,17 @@
 #include "UnityEngine/UI/Image.hpp"
 #include "Helpers/utilities.hpp"
 
-UnityEngine::UI::Image* GetHandleImage(BSML::ScrollIndicator* indicator) {
-    return indicator->get_Handle()->GetComponent<UnityEngine::UI::Image*>();
+UnityEngine::UI::Image GetHandleImage(BSML::ScrollIndicator indicator) {
+    return indicator.Handle.GetComponent<UnityEngine::UI::Image>();
 }
 
-void TrySetHandleColor(BSML::ScrollIndicator* indicator, const StringParseHelper& htmlColor) {
-    auto v = htmlColor.tryParseColor(); 
+void TrySetHandleColor(BSML::ScrollIndicator indicator, const StringParseHelper& htmlColor) {
+    auto v = htmlColor.tryParseColor();
     if (v.has_value())
-    GetHandleImage(indicator)->set_color(v.value());
+    GetHandleImage(indicator).color = v.value();
 }
 
-namespace BSML { 
+namespace BSML {
     static ScrollIndicatorHandler scrollIndicatorHandler{};
 
     ScrollIndicatorHandler::Base::PropMap ScrollIndicatorHandler::get_props() const {

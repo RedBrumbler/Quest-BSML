@@ -13,38 +13,38 @@ using namespace UnityEngine;
 
 namespace BSML {
     static BSMLNodeParser<VerticalIconSegmentedControlTag> vericalIconSegmentedControlTag({"vertical-icon-segments"});
-    
-    HMUI::IconSegmentedControl* get_verticalIconSegmentedControlTemplate() {
+
+    HMUI::IconSegmentedControl get_verticalIconSegmentedControlTemplate() {
         static SafePtrUnity<HMUI::IconSegmentedControl> verticalIconSegmentedControlTemplate;
         if (!verticalIconSegmentedControlTemplate) {
-            auto vc = Resources::FindObjectsOfTypeAll<GlobalNamespace::PlatformLeaderboardViewController*>().FirstOrDefault();
-            verticalIconSegmentedControlTemplate = vc->scopeSegmentedControl;
+            auto vc = Resources::FindObjectsOfTypeAll<GlobalNamespace::PlatformLeaderboardViewController>().FirstOrDefault();
+            verticalIconSegmentedControlTemplate = vc._scopeSegmentedControl;
         }
-        return verticalIconSegmentedControlTemplate.ptr();
+        return HMUI::IconSegmentedControl(verticalIconSegmentedControlTemplate.ptr());
     }
 
-    UnityEngine::GameObject* VerticalIconSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject VerticalIconSegmentedControlTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating VerticalIconSegmentedControl");
         auto verticalIconSegmentedControlTemplate = get_verticalIconSegmentedControlTemplate();
         auto verticalIconSegmentedControl = Object::Instantiate(verticalIconSegmentedControlTemplate, parent, false);
-        verticalIconSegmentedControl->dataSource = nullptr;
+        verticalIconSegmentedControl.dataSource = HMUI::SegmentedControl::IDataSource{nullptr};
 
-        auto gameObject = verticalIconSegmentedControl->get_gameObject();
-        gameObject->set_name("BSMLVerticalIconSegmentedControl");
-        verticalIconSegmentedControl->container = verticalIconSegmentedControlTemplate->container;
-        
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
-        transform->set_anchorMin({0.5f, 0.5f});
-        transform->set_anchorMax({0.5f, 0.5f});
-        transform->set_anchoredPosition({0, 0});
-        transform->set_pivot({0.5f, 0.5f});
+        auto gameObject = verticalIconSegmentedControl.gameObject;
+        gameObject.name = "BSMLVerticalIconSegmentedControl";
+        verticalIconSegmentedControl._container = verticalIconSegmentedControlTemplate._container;
 
-        int childCount = transform->get_childCount();
+        RectTransform transform {gameObject.transform.convert()};
+        transform.anchorMin = {0.5f, 0.5f};
+        transform.anchorMax = {0.5f, 0.5f};
+        transform.anchoredPosition = {0, 0};
+        transform.pivot = {0.5f, 0.5f};
+
+        int childCount = transform.childCount;
         for (int i = 1; i <= childCount; i++) {
-            Object::DestroyImmediate(transform->GetChild(childCount - i)->get_gameObject());
+            Object::DestroyImmediate(transform.GetChild(childCount - i).gameObject);
         }
 
-        gameObject->SetActive(true);
+        gameObject.SetActive(true);
         return gameObject;
     }
 }

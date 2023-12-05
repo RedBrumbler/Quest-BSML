@@ -4,9 +4,9 @@
 #include "BSML/Components/ProgressBar.hpp"
 
 namespace BSML {
-    class ProgressBarHandler : public TypeHandler<ProgressBar*> {
+    class ProgressBarHandler : public TypeHandler<ProgressBar> {
         public:
-            using Base = TypeHandler<ProgressBar*>;
+            using Base = TypeHandler<ProgressBar>;
             ProgressBarHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

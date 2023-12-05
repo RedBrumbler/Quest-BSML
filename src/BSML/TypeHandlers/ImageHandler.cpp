@@ -14,8 +14,8 @@ namespace BSML {
     ImageHandler::Base::SetterMap ImageHandler::get_setters() const {
         return {
             {"image",           [](auto component, auto value){ Utilities::SetImage(component, value); }},
-            {"preserveAspect",  [](auto component, auto value){ component->set_preserveAspect(value); }},
-            {"imageColor",      [](auto component, auto value){ component->set_color(value); }}
+            {"preserveAspect",  [](auto component, auto value){ component.preserveAspect = value; }},
+            {"imageColor",      [](auto component, auto value){ component.color = value; }}
         };
     }
 }

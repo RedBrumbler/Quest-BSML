@@ -25,111 +25,111 @@ DEFINE_TYPE(BSML, BSMLSettings);
 
 namespace BSML {
     SafePtr<BSMLSettings> BSMLSettings::instance;
-    BSMLSettings* BSMLSettings::get_instance() {
+    BSMLSettings BSMLSettings::get_instance() {
         if (!instance) {
             instance.emplace(BSMLSettings::New_ctor());
         }
-        return instance.ptr();
+        return BSMLSettings(instance.ptr());
     }
 
-    ListWrapper<BSML::CustomCellInfo*> BSMLSettings::get_settingsMenus() {
-        if (!settingsMenus) {
-            settingsMenus = List<CustomCellInfo*>::New_ctor();
+    ListWrapper<BSML::CustomCellInfo> BSMLSettings::get_settingsMenus() {
+        if (!_settingsMenus) {
+            _settingsMenus = List<CustomCellInfo>::New_ctor();
         }
-        return settingsMenus;
+        return _settingsMenus;
     }
-    ModSettingsFlowCoordinator* BSMLSettings::get_modSettingsFlowCoordinator() {
-        if (!modSettingsFlowCoordinator || !modSettingsFlowCoordinator->m_CachedPtr.m_value) {
-            modSettingsFlowCoordinator = Helpers::CreateFlowCoordinator<ModSettingsFlowCoordinator*>();
+    ModSettingsFlowCoordinator BSMLSettings::get_modSettingsFlowCoordinator() {
+        if (!_modSettingsFlowCoordinator || !_modSettingsFlowCoordinator.m_CachedPtr) {
+            _modSettingsFlowCoordinator = Helpers::CreateFlowCoordinator<ModSettingsFlowCoordinator>();
         }
-        return modSettingsFlowCoordinator;
+        return _modSettingsFlowCoordinator;
     }
 
     void BSMLSettings::Setup() {
         DEBUG("Setup");
-        auto menus = get_settingsMenus();
-        for (auto& cell : menus) {
-            auto menu = reinterpret_cast<BSML::SettingsMenu*>(cell);
-            if (menu->viewController && menu->viewController->m_CachedPtr.m_value) {
-                UnityEngine::Object::DestroyImmediate(menu->viewController->get_gameObject());
+        auto menus = settingsMenus;
+        for (auto cell : menus) {
+            auto menu = BSML::SettingsMenu(cell.convert());
+            if (menu.viewController && menu.viewController.m_CachedPtr) {
+                UnityEngine::Object::DestroyImmediate(menu.viewController.gameObject);
             }
         }
 
         auto starter = GlobalNamespace::SharedCoroutineStarter::get_instance();
-        if (addButtonCoroutine && addButtonCoroutine->m_Ptr.m_value) {
-            starter->StopCoroutine(addButtonCoroutine);
+        if (addButtonCoroutine && addButtonCoroutine.m_Ptr) {
+            starter.StopCoroutine(addButtonCoroutine);
         }
 
-        if (!button || !button->m_CachedPtr.m_value) {
-            addButtonCoroutine = starter->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(AddButtonToMainScreen()));
+        if (!button || !button.m_CachedPtr) {
+            addButtonCoroutine = starter.StartCoroutine(custom_types::Helpers::CoroutineHelper::New(AddButtonToMainScreen()));
         }
 
         isInitialized = true;
     }
 
     void BSMLSettings::TryAddBSMLMenu() {
-        auto menus = get_settingsMenus();
+        auto menus = settingsMenus;
         if (menus.size() == 0) {
             // add bsml about
-            menus->Add(SettingsMenu::Make_new("BSML", MOD_ID "_settings_about", this, false));
+            menus.Add(SettingsMenu::Make_new("BSML", MOD_ID "_settings_about", this, false));
         }
     }
 
-    bool BSMLSettings::TryAddSettingsMenu(SettingsMenu* menu) {
-        auto menus = get_settingsMenus();
+    bool BSMLSettings::TryAddSettingsMenu(SettingsMenu menu) {
+        auto menus = settingsMenus;
         // if we find the same menu, return false
-        if (std::find_if(menus.begin(), menus.end(), [&menu](auto x){ return x->text == menu->name;}) != menus.end()) {
+        if (std::find_if(menus.begin(), menus.end(), [&menu](auto x){ return x.text == menu.name;}) != menus.end()) {
             return false;
         }
 
         // this one didn't exist yet, so check if we should add the bsml menu (first)
         TryAddBSMLMenu();
 
-        menus->Add(menu);
+        menus.Add(menu);
         if (isInitialized) {
             // per definition this is a new menu, so we can run setup if we're already initialized
-            menu->Setup();
+            menu.Setup();
         }
 
-        if (button && button->m_CachedPtr.m_value) {
-            button->get_gameObject()->SetActive(true);
+        if (button && button.m_CachedPtr) {
+            button.gameObject.SetActive(true);
         }
         return true;
     }
 
-    bool BSMLSettings::TryAddSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons) {
+    bool BSMLSettings::TryAddSettingsMenu(std::string_view name, std::string_view content_key, bs_hook::Il2CppWrapperType host, bool enableExtraButtons) {
         auto menu = SettingsMenu::Make_new(name, content_key, host, enableExtraButtons);
         if (!TryAddSettingsMenu(menu)) {
-            menu->Finalize();
+            menu.Finalize();
             return false;
         }
         return true;
     }
 
-    bool BSMLSettings::TryAddSettingsMenu(System::Type* csType, std::string_view name, MenuSource menuType, bool showExtraButtons) {
+    bool BSMLSettings::TryAddSettingsMenu(System::Type csType, std::string_view name, MenuSource menuType, bool showExtraButtons) {
         auto menu = SettingsMenu::Make_new(name, csType, menuType, showExtraButtons);
         if (!TryAddSettingsMenu(menu)) {
-            menu->Finalize();
+            menu.Finalize();
             return false;
         }
         return true;
     }
 
-    bool BSMLSettings::TryAddSettingsMenu(std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate, std::string_view name, bool showExtraButtons) {
+    bool BSMLSettings::TryAddSettingsMenu(std::function<void(HMUI::ViewController, bool, bool, bool)> viewControllerDidActivate, std::string_view name, bool showExtraButtons) {
         auto menu = SettingsMenu::Make_new(name, viewControllerDidActivate, showExtraButtons);
         if (!TryAddSettingsMenu(menu)) {
-            menu->Finalize();
+            menu.Finalize();
             return false;
         }
         return true;
     }
 
-    bool BSMLSettings::RemoveSettingsMenu(Il2CppObject* host) {
-        auto menus = get_settingsMenus();
+    bool BSMLSettings::RemoveSettingsMenu(bs_hook::Il2CppWrapperType host) {
+        auto menus = settingsMenus;
         for (auto& cell : menus) {
-            auto menu = reinterpret_cast<BSML::SettingsMenu*>(cell);
-            if (menu->host == host) {
-                menus->Remove(menu);
+            BSML::SettingsMenu menu {cell.convert()};
+            if (menu.host == host) {
+                menus.Remove(menu);
                 return true;
             }
         }
@@ -138,45 +138,45 @@ namespace BSML {
 
     void BSMLSettings::PresentSettings() {
         DEBUG("Presenting settings");
-        auto modFC = get_modSettingsFlowCoordinator();
-        modFC->isAnimating = true;
+        auto modFC = modSettingsFlowCoordinator;
+        modFC.isAnimating = true;
 
-        auto fc = Helpers::GetMainFlowCoordinator()->YoungestChildFlowCoordinatorOrSelf();
-        fc->PresentFlowCoordinator(modFC, MakeSystemAction([modFC]{
-            modFC->ShowInitial();
-            modFC->isAnimating = false;
+        auto fc = Helpers::GetMainFlowCoordinator().YoungestChildFlowCoordinatorOrSelf();
+        fc.PresentFlowCoordinator(modFC, MakeSystemAction([modFC]{
+            modFC.ShowInitial();
+            modFC.isAnimating = false;
         }), HMUI::ViewController::AnimationDirection::Horizontal, false, false);
     }
 
     custom_types::Helpers::Coroutine BSMLSettings::AddButtonToMainScreen() {
         addButtonCoroutine = nullptr;
-        GlobalNamespace::OptionsViewController* optionsViewController = nullptr;
+        GlobalNamespace::OptionsViewController optionsViewController {nullptr};
         auto wait = UnityEngine::WaitForFixedUpdate::New_ctor();
         while (!optionsViewController) {
-            optionsViewController = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::OptionsViewController*>().FirstOrDefault();
-            co_yield reinterpret_cast<System::Collections::IEnumerator*>(wait);
+            optionsViewController = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::OptionsViewController>().FirstOrDefault();
+            co_yield ::Collections::IEnumerator(wait.convert());
         }
 
-        button = UnityEngine::Object::Instantiate(optionsViewController->settingsButton, optionsViewController->get_transform()->Find("Wrapper"));
-        button->GetComponentInChildren<Polyglot::LocalizedTextMeshProUGUI*>()->set_Key("Mod Settings");
+        button = UnityEngine::Object::Instantiate(optionsViewController.settingsButton, optionsViewController.transform.Find("Wrapper"));
+        button.GetComponentInChildren<Polyglot::LocalizedTextMeshProUGUI>().Key = "Mod Settings";
         auto onClick = UnityEngine::UI::Button::ButtonClickedEvent::New_ctor();
-        button->set_onClick(onClick);
-        onClick->AddListener(MakeUnityAction(this, ___PresentSettings_MethodRegistrator.get()));
+        button.onClick = onClick;
+        onClick.AddListener(MakeUnityAction(convert(), ___PresentSettings_MethodRegistrator.get()));
 
-        if (get_settingsMenus().size() == 0)
-            button->get_gameObject()->SetActive(false);
-        
+        if (settingsMenus.size() == 0)
+            button.gameObject.SetActive(false);
+
         normal = Utilities::LoadSpriteRaw(Assets::mods_idle_png);
-        normal->get_texture()->set_wrapMode(UnityEngine::TextureWrapMode::Clamp);
+        normal.texture.wrapMode = UnityEngine::TextureWrapMode::Clamp;
         hover = Utilities::LoadSpriteRaw(Assets::mods_selected_png);
-        hover->get_texture()->set_wrapMode(UnityEngine::TextureWrapMode::Clamp);
+        hover.texture.wrapMode = UnityEngine::TextureWrapMode::Clamp;
 
-        auto buttonSpriteSwap = button->GetComponent<HMUI::ButtonSpriteSwap*>();
-        buttonSpriteSwap->disabledStateSprite = normal;
-        buttonSpriteSwap->normalStateSprite = normal;
-        buttonSpriteSwap->highlightStateSprite = hover;
-        buttonSpriteSwap->pressedStateSprite = hover;
-        button->get_transform()->SetAsFirstSibling();
+        auto buttonSpriteSwap = button.GetComponent<HMUI::ButtonSpriteSwap>();
+        buttonSpriteSwap._disabledStateSprite = normal;
+        buttonSpriteSwap._normalStateSprite = normal;
+        buttonSpriteSwap._highlightStateSprite = hover;
+        buttonSpriteSwap._pressedStateSprite = hover;
+        button.transform.SetAsFirstSibling();
         co_return;
     }
 }

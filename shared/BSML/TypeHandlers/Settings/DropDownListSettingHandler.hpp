@@ -4,9 +4,9 @@
 #include "../../Components/Settings/DropdownListSetting.hpp"
 
 namespace BSML {
-    class DropdownListSettingHandler : public TypeHandler<BSML::DropdownListSetting*> {
+    class DropdownListSettingHandler : public TypeHandler<BSML::DropdownListSetting> {
         public:
-            using Base = TypeHandler<BSML::DropdownListSetting*>;
+            using Base = TypeHandler<BSML::DropdownListSetting>;
             DropdownListSettingHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

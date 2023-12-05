@@ -14,15 +14,15 @@ namespace BSML {
         };
     }
 
-    void ReparentMacro::Execute(UnityEngine::Transform* parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
+    void ReparentMacro::Execute(UnityEngine::Transform parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
         INFO("Executing ashost macro");
         auto transformItr = data.find("transform");
         if (transformItr != data.end()) {
             auto value = parserParams.TryGetValue(transformItr->second);
             if (value) {
-                auto transform = value->GetValue<UnityEngine::Transform*>();
+                auto transform = value->GetValue<UnityEngine::Transform>();
                 if (transform) {
-                    transform->SetParent(parent, false);
+                    transform.SetParent(parent, false);
                 }
             }
         }
@@ -31,10 +31,10 @@ namespace BSML {
         if (transformsItr != data.end()) {
             auto value = parserParams.TryGetValue(transformsItr->second);
             if (value) {
-                ListWrapper<UnityEngine::Transform*> transforms = value->GetValue<List<UnityEngine::Transform*>*>();
+                ListWrapper<UnityEngine::Transform> transforms = value->GetValue<List<UnityEngine::Transform>*>();
                 if (transforms) {
                     for (auto t : transforms) {
-                        t->SetParent(parent, false);
+                        t.SetParent(parent, false);
                     }
                 }
             }

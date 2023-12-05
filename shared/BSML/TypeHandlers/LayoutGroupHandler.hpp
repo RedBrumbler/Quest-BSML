@@ -4,9 +4,9 @@
 #include "UnityEngine/UI/LayoutGroup.hpp"
 
 namespace BSML {
-    class LayoutGroupHandler : public TypeHandler<UnityEngine::UI::LayoutGroup*> {
+    class LayoutGroupHandler : public TypeHandler<UnityEngine::UI::LayoutGroup> {
         public:
-            using Base = TypeHandler<UnityEngine::UI::LayoutGroup*>;
+            using Base = TypeHandler<UnityEngine::UI::LayoutGroup>;
             LayoutGroupHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

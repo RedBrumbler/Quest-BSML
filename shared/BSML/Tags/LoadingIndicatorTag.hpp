@@ -7,6 +7,6 @@ namespace BSML {
         public:
             LoadingIndicatorTag() : BSMLTag() {}
         protected:
-            virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
+            virtual UnityEngine::GameObject CreateObject(UnityEngine::Transform parent) const override;
     };
 }

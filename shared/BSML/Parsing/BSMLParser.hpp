@@ -11,9 +11,9 @@ namespace BSML {
             ~BSMLParser();
 
             static std::shared_ptr<BSMLParser> parse(std::string_view str);
-            static std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, Il2CppObject* host);
-            void Construct(UnityEngine::Transform* parent, Il2CppObject* host);
-            static std::shared_ptr<BSMLParserParams> Construct(const BSMLNode* root, UnityEngine::Transform* parent, Il2CppObject* host);
+            static std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, bs_hook::Il2CppWrapperType host);
+            void Construct(UnityEngine::Transform parent, bs_hook::Il2CppWrapperType host);
+            static std::shared_ptr<BSMLParserParams> Construct(const BSMLNode* root, UnityEngine::Transform* parent, bs_hook::Il2CppWrapperType host);
 
             std::shared_ptr<BSMLParserParams> parserParams;
             BSMLNode* root;

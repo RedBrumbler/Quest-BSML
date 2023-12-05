@@ -8,7 +8,7 @@ namespace BSML {
         public:
             ButtonTag() : BSMLTag() {}
         protected:
-            virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
-            virtual UnityEngine::UI::Button* get_buttonPrefab() const;
+            virtual UnityEngine::GameObject CreateObject(UnityEngine::Transform parent) const override;
+            virtual UnityEngine::UI::Button get_buttonPrefab() const;
     };
 }

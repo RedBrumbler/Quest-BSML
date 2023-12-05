@@ -21,112 +21,115 @@
 
 DEFINE_TYPE(BSML, FloatingScreen);
 
+static inline UnityEngine::AdditionalCanvasShaderChannels operator |(UnityEngine::AdditionalCanvasShaderChannels a, UnityEngine::AdditionalCanvasShaderChannels b) {
+    return a | b;
+}
 namespace BSML {
     SafePtrUnity<UnityEngine::Material> FloatingScreen::_fogMaterial;
-    FloatingScreen* FloatingScreen::CreateFloatingScreen(UnityEngine::Vector2 screenSize, bool createHandle, UnityEngine::Vector3 position, UnityEngine::Quaternion rotation, float curvatureRadius, bool hasBackground) {
-        auto components = ArrayW<System::Type*>(static_cast<il2cpp_array_size_t>(5));
-        components[0] = csTypeOf(BSML::FloatingScreen*);
-        components[1] = csTypeOf(UnityEngine::UI::CanvasScaler*);
-        components[2] = csTypeOf(UnityEngine::UI::RectMask2D*);
-        components[3] = csTypeOf(VRUIControls::VRGraphicRaycaster*);
-        components[4] = csTypeOf(HMUI::CurvedCanvasSettings*);
+    FloatingScreen FloatingScreen::CreateFloatingScreen(UnityEngine::Vector2 screenSize, bool createHandle, UnityEngine::Vector3 position, UnityEngine::Quaternion rotation, float curvatureRadius, bool hasBackground) {
+        auto components = ArrayW<System::Type>(static_cast<il2cpp_array_size_t>(5));
+        components[0] = csTypeOf(BSML::FloatingScreen);
+        components[1] = csTypeOf(UnityEngine::UI::CanvasScaler);
+        components[2] = csTypeOf(UnityEngine::UI::RectMask2D);
+        components[3] = csTypeOf(VRUIControls::VRGraphicRaycaster);
+        components[4] = csTypeOf(HMUI::CurvedCanvasSettings);
 
-        auto screen = UnityEngine::GameObject::New_ctor("BSMLFloatingScreen", components)->GetComponent<FloatingScreen*>();
-        screen->GetComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
+        auto screen = UnityEngine::GameObject::New_ctor("BSMLFloatingScreen", components).GetComponent<FloatingScreen>();
+        screen.GetComponent<VRUIControls::VRGraphicRaycaster>().physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
 
-        auto curvedCanvasSettings = screen->GetComponent<HMUI::CurvedCanvasSettings*>();
-        curvedCanvasSettings->SetRadius(curvatureRadius);
+        auto curvedCanvasSettings = screen.GetComponent<HMUI::CurvedCanvasSettings>();
+        curvedCanvasSettings.SetRadius(curvatureRadius);
 
-        auto canvas = screen->GetComponent<UnityEngine::Canvas*>();
-        canvas->set_additionalShaderChannels(UnityEngine::AdditionalCanvasShaderChannels::TexCoord1 | UnityEngine::AdditionalCanvasShaderChannels::TexCoord2);
-        canvas->set_sortingOrder(4);
+        auto canvas = screen.GetComponent<UnityEngine::Canvas>();
+        canvas.additionalShaderChannels = UnityEngine::AdditionalCanvasShaderChannels::TexCoord1 | UnityEngine::AdditionalCanvasShaderChannels::TexCoord2;
+        canvas.sortingOrder = 4;
 
-        auto scaler = screen->GetComponent<UnityEngine::UI::CanvasScaler*>();
-        scaler->set_dynamicPixelsPerUnit(3.44f);
-        scaler->set_referencePixelsPerUnit(10.0f);
+        auto scaler = screen.GetComponent<UnityEngine::UI::CanvasScaler>();
+        scaler.dynamicPixelsPerUnit = 3.44f;
+        scaler.referencePixelsPerUnit = 10.0f;
 
         if (hasBackground)
         {
-            auto components = ArrayW<System::Type*>(static_cast<il2cpp_array_size_t>(2));
-            components[0] = csTypeOf(UnityEngine::RectTransform*);
-            components[1] = csTypeOf(HMUI::ImageView*);
+            auto components = ArrayW<System::Type>(static_cast<il2cpp_array_size_t>(2));
+            components[0] = csTypeOf(UnityEngine::RectTransform);
+            components[1] = csTypeOf(HMUI::ImageView);
 
             auto backGroundGo = UnityEngine::GameObject::New_ctor("bg", components);
-            backGroundGo->get_transform()->SetParent(canvas->get_transform(), false);
-            auto rectTransform = backGroundGo->GetComponent<UnityEngine::RectTransform*>();
-            rectTransform->set_sizeDelta(screenSize);
-            rectTransform->set_anchorMin({0, 0});
-            rectTransform->set_anchorMax({1, 1});
-            rectTransform->set_offsetMin({0, 0});
-            rectTransform->set_offsetMax({0, 0});
+            backGroundGo.transform.SetParent(canvas.transform, false);
+            auto rectTransform = backGroundGo.GetComponent<UnityEngine::RectTransform>();
+            rectTransform.sizeDelta = screenSize;
+            rectTransform.anchorMin = {0, 0};
+            rectTransform.anchorMax = {1, 1};
+            rectTransform.offsetMin = {0, 0};
+            rectTransform.offsetMax = {0, 0};
 
-            auto background = backGroundGo->GetComponent<HMUI::ImageView*>();
-            background->set_sprite(::BSML::Utilities::FindSpriteCached("MainScreenMask"));
-            background->set_type(UnityEngine::UI::Image::Type::Sliced);
-            background->set_color({0.7450981f, 0.7450981f, 0.7450981f, 1.0f});
+            auto background = backGroundGo.GetComponent<HMUI::ImageView>();
+            background.sprite = ::BSML::Utilities::FindSpriteCached("MainScreenMask");
+            background.type = UnityEngine::UI::Image::Type::Sliced;
+            background.color = {0.7450981f, 0.7450981f, 0.7450981f, 1.0f};
             if (!_fogMaterial)
-                _fogMaterial = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::Material*>().FirstOrDefault([](auto x){ return x->get_name() == "UIFogBG"; });
-            background->set_material(_fogMaterial.ptr());
-            background->set_preserveAspect(true);
+                _fogMaterial = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::Material>().FirstOrDefault([](auto x){ return x.name == "UIFogBG"; });
+            background.material = _fogMaterial.ptr();
+            background.preserveAspect = true;
         }
 
-        auto screenTransform = screen->get_transform();
-        screenTransform->set_position(position);
-        screenTransform->set_rotation(rotation);
-        screenTransform->set_localScale({0.02f, 0.02f, 0.02f});
+        auto screenTransform = screen.transform;
+        screenTransform.position = position;
+        screenTransform.rotation = rotation;
+        screenTransform.localScale = {0.02f, 0.02f, 0.02f};
 
-        screen->set_ScreenSize(screenSize);
-        screen->set_ShowHandle(createHandle);
+        screen.ScreenSize = screenSize;
+        screen.ShowHandle = createHandle;
 
-        screen->get_gameObject()->set_layer(5);
+        screen.gameObject.layer = 5;
 
         return screen;
     }
 
-    FloatingScreen* FloatingScreen::CreateFloatingScreenWithViewcontroller(Il2CppReflectionType* vcType, UnityEngine::Vector2 screenSize, bool createHandle, UnityEngine::Vector3 position, UnityEngine::Quaternion rotation, float curvatureRadius, bool hasBackground) {
+    FloatingScreen FloatingScreen::CreateFloatingScreenWithViewcontroller(Il2CppReflectionType* vcType, UnityEngine::Vector2 screenSize, bool createHandle, UnityEngine::Vector3 position, UnityEngine::Quaternion rotation, float curvatureRadius, bool hasBackground) {
         auto scr = CreateFloatingScreen(screenSize, createHandle, position, rotation, curvatureRadius, hasBackground);
-        auto vc = BSML::Helpers::CreateViewController(vcType);
-        scr->SetRootViewController(vc, HMUI::ViewController::AnimationType::In);
+        auto vc = BSML::Helpers::CreateViewController(System::Type(vcType));
+        scr.SetRootViewController(vc, HMUI::ViewController::AnimationType::In);
         return scr;
     }
 
-    void FloatingScreen::OnPointerCreated(VRUIControls::VRPointer* pointer) {
+    void FloatingScreen::OnPointerCreated(VRUIControls::VRPointer pointer) {
         CreateHandle(pointer);
     }
 
-    void FloatingScreen::CreateHandle(VRUIControls::VRPointer* pointer) {
-        if (!pointer || !pointer->m_CachedPtr.m_value) {
-            pointer = UnityEngine::Resources::FindObjectsOfTypeAll<VRUIControls::VRPointer*>().FirstOrDefault();
+    void FloatingScreen::CreateHandle(VRUIControls::VRPointer pointer) {
+        if (!pointer || !pointer.m_CachedPtr) {
+            pointer = UnityEngine::Resources::FindObjectsOfTypeAll<VRUIControls::VRPointer>().FirstOrDefault();
         }
 
-        if (pointer && pointer->m_CachedPtr.m_value) {
-            bool pointerChanged = !(screenMover && screenMover->m_CachedPtr.m_value) || screenMover->get_gameObject() != pointer->get_gameObject();
+        if (pointer && pointer.m_CachedPtr) {
+            bool pointerChanged = !(screenMover && screenMover.m_CachedPtr) || screenMover.gameObject != pointer.gameObject;
 
             if (pointerChanged) {
-                if (screenMover && screenMover->m_CachedPtr.m_value) UnityEngine::Object::Destroy(screenMover);
-                screenMover = pointer->get_gameObject()->AddComponent<FloatingScreenMoverPointer*>();
+                if (screenMover && screenMover.m_CachedPtr) UnityEngine::Object::Destroy(screenMover);
+                screenMover = pointer.gameObject.AddComponent<FloatingScreenMoverPointer>();
             }
 
-            if (!(handle && handle->m_CachedPtr.m_value)) {
+            if (!(handle && handle->m_CachedPtr)) {
                 handle = UnityEngine::GameObject::CreatePrimitive(UnityEngine::PrimitiveType::Cube);
-                handle->get_transform()->SetParent(get_transform());
-                handle->get_transform()->set_localRotation(UnityEngine::Quaternion::get_identity());
+                handle.transform.SetParent(transform);
+                handle.transform.localRotation = UnityEngine::Quaternion::get_identity();
                 UpdateHandle();
-                handle->AddComponent<FloatingScreenHandle*>()->set_enabled(false);
+                handle.AddComponent<FloatingScreenHandle>().enabled = false;
             }
 
-            if (pointerChanged) screenMover->Init(this);
+            if (pointerChanged) screenMover.Init(this);
         } else {
             ERROR("Failed to get VR pointer, handle was not created!");
         }
     }
 
-    void FloatingScreen::OnHandleGrab(VRUIControls::VRPointer* pointer) {
-        if (HandleGrabbed.size() > 0) HandleGrabbed.invoke(this, FloatingScreenHandleEventArgs(pointer, get_transform()->get_position(), get_transform()->get_rotation()));
+    void FloatingScreen::OnHandleGrab(VRUIControls::VRPointer pointer) {
+        if (HandleGrabbed.size() > 0) HandleGrabbed.invoke(*this, FloatingScreenHandleEventArgs(pointer, transform.position, transform.rotation));
     }
 
-    void FloatingScreen::OnHandleReleased(VRUIControls::VRPointer* pointer) {
-        if (HandleReleased.size() > 0) HandleReleased.invoke(this, FloatingScreenHandleEventArgs(pointer, get_transform()->get_position(), get_transform()->get_rotation()));
+    void FloatingScreen::OnHandleReleased(VRUIControls::VRPointer pointer) {
+        if (HandleReleased.size() > 0) HandleReleased.invoke(*this, FloatingScreenHandleEventArgs(pointer, transform.position, transform.rotation));
     }
 
     void FloatingScreen::UpdateHandle() {
@@ -135,28 +138,28 @@ namespace BSML {
         switch (get_HandleSide())
         {
             case Side::Left:
-                handle->get_transform()->set_localPosition({-screenSize.x / 2.0f, 0.0f, 0.0f});
-                handle->get_transform()->set_localScale({screenSize.x / 15.0f, screenSize.y * 0.8f, screenSize.x / 15.0f});
+                handle.transform.localPosition = {-screenSize.x / 2.0f, 0.0f, 0.0f};
+                handle.transform.localScale = {screenSize.x / 15.0f, screenSize.y * 0.8f, screenSize.x / 15.0f};
                 break;
             case Side::Right:
-                handle->get_transform()->set_localPosition({screenSize.x / 2.0f, 0.0f, 0.0f});
-                handle->get_transform()->set_localScale({screenSize.x / 15.0f, screenSize.y * 0.8f, screenSize.x / 15.0f});
+                handle.transform.localPosition = {screenSize.x / 2.0f, 0.0f, 0.0f};
+                handle.transform.localScale = {screenSize.x / 15.0f, screenSize.y * 0.8f, screenSize.x / 15.0f};
                 break;
             case Side::Top:
-                handle->get_transform()->set_localPosition({0.0f, screenSize.y / 2.0f, 0.0f});
-                handle->get_transform()->set_localScale({screenSize.x * 0.8f, screenSize.y / 15.0f, screenSize.y / 15.0f});
+                handle.transform.localPosition = {0.0f, screenSize.y / 2.0f, 0.0f};
+                handle.transform.localScale = {screenSize.x * 0.8f, screenSize.y / 15.0f, screenSize.y / 15.0f};
                 break;
             case Side::Bottom:
-                handle->get_transform()->set_localPosition({0.0f, -screenSize.y / 2.0f, 0.0f});
-                handle->get_transform()->set_localScale({screenSize.x * 0.8f, screenSize.y / 15.0f, screenSize.y / 15.0f});
+                handle.transform.localPosition = {0.0f, -screenSize.y / 2.0f, 0.0f};
+                handle.transform.localScale = {screenSize.x * 0.8f, screenSize.y / 15.0f, screenSize.y / 15.0f};
                 break;
             case Side::Full:
-                handle->get_transform()->set_localPosition({});
-                handle->get_transform()->set_localScale({screenSize.x, screenSize.y, screenSize.x / 15.0f});
+                handle.transform.localPosition = {};
+                handle.transform.localScale = {screenSize.x, screenSize.y, screenSize.x / 15.0f};
                 break;
         }
 
-        handle->GetComponent<UnityEngine::MeshRenderer*>()->set_enabled(get_HandleSide() != Side::Full);
+        handle.GetComponent<UnityEngine::MeshRenderer>().enabled = HandleSide != Side::Full;
     }
 
     void FloatingScreen::OnDestroy() {
@@ -165,33 +168,33 @@ namespace BSML {
     }
 
 
-    UnityEngine::RectTransform* FloatingScreen::get_rectTransform() {
-        return reinterpret_cast<UnityEngine::RectTransform*>(get_transform());
+    UnityEngine::RectTransform FloatingScreen::get_rectTransform() {
+        return RectTransform(transform.convert());
     }
-    
+
     UnityEngine::Vector2 FloatingScreen::get_ScreenSize() {
-        return get_rectTransform()->get_sizeDelta();
+        return rectTransform.sizeDelta;
     }
 
     void FloatingScreen::set_ScreenSize(UnityEngine::Vector2 value) {
-        get_rectTransform()->set_sizeDelta(value);
+        rectTransform.sizeDelta = value;
         UpdateHandle();
     }
 
     UnityEngine::Vector3 FloatingScreen::get_ScreenPosition() {
-        return get_transform()->get_position();
+        return transform.position;
     }
 
     void FloatingScreen::set_ScreenPosition(UnityEngine::Vector3 value) {
-        get_transform()->set_position(value);
+        transform.position = value;
     }
 
     UnityEngine::Quaternion FloatingScreen::get_ScreenRotation() {
-        return get_transform()->get_rotation();
+        return transform.rotation;
     }
 
     void FloatingScreen::set_ScreenRotation(UnityEngine::Quaternion value) {
-        get_transform()->set_rotation(value);
+        transform.rotation = value;
     }
 
     bool FloatingScreen::get_ShowHandle() {
@@ -206,8 +209,8 @@ namespace BSML {
 
             VRPointerEnabledPatch::OnPointerEnabled -= {&FloatingScreen::OnPointerCreated, this};
             VRPointerEnabledPatch::OnPointerEnabled += {&FloatingScreen::OnPointerCreated, this};
-        } else if (!_showHandle && handle && handle->m_CachedPtr.m_value) {
-            handle->SetActive(false);
+        } else if (!_showHandle && handle && handle.m_CachedPtr) {
+            handle.SetActive(false);
             VRPointerEnabledPatch::OnPointerEnabled -= {&FloatingScreen::OnPointerCreated, this};
         }
     }
@@ -223,10 +226,10 @@ namespace BSML {
                 set_ShowHandle(true);
             }
 
-            handle->GetComponent<FloatingScreenHandle*>()->set_enabled(true);
+            handle.GetComponent<FloatingScreenHandle>().enabled = true;
         } else {
-            if (handle && handle->m_CachedPtr.m_value)
-                handle->GetComponent<FloatingScreenHandle*>()->set_enabled(false);
+            if (handle && handle->m_CachedPtr)
+                handle.GetComponent<FloatingScreenHandle>().enabled = false;
         }
     }
 

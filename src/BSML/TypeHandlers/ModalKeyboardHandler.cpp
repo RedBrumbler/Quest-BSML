@@ -13,12 +13,12 @@ namespace BSML {
 
     ModalKeyboardHandler::Base::SetterMap ModalKeyboardHandler::get_setters() const {
         return {
-            {"clearOnOpen", [](auto component, auto value){ component->clearOnOpen = value; }}
+            {"clearOnOpen", [](auto component, auto value){ component.clearOnOpen = value; }}
         };
     }
 
     void ModalKeyboardHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
-        auto modalKeyboard = reinterpret_cast<BSML::ModalKeyboard*>(componentType.component);
+        BSML::ModalKeyboard modalKeyboard {componentType.component.convert()};
         auto& data = componentType.data;
 
         auto valueItr = data.find("value");
@@ -26,10 +26,10 @@ namespace BSML {
             auto genericSetting = modalKeyboard->genericSetting;
             auto val = parserParams.TryGetValue(valueItr->second);
             if (val) {
-                genericSetting->host = val->host;
-                genericSetting->valueInfo = val->fieldInfo;
-                genericSetting->getterInfo = val->getterInfo;
-                genericSetting->setterInfo = val->setterInfo;
+                genericSetting.host = val->host;
+                genericSetting.valueInfo = val->fieldInfo;
+                genericSetting.getterInfo = val->getterInfo;
+                genericSetting.setterInfo = val->setterInfo;
             }
         }
 
@@ -38,13 +38,13 @@ namespace BSML {
 
     void ModalKeyboardHandler::HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         Base::HandleTypeAfterParse(componentType, parserParams);
-        auto modalKeyboard = reinterpret_cast<BSML::ModalKeyboard*>(componentType.component);
+        BSML::ModalKeyboard modalKeyboard{componentType.component.convert()};
         auto& data = componentType.data;
-    
+
         auto onEnterItr = data.find("onEnter");
         if (onEnterItr != data.end() && !onEnterItr->second.empty()) {
             auto action = parserParams.TryGetAction(onEnterItr->second);
-            if (action) modalKeyboard->onEnter = action->GetFunction<StringW>();
+            if (action) modalKeyboard.onEnter = action->GetFunction<StringW>();
             else ERROR("Action '{}' could not be found", onEnterItr->second);
         }
     }

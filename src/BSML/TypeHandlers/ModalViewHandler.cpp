@@ -15,23 +15,23 @@ namespace BSML {
 
     ModalViewHandler::Base::SetterMap ModalViewHandler::get_setters() const {
         return {
-            {"clickOffCloses", [](auto component, auto value){ component->dismissOnBlockerClicked = value; }},
-            {"moveToCenter", [](auto component, auto value){ component->moveToCenter = value; }},
+            {"clickOffCloses", [](auto component, auto value){ component.dismissOnBlockerClicked = value; }},
+            {"moveToCenter", [](auto component, auto value){ component.moveToCenter = value; }},
         };
     }
 
     void ModalViewHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
-        auto modalView = reinterpret_cast<BSML::ModalView*>(componentType.component);
+        BSML::ModalView modalView {componentType.component.convert()};
         auto& data = componentType.data;
 
         auto showEventItr = data.find("showEvent");
         if (showEventItr != data.end()) {
-            parserParams.AddEvent(showEventItr->second, std::bind(&BSML::ModalView::Show, modalView));
+            parserParams.AddEvent(showEventItr->second, [modalView = modalView.convert()](){ BSML::ModalView(modalView).Show(); });
         }
 
         auto hideEventItr = data.find("hideEvent");
         if (hideEventItr != data.end()) {
-            parserParams.AddEvent(hideEventItr->second, std::bind(&BSML::ModalView::Hide, modalView));
+            parserParams.AddEvent(hideEventItr->second, [modalView = modalView.convert()](){ BSML::ModalView(modalView).Hide(); });
         }
 
         auto idItr = data.find("id");

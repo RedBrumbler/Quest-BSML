@@ -14,13 +14,13 @@ namespace BSML {
         };
     }
 
-    void ForEachMacro::Execute(UnityEngine::Transform* parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
+    void ForEachMacro::Execute(UnityEngine::Transform parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
         INFO("Executing foreach macro");
         auto hostsItr = data.find("hosts");
         if (hostsItr != data.end()) {
             auto value = parserParams.TryGetValue(hostsItr->second);
             if (value) {
-                ListWrapper<Il2CppObject*> hosts = value->GetValue<List<Il2CppObject*>*>();
+                ListWrapper<bs_hook::Il2CppWrapperType> hosts = value->GetValue<List<bs_hook::Il2CppWrapperType>*>();
                 if (hosts) {
                     bool passTags = false;
                     auto passTagsItr = data.find("passTags");

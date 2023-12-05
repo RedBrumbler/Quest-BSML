@@ -43,33 +43,33 @@ namespace BSML {
     }
 
     void LayoutGroupHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
-        auto layoutGroup = reinterpret_cast<UnityEngine::UI::LayoutGroup*>(componentType.component);
+        UnityEngine::UI::LayoutGroup layoutGroup {componentType.component.convert()};
         auto& data = componentType.data;
 
         auto padItr = data.find("pad");
         if (padItr != data.end()) {
             int pad = StringParseHelper(padItr->second);
-            layoutGroup->set_padding(UnityEngine::RectOffset::New_ctor(pad, pad, pad, pad));
+            layoutGroup.padding = UnityEngine::RectOffset::New_ctor(pad, pad, pad, pad);
         }
 
         auto padTopItr = data.find("padTop");
         auto padBottomItr = data.find("padBottom");
         auto padLeftItr = data.find("padLeft");
         auto padRightItr = data.find("padRight");
-        auto originalPadding = layoutGroup->get_padding();
+        auto originalPadding = layoutGroup.padding;
 
         // if any padding values are found, override them
-        layoutGroup->set_padding(UnityEngine::RectOffset::New_ctor(
-            padLeftItr == data.end()     ? originalPadding->get_left()   : StringParseHelper(padLeftItr->second), 
-            padRightItr == data.end()    ? originalPadding->get_right()  : StringParseHelper(padRightItr->second),
-            padTopItr == data.end()      ? originalPadding->get_top()    : StringParseHelper(padTopItr->second), 
-            padBottomItr == data.end()   ? originalPadding->get_bottom() : StringParseHelper(padBottomItr->second) 
-        ));
+        layoutGroup.padding = UnityEngine::RectOffset::New_ctor(
+            padLeftItr == data.end()     ? originalPadding.left   : StringParseHelper(padLeftItr->second),
+            padRightItr == data.end()    ? originalPadding.right  : StringParseHelper(padRightItr->second),
+            padTopItr == data.end()      ? originalPadding.top    : StringParseHelper(padTopItr->second),
+            padBottomItr == data.end()   ? originalPadding.bottom : StringParseHelper(padBottomItr->second)
+        );
 
         auto childAlignItr = data.find("childAlign");
         if (childAlignItr != data.end()) {
             auto childAlign = stringToTextAnchor(childAlignItr->second);
-            if (childAlign.has_value()) layoutGroup->set_childAlignment(childAlign.value());
+            if (childAlign.has_value()) layoutGroup.childAlignment = childAlign.value();
         }
 
         Base::HandleType(componentType, parserParams);

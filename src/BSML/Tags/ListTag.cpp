@@ -26,78 +26,78 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ListTag> listTagParser({"list"});
-    Canvas* get_listCanvasTemplate() {
+    Canvas get_listCanvasTemplate() {
         static SafePtrUnity<Canvas> listCanvasTemplate;
         if (!listCanvasTemplate) {
-            listCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
+            listCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas>().FirstOrDefault([](auto x){ return x.name == "DropdownTableView"; });
         }
-        return listCanvasTemplate.ptr();
+        return Canvas(listCanvasTemplate.ptr());
     }
 
-    UnityEngine::GameObject* ListTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject ListTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating List");
-        auto container = GameObject::New_ctor("BSMLListContainer")->AddComponent<RectTransform*>();
-        auto containerGameObject = container->get_gameObject();
-        auto layoutElement = containerGameObject->AddComponent<LayoutElement*>();
-        containerGameObject->get_transform()->SetParent(parent, false);
+        auto container = GameObject::New_ctor("BSMLListContainer").AddComponent<RectTransform>();
+        auto containerGameObject = container.gameObject;
+        auto layoutElement = containerGameObject.AddComponent<LayoutElement>();
+        containerGameObject.transform.SetParent(parent, false);
 
         auto gameObject = GameObject::New_ctor("BSMLList");
-        gameObject->get_transform()->SetParent(containerGameObject->get_transform(), false);
-        gameObject->SetActive(false);
+        gameObject.transform.SetParent(containerGameObject.transform, false);
+        gameObject.SetActive(false);
 
         auto listCanvasTemplate = get_listCanvasTemplate();
-        auto scrollRect = gameObject->AddComponent<ScrollRect*>();
-        auto canvas = gameObject->AddComponent<Canvas*>();
+        auto scrollRect = gameObject.AddComponent<ScrollRect>();
+        auto canvas = gameObject.AddComponent<Canvas>();
         // using this method causes the list to have it's cells be squished:
         //Utilities::AddComponent(gameObject, listCanvasTemplate);
         // therefore we just copy what we need:
-        canvas->set_additionalShaderChannels(listCanvasTemplate->get_additionalShaderChannels());
-        canvas->set_overrideSorting(listCanvasTemplate->get_overrideSorting());
-        canvas->set_pixelPerfect(listCanvasTemplate->get_pixelPerfect());
-        canvas->set_referencePixelsPerUnit(listCanvasTemplate->get_referencePixelsPerUnit());
-        canvas->set_renderMode(listCanvasTemplate->get_renderMode());
-        canvas->set_scaleFactor(listCanvasTemplate->get_scaleFactor());
-        canvas->set_sortingLayerID(listCanvasTemplate->get_sortingLayerID());
-        canvas->set_sortingOrder(listCanvasTemplate->get_sortingOrder());
-        canvas->set_worldCamera(listCanvasTemplate->get_worldCamera());
+        canvas.additionalShaderChannels = listCanvasTemplate.additionalShaderChannels;
+        canvas.overrideSorting = listCanvasTemplate.overrideSorting;
+        canvas.pixelPerfect = listCanvasTemplate.pixelPerfect;
+        canvas.referencePixelsPerUnit = listCanvasTemplate.referencePixelsPerUnit;
+        canvas.renderMode = listCanvasTemplate.renderMode;
+        canvas.scaleFactor = listCanvasTemplate.scaleFactor;
+        canvas.sortingLayerID = listCanvasTemplate.sortingLayerID;
+        canvas.sortingOrder = listCanvasTemplate.sortingOrder;
+        canvas.worldCamera = listCanvasTemplate.worldCamera;
 
-        gameObject->AddComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
-        gameObject->AddComponent<HMUI::Touchable*>();
-        gameObject->AddComponent<HMUI::EventSystemListener*>();
+        gameObject.AddComponent<VRUIControls::VRGraphicRaycaster>().physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
+        gameObject.AddComponent<HMUI::Touchable>();
+        gameObject.AddComponent<HMUI::EventSystemListener>();
 
-        auto scrollView = gameObject->AddComponent<HMUI::ScrollView*>();
+        auto scrollView = gameObject.AddComponent<HMUI::ScrollView>();
 
-        HMUI::TableView* tableView = gameObject->AddComponent<BSML::TableView*>();
-        auto tableData = container->get_gameObject()->AddComponent<CustomListTableData*>();
-        tableData->tableView = tableView;
+        auto tableView = gameObject.AddComponent<BSML::TableView>();
+        auto tableData = container.gameObject.AddComponent<CustomListTableData>();
+        tableData.tableView = tableView;
 
-        tableView->preallocatedCells = ArrayW<HMUI::TableView::CellsGroup*>(il2cpp_array_size_t(0));
-        tableView->isInitialized = false;
-        tableView->scrollView = scrollView;
+        tableView.preallocatedCells = ArrayW<HMUI::TableView::CellsGroup>(il2cpp_array_size_t(0));
+        tableView.isInitialized = false;
+        tableView.scrollView = scrollView;
 
-        auto viewPort = GameObject::New_ctor("ViewPort")->AddComponent<RectTransform*>();
-        viewPort->SetParent(gameObject->get_transform(), false);
-        viewPort->get_gameObject()->AddComponent<RectMask2D*>();
-        scrollRect->set_viewport(viewPort);
+        auto viewPort = GameObject::New_ctor("ViewPort").AddComponent<RectTransform>();
+        viewPort.SetParent(gameObject.transform, false);
+        viewPort.gameObject.AddComponent<RectMask2D>();
+        scrollRect.viewport = viewPort;
 
-        auto content = GameObject::New_ctor("Content")->AddComponent<RectTransform*>();
-        content->SetParent(viewPort, false);
+        auto content = GameObject::New_ctor("Content").AddComponent<RectTransform>();
+        content.SetParent(viewPort, false);
 
-        scrollView->contentRectTransform = content;
-        scrollView->viewport = viewPort;
+        scrollView.contentRectTransform = content;
+        scrollView.viewport = viewPort;
 
-        viewPort->set_anchorMin({0, 0});
-        viewPort->set_anchorMax({1, 1});
-        viewPort->set_anchoredPosition({0, 0});
-        viewPort->set_sizeDelta({0, 0});
+        viewPort.anchorMin = {0, 0};
+        viewPort.anchorMax = {1, 1};
+        viewPort.anchoredPosition = {0, 0};
+        viewPort.sizeDelta = {0, 0};
 
-        auto tableViewRectTransform = reinterpret_cast<RectTransform*>(tableView->get_transform());
-        tableViewRectTransform->set_anchorMin({0, 0});
-        tableViewRectTransform->set_anchorMax({1, 1});
-        tableViewRectTransform->set_anchoredPosition({0, 0});
-        tableViewRectTransform->set_sizeDelta({0, 0});
+        RectTransform tableViewRectTransform {tableView.transform.convert()};
+        tableViewRectTransform.anchorMin = {0, 0};
+        tableViewRectTransform.anchorMax = {1, 1};
+        tableViewRectTransform.anchoredPosition = {0, 0};
+        tableViewRectTransform.sizeDelta = {0, 0};
 
-        tableView->SetDataSource(tableData->i_IDataSource(), false);
+        tableView.SetDataSource(tableData, false);
         return containerGameObject;
     }
 }

@@ -13,7 +13,7 @@ namespace BSML {
         };
     }
 
-    void PrintMacro::Execute(UnityEngine::Transform* parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
+    void PrintMacro::Execute(UnityEngine::Transform parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
         INFO("Executing print macro");
         auto textItr = data.find("text");
         if (textItr != data.end()) {

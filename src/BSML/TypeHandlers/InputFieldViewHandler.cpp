@@ -15,14 +15,14 @@ namespace BSML {
 
     InputFieldViewHandler::Base::SetterMap InputFieldViewHandler::get_setters() const {
         return {
-            {"textLengthLimit", [](auto component, auto value){ component->textLengthLimit = value; }}
+            {"textLengthLimit", [](auto component, auto value){ component.textLengthLimit = value; }}
         };
     }
 
     void InputFieldViewHandler::HandleType(const BSML::ComponentTypeWithData& componentType, BSML::BSMLParserParams& parserParams) {
         Base::HandleType(componentType, parserParams);
 
-        auto fieldView = reinterpret_cast<HMUI::InputFieldView*>(componentType.component);
+        HMUI::InputFieldView fieldView {componentType.component.convert()};
         auto& data = componentType.data;
 
         auto onChangeItr = data.find("onChange");
@@ -31,11 +31,11 @@ namespace BSML {
             if (action) {
                 // this works absolutely different than any of the other BSML input methods
                 // Do I care? no.
-                fieldView->onValueChanged->AddListener(
-                    custom_types::MakeDelegate<UnityEngine::Events::UnityAction_1<HMUI::InputFieldView*>*>(
-                        std::function<void(HMUI::InputFieldView*)>(
+                fieldView.onValueChanged.AddListener(
+                    custom_types::MakeDelegate<UnityEngine::Events::UnityAction_1<HMUI::InputFieldView>>(
+                        std::function<void(HMUI::InputFieldView)>(
                             [onValueChange = action->GetFunction<StringW>()](auto fieldView){
-                                onValueChange(fieldView->get_text());
+                                onValueChange(fieldView.text);
                             }
                         )
                     )

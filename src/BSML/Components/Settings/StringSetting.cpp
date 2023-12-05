@@ -17,11 +17,11 @@ namespace BSML {
     }
 
     bool StringSetting::get_interactable() {
-        return editButton ? editButton->get_interactable() : false;
+        return editButton ? editButton.interactable : false;
     }
 
     void StringSetting::set_interactable(bool value) {
-        if (editButton) editButton->set_interactable(value);
+        if (editButton) editButton.interactable = value;
     }
 
     StringW StringSetting::get_text() {
@@ -30,45 +30,45 @@ namespace BSML {
 
     void StringSetting::set_text(StringW value) {
         currentValue = value;
-        if (text) 
-            text->set_text(formatter ? formatter(value) : value);
+        if (_text)
+            _text.text = formatter ? formatter(value) : value;
     }
 
     void StringSetting::BaseSetup() {
-        modalKeyboard->onEnter = std::bind(&StringSetting::EnterPressed, this, std::placeholders::_1);
+        modalKeyboard.onEnter = [self = *this](auto v){ self.EnterPressed(v); };
 
-        editButton->set_onClick(Button::ButtonClickedEvent::New_ctor());
-        auto delegate = MakeUnityAction(std::bind(&StringSetting::EditButtonPressed, this));
-        editButton->get_onClick()->AddListener(delegate);
+        editButton.onClick = Button::ButtonClickedEvent::New_ctor();
+        auto delegate = MakeUnityAction([self = *this]{ self.EditButtonPressed()});
+        editButton.onClick.AddListener(delegate);
     }
 
     void StringSetting::Setup() {
-        modalKeyboard->clearOnOpen = false;
+        modalKeyboard.clearOnOpen = false;
         ReceiveValue();
     }
 
     void StringSetting::EditButtonPressed() {
-        modalKeyboard->modalView->Show();
-        modalKeyboard->SetText(get_text());
+        modalKeyboard.modalView.Show();
+        modalKeyboard.SetText(text);
     }
 
     void StringSetting::EnterPressed(StringW value) {
-        set_text(value);
+        text = value;
         if (genericSetting) {
-            auto val = get_text();
+            auto val = text;
             genericSetting->OnChange(val);
             if (genericSetting->applyOnChange) ApplyValue();
         }
     }
 
     void StringSetting::ApplyValue() {
-        if (genericSetting) 
-            genericSetting->SetValue(get_text());
+        if (genericSetting)
+            genericSetting.SetValue(text);
     }
 
     void StringSetting::ReceiveValue() {
-        if (!genericSetting) return; 
-        set_text(genericSetting->GetValue<Il2CppString*>());
+        if (!genericSetting) return;
+        text = genericSetting.GetValue<StringW>();
     }
 
 }

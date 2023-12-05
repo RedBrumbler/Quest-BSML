@@ -4,9 +4,9 @@
 #include "../Components/CustomCellListTableData.hpp"
 
 namespace BSML {
-    class CustomCellListTableDataHandler : public TypeHandler<BSML::CustomCellListTableData*> {
+    class CustomCellListTableDataHandler : public TypeHandler<BSML::CustomCellListTableData> {
         public:
-            using Base = TypeHandler<BSML::CustomCellListTableData*>;
+            using Base = TypeHandler<BSML::CustomCellListTableData>;
             CustomCellListTableDataHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

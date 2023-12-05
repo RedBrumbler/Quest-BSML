@@ -4,9 +4,9 @@
 #include "UnityEngine/UI/Button.hpp"
 
 namespace BSML {
-    class ButtonHandler : public TypeHandler<UnityEngine::UI::Button*> {
+    class ButtonHandler : public TypeHandler<UnityEngine::UI::Button> {
         public:
-            using Base = TypeHandler<UnityEngine::UI::Button*>;
+            using Base = TypeHandler<UnityEngine::UI::Button>;
             ButtonHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

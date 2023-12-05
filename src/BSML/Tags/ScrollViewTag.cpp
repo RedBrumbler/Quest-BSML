@@ -25,80 +25,80 @@
 
 namespace BSML {
     static BSMLNodeParser<ScrollViewTag> scrollViewTagParser({"scroll-view"});
-    HMUI::TextPageScrollView* get_scrollViewTemplate() {
+    HMUI::TextPageScrollView get_scrollViewTemplate() {
         static SafePtrUnity<HMUI::TextPageScrollView> scrollViewTemplate;
         if (!scrollViewTemplate) {
-            scrollViewTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>().FirstOrDefault()->textPageScrollView;
+            scrollViewTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController>().FirstOrDefault()._textPageScrollView.convert();
         }
-        return scrollViewTemplate.ptr();
+        return HMUI::TextPageScrollView(scrollViewTemplate.ptr());
     }
 
-    UnityEngine::GameObject* ScrollViewTag::CreateObject(UnityEngine::Transform* parent) const {
-        HMUI::TextPageScrollView* textScrollView = UnityEngine::Object::Instantiate(get_scrollViewTemplate(), parent);
-        textScrollView->set_name("BSMLScrollView");
-        UnityEngine::UI::Button* pageUpButton = textScrollView->pageUpButton;
-        UnityEngine::UI::Button* pageDownButton = textScrollView->pageDownButton;
-        HMUI::VerticalScrollIndicator* verticalScrollIndicator = textScrollView->verticalScrollIndicator;
+    UnityEngine::GameObject ScrollViewTag::CreateObject(UnityEngine::Transform parent) const {
+        auto textScrollView = UnityEngine::Object::Instantiate(get_scrollViewTemplate(), parent);
+        textScrollView.name = "BSMLScrollView";
+        auto pageUpButton = textScrollView.pageUpButton;
+        auto pageDownButton = textScrollView.pageDownButton;
+        auto verticalScrollIndicator = textScrollView->verticalScrollIndicator;
 
-        UnityEngine::RectTransform* viewport = textScrollView->viewport;
-        viewport->get_gameObject()->AddComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
+        UnityEngine::RectTransform* viewport = textScrollView.viewport;
+        viewport.gameObject.AddComponent<VRUIControls::VRGraphicRaycaster>().physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
 
-        UnityEngine::Object::Destroy(textScrollView->text->get_gameObject());
-        UnityEngine::GameObject* gameObject = textScrollView->get_gameObject();
+        UnityEngine::Object::Destroy(textScrollView.text.gameObject);
+        auto gameObject = textScrollView.gameObject;
         UnityEngine::Object::Destroy(textScrollView);
-        gameObject->set_active(false);
+        gameObject.active = false;
 
-        BSML::ScrollView* scrollView = gameObject->AddComponent<BSML::ScrollView*>();
-        scrollView->pageUpButton = pageUpButton;
-        scrollView->pageDownButton = pageDownButton;
-        scrollView->verticalScrollIndicator = verticalScrollIndicator;
-        scrollView->viewport = viewport;
-        scrollView->platformHelper = Helpers::GetIVRPlatformHelper();
+        auto scrollView = gameObject.AddComponent<BSML::ScrollView>();
+        scrollView.pageUpButton = pageUpButton;
+        scrollView.pageDownButton = pageDownButton;
+        scrollView.verticalScrollIndicator = verticalScrollIndicator;
+        scrollView.viewport = viewport;
+        scrollView.platformHelper = Helpers::GetIVRPlatformHelper();
 
-        viewport->set_anchorMin(UnityEngine::Vector2(0, 0));
-        viewport->set_anchorMax(UnityEngine::Vector2(1, 1));
+        viewport.anchorMin = UnityEngine::Vector2(0, 0);
+        viewport.anchorMax = UnityEngine::Vector2(1, 1);
 
-        UnityEngine::GameObject* parentObject = UnityEngine::GameObject::New_ctor();
-        parentObject->set_name("BSMLScrollViewContent");
-        parentObject->get_transform()->SetParent(viewport, false);
+        UnityEngine::GameObject parentObject = UnityEngine::GameObject::New_ctor();
+        parentObject.name = "BSMLScrollViewContent";
+        parentObject.transform.SetParent(viewport, false);
 
-        UnityEngine::UI::ContentSizeFitter* contentSize = parentObject->AddComponent<UnityEngine::UI::ContentSizeFitter*>();
-        contentSize->set_horizontalFit(UnityEngine::UI::ContentSizeFitter::FitMode::PreferredSize);
-        contentSize->set_verticalFit(UnityEngine::UI::ContentSizeFitter::FitMode::PreferredSize);
+        auto contentSize = parentObject.AddComponent<UnityEngine::UI::ContentSizeFitter>();
+        contentSize.horizontalFit = UnityEngine::UI::ContentSizeFitter::FitMode::PreferredSize;
+        contentSize.verticalFit = UnityEngine::UI::ContentSizeFitter::FitMode::PreferredSize;
 
-        UnityEngine::UI::VerticalLayoutGroup* verticalLayout = parentObject->AddComponent<UnityEngine::UI::VerticalLayoutGroup*>();
-        verticalLayout->set_childForceExpandHeight(false);
-        verticalLayout->set_childForceExpandWidth(false);
-        verticalLayout->set_childControlHeight(true);
-        verticalLayout->set_childControlWidth(true);
-        verticalLayout->set_childAlignment(UnityEngine::TextAnchor::UpperCenter);
+        auto verticalLayout = parentObject.AddComponent<UnityEngine::UI::VerticalLayoutGroup>();
+        verticalLayout.childForceExpandHeight = false;
+        verticalLayout.childForceExpandWidth = false;
+        verticalLayout.childControlHeight = true;
+        verticalLayout.childControlWidth = true;
+        verticalLayout.childAlignment = UnityEngine::TextAnchor::UpperCenter;
 
-        UnityEngine::RectTransform* rectTransform = reinterpret_cast<UnityEngine::RectTransform*>(parentObject->get_transform());
-        rectTransform->set_anchorMin(UnityEngine::Vector2(0, 1));
-        rectTransform->set_anchorMax(UnityEngine::Vector2(1, 1));
-        rectTransform->set_sizeDelta(UnityEngine::Vector2(0, 0));
-        rectTransform->set_pivot(UnityEngine::Vector2(0.5f, 1));
-        parentObject->AddComponent<ScrollViewContent*>()->scrollView = scrollView;
+        UnityEngine::RectTransform rectTransform {parentObject.transform.convert()};
+        rectTransform.anchorMin = UnityEngine::Vector2(0, 1);
+        rectTransform.anchorMax = UnityEngine::Vector2(1, 1);
+        rectTransform.sizeDelta = UnityEngine::Vector2(0, 0);
+        rectTransform.pivot = UnityEngine::Vector2(0.5f, 1);
+        parentObject.AddComponent<ScrollViewContent>().scrollView = scrollView;
 
-        UnityEngine::GameObject* child = UnityEngine::GameObject::New_ctor();
-        child->set_name("BSMLScrollViewContentContainer");
-        child->get_transform()->SetParent(rectTransform, false);
+        auto child = UnityEngine::GameObject::New_ctor();
+        child.name = "BSMLScrollViewContentContainer";
+        child.transform.SetParent(rectTransform, false);
 
-        UnityEngine::UI::VerticalLayoutGroup* layoutGroup = child->AddComponent<UnityEngine::UI::VerticalLayoutGroup*>();
-        layoutGroup->set_childControlHeight(false);
-        layoutGroup->set_childForceExpandHeight(false);
-        layoutGroup->set_childAlignment(UnityEngine::TextAnchor::LowerCenter);
-        layoutGroup->set_spacing(0.5f);
+        auto layoutGroup = child.AddComponent<UnityEngine::UI::VerticalLayoutGroup>();
+        layoutGroup.childControlHeight false;
+        layoutGroup.childForceExpandHeight false;
+        layoutGroup.childAlignment UnityEngine::TextAnchor::LowerCenter;
+        layoutGroup.spacing 0.5f;
 
-        auto externalComponents = child->AddComponent<ExternalComponents*>();
-        externalComponents->components->Add(scrollView);
-        externalComponents->components->Add(scrollView->get_transform());
-        externalComponents->components->Add(gameObject->AddComponent<UnityEngine::UI::LayoutElement*>());
+        auto externalComponents = child.AddComponent<ExternalComponents>();
+        externalComponents.Add(scrollView);
+        externalComponents.Add(scrollView.transform);
+        externalComponents.Add(gameObject.AddComponent<UnityEngine::UI::LayoutElement>());
 
-        reinterpret_cast<UnityEngine::RectTransform*>(child->get_transform())->set_sizeDelta(UnityEngine::Vector2(0, -1));
+        UnityEngine::RectTransform(child.transform).sizeDelta = UnityEngine::Vector2(0, -1);
 
-        scrollView->contentRectTransform = reinterpret_cast<UnityEngine::RectTransform*>(parentObject->get_transform());
-        gameObject->SetActive(true);
+        scrollView._contentRectTransform = UnityEngine::RectTransform(parentObject.transform);
+        gameObject.SetActive(true);
         return child;
     }
 }

@@ -47,7 +47,7 @@ namespace BSML {
     Gradient* TextGradientUpdater::get_gradient() { return gradient; }
 
     void TextGradientUpdater::Awake() {
-        text = GetComponent<TMPro::TMP_Text*>();
+        text = GetComponent<TMPro::TMP_Text>();
     }
 
     void TextGradientUpdater::OnDestroy() {
@@ -56,21 +56,21 @@ namespace BSML {
     }
 
     void TextGradientUpdater::LateUpdate() {
-        if (text && text->m_CachedPtr.m_value && gradient) {
+        if (text && text.m_CachedPtr && gradient) {
             // TODO: check if it's possible to implement something where the colors only get set once if scrollSpeed == 0
-            auto textInfo = text->get_textInfo();
-            auto characterCount = textInfo->characterCount;
+            auto textInfo = text.textInfo;
+            auto characterCount = textInfo.characterCount;
             if (characterCount > 0) {
                 currentPos = std::fmod(currentPos + UnityEngine::Time::get_deltaTime() * scrollSpeed, 1.0f);
-                int materialCount = textInfo->materialCount;
+                int materialCount = textInfo.materialCount;
                 if (scrollRepeat == 0) {
                     auto col = gradient->Sample(currentPos);
                     for (int i = 0; i < materialCount; i++) {
-                        for (auto& c : textInfo->meshInfo[i].colors32) c = col;
+                        for (auto& c : textInfo.meshInfo[i].colors32) c = col;
                     }
                 } else {
                     for (int i = 0; i < materialCount; i++) {
-                        auto& colors = textInfo->meshInfo[i].colors32;
+                        auto& colors = textInfo.meshInfo[i].colors32;
                         auto size = colors.size();
                         if (fixedStep) {
                             for (int j = 0; j < size; j++) {
@@ -86,18 +86,18 @@ namespace BSML {
                     }
                 }
 
-                text->UpdateVertexData(TMPro::TMP_VertexDataUpdateFlags::Colors32);
+                text.UpdateVertexData(TMPro::TMP_VertexDataUpdateFlags::Colors32);
             }
         }
     }
-    
+
     UnityEngine::Color32 SimpleTwoColorGradient::Sample(float t) const {
         return t * end + (1 - t) * start;
     }
 
     UnityEngine::Color32 SimpleColorGradient::Sample(float t) const {
         if (colors.empty()) return {255, 255, 255, 255};
-        if (colors.size() == 1) return colors.at(0); 
+        if (colors.size() == 1) return colors.at(0);
         t = std::fmod(t, 1.0f);
 
         float i_unfloored = t * (colors.size() - 1);

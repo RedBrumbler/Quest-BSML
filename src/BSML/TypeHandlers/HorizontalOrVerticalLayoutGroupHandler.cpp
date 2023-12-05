@@ -2,7 +2,7 @@
 
 namespace BSML {
     static HorizontalOrVerticalLayoutGroupHandler horizontalOrVerticalLayoutGroupHandler{};
-    
+
     HorizontalOrVerticalLayoutGroupHandler::Base::PropMap HorizontalOrVerticalLayoutGroupHandler::get_props() const {
         return {
             {"spacing", {"spacing"}},
@@ -15,11 +15,11 @@ namespace BSML {
 
     HorizontalOrVerticalLayoutGroupHandler::Base::SetterMap HorizontalOrVerticalLayoutGroupHandler::get_setters() const {
         return {
-            {"spacing",                 [](auto component, auto value){ component->set_spacing(value); }},
-            {"childForceExpandWidth",   [](auto component, auto value){ component->set_childForceExpandWidth(value); }},
-            {"childForceExpandHeight",  [](auto component, auto value){ component->set_childForceExpandHeight(value); }},
-            {"childControlWidth",       [](auto component, auto value){ component->set_childControlWidth(value); }},
-            {"childControlHeight",      [](auto component, auto value){ component->set_childControlHeight(value); }}
+            {"spacing",                 [](auto component, auto value){ component.spacing = value; }},
+            {"childForceExpandWidth",   [](auto component, auto value){ component.childForceExpandWidth = value; }},
+            {"childForceExpandHeight",  [](auto component, auto value){ component.childForceExpandHeight = value; }},
+            {"childControlWidth",       [](auto component, auto value){ component.childControlWidth = value; }},
+            {"childControlHeight",      [](auto component, auto value){ component.childControlHeight = value; }}
         };
     }
 }

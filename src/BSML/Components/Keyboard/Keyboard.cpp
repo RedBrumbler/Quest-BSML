@@ -23,7 +23,7 @@ namespace BSML {
 [SHIFT]/25 (zZ) (xX) (cC) (vV) (bB) (nN) (mM) (,<) (.>) (/?)  \n\
 /23 (!!) (@@) [SPACE]/40' ' (##) (__)";
 
-        const std::string Keyboard::FKEYROW = 
+        const std::string Keyboard::FKEYROW =
 "\n\
 [Esc] /2 [F1] [F2] [F3] [F4] /2 [F5] [F6] [F7] [F8] /2 [F9] [F10] [F11] [F12]\n\
 ";
@@ -42,9 +42,9 @@ namespace BSML {
 [CAPS]/20 (aA) (oO) (eE) (uU) (iI) (dD) (hH) (tT) (nN) (sS) (-_) [ENTER]/20\n\
 [SHIFT] (;:) (qQ) (jJ) (kK) (xX) (bB) (mM) (wW) (vV) (zZ) [CLEAR]/28\n\
 /23 (!!) (@@) [SPACE]/40 (##) (__)";
-        
+
         void Keyboard::ctor() {
-            keys = List<Key*>::New_ctor();
+            keys = List<Key>::New_ctor();
             dummy = Key::New_ctor();
             enableInputField = true;
             shift = false;
@@ -57,23 +57,23 @@ namespace BSML {
 
         void Keyboard::add_text(StringW value) {
             if (keyboardText)
-                keyboardText->set_text(keyboardText->get_text() + value);
+                keyboardText.text = keyboardText.text + value;
         }
-        
-        Key* Keyboard::get_key(StringW index) {
-            for(auto& key : keys) {
-                if (key->name == index) return key;
+
+        Key Keyboard::get_key(StringW index) {
+            for(auto key : keys) {
+                if (key.name == index) return key;
             }
 
             return dummy;
         }
 
         void Keyboard::SetButtonType(std::string_view buttonName) {
-            auto allButtons = Resources::FindObjectsOfTypeAll<Button*>();
-            Button* q;
-            baseButton = allButtons.First([&](auto x){ 
-                if (x->get_name() == "Q") q = x;
-                return x->get_name() == buttonName; 
+            auto allButtons = Resources::FindObjectsOfTypeAll<Button>();
+            Button q;
+            baseButton = allButtons.First([&](auto x){
+                if (x.name == "Q") q = x;
+                return x.name == buttonName;
             });
 
             if (!baseButton) {
@@ -84,14 +84,14 @@ namespace BSML {
         void Keyboard::SetValue(std::string_view keyLabel, std::string_view value) {
             auto key = get_key(keyLabel);
             if (key != dummy) {
-                key->value = value;
+                key.value = value;
             }
         }
 
         void Keyboard::SetAction(std::string_view keyLabel, std::function<void(Key*)> action) {
             auto key = get_key(keyLabel);
             if (key != dummy) {
-                key->keyAction = action;
+                key.keyAction = action;
             }
         }
 
@@ -202,128 +202,128 @@ namespace BSML {
             return this;
         }
 
-        Keyboard* Keyboard::DefaultActions() {
+        Keyboard Keyboard::DefaultActions() {
             SetAction("CLEAR", std::bind(&Keyboard::Clear, this, std::placeholders::_1));
             SetAction("ENTER", std::bind(&Keyboard::Enter, this, std::placeholders::_1));
             SetAction("<--", std::bind(&Keyboard::Backspace, this, std::placeholders::_1));
             SetAction("SHIFT", std::bind(&Keyboard::Shift, this, std::placeholders::_1));
             SetAction("CAPS", std::bind(&Keyboard::Caps, this, std::placeholders::_1));
-            
-            return this;
+
+            return *this;
         }
 
-        Keyboard* Keyboard::NextRow(float adjustX) {
+        Keyboard Keyboard::NextRow(float adjustX) {
             currentPosition.y -= currentPosition.x == basePosition.x ? 3 : 6;
             currentPosition.x = basePosition.x;
-            return this;
+            return *this;
         }
 
-        Keyboard* Keyboard::SetScale(float scale) {
+        Keyboard Keyboard::SetScale(float scale) {
             this->scale = scale;
-            return this;
+            return *this;
         }
 
         void Keyboard::Clear(Key* key) {
-            key->kb->keyboardText->set_text("");
+            key->kb.keyboardText.text = "";
         }
 
         void Keyboard::Enter(Key* key) {
-            StringW typedText = key->kb->keyboardText->get_text();
+            StringW typedText = key->kb.keyboardText.get_text();
             if (enterPressed)
                 enterPressed(typedText ? typedText : "");
-            key->kb->keyboardText->set_text("");
+            key->kb.keyboardText.set_text("");
         }
 
         void Keyboard::Backspace(Key* key) {
-            auto text = key->kb->keyboardText->get_text();
-            int length = text ? text->get_Length() : 0;
+            auto text = key->kb.keyboardText.text;
+            int length = text ? text.Length : 0;
             if (length > 0) {
-                key->kb->keyboardText->set_text(text->Remove(length -1));
+                key->kb.keyboardText.text = text.Remove(length -1);
             }
         }
 
         void Keyboard::Shift(Key* key) {
-            key->kb->shift = !key->kb->shift;
+            key->kb.shift = !key->kb.shift;
 
-            bool isShift = key->kb->shift;
-            auto& keys = key->kb->keys;
+            bool isShift = key->kb.shift;
+            auto& keys = key->kb.keys;
             for(auto k : keys) {
-                auto x = isShift ? k->shifted : k->value;
+                auto x = isShift ? k.shifted : k.value;
                 if (!Il2CppString::IsNullOrWhiteSpace(k->shifted)) {
                     Helpers::SetButtonText(k->button, x);
                 }
             }
-            key->button->GetComponentInChildren<Image*>()->set_color(isShift ? Color{0.0f, 1.0f, 0.0f, 1.0f} : Color{1.0f, 1.0f, 1.0f, 1.0f});
+            key->button.GetComponentInChildren<Image>().color = isShift ? Color{0.0f, 1.0f, 0.0f, 1.0f} : Color{1.0f, 1.0f, 1.0f, 1.0f};
         }
 
         void Keyboard::Caps(Key* key) {
-            key->kb->caps = !key->kb->caps;
-            key->button->GetComponentInChildren<Image*>()->set_color(key->kb->caps ? Color{0.0f, 1.0f, 0.0f, 1.0f} : Color{1.0f, 1.0f, 1.0f, 1.0f});
+            key->kb.caps = !key->kb.caps;
+            key->button->GetComponentInChildren<Image*>()->set_color(key->kb.caps ? Color{0.0f, 1.0f, 0.0f, 1.0f} : Color{1.0f, 1.0f, 1.0f, 1.0f});
         }
 
         void Keyboard::DrawCursor() {
             if (!enableInputField) return;
 
-            auto v = keyboardText->GetPreferredValues(keyboardText->get_text() + "I");
+            auto v = keyboardText.GetPreferredValues(keyboardText.text + "I");
             v.y = 15.0f;
             v.x = v.x / 2 + 30.0f - 0.5f;
-            reinterpret_cast<RectTransform*>(keyboardCursor->get_transform())->set_anchoredPosition(v); 
+            RectTransform(keyboardCursor.transform.convert()).anchoredPosition = v;
         }
 
-        Keyboard* Keyboard::construct(UnityEngine::RectTransform* container, std::string_view defaultKeyboard, bool enableInputField, float x, float y) {
+        Keyboard Keyboard::construct(UnityEngine::RectTransform container, std::string_view defaultKeyboard, bool enableInputField, float x, float y) {
             auto self = Keyboard::New_ctor();
-            self->enableInputField = enableInputField;
-            self->container = container;
-            self->basePosition = {-50 + x, 23 + y};
-            self->currentPosition = self->basePosition;
+            self.enableInputField = enableInputField;
+            self.container = container;
+            self.basePosition = {-50 + x, 23 + y};
+            self.currentPosition = self.basePosition;
 
-            self->SetButtonType("Q");
+            self.SetButtonType("Q");
 
             auto keyboardText = Helpers::CreateText(container, "", {0, 15.0f});
-            self->keyboardText = keyboardText;
-            keyboardText->set_fontSize(6.0f);
-            keyboardText->set_color({1.0f, 1.0f, 1.0f, 1.0f});
-            keyboardText->set_alignment(TMPro::TextAlignmentOptions::Center);
-            keyboardText->set_enableWordWrapping(false);
-            keyboardText->set_text("");
-            keyboardText->set_enabled(self->enableInputField);
+            self.keyboardText = keyboardText;
+            keyboardText.fontSize = 6.0f;
+            keyboardText.color = {1.0f, 1.0f, 1.0f, 1.0f};
+            keyboardText.alignment = TMPro::TextAlignmentOptions::Center;
+            keyboardText.enableWordWrapping = false;
+            keyboardText.text = "";
+            keyboardText.enabled = self.enableInputField;
 
             auto keyboardCursor = Helpers::CreateText(container, "I", {0, 0});
-            self->keyboardCursor = keyboardCursor;
-            keyboardCursor->set_fontSize(6.0f);
-            keyboardCursor->set_color({0.60f, 0.80f, 1.0f, 1.0f});
-            keyboardCursor->set_alignment(TMPro::TextAlignmentOptions::Left);
-            keyboardCursor->set_enableWordWrapping(false);
-            keyboardCursor->set_enabled(self->enableInputField);
+            self.keyboardCursor = keyboardCursor;
+            keyboardCursor.fontSize = 6.0f;
+            keyboardCursor.color = {0.60f, 0.80f, 1.0f, 1.0f};
+            keyboardCursor.alignment = TMPro::TextAlignmentOptions::Left;
+            keyboardCursor.enableWordWrapping = false;
+            keyboardCursor.enabled = self.enableInputField;
 
-            self->DrawCursor();
+            self.DrawCursor();
 
             if (defaultKeyboard != "") {
-                self->AddKeys(defaultKeyboard);
-                self->DefaultActions();
+                self.AddKeys(defaultKeyboard);
+                self.DefaultActions();
             }
 
             return self;
         }
 
-        Key* Keyboard::AddKey(StringW keyLabel, float width, float height, int color) {
-            Vector2 position = currentPosition;
-            
+        Key Keyboard::AddKey(StringW keyLabel, float width, float height, int color) {
+            auto position = currentPosition;
+
             Color co;
             co.r = (float)(color & 0xff) / 255.0f;
-            co.g = (float)((color << 8) & 0xff) / 255.0f;
-            co.b = (float)((color << 16) & 0xff) / 255.0f;
+            co.g = (float)((color >> 8) & 0xff) / 255.0f;
+            co.b = (float)((color >> 16) & 0xff) / 255.0f;
             co.a = 1.0f;
 
-            auto key = Key::construct(this, position, keyLabel, width, height, co);
+            auto key = Key::construct(*this, position, keyLabel, width, height, co);
             keys->Add(key);
 
             return key;
         }
 
-        Key* Keyboard::AddKey(StringW keyLabel, StringW shifted, float width, float height) {
-            Key* key = AddKey(keyLabel, width, height);
-            key->shifted = shifted;
+        Key Keyboard::AddKey(StringW keyLabel, StringW shifted, float width, float height) {
+            auto key = AddKey(keyLabel, width, height);
+            key.shifted = shifted;
 
             return key;
         }
@@ -339,7 +339,7 @@ namespace BSML {
 
                 AddKey(first, second)->Set(newValue);
             }
-            
+
             spacing = 0;
             width = buttonWidth;
             height = 10.0f;
@@ -353,11 +353,11 @@ namespace BSML {
         }
 
         bool Keyboard::ReadFloat(StringW& data, int& position, float& result) {
-            if (position >= data->get_Length())
+            if (position >= data.Length())
                 return false;
 
             int start = position;
-            while (position < data->get_Length())
+            while (position < data.Length())
             {
                 char c = data[position];
                 if (!((c >= '0' && c <= '9') || c == '+' || c == '-' || c == '.'))
@@ -365,7 +365,7 @@ namespace BSML {
 
                 position++;
             }
-            
+
             if (System::Single::TryParse(data->Substring(start, position - start), byref(result)))
                 return true;
 

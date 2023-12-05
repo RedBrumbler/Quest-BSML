@@ -9,7 +9,7 @@ namespace BSML {
 
     void ModalKeyboard::OnEnable() {
         if (genericSetting && !clearOnOpen) {
-            auto text = genericSetting->GetValue<Il2CppString*>();
+            auto text = genericSetting.GetValue<StringW>();
             if (text) {
                 SetText(text);
             }
@@ -20,15 +20,15 @@ namespace BSML {
 
     void ModalKeyboard::OnEnter(StringW value) {
         if (genericSetting) {
-            genericSetting->SetValue(value);
+            genericSetting.SetValue(value);
         }
 
         if (onEnter) onEnter(value);
-        modalView->Hide();
+        modalView.Hide();
     }
 
     void ModalKeyboard::SetText(StringW value) {
-        keyboard->keyboardText->set_text(value);
-        keyboard->DrawCursor();
+        keyboard.keyboardText.text = value;
+        keyboard.DrawCursor();
     }
 }

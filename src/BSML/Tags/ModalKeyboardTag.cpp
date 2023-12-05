@@ -21,25 +21,25 @@ using namespace VRUIControls;
 
 namespace BSML {
     static BSMLNodeParser<ModalKeyboardTag> modalKeyboardTagParser({"modal-keyboard"});
-    UnityEngine::GameObject* ModalKeyboardTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject ModalKeyboardTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Modal Keyboard");
         auto gameObject = ModalTag::CreateObject(parent);
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
-        gameObject->set_name("BSMLModalKeyboard");
-        transform->set_sizeDelta({135, 75});
+        RectTransform transform { gameObject.transform.convert() };
+        gameObject.name = "BSMLModalKeyboard";
+        transform.sizeDelta = {135, 75};
 
-        auto parentTransform = GameObject::New_ctor("KeyboardParent")->AddComponent<RectTransform*>();
-        parentTransform->SetParent(transform, false);
-        parentTransform->set_localScale(parentTransform->get_localScale() * 1.4f);
+        auto parentTransform = GameObject::New_ctor("KeyboardParent").AddComponent<RectTransform>();
+        parentTransform.SetParent(transform, false);
+        parentTransform.localScale = parentTransform.localScale * 1.4f;
         auto keyboard = Keyboard::construct(parentTransform, Keyboard::QWERTY, true, 4, -12);
 
-        auto modalKeyboard = gameObject->AddComponent<ModalKeyboard*>();
-        modalKeyboard->keyboard = keyboard;
-        modalKeyboard->modalView = gameObject->GetComponent<BSML::ModalView*>();
-        keyboard->enterPressed = std::bind(&ModalKeyboard::OnEnter, modalKeyboard, std::placeholders::_1);
+        auto modalKeyboard = gameObject.AddComponent<ModalKeyboard>();
+        modalKeyboard.keyboard = keyboard;
+        modalKeyboard.modalView = gameObject.GetComponent<BSML::ModalView>();
+        keyboard.enterPressed = [kb = modalKeyboard.convert()](auto p){ ModalKeyboard(kb).OnEnter(p); };
 
-        auto externalComponents = gameObject->GetComponent<ExternalComponents*>();
-        externalComponents->Add(modalKeyboard);
+        auto externalComponents = gameObject.GetComponent<ExternalComponents>();
+        externalComponents.Add(modalKeyboard);
 
         return gameObject;
     }

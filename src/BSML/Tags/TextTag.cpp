@@ -11,23 +11,23 @@ using namespace UnityEngine;
 
 namespace BSML {
     static BSMLNodeParser<TextTag> textTagParser({"text", "label"});
-    UnityEngine::GameObject* TextTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject TextTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Text");
         auto gameObject = GameObject::New_ctor("BSMLText");
-        gameObject->get_transform()->SetParent(parent, false);
+        gameObject.transform.SetParent(parent, false);
 
         // on PC this is a FormattableText, but we're skipping that for now at least
-        auto textMesh = gameObject->AddComponent<HMUI::CurvedTextMeshPro*>();
-        textMesh->set_font(Helpers::GetMainTextFont());
-        textMesh->set_fontSharedMaterial(Helpers::GetMainUIFontMaterial());
-        textMesh->set_fontSize(4);
-        textMesh->set_color({1.0f, 1.0f, 1.0f, 1.0f});
-        textMesh->set_text("BSMLText");
+        auto textMesh = gameObject.AddComponent<HMUI::CurvedTextMeshPro>();
+        textMesh.font = Helpers::GetMainTextFont();
+        textMesh.fontSharedMaterial = Helpers::GetMainUIFontMaterial();
+        textMesh.fontSize = 4;
+        textMesh.color = {1.0f, 1.0f, 1.0f, 1.0f};
+        textMesh.text = "BSMLText";
 
-        auto rectTransform = textMesh->get_rectTransform();
-        rectTransform->set_anchorMin({0.5f, 0.5f});
-        rectTransform->set_anchorMax({0.5f, 0.5f});
-        
+        auto rectTransform = textMesh.rectTransform;
+        rectTransform.anchorMin = {0.5f, 0.5f};
+        rectTransform.anchorMax = {0.5f, 0.5f};
+
         return gameObject;
     }
 }

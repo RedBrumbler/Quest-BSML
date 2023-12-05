@@ -10,9 +10,9 @@ namespace BSML {
     struct ComponentTypeWithData {
         public:
             TypeHandlerBase* typeHandler;
-            UnityEngine::Component* component;
+            UnityEngine::Component component;
             std::map<std::string, std::string> data;
-        
+
         static std::map<std::string, std::string> GetParameters(const std::map<std::string, std::string>& allParams, const BSMLParserParams& parserParams, const std::map<std::string, std::vector<std::string>>& props);
     };
 }

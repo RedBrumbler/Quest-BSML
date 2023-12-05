@@ -7,12 +7,12 @@
 namespace BSML {
     class BSMLAction {
         public:
-            BSMLAction(Il2CppObject* host, const MethodInfo* methodInfo);
+            BSMLAction(bs_hook::Il2CppWrapperType host, const MethodInfo* methodInfo);
 
-            Il2CppObject* host;
+            bs_hook::Il2CppWrapperType host;
             const MethodInfo* methodInfo;
 
-            template<typename T = Il2CppObject*, typename... Targs>
+            template<typename T = bs_hook::Il2CppWrapperType, typename... Targs>
             std::optional<T> Invoke(Targs&&... args) const {
                 return il2cpp_utils::RunMethod<T>(host, methodInfo, args...);
             }
@@ -34,7 +34,7 @@ namespace BSML {
                 return BSML::MakeUnityAction<Targs...>(host, methodInfo);
             };
 
-            static BSMLAction* MakeAction(Il2CppObject* host, std::string methodName, int argc = 0);
-            static std::map<std::string, BSMLAction*> MakeActions(Il2CppObject* host);
+            static BSMLAction* MakeAction(bs_hook::Il2CppWrapperType host, std::string methodName, int argc = 0);
+            static std::map<std::string, BSMLAction*> MakeActions(bs_hook::Il2CppWrapperType host);
     };
 }

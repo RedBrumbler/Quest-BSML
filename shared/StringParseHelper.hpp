@@ -47,27 +47,27 @@ struct StringParseHelper : std::string_view {
 
     /* -- parsing methods -- */
     /// @brief try to parse a bool
-    /// @return optional containing bool value, or nullopt if invalid bool string 
+    /// @return optional containing bool value, or nullopt if invalid bool string
     std::optional<bool> tryParseBool() const;
 
     /// @brief try to parse an int
-    /// @return optional containing int value, or nullopt if invalid int string 
+    /// @return optional containing int value, or nullopt if invalid int string
     std::optional<int> tryParseInt() const;
 
     /// @brief try to parse a float
-    /// @return optional containing float value, or nullopt if invalid float string 
+    /// @return optional containing float value, or nullopt if invalid float string
     std::optional<float> tryParseFloat() const;
 
     /// @brief try to parse a double
-    /// @return optional containing double value, or nullopt if invalid double string 
+    /// @return optional containing double value, or nullopt if invalid double string
     std::optional<double> tryParseDouble() const;
 
     /// @brief try to parse a color
-    /// @return optional containing color value, or nullopt if invalid color string 
+    /// @return optional containing color value, or nullopt if invalid color string
     std::optional<UnityEngine::Color> tryParseColor() const;
 
     /// @brief try to parse a color32
-    /// @return optional containing color32 value, or nullopt if invalid color string 
+    /// @return optional containing color32 value, or nullopt if invalid color string
     std::optional<UnityEngine::Color32> tryParseColor32() const;
 
     /* -- reflection methods -- */
@@ -75,22 +75,22 @@ struct StringParseHelper : std::string_view {
     /// @param host the object in which' klass to look for a method
     /// @param argCount amount of args for the expected method
     /// @return method info for the method this string view would point to on host klass, nullptr if not found or wrong argCount
-    const MethodInfo* asMethodInfo(Il2CppObject* host, int argCount = 0) const;
-    
+    const MethodInfo* asMethodInfo(bs_hook::Il2CppWrapperType host, int argCount = 0) const;
+
     /// @brief use the string for a setter lookup in host->klass
     /// @param host the object in which' klass to look for a method
     /// @return method info for the setter this string view would point to on host klass, nullptr if not found
-    const MethodInfo* asSetter(Il2CppObject* host) const;
+    const MethodInfo* asSetter(bs_hook::Il2CppWrapperType host) const;
 
     /// @brief use the string for a getter lookup in host->klass
     /// @param host the object in which' klass to look for a method
     /// @return method info for the getter this string view would point to on host klass, nullptr if not found
-    const MethodInfo* asGetter(Il2CppObject* host) const;
+    const MethodInfo* asGetter(bs_hook::Il2CppWrapperType host) const;
 
     /// @brief use the string for a field lookup in host->klass
     /// @param host the object in which' klass to look for a field
     /// @return field info for the getter this string view would point to on host klass, nullptr if not found
-    FieldInfo* asFieldInfo(Il2CppObject* host) const;
+    FieldInfo* asFieldInfo(bs_hook::Il2CppWrapperType host) const;
 
     /// @brief a method to make the string view this helper refers to a lowercase string
     /// @return string of this helper, lowercase

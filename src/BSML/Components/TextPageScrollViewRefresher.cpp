@@ -6,17 +6,17 @@ DEFINE_TYPE(BSML, TextPageScrollViewRefresher);
 
 namespace BSML {
     void TextPageScrollViewRefresher::OnEnable() {
-        if (scrollView && scrollView->m_CachedPtr.m_value) {
-            scrollView->SetText(scrollView->text ? scrollView->text->get_text() : "");
-            scrollView->RefreshButtons();
+        if (scrollView && scrollView.m_CachedPtr) {
+            scrollView.SetText(scrollView.text ? scrollView.text.text : "");
+            scrollView.RefreshButtons();
         }
-        
+
     }
 
     void TextPageScrollViewRefresher::OnRectTransformDimensionsChange() {
-        if (scrollView && scrollView->m_CachedPtr.m_value) {
-            scrollView->SetText(scrollView->text ? scrollView->text->get_text() : "");
-            scrollView->RefreshButtons();
+        if (scrollView && scrollView.m_CachedPtr) {
+            scrollView.SetText(scrollView.text ? scrollView.text.text : "");
+            scrollView.RefreshButtons();
         }
     }
 }

@@ -17,15 +17,15 @@ namespace BSML {
 
     ScrollableContainerHandler::Base::SetterMap ScrollableContainerHandler::get_setters() const {
         return {
-            {"maskOverflow", [](auto component, auto value){ component->set_maskOverflow(value); }},
-            {"alignBottom", [](auto component, auto value){ component->set_alignBottom(value); }},
-            {"scrollToBottomOnUpdate", [](auto component, auto value){ component->scrollToBottomOnUpdate = value; }}
+            {"maskOverflow", [](auto component, auto value){ component.maskOverflow = value; }},
+            {"alignBottom", [](auto component, auto value){ component.alignBottom = value; }},
+            {"scrollToBottomOnUpdate", [](auto component, auto value){ component.scrollToBottomOnUpdate = value; }}
         };
     }
 
     void ScrollableContainerHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         Base::HandleType(componentType, parserParams);
-        auto scrollView = reinterpret_cast<ScrollableContainer*>(componentType.component);
+        auto scrollView = ScrollableContainer(componentType.component.convert());
         auto& data = componentType.data;
         auto idItr = data.find("id");
         if (idItr != data.end() && !idItr->second.empty()) {
@@ -41,40 +41,40 @@ namespace BSML {
     void ScrollableContainerHandler::HandleTypeAfterChildren(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto& gos = parserParams.GetObjectsWithTag("ScrollFocus");
         for (auto go : gos) {
-            go->AddComponent<HMUI::ItemForFocussedScrolling*>();
+            go.AddComponent<HMUI::ItemForFocussedScrolling>();
         }
     }
 
     void ScrollableContainerHandler::HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         INFO("After parse");
-        auto scrollView = reinterpret_cast<ScrollableContainer*>(componentType.component);
+        auto scrollView = ScrollableContainer(componentType.component.convert());
         auto& data = componentType.data;
 
         auto idItr = data.find("id");
         if (idItr != data.end() && !idItr->second.empty()) {
             auto pageUpButtons = parserParams.GetObjectsWithTag("PageUpFor:" + idItr->second);
             for (auto pageUp : pageUpButtons) {
-                scrollView->pageUpButton = pageUp->GetComponent<UnityEngine::UI::Button*>();
-                if (scrollView->pageUpButton) break;
+                scrollView.pageUpButton = pageUp.GetComponent<UnityEngine::UI::Button>();
+                if (scrollView.pageUpButton) break;
             }
 
             auto pageDownButtons = parserParams.GetObjectsWithTag("PageDownFor:" + idItr->second);
             for (auto pageDown : pageDownButtons) {
-                scrollView->pageDownButton = pageDown->GetComponent<UnityEngine::UI::Button*>();
-                if (scrollView->pageDownButton) break;
+                scrollView.pageDownButton = pageDown.GetComponent<UnityEngine::UI::Button>();
+                if (scrollView.pageDownButton) break;
             }
 
             auto scrollIndicators = parserParams.GetObjectsWithTag("IndicatorFor:" + idItr->second);
             for (auto scrollIndicator : scrollIndicators) {
-                scrollView->verticalScrollIndicator = scrollIndicator->GetComponent<HMUI::VerticalScrollIndicator*>();
-                if (scrollView->verticalScrollIndicator) break;
+                scrollView.verticalScrollIndicator = scrollIndicator.GetComponent<HMUI::VerticalScrollIndicator>();
+                if (scrollView.verticalScrollIndicator) break;
             }
-            INFO("upButton: {}", fmt::ptr(scrollView->pageUpButton));
-            INFO("downButton: {}", fmt::ptr(scrollView->pageDownButton));
-            INFO("scrollIndicator: {}", fmt::ptr(scrollView->verticalScrollIndicator));
+            INFO("upButton: {}", fmt::ptr(scrollView.pageUpButton.convert()));
+            INFO("downButton: {}", fmt::ptr(scrollView.pageDownButton.convert()));
+            INFO("scrollIndicator: {}", fmt::ptr(scrollView.verticalScrollIndicator.convert()));
         }
 
-        scrollView->RefreshContent();
-        scrollView->RefreshButtons();
+        scrollView.RefreshContent();
+        scrollView.RefreshButtons();
     }
 }

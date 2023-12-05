@@ -4,9 +4,9 @@
 #include "../Components/TabSelector.hpp"
 
 namespace BSML {
-    class TabSelectorHandler : public TypeHandler<BSML::TabSelector*> {
+    class TabSelectorHandler : public TypeHandler<BSML::TabSelector> {
         public:
-            using Base = TypeHandler<BSML::TabSelector*>;
+            using Base = TypeHandler<BSML::TabSelector>;
             TabSelectorHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

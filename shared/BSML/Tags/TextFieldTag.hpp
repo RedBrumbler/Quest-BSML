@@ -8,7 +8,7 @@ namespace BSML {
         public:
             TextFieldTag() : BSMLTag() {}
         protected:
-            virtual HMUI::InputFieldView* get_fieldViewPrefab() const;
-            virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
+            virtual HMUI::InputFieldView get_fieldViewPrefab() const;
+            virtual UnityEngine::GameObject CreateObject(UnityEngine::Transform parent) const override;
     };
 }

@@ -38,13 +38,26 @@ namespace BSML {
     };
 }
 
-DECLARE_CLASS_CODEGEN(BSML, TextGradientUpdater, UnityEngine::MonoBehaviour,
-    DECLARE_INSTANCE_FIELD(TMPro::TMP_Text*, text);
-    DECLARE_INSTANCE_FIELD(float, scrollSpeed);
-    DECLARE_INSTANCE_FIELD(float, scrollRepeat);
-    DECLARE_INSTANCE_FIELD(float, stepSize);
-    DECLARE_INSTANCE_FIELD(bool, fixedStep);
-    DECLARE_INSTANCE_FIELD(float, currentPos);
+DECLARE_CLASS_CORDL(BSML, TextGradientUpdater, UnityEngine::MonoBehaviour,
+    DECLARE_FIELDS(
+        DECLARE_INSTANCE_FIELD(TMPro::TMP_Text, text);
+        DECLARE_INSTANCE_FIELD(float, scrollSpeed);
+        DECLARE_INSTANCE_FIELD(float, scrollRepeat);
+        DECLARE_INSTANCE_FIELD(float, stepSize);
+        DECLARE_INSTANCE_FIELD(bool, fixedStep);
+        DECLARE_INSTANCE_FIELD(float, currentPos);
+
+        private:
+            Gradient* gradient;
+    );
+
+    FIELD_ACCESSOR(text);
+    FIELD_ACCESSOR(scrollSpeed);
+    FIELD_ACCESSOR(scrollRepeat);
+    FIELD_ACCESSOR(stepSize);
+    FIELD_ACCESSOR(fixedStep);
+    FIELD_ACCESSOR(currentPos);
+    FIELD_ACCESSOR(gradient);
 
     DECLARE_INSTANCE_METHOD(void, Awake);
     DECLARE_INSTANCE_METHOD(void, OnDestroy);
@@ -53,7 +66,4 @@ DECLARE_CLASS_CODEGEN(BSML, TextGradientUpdater, UnityEngine::MonoBehaviour,
     public:
         Gradient* get_gradient();
         void set_gradient(Gradient* gradient);
-    private:
-        Gradient* gradient;
 )
-

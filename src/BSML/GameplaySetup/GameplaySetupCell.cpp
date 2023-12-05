@@ -6,27 +6,27 @@
 DEFINE_TYPE(BSML, GameplaySetupCell);
 
 namespace BSML {
-    GameplaySetupCell* GameplaySetupCell::PopulateCell(GameplaySetupMenu* menu) {
+    GameplaySetupCell GameplaySetupCell::PopulateCell(GameplaySetupMenu menu) {
         DEBUG("Populating GameplaySetupCell");
         tab = menu;
 
-        toggle->set_text(get_name());
-        toggle->ReceiveValue();
+        toggle.text = name;
+        toggle.ReceiveValue();
 
-        return this;
+        return *this;
     }
 
     StringW GameplaySetupCell::get_name() {
-        return tab ? tab->name : "";
+        return tab ? tab.name : "";
     }
     bool GameplaySetupCell::get_visible() {
-        return tab && tab->get_visible();
+        return tab && tab.visible;
     }
 
     void GameplaySetupCell::set_visible(bool value) {
         if (tab) {
-            tab->set_visible(value);
-            toggle->ReceiveValue();
+            tab.visible = value;
+            toggle.ReceiveValue();
         }
     }
 }

@@ -4,9 +4,9 @@
 #include "../Components/Backgroundable.hpp"
 
 namespace BSML {
-    class BackgroundableHandler : public TypeHandler<Backgroundable*> {
+    class BackgroundableHandler : public TypeHandler<Backgroundable> {
         public:
-            using Base = TypeHandler<Backgroundable*>;
+            using Base = TypeHandler<Backgroundable>;
             BackgroundableHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

@@ -9,13 +9,13 @@
 #include "GlobalNamespace/MainFlowCoordinator.hpp"
 
 namespace BSML::Helpers {
-    VRUIControls::PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache();
-    Zenject::DiContainer* GetDiContainer();
-    HMUI::HoverHintController* GetHoverHintController();
+    VRUIControls::PhysicsRaycasterWithCache GetPhysicsRaycasterWithCache();
+    Zenject::DiContainer GetDiContainer();
+    HMUI::HoverHintController GetHoverHintController();
 
-    TMPro::TMP_FontAsset* GetMainTextFont();
-    UnityEngine::Material* GetMainUIFontMaterial();
-    UnityEngine::Material* GetUINoGlowMat();
-    GlobalNamespace::IVRPlatformHelper* GetIVRPlatformHelper();
-    GlobalNamespace::MainFlowCoordinator* GetMainFlowCoordinator();
+    TMPro::TMP_FontAsset GetMainTextFont();
+    UnityEngine::Material GetMainUIFontMaterial();
+    UnityEngine::Material GetUINoGlowMat();
+    GlobalNamespace::IVRPlatformHelper GetIVRPlatformHelper();
+    GlobalNamespace::MainFlowCoordinator GetMainFlowCoordinator();
 }

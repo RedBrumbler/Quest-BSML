@@ -11,7 +11,7 @@ namespace BSML {
 
     ButtonIconHandler::Base::SetterMap ButtonIconHandler::get_setters() const {
         return {
-            {"icon", [](auto component, auto value){ component->SetIcon(value); }}
+            {"icon", [](auto component, auto value){ component.SetIcon(value); }}
         };
     }
 }

@@ -4,9 +4,9 @@
 #include "../../Components/Settings/ListSliderSetting.hpp"
 
 namespace BSML {
-    class ListSliderSettingHandler : public TypeHandler<BSML::ListSliderSetting*> {
+    class ListSliderSettingHandler : public TypeHandler<BSML::ListSliderSetting> {
         public:
-            using Base = TypeHandler<BSML::ListSliderSetting*>;
+            using Base = TypeHandler<BSML::ListSliderSetting>;
             ListSliderSettingHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

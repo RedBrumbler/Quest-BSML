@@ -15,11 +15,11 @@ namespace BSML {
 
     LayoutElementHandler::Base::SetterMap LayoutElementHandler::get_setters() const {
         return {
-            {"ignoreLayout", [](auto component, auto value){ component->set_ignoreLayout(value); }},
-            {"preferredWidth", [](auto component, auto value){ component->set_preferredWidth(value); }},
-            {"preferredHeight", [](auto component, auto value){ component->set_preferredHeight(value); }},
-            {"minHeight", [](auto component, auto value){ component->set_minHeight(value); }},
-            {"minWidth", [](auto component, auto value){ component->set_minWidth(value); }}
+            {"ignoreLayout", [](auto component, auto value){ component.ignoreLayout = value; }},
+            {"preferredWidth", [](auto component, auto value){ component.preferredWidth = value; }},
+            {"preferredHeight", [](auto component, auto value){ component.preferredHeight = value; }},
+            {"minHeight", [](auto component, auto value){ component.minHeight = value; }},
+            {"minWidth", [](auto component, auto value){ component.minWidth = value; }}
         };
     }
 }

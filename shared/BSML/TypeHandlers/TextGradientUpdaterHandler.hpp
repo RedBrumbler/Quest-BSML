@@ -4,9 +4,9 @@
 #include "../Components/TextGradientUpdater.hpp"
 
 namespace BSML {
-    class TextGradientUpdaterHandler : public TypeHandler<BSML::TextGradientUpdater*> {
+    class TextGradientUpdaterHandler : public TypeHandler<BSML::TextGradientUpdater> {
         public:
-            using Base = TypeHandler<BSML::TextGradientUpdater*>;
+            using Base = TypeHandler<BSML::TextGradientUpdater>;
             TextGradientUpdaterHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

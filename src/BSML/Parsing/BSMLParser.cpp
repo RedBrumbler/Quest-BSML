@@ -38,13 +38,13 @@ namespace BSML {
         return parser;
     }
 
-    std::shared_ptr<BSMLParser> BSMLParser::parse_and_construct(std::string_view str, UnityEngine::Transform* parent, Il2CppObject* host) {
+    std::shared_ptr<BSMLParser> BSMLParser::parse_and_construct(std::string_view str, UnityEngine::Transform parent, bs_hook::Il2CppWrapperType host) {
         auto parser = parse(str);
         parser->Construct(parent, host);
         return parser;
     }
 
-    void BSMLParser::Construct(UnityEngine::Transform* parent, Il2CppObject* host) {
+    void BSMLParser::Construct(UnityEngine::Transform parent, bs_hook::Il2CppWrapperType host) {
         parserParams->host = host;
         std::vector<ComponentTypeWithData*> components;
 
@@ -78,12 +78,12 @@ namespace BSML {
         components.clear();
 
         if (host) {
-            auto postParseMinfo = il2cpp_functions::class_get_method_from_name(host->klass, "PostParse", 0);
+            auto postParseMinfo = il2cpp_functions::class_get_method_from_name(il2cpp_functions::object_get_class(host), "PostParse", 0);
             if (postParseMinfo) il2cpp_utils::RunMethod(host, postParseMinfo);
         }
     }
 
-    std::shared_ptr<BSMLParserParams> BSMLParser::Construct(const BSMLNode* root, UnityEngine::Transform* parent, Il2CppObject* host) {
+    std::shared_ptr<BSMLParserParams> BSMLParser::Construct(const BSMLNode* root, UnityEngine::Transform parent, bs_hook::Il2CppWrapperType host) {
         auto parserParams = std::make_shared<BSMLParserParams>();
         parserParams->host = host;
         std::vector<ComponentTypeWithData*> components;
@@ -112,7 +112,7 @@ namespace BSML {
         components.clear();
 
         if (host) {
-            auto postParseMinfo = il2cpp_functions::class_get_method_from_name(host->klass, "PostParse", 0);
+            auto postParseMinfo = il2cpp_functions::class_get_method_from_name(bs_hook::Il2CppWrapperType(host), "PostParse", 0);
             if (postParseMinfo) il2cpp_utils::RunMethod(host, postParseMinfo);
         }
 

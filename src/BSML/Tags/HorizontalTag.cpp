@@ -13,22 +13,22 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<HorizontalTag> horizontalTagParser({"horizontal"});
-    UnityEngine::GameObject* HorizontalTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject HorizontalTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Horizontal");
         auto gameObject = GameObject::New_ctor("BSMLHorizontalLayoutGroup");
-        gameObject->get_transform()->SetParent(parent, false);
-        auto horizontal = gameObject->AddComponent<HorizontalLayoutGroup*>();
+        gameObject.transform.SetParent(parent, false);
+        auto horizontal = gameObject.AddComponent<HorizontalLayoutGroup>();
 
-        auto contentSizeFitter = gameObject->AddComponent<ContentSizeFitter*>();
-        contentSizeFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
-        gameObject->AddComponent<Backgroundable*>();
+        auto contentSizeFitter = gameObject.AddComponent<ContentSizeFitter>();
+        contentSizeFitter.verticalFit = ContentSizeFitter::FitMode::PreferredSize;
+        gameObject.AddComponent<Backgroundable>();
 
-        auto rectTransform = horizontal->get_rectTransform();
-        rectTransform->set_anchorMin({0, 0});
-        rectTransform->set_anchorMax({1, 1});
-        rectTransform->set_sizeDelta({0, 0});
+        auto rectTransform = horizontal.rectTransform;
+        rectTransform.anchorMin = {0, 0};
+        rectTransform.anchorMax = {1, 1};
+        rectTransform.sizeDelta = {0, 0};
 
-        gameObject->AddComponent<LayoutElement*>();
+        gameObject.AddComponent<LayoutElement>();
         return gameObject;
     }
 }

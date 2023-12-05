@@ -4,9 +4,9 @@
 #include "UnityEngine/UI/Selectable.hpp"
 
 namespace BSML {
-    class SelectableHandler : public TypeHandler<UnityEngine::UI::Selectable*> {
+    class SelectableHandler : public TypeHandler<UnityEngine::UI::Selectable> {
         public:
-            using Base = TypeHandler<UnityEngine::UI::Selectable*>;
+            using Base = TypeHandler<UnityEngine::UI::Selectable>;
             SelectableHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

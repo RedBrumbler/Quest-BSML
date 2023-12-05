@@ -5,8 +5,8 @@
 #include "BSML/Parsing/BSMLDocParser.hpp"
 
 bool didIt = false;
-MAKE_AUTO_HOOK_MATCH(LevelSelectionFlowCoordinator_DidActivate, &GlobalNamespace::LevelSelectionFlowCoordinator::DidActivate, void, GlobalNamespace::LevelSelectionFlowCoordinator* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
-    LevelSelectionFlowCoordinator_DidActivate(self, firstActivation, addedToHierarchy, screenSystemEnabling);
+MAKE_AUTO_HOOK_MATCH(LevelSelectionFlowCoordinator_DidActivate, &GlobalNamespace::LevelSelectionFlowCoordinator::DidActivate, void, GlobalNamespace::LevelSelectionFlowCoordinator* ptr, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
+    LevelSelectionFlowCoordinator_DidActivate(ptr, firstActivation, addedToHierarchy, screenSystemEnabling);
 
     // do it once per game launch, if we just happen to ever give a docs build, it's only going to freeze once
     if (!didIt) {

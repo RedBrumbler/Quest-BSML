@@ -4,9 +4,9 @@
 #include "../../Components/Settings/ListSetting.hpp"
 
 namespace BSML {
-    class ListSettingHandler : public TypeHandler<BSML::ListSetting*> {
+    class ListSettingHandler : public TypeHandler<BSML::ListSetting> {
         public:
-            using Base = TypeHandler<BSML::ListSetting*>;
+            using Base = TypeHandler<BSML::ListSetting>;
             ListSettingHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

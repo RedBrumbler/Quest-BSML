@@ -5,7 +5,7 @@ DEFINE_TYPE(BSML, ListSetting);
 namespace BSML {
     void ListSetting::ctor() {
         IncDecSetting::construct();
-        values = List<Il2CppObject*>::New_ctor();
+        values = List<bs_hook::Il2CppWrapperType>::New_ctor();
         index = 0;
     }
 
@@ -29,19 +29,19 @@ namespace BSML {
         UpdateState();
 
         if (genericSetting) {
-            genericSetting->OnChange(values[index]);
-            if (genericSetting->applyOnChange) ApplyValue();
+            genericSetting.OnChange(values[index]);
+            if (genericSetting.applyOnChange) ApplyValue();
         }
     }
 
     void ListSetting::ReceiveValue() {
         if (!genericSetting) return;
-        set_Value(genericSetting->GetValue<Il2CppObject*>());
+        Value = genericSetting.GetValue<bs_hook::Il2CppWrapperType>();
     }
 
     void ListSetting::ApplyValue() {
         if (!genericSetting) return;
-        genericSetting->SetValue(get_Value());
+        genericSetting.SetValue(Value);
     }
 
     void ListSetting::ValidateRange() {
@@ -55,43 +55,43 @@ namespace BSML {
         if (values.size() > 0) {
             set_enableDec(index > 0);
             set_enableInc(index < values.size() - 1);
-            StringW text; 
+            StringW text;
             if (formatter)
                 text = formatter(values[index]);
             else {
                 auto value = values[index];
                 if (value) {
-                    text = value->ToString();
+                    text = value.ToString();
                 } else {
                     text = "NULL";
                 }
             }
-            set_text(text);
+            this->text = text;
         } else {
-            set_enableDec(false);
-            set_enableInc(false);
-            set_text("No values");
+            enableDec = false;
+            enableInc = false;
+            this->text = "No values";
         }
     }
 
-    Il2CppObject* ListSetting::get_Value() {
+    bs_hook::Il2CppWrapperType ListSetting::get_Value() {
         ValidateRange();
-        if (values.size() == 0) return nullptr;
+        if (values.size() == 0) return bs_hook::Il2CppWrapperType(nullptr);
         return values[index];
     }
 
-    void ListSetting::set_Value(Il2CppObject* value) {
+    void ListSetting::set_Value(bs_hook::Il2CppWrapperType value) {
         index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value
-            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(v, "Equals", value).value_or(false)))
+            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(static_cast<Il2CppObject*>(v), "Equals", static_cast<Il2CppObject*>(value)).value_or(false)))
                 break;
             index++;
         }
 
         if (index == values.size())
             index = values.size() - 1;
-        
+
         UpdateState();
     }
 }

@@ -6,26 +6,26 @@ DEFINE_TYPE(BSML, FloatingScreenHandle);
 
 namespace BSML {
     SafePtrUnity<UnityEngine::Material> FloatingScreenHandle::hoverMaterial;
-    UnityEngine::Material* FloatingScreenHandle::get_hoverMaterial() {
+    UnityEngine::Material FloatingScreenHandle::get_hoverMaterial() {
         if (!hoverMaterial) {
             auto shader = UnityEngine::Shader::Find("Hidden/Internal-DepthNormalsTexture");
             hoverMaterial = UnityEngine::Material::New_ctor(shader);
         }
 
-        return hoverMaterial.ptr();
+        return UnityEngine::Material(hoverMaterial.ptr());
     }
 
 
     void FloatingScreenHandle::Awake() {
-        renderer = GetComponent<UnityEngine::MeshRenderer*>();
-        originalMaterial = renderer->get_material();
+        renderer = GetComponent<UnityEngine::MeshRenderer>();
+        originalMaterial = renderer.material;
     }
 
-    void FloatingScreenHandle::OnPointerEnter(UnityEngine::EventSystems::PointerEventData* eventData) {
-        renderer->set_material(get_hoverMaterial());
+    void FloatingScreenHandle::OnPointerEnter(UnityEngine::EventSystems::PointerEventData eventData) {
+        renderer.material = get_hoverMaterial();
     }
 
-    void FloatingScreenHandle::OnPointerExit(UnityEngine::EventSystems::PointerEventData* eventData) {
-        renderer->set_material(originalMaterial);
+    void FloatingScreenHandle::OnPointerExit(UnityEngine::EventSystems::PointerEventData eventData) {
+        renderer.material = originalMaterial;
     }
 }

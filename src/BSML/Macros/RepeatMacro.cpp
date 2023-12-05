@@ -14,13 +14,13 @@ namespace BSML {
         };
     }
 
-    void RepeatMacro::Execute(UnityEngine::Transform* parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
+    void RepeatMacro::Execute(UnityEngine::Transform parent, const std::map<std::string, std::string>& data, BSMLParserParams& parserParams,  std::vector<ComponentTypeWithData*>& componentInfo) const {
         INFO("Executing repeat macro");
         auto host = parserParams.get_host();
         auto countItr = data.find("count");
         if (countItr != data.end()) {
             int count = StringParseHelper(countItr->second);
-            
+
             bool passTags = false;
             auto passTagsItr = data.find("passTags");
             if (passTagsItr != data.end()) passTags = StringParseHelper(passTagsItr->second);

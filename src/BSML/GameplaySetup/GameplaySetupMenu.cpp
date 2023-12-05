@@ -10,36 +10,36 @@
 DEFINE_TYPE(BSML, GameplaySetupMenu);
 
 namespace BSML {
-    GameplaySetupMenu* GameplaySetupMenu::Make_new(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType) {
+    GameplaySetupMenu GameplaySetupMenu::Make_new(std::string_view name, std::string_view content_key, bs_hook::Il2CppWrapperType host, MenuType menuType) {
         auto self = GameplaySetupMenu::New_ctor();
 
-        self->name = name;
-        self->content_key = content_key;
-        self->host = host;
-        self->menuType = menuType;
-        self->menuSource = MenuSource::BSMLContent;
+        self.name = name;
+        self.content_key = content_key;
+        self.host = host;
+        self.menuType = menuType;
+        self.menuSource = MenuSource::BSMLContent;
 
         return self;
     }
 
-    GameplaySetupMenu* GameplaySetupMenu::Make_new(System::Type* csType, std::string_view name, BSML::MenuType menuType) {
+    GameplaySetupMenu GameplaySetupMenu::Make_new(System::Type* csType, std::string_view name, BSML::MenuType menuType) {
         auto self = GameplaySetupMenu::New_ctor();
 
-        self->name = name;
-        self->menuType = menuType;
-        self->csType = csType;
-        self->menuSource = MenuSource::Component;
+        self.name = name;
+        self.menuType = menuType;
+        self.csType = csType;
+        self.menuSource = MenuSource::Component;
 
         return self;
     }
 
-    GameplaySetupMenu* GameplaySetupMenu::Make_new(std::function<void(UnityEngine::GameObject*, bool)> didActivate, std::string_view name, BSML::MenuType menuType) {
+    GameplaySetupMenu GameplaySetupMenu::Make_new(std::function<void(UnityEngine::GameObject, bool)> didActivate, std::string_view name, BSML::MenuType menuType) {
         auto self = GameplaySetupMenu::New_ctor();
 
-        self->name = name;
-        self->menuType = menuType;
-        self->didActivate = didActivate;
-        self->menuSource = MenuSource::Method;
+        self.name = name;
+        self.menuType = menuType;
+        self.didActivate = didActivate;
+        self.menuSource = MenuSource::Method;
 
         return self;
     }
@@ -51,23 +51,23 @@ namespace BSML {
                 std::string_view content;
                 if (get_content(content)) {
                     DEBUG("Got content! parsing...");
-                    parse_and_construct(content, tab->get_transform(), host);
+                    parse_and_construct(content, tab.transform, host);
                 } else { // there was an error
                     DEBUG("Error getting content, was the content key correctly given?");
-                    parse_and_construct(content, tab->get_transform(), tab);
+                    parse_and_construct(content, tab.transform, tab);
                 }
                 break;
             }
             case MenuSource::Method: {
-                    auto activator = tab->get_gameObject()->AddComponent<GameplaySetupTabActivator*>();
-                    activator->didActivate = didActivate;
-                    activator->menuSource = menuSource;
+                    auto activator = tab.gameObject.AddComponent<GameplaySetupTabActivator>();
+                    activator.didActivate = didActivate;
+                    activator.menuSource = menuSource;
                 }
                 break;
             case MenuSource::Component: {
-                    auto activator = tab->get_gameObject()->AddComponent<GameplaySetupTabActivator*>();
-                    activator->mb = reinterpret_cast<UnityEngine::MonoBehaviour*>(tab->get_gameObject()->AddComponent(csType));
-                    activator->menuSource = menuSource;
+                    auto activator = tab.gameObject.AddComponent<GameplaySetupTabActivator>();
+                    activator.mb = UnityEngine::MonoBehaviour(tab.gameObject.AddComponent(csType).convert());
+                    activator.menuSource = menuSource;
                 }
                 break;
             case MenuSource::ViewController: [[fallthrough]];
@@ -81,7 +81,7 @@ namespace BSML {
     }
 
     void GameplaySetupMenu::SetVisible(bool isVisible) {
-        if (tab && tab->m_CachedPtr.m_value) tab->set_isVisible(isVisible && get_visible());
+        if (tab && tab.m_CachedPtr) tab.isVisible = isVisible && visible;
     }
 
     bool GameplaySetupMenu::IsMenuType(MenuType toCheck) {

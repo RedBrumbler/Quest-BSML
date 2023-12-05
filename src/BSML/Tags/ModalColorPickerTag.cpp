@@ -25,79 +25,77 @@ namespace BSML {
             <button text='Cancel' on-click='CancelPressed' pref-width='30'/>\
             <action-button text='Done' on-click='DonePressed' pref-width='30'/>\
         </horizontal>\
-        "    
+        "
     };
 
-    GlobalNamespace::RGBPanelController* get_rgbTemplate() {
+    GlobalNamespace::RGBPanelController get_rgbTemplate() {
         static SafePtrUnity<GlobalNamespace::RGBPanelController> rgbTemplate;
-        if (!rgbTemplate) 
-            rgbTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::RGBPanelController*>().FirstOrDefault([](auto x){ return x->get_name() == "RGBColorPicker"; });
-        return rgbTemplate.ptr();
+        if (!rgbTemplate)
+            rgbTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::RGBPanelController>().FirstOrDefault([](auto x){ return x.name == "RGBColorPicker"; });
+        return GlobalNamespace::RGBPanelController(rgbTemplate.ptr());
     }
-    GlobalNamespace::HSVPanelController* get_hsvTemplate() {
+    GlobalNamespace::HSVPanelController get_hsvTemplate() {
         static SafePtrUnity<GlobalNamespace::HSVPanelController> hsvTemplate;
-        if (!hsvTemplate) 
-            hsvTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::HSVPanelController*>().FirstOrDefault([](auto x){ return x->get_name() == "HSVColorPicker"; });
-        return hsvTemplate.ptr();
+        if (!hsvTemplate)
+            hsvTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::HSVPanelController>().FirstOrDefault([](auto x){ return x.name == "HSVColorPicker"; });
+        return GlobalNamespace::HSVPanelController(hsvTemplate.ptr());
     }
-    HMUI::ImageView* get_currentColorTemplate() {
+    HMUI::ImageView get_currentColorTemplate() {
         static SafePtrUnity<HMUI::ImageView> currentColorTemplate;
         if (!currentColorTemplate) {
-            currentColorTemplate = Resources::FindObjectsOfTypeAll<HMUI::ImageView*>().FirstOrDefault([](auto x){ 
-                if (x->get_name() != "SaberColorA") return false;
-                auto parent = x->get_transform()->get_parent();
+            currentColorTemplate = Resources::FindObjectsOfTypeAll<HMUI::ImageView>().FirstOrDefault([](auto x){
+                if (x.name != "SaberColorA") return false;
+                auto parent = x.transform.parent;
                 if (!parent) return false;
-                return parent->get_name() == "ColorSchemeView"; 
+                return parent.name == "ColorSchemeView";
             });
         }
-        return currentColorTemplate.ptr();
+        return HMUI::ImageView(currentColorTemplate.ptr());
     }
 
-    UnityEngine::GameObject* ModalColorPickerTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject ModalColorPickerTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Modal Color Picker");
 
-        GameObject* gameObject = Base::CreateObject(parent);
-        auto externalComponents = gameObject->GetComponent<ExternalComponents*>();
-        auto windowTransform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
-        gameObject->set_name("BSMLModalColorPicker");
-        windowTransform->set_sizeDelta({135, 75});
+        auto gameObject = Base::CreateObject(parent);
+        auto externalComponents = gameObject.GetComponent<ExternalComponents>();
+        RectTransform windowTransform {gameObject.transform.convert()};
+        gameObject.name = "BSMLModalColorPicker";
+        windowTransform.sizeDelta = {135, 75};
 
-        auto colorPicker = gameObject->AddComponent<ModalColorPicker*>();
-        colorPicker->modalView = externalComponents->Get<ModalView*>();
+        auto colorPicker = gameObject.AddComponent<ModalColorPicker>();
+        colorPicker.modalView = externalComponents.Get<ModalView>();
 
-                        
-
-        auto onChangeInfo = il2cpp_functions::class_get_method_from_name(colorPicker->klass, "OnChange", 2);
+        auto onChangeInfo = il2cpp_functions::class_get_method_from_name(static_cast<Il2CppObject*>(colorPicker)->klass, "OnChange", 2);
         auto delegate = MakeSystemAction<UnityEngine::Color, GlobalNamespace::ColorChangeUIEventType>(colorPicker, onChangeInfo);
-        auto rgbController = Object::Instantiate(get_rgbTemplate(), gameObject->get_transform(), false);
-        rgbController->set_name("BSMLRGBPanel");
-        auto rgbTransform = reinterpret_cast<RectTransform*>(rgbController->get_transform());
-        rgbTransform->set_anchoredPosition({0, 3});
-        rgbTransform->set_anchorMin({0, .25f});
-        rgbTransform->set_anchorMax({0, .25f});
-        colorPicker->rgbPanel = rgbController;
-        rgbController->add_colorDidChangeEvent(delegate);
+        auto rgbController = Object::Instantiate(get_rgbTemplate(), gameObject.transform, false);
+        rgbController.name = "BSMLRGBPanel";
+        RectTransform rgbTransform {rgbController.transform.convert()};
+        rgbTransform.anchoredPosition = {0, 3};
+        rgbTransform.anchorMin = {0, .25f};
+        rgbTransform.anchorMax = {0, .25f};
+        colorPicker.rgbPanel = rgbController;
+        rgbController.add_colorDidChangeEvent(delegate);
 
-        auto hsvController = Object::Instantiate(get_hsvTemplate(), gameObject->get_transform(), false);
-        hsvController->set_name("BSMLHSVPanel");
-        auto hsvTransform = reinterpret_cast<RectTransform*>(hsvController->get_transform());
-        hsvTransform->set_anchoredPosition({0, 3});
-        hsvTransform->set_anchorMin({0.75f, 0.5f});
-        hsvTransform->set_anchorMax({0.75f, 0.5f});
-        hsvController->add_colorDidChangeEvent(delegate);
-        colorPicker->hsvPanel = hsvController;
+        auto hsvController = Object::Instantiate(get_hsvTemplate(), gameObject.transform, false);
+        hsvController.name = "BSMLHSVPanel";
+        RectTransform hsvTransform {hsvController.transform.convert()};
+        hsvTransform.anchoredPosition = {0, 3};
+        hsvTransform.anchorMin = {0.75f, 0.5f};
+        hsvTransform.anchorMax = {0.75f, 0.5f};
+        hsvController.add_colorDidChangeEvent(delegate);
+        colorPicker.hsvPanel = hsvController;
 
-        auto colorImage = Object::Instantiate(get_currentColorTemplate(), gameObject->get_transform(), false);
-        colorImage->set_name("BSMLCurrentColor");
-        auto colorTransform = reinterpret_cast<RectTransform*>(colorImage->get_transform());
-        colorTransform->set_anchoredPosition({0, 0});
-        colorTransform->set_anchorMin({0.5, 0.5f});
-        colorTransform->set_anchorMax({0.5, 0.5f});
-        colorPicker->colorImage = colorImage;
+        auto colorImage = Object::Instantiate(get_currentColorTemplate(), gameObject.transform, false);
+        colorImage.name = "BSMLCurrentColor";
+        RectTransform colorTransform {colorImage.transform.convert()};
+        colorTransform.anchoredPosition = {0, 0};
+        colorTransform.anchorMin = {0.5, 0.5f};
+        colorTransform.anchorMax = {0.5, 0.5f};
+        colorPicker.colorImage = colorImage;
 
-        BSML::parse_and_construct(buttonXML, gameObject->get_transform(), colorPicker);
+        BSML::parse_and_construct(buttonXML, gameObject.transform, colorPicker);
 
-        externalComponents->Add(colorPicker);
+        externalComponents.Add(colorPicker);
         return gameObject;
     }
 }

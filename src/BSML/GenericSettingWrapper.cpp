@@ -10,10 +10,10 @@ void BSML::GenericSettingWrapper::ctor() {
     onChangeInfo = nullptr;
 }
 
-Il2CppObject* BSML::GenericSettingWrapper::get_onChangeHost() {
+bs_hook::Il2CppWrapperType BSML::GenericSettingWrapper::get_onChangeHost() {
     return onChangeHost ? onChangeHost : host;
 }
 
-Il2CppObject* BSML::GenericSettingWrapper::get_host() {
+bs_hook::Il2CppWrapperType BSML::GenericSettingWrapper::get_host() {
     return host ? host : onChangeHost;
 }

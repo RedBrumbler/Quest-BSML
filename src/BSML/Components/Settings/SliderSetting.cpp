@@ -24,32 +24,32 @@ namespace BSML {
     }
 
     float SliderSetting::get_Value() {
-        return slider ? slider->get_value() : 0.0f;
+        return slider ? slider.value : 0.0f;
     }
 
     void SliderSetting::set_Value(float value) {
         if (slider) {
-            slider->set_value(value);
+            slider.value = value;
         }
     }
 
     void SliderSetting::Setup() {
         if (slider) {
             remappers[slider] = this;
-            text = slider->get_gameObject()->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
-            
+            text = slider.gameObject.GetComponentInChildren<TMPro::TextMeshProUGUI>();
+
             // steps is range(max - min) divided by increments;
-            int steps = (slider->get_maxValue() - slider->get_minValue()) / increments;
-            slider->set_numberOfSteps(steps + 1);
+            int steps = (slider.maxValue - slider.minValue) / increments;
+            slider.numberOfSteps = steps + 1;
             ReceiveValue();
 
-            auto onChangeInfo = il2cpp_functions::class_get_method_from_name(this->klass, "OnChange", 2);
-            auto delegate = MakeSystemAction<HMUI::RangeValuesTextSlider*, float>(this, onChangeInfo);
+            auto onChangeInfo = il2cpp_functions::class_get_method_from_name(il2cpp_functions::object_get_class(*this), "OnChange", 2);
+            auto delegate = MakeSystemAction<HMUI::RangeValuesTextSlider, float>(*this, onChangeInfo);
 
-            slider->add_valueDidChangeEvent(delegate);
+            slider.add_valueDidChangeEvent(delegate);
         }
     }
-    
+
     void SliderSetting::OnChange(HMUI::RangeValuesTextSlider* _, float value) {
         if (isInt)
             value = (int)value;

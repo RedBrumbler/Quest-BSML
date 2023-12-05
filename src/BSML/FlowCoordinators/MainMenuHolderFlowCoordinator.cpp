@@ -14,11 +14,11 @@ DEFINE_TYPE(BSML, MainMenuHolderFlowCoordinator);
 
 namespace BSML {
     SafePtrUnity<MainMenuHolderFlowCoordinator> MainMenuHolderFlowCoordinator::instance;
-    MainMenuHolderFlowCoordinator* MainMenuHolderFlowCoordinator::get_instance() {
+    MainMenuHolderFlowCoordinator MainMenuHolderFlowCoordinator::get_instance() {
         if (!instance) {
-            instance = BSML::Helpers::CreateFlowCoordinator<MainMenuHolderFlowCoordinator*>();
+            instance = BSML::Helpers::CreateFlowCoordinator<MainMenuHolderFlowCoordinator>();
         }
-        return instance.ptr();
+        return MainMenuHolderFlowCoordinator(instance.ptr());
     }
 
     void MainMenuHolderFlowCoordinator::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
@@ -32,20 +32,20 @@ namespace BSML {
         StartCoroutine(custom_types::Helpers::CoroutineHelper::New(EndOfFramePresentVC()));
     }
 
-    void MainMenuHolderFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController) {
+    void MainMenuHolderFlowCoordinator::BackButtonWasPressed(HMUI::ViewController topViewController) {
         DEBUG("Back Button was pressed");
         parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
     }
 
     custom_types::Helpers::Coroutine MainMenuHolderFlowCoordinator::EndOfFramePresentVC() {
-        co_yield reinterpret_cast<System::Collections::IEnumerator*>(UnityEngine::WaitForEndOfFrame::New_ctor());
+        co_yield UnityEngine::WaitForEndOfFrame::New_ctor().convert();
 
         if (currentRegistration) {
             SetTitle(currentRegistration->title, HMUI::ViewController::AnimationType::Out);
-            if (!mainScreenViewControllers->Contains(currentRegistration->viewController)) {
-                ReplaceTopViewController(currentRegistration->viewController, this, this, nullptr, HMUI::ViewController::AnimationType::In, HMUI::ViewController::AnimationDirection::Horizontal);
+            if (!_mainScreenViewControllers.Contains(currentRegistration->viewController)) {
+                ReplaceTopViewController(currentRegistration->viewController, *this, *this, {nullptr}, HMUI::ViewController::AnimationType::In, HMUI::ViewController::AnimationDirection::Horizontal);
             } else {
-                currentRegistration->viewController->__Activate(false, false);
+                currentRegistration->viewController.__Activate(false, false);
             }
         }
 
@@ -60,7 +60,7 @@ namespace BSML {
         return nullptr;
     }
 
-    MainMenuRegistration::MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const System::Type* csType, const MenuSource registrationType) :
+    MainMenuRegistration::MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const System::Type csType, const MenuSource registrationType) :
         title(title),
         buttonText(buttonText),
         hoverHint(hoverHint),
@@ -71,11 +71,11 @@ namespace BSML {
         BSML::Events::onGameDidRestart += {&MainMenuRegistration::OnGameDidRestart, this};
     }
 
-    MainMenuRegistration::MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const std::function<void(HMUI::ViewController*, bool, bool, bool)> setupFunc) :
+    MainMenuRegistration::MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const std::function<void(HMUI::ViewController, bool, bool, bool)> setupFunc) :
         title(title),
         buttonText(buttonText),
         hoverHint(hoverHint),
-        csType(csTypeOf(HMUI::ViewController*)),
+        csType(csTypeOf(HMUI::ViewController)),
         setupFunc(setupFunc),
         registrationType(MenuSource::Method),
         viewController(nullptr) {
@@ -87,15 +87,15 @@ namespace BSML {
     }
 
     void MainMenuRegistration::OnGameDidRestart() {
-        if (viewController && viewController->m_CachedPtr.m_value) {
+        if (viewController && viewController.m_CachedPtr) {
             UnityEngine::Object::DestroyImmediate(viewController);
         }
 
-        viewController = nullptr;
+        viewController = HMUI::ViewController{nullptr};
     }
 
     void MainMenuRegistration::Present() {
-        auto presentOn = BSML::Helpers::GetMainFlowCoordinator()->YoungestChildFlowCoordinatorOrSelf();
+        auto presentOn = BSML::Helpers::GetMainFlowCoordinator().YoungestChildFlowCoordinatorOrSelf();
         switch (registrationType) {
             case MenuSource::FlowCoordinator:
                 PresentWithFlowCoordinator(presentOn);
@@ -113,7 +113,7 @@ namespace BSML {
         }
     }
 
-    void MainMenuRegistration::PresentWithFlowCoordinator(HMUI::FlowCoordinator* presentOn) {
+    void MainMenuRegistration::PresentWithFlowCoordinator(HMUI::FlowCoordinator presentOn) {
         if (!flowCoordinator || !flowCoordinator->m_CachedPtr.m_value) {
             flowCoordinator = BSML::Helpers::CreateFlowCoordinator(const_cast<System::Type*>(csType));
         }
@@ -121,27 +121,27 @@ namespace BSML {
         presentOn->PresentFlowCoordinator(flowCoordinator, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, false, false);
     }
 
-    void MainMenuRegistration::PresentWithViewController(HMUI::FlowCoordinator* presentOn) {
-        if (!viewController || !viewController->m_CachedPtr.m_value) {
-            viewController = BSML::Helpers::CreateViewController(const_cast<System::Type*>(csType));
+    void MainMenuRegistration::PresentWithViewController(HMUI::FlowCoordinator presentOn) {
+        if (!viewController || !viewController->m_CachedPtr) {
+            viewController = BSML::Helpers::CreateViewController(const_cast<System::Type>(csType));
         }
 
         auto fc = MainMenuHolderFlowCoordinator::get_instance();
-        fc->currentRegistration = this;
+        fc.currentRegistration = this;
 
-        presentOn->PresentFlowCoordinator(fc, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, true, false);
+        presentOn.PresentFlowCoordinator(fc, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, true, false);
     }
 
-    void MainMenuRegistration::PresentWithMethod(HMUI::FlowCoordinator* presentOn) {
-        if (!viewController || !viewController->m_CachedPtr.m_value) {
-            viewController = BSML::Helpers::CreateViewController(const_cast<System::Type*>(csType));
-            viewController->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(viewController, setupFunc));
+    void MainMenuRegistration::PresentWithMethod(HMUI::FlowCoordinator presentOn) {
+        if (!viewController || !viewController->m_CachedPtr) {
+            viewController = BSML::Helpers::CreateViewController(const_cast<System::Type>(csType));
+            viewController.add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate>(viewController, setupFunc));
         }
 
         auto fc = MainMenuHolderFlowCoordinator::get_instance();
-        fc->currentRegistration = this;
+        fc.currentRegistration = *this;
 
-        presentOn->PresentFlowCoordinator(fc, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, true, false);
+        presentOn.PresentFlowCoordinator(fc, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, true, false);
     }
 #pragma endregion
 }

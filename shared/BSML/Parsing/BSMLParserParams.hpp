@@ -21,22 +21,22 @@ namespace BSML {
             /// @brief get the object vector for the given tag
             /// @param tag the tag to look for
             /// @return const reference to the vector
-            const std::vector<UnityEngine::GameObject*>& GetObjectsWithTag(const std::string& tag) const;
-            
+            const std::vector<UnityEngine::GameObject>& GetObjectsWithTag(const std::string& tag) const;
+
             /// @brief add object with tag to the backing map;
             /// @param object the object to add
             /// @param tag the tag to add the object to
-            void AddObjectWithTag(UnityEngine::GameObject* object, const std::string& tag);
+            void AddObjectWithTag(UnityEngine::GameObject object, const std::string& tag);
 
             /// @brief add multiple objects with tag to the backing map;
             /// @param objects the objects to add
             /// @param tag the tag to add the objects to
-            void AddObjectsWithTag(const std::vector<UnityEngine::GameObject*>& objects, const std::string& tag);
-            
+            void AddObjectsWithTag(const std::vector<UnityEngine::GameObject>& objects, const std::string& tag);
+
             /// @brief add an object to multiple tags in the backing map
             /// @param object the object to add
             /// @param tags the tags to add the object to
-            void AddObjectWithTags(UnityEngine::GameObject* object, const std::vector<std::string>& tags);
+            void AddObjectWithTags(UnityEngine::GameObject object, const std::vector<std::string>& tags);
 
             /// @brief pass the tagged objects from this into the other params;
             /// @param other the parser params to pass the objects into
@@ -73,14 +73,14 @@ namespace BSML {
             /// @param key the key the event is saved to
             /// @param event the function to run for the specific event
             void AddEvent(const std::string& key, std::function<void(void)> event);
-            
+
             /// @brief get the host object
-            Il2CppObject* get_host();
+            bs_hook::Il2CppWrapperType get_host();
         private:
-            std::map<std::string, std::vector<UnityEngine::GameObject*>> objectsWithIds;
+            std::map<std::string, std::vector<UnityEngine::GameObject>> objectsWithIds;
             std::map<std::string, BSMLValue*> values;
             std::map<std::string, BSMLAction*> actions;
             std::map<std::string, std::shared_ptr<BSMLEvent>> events;
-            Il2CppObject* host;
+            bs_hook::Il2CppWrapperType host;
     };
 }

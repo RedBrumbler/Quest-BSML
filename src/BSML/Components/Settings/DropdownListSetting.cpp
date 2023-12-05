@@ -12,47 +12,47 @@ DEFINE_TYPE(BSML, DropdownListSetting);
 namespace BSML {
     void DropdownListSetting::ctor() {
         genericSetting = GenericSettingWrapper::New_ctor();
-        values = List<Il2CppObject*>::New_ctor();
+        values = List<bs_hook::Il2CppWrapperType>::New_ctor();
         index = 0;
         formatter = nullptr;
     }
 
     bool DropdownListSetting::get_interactable() {
-        return dropdown ? dropdown->button->get_interactable() : false;
+        return dropdown ? dropdown.button.interactable : false;
     }
 
     void DropdownListSetting::set_interactable(bool value) {
-        if (dropdown) dropdown->button->set_interactable(value);
+        if (dropdown) dropdown.button.interactable = value;
     }
 
     void DropdownListSetting::Setup() {
         if (dropdown) {
-            std::function<void(HMUI::DropdownWithTableView*, int)> fun = std::bind(&DropdownListSetting::OnSelectIndex, this, std::placeholders::_1, std::placeholders::_2);
+            std::function<void(HMUI::DropdownWithTableView, int)> fun = [self= *this](auto _1, auto _2){ self.OnSelectIndex(_1, _2); };
             auto delegate = MakeSystemAction(fun);
-            dropdown->add_didSelectCellWithIdxEvent(delegate);
+            dropdown.add_didSelectCellWithIdxEvent(delegate);
         }
 
         ReceiveValue();
         UpdateChoices();
-        get_gameObject()->SetActive(true);
+        gameObject.SetActive(true);
     }
 
     void DropdownListSetting::UpdateChoices() {
         auto texts = List<StringW>::New_ctor();
-        texts->EnsureCapacity(values->get_Count());
+        texts.EnsureCapacity(values.Count);
         bool formatted = formatter != nullptr;
         for (auto v : values) {
-            if (!v) texts->Add("NULL");
+            if (!v) texts.Add("NULL");
             if (formatted) [[unlikely]] {
-                texts->Add(formatter(v));
+                texts.Add(formatter(v));
             } else [[likely]] {
-                texts->Add(v->ToString());
+                texts.Add(System::Object(v.convert()).ToString());
             }
         }
 
-        dropdown->SetTexts(texts->i_IReadOnlyList_1_T());
+        dropdown.SetTexts(texts);
     }
-    
+
     void DropdownListSetting::ValidateRange() {
         if (index >= values.size())
             index = values.size() - 1;
@@ -62,55 +62,55 @@ namespace BSML {
     }
 
     void DropdownListSetting::UpdateState() {
-        if (dropdown && dropdown->text) {
-            auto value = get_Value();
+        if (dropdown && dropdown.text) {
+            auto value = Value;
             if (value) {
-                dropdown->text->set_text(formatter ? formatter(value) : value->ToString() );
+                dropdown.text.text = (formatter ? formatter(value) : System::Object(value).ToString() );
             } else {
-                dropdown->text->set_text("NULL");
+                dropdown.text.text = "NULL";
             }
         }
     }
 
-    void DropdownListSetting::OnSelectIndex(HMUI::DropdownWithTableView* tableView, int index) {
+    void DropdownListSetting::OnSelectIndex(HMUI::DropdownWithTableView tableView, int index) {
         this->index = index;
         UpdateState();
         if (genericSetting) {
-            auto v = get_Value();
-            genericSetting->OnChange(v);
+            auto v = Value;
+            genericSetting.OnChange(v);
             if (onChange) onChange(v);
-            if (genericSetting->applyOnChange) ApplyValue();
+            if (genericSetting.applyOnChange) ApplyValue();
         }
     }
 
     void DropdownListSetting::ReceiveValue() {
         if (!genericSetting) return;
-        set_Value(genericSetting->GetValue<Il2CppObject*>());
+        Value = genericSetting.GetValue<bs_hook::Il2CppWrapperType>();
     }
 
     void DropdownListSetting::ApplyValue() {
         if (genericSetting)
-            genericSetting->SetValue(get_Value());
+            genericSetting.SetValue(Value);
     }
 
-    Il2CppObject* DropdownListSetting::get_Value() {
+    bs_hook::Il2CppWrapperType DropdownListSetting::get_Value() {
         ValidateRange();
         return values[index];
     }
 
-    void DropdownListSetting::set_Value(Il2CppObject* value) {
+    void DropdownListSetting::set_Value(bs_hook::Il2CppWrapperType value) {
         index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value
-            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(v, "Equals", value).value_or(false)))
+            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(static_cast<Il2CppObject*>(v), "Equals", static_cast<Il2CppObject*>(value)).value_or(false)))
                 break;
             index++;
         }
 
         if (index == values.size())
             index = values.size() - 1;
-        
-        dropdown->SelectCellWithIdx(index);
+
+        dropdown.SelectCellWithIdx(index);
 
         UpdateState();
     }

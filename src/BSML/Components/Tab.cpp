@@ -5,34 +5,42 @@ DEFINE_TYPE(BSML, Tab);
 
 namespace BSML {
     void Tab::ctor() {
-        isVisible = true;
+        _isVisible = true;
     }
 
     bool Tab::get_isVisible() {
-        return isVisible;
+        return _isVisible;
     }
 
     void Tab::set_isVisible(bool value) {
-        isVisible = value;
-        if (selector) selector->Refresh();
+        _isVisible = value;
+        if (selector) selector.Refresh();
     }
 
     StringW Tab::get_tabName() {
-        return tabName ? tabName : "";
+        return _tabName ? _tabName : "";
     }
 
     void Tab::set_tabName(StringW value) {
-        tabName = value;
-        if (selector) selector->Refresh();
+        _tabName = value;
+        if (selector) selector.Refresh();
     }
 
     StringW Tab::get_tabKey() {
-        return tabKey ? tabKey : "";
+        return _tabKey ? _tabKey : "";
     }
 
     void Tab::set_tabKey(StringW value) {
-        tabKey = value;
-        if (selector) selector->Refresh();
+        _tabKey = value;
+        if (selector) selector.Refresh();
     }
 
+    TabSelector Tab::__get_selector() {
+        static constexpr auto offset = Tab::___Base__Size + offsetof(___InternalRepresentation, selector);
+        return custom_types::read_field<TabSelector>(convert(), offset);
+    }
+    void Tab::__set_selector(TabSelector selector) {
+        static constexpr auto offset = Tab::___Base__Size + offsetof(___InternalRepresentation, selector);
+        custom_types::write_field<TabSelector>(convert(), offset, std::forward(selector));
+    }
 }

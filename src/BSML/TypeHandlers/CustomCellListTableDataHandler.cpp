@@ -36,24 +36,24 @@ namespace BSML {
 
     CustomCellListTableDataHandler::Base::SetterMap CustomCellListTableDataHandler::get_setters() const {
         return {
-            {"cellClickable",     [](auto component, auto value){ component->clickableCells = value.tryParseBool().value_or(true); }},
-            {"alignCenter",     [](auto component, auto value){ component->tableView->alignToCenter = value; }},
-            {"stickScrolling",  [](auto component, auto value){ if (static_cast<bool>(value)) component->tableView->scrollView->platformHelper = Helpers::GetIVRPlatformHelper(); }}
+            {"cellClickable",     [](auto component, auto value){ component.clickableCells = value.tryParseBool().value_or(true); }},
+            {"alignCenter",     [](auto component, auto value){ component.tableView.alignToCenter = value; }},
+            {"stickScrolling",  [](auto component, auto value){ if (static_cast<bool>(value)) component.tableView.scrollView.platformHelper = Helpers::GetIVRPlatformHelper(); }}
         };
     }
 
     void CustomCellListTableDataHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         Base::HandleType(componentType, parserParams);
-        auto tableData = reinterpret_cast<CustomCellListTableData*>(componentType.component);
-        auto tableView = tableData->tableView;
-        auto scrollView = tableView->scrollView;
+        CustomCellListTableData tableData {componentType.component.convert()};
+        auto tableView = tableData.tableView;
+        auto scrollView = tableView.scrollView;
 
         auto& data = componentType.data;
 
         auto selectCellItr = data.find("selectCell");
         if (selectCellItr != data.end() && !selectCellItr->second.empty()) {
             auto action = parserParams.TryGetAction(selectCellItr->second);
-            if (action) tableView->add_didSelectCellWithIdxEvent(action->GetSystemAction<HMUI::TableView *, int>());
+            if (action) tableView.add_didSelectCellWithIdxEvent(action->GetSystemAction<HMUI::TableView, int>());
             else ERROR("Action '{}' could not be found", selectCellItr->second);
         }
 
@@ -61,14 +61,14 @@ namespace BSML {
         auto listDirectionItr = data.find("listDirection");
         if (listDirectionItr != data.end() && !listDirectionItr->second.empty()) {
             auto arg = StringParseHelper(listDirectionItr->second);
-            tableView->tableType = stringToTableType(arg);
-            scrollView->scrollViewDirection = tableView->get_tableType() == HMUI::TableView::TableType::Vertical ? HMUI::ScrollView::ScrollViewDirection::Vertical : HMUI::ScrollView::ScrollViewDirection::Horizontal;
-            verticalList = tableView->get_tableType() == HMUI::TableView::TableType::Vertical;
+            tableView.tableType = stringToTableType(arg);
+            scrollView.scrollViewDirection = tableView.tableType == HMUI::TableView::TableType::Vertical ? HMUI::ScrollView::ScrollViewDirection::Vertical : HMUI::ScrollView::ScrollViewDirection::Horizontal;
+            verticalList = tableView.tableType == HMUI::TableView::TableType::Vertical;
         }
 
         auto cellSizeItr = data.find("cellSize");
         if (cellSizeItr != data.end() && !cellSizeItr->second.empty()) {
-            tableData->cellSize = StringParseHelper(cellSizeItr->second);
+            tableData.cellSize = StringParseHelper(cellSizeItr->second);
         }
 
         auto showScrollBarItr = data.find("showScrollbar");
@@ -76,25 +76,25 @@ namespace BSML {
         if (verticalList && showScrollBarItr != data.end() && !showScrollBarItr->second.empty()) {
             auto arg = StringParseHelper(showScrollBarItr->second);
             if (static_cast<bool>(arg)) {
-                auto textScrollView = Object::Instantiate(get_textPageTemplate(), tableData->get_transform(), false);
+                auto textScrollView = Object::Instantiate(get_textPageTemplate(), tableData.transform, false);
 
-                auto pageUpButton = textScrollView->pageUpButton;
-                auto pageDownButton = textScrollView->pageDownButton;
+                auto pageUpButton = textScrollView.pageUpButton;
+                auto pageDownButton = textScrollView.pageDownButton;
 
-                auto scrollIndicator = textScrollView->verticalScrollIndicator;
-                auto scrollBar = reinterpret_cast<RectTransform*>(scrollIndicator->get_transform()->get_parent());
+                auto scrollIndicator = textScrollView.verticalScrollIndicator;
+                RectTransform scrollBar {scrollIndicator.transform.parent.convert()};
 
-                scrollView->pageUpButton = pageUpButton;
-                scrollView->pageDownButton = pageDownButton;
-                scrollView->verticalScrollIndicator = scrollIndicator;
-                scrollBar->SetParent(tableData->get_transform());
+                scrollView.pageUpButton = pageUpButton;
+                scrollView.pageDownButton = pageDownButton;
+                scrollView.verticalScrollIndicator = scrollIndicator;
+                scrollBar.SetParent(tableData.transform);
 
-                Object::Destroy(textScrollView->get_gameObject());
+                Object::Destroy(textScrollView.gameObject);
 
-                scrollBar->set_anchorMin({1, 0});
-                scrollBar->set_anchorMax({1, 1});
-                scrollBar->set_offsetMin({0, 0});
-                scrollBar->set_offsetMax({8, 0});
+                scrollBar.anchorMin = {1, 0};
+                scrollBar.anchorMax = {1, 1};
+                scrollBar.offsetMin = {0, 0};
+                scrollBar.offsetMax = {8, 0};
             }
         }
 
@@ -104,8 +104,8 @@ namespace BSML {
             List<Il2CppObject*>* cellData = val ? val->GetValue<List<Il2CppObject*>*>() : nullptr;
             static auto dataKlass = classof(List<Il2CppObject*>*);
             if (cellData && il2cpp_functions::class_is_assignable_from(cellData->klass, dataKlass)) {
-                tableData->data = cellData;
-                tableView->ReloadData();
+                tableData.data = cellData;
+                tableView.ReloadData();
             } else if (cellData && !il2cpp_functions::class_is_assignable_from(cellData->klass, dataKlass)){
                 ERROR("The class of the data field was not Correct! this should be a 'List<Il2CppObject*>*' or equivalent!");
                 ERROR("Class {}::{} is not assignable from {}::{}", cellData->klass->namespaze, cellData->klass->name, dataKlass->namespaze, dataKlass->name);
@@ -116,15 +116,15 @@ namespace BSML {
         }
 
         INFO("set sizeDelta");
-        auto transform = reinterpret_cast<RectTransform*>(tableData->get_transform());
+        RectTransform transform { tableData.transform.convert() };
         switch(tableView->get_tableType()) {
             case HMUI::TableView::TableType::Vertical: {
                 auto listWidthItr = data.find("listWidth");
                 auto listWidth = listWidthItr != data.end() ? static_cast<float>(StringParseHelper(listWidthItr->second)) : 60.0f;
                 auto visibleCellsItr = data.find("visibleCells");
                 auto visibleCells = visibleCellsItr != data.end() ? static_cast<int>(StringParseHelper(visibleCellsItr->second)) : 7;
-                float listHeight = visibleCells * tableData->cellSize;
-                transform->set_sizeDelta({listWidth, listHeight});
+                float listHeight = visibleCells * tableData.cellSize;
+                transform.sizeDelta = {listWidth, listHeight};
                 INFO("listWidth: {}, listHeight: {}", listWidth, listHeight);
                 break;
             }
@@ -133,27 +133,27 @@ namespace BSML {
                 auto listHeight = listHeightItr != data.end() ? static_cast<float>(StringParseHelper(listHeightItr->second)) : 40.0f;
                 auto visibleCellsItr = data.find("visibleCells");
                 auto visibleCells = visibleCellsItr != data.end() ? static_cast<int>(StringParseHelper(visibleCellsItr->second)) : 4;
-                float listWidth = visibleCells * tableData->cellSize;
+                float listWidth = visibleCells * tableData.cellSize;
                 INFO("listWidth: {}, listHeight: {}", listWidth, listHeight);
-                transform->set_sizeDelta({listWidth, listHeight});
+                transform.sizeDelta = {listWidth, listHeight};
                 break;
             }
         }
 
-        auto layoutElement = tableData->GetComponent<UnityEngine::UI::LayoutElement*>();
+        auto layoutElement = tableData.GetComponent<UnityEngine::UI::LayoutElement>();
         if (layoutElement) {
-            auto sizeDelta = transform->get_sizeDelta();
+            auto sizeDelta = transform.sizeDelta;
             INFO("Size: {}, {}", sizeDelta.x, sizeDelta.y);
-            layoutElement->set_preferredHeight(sizeDelta.y);
-            layoutElement->set_flexibleHeight(sizeDelta.y);
-            layoutElement->set_minHeight(sizeDelta.y);
-            layoutElement->set_preferredWidth(sizeDelta.x);
-            layoutElement->set_flexibleWidth(sizeDelta.x);
-            layoutElement->set_minWidth(sizeDelta.x);
+            layoutElement.preferredHeight = sizeDelta.y;
+            layoutElement.flexibleHeight = sizeDelta.y;
+            layoutElement.minHeight = sizeDelta.y;
+            layoutElement.preferredWidth = sizeDelta.x;
+            layoutElement.flexibleWidth = sizeDelta.x;
+            layoutElement.minWidth = sizeDelta.x;
         }
 
-        tableView->get_gameObject()->SetActive(true);
-        tableView->LazyInit();
+        tableView.gameObject.SetActive(true);
+        tableView.LazyInit();
 
         auto idItr = data.find("id");
         if (idItr != data.end() && !idItr->second.empty()) {

@@ -27,8 +27,8 @@ namespace BSML {
 
     ContentSizeFitterHandler::Base::SetterMap ContentSizeFitterHandler::get_setters() const {
         return {
-            {"horizontalFit", [](auto component, auto value){ auto v = stringToFitMode(value); if (v.has_value()) component->set_horizontalFit(v.value()); }},
-            {"verticalFit", [](auto component, auto value){ auto v = stringToFitMode(value); if (v.has_value()) component->set_verticalFit(v.value()); }}
+            {"horizontalFit", [](auto component, auto value){ auto v = stringToFitMode(value); if (v.has_value()) component.horizontalFit = v.value(); }},
+            {"verticalFit", [](auto component, auto value){ auto v = stringToFitMode(value); if (v.has_value()) component.verticalFit = v.value(); }}
         };
     }
 }

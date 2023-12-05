@@ -12,21 +12,21 @@ namespace BSML {
 
     ListSliderSettingHandler::Base::SetterMap ListSliderSettingHandler::get_setters() const {
         return {
-            {"showButtons", [](auto component, auto value) { component->showButtons = value; }}
+            {"showButtons", [](auto component, auto value) { component.showButtons = value; }}
         };
     }
 
     void ListSliderSettingHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
-        auto component = reinterpret_cast<ListSliderSetting*>(componentType.component);
+        ListSliderSetting component { componentType.component.convert() };
         auto& data = componentType.data;
 
         auto optionsItr = data.find("options");
         if (optionsItr != data.end() && !optionsItr->second.empty()) {
             auto val = parserParams.TryGetValue(optionsItr->second);
-            if (val) component->values = val->GetValue<List<Il2CppObject*>*>();
+            if (val) component.values = val->GetValue<List<Il2CppObject*>*>();
         }
 
-        if (!component->values || component->values->get_Count() == 0) {
+        if (!component.values || component.values.Length() == 0) {
             ERROR("Did not give options for dropdown list! this is required!");
         }
 

@@ -10,8 +10,8 @@ DEFINE_TYPE(BSML, TabSelector);
 
 namespace BSML {
     void TabSelector::ctor() {
-        tabs = List<Tab*>::New_ctor();
-        visibleTabs = List<Tab*>::New_ctor();
+        tabs = List<Tab>::New_ctor();
+        visibleTabs = List<Tab>::New_ctor();
         pageCount = -1;
     }
 
@@ -19,7 +19,7 @@ namespace BSML {
         if (currentPage < 0) {
             return currentPage = 0;
         }
-        int maxPages = (visibleTabs->get_Count() - 1) / get_pageCount();
+        int maxPages = (visibleTabs.Count - 1) / pageCount;
         if (currentPage > maxPages) {
             return currentPage = maxPages;
         }
@@ -27,12 +27,12 @@ namespace BSML {
     }
 
     int TabSelector::get_pageCount() {
-        return pageCount;
+        return _pageCount;
     }
 
     void TabSelector::set_pageCount(int value) {
-        pageCount = value;
-        if (tabs->get_Count() > 0) Refresh();
+        _pageCount = value;
+        if (tabs.Count > 0) Refresh();
     }
 
     void TabSelector::Setup(const BSMLParserParams& parserParams) {
@@ -42,64 +42,64 @@ namespace BSML {
             return;
         }
 
-        tabs->Clear();
+        tabs.Clear();
 
         for (auto go : parserParams.GetObjectsWithTag(tabTag)) {
-            auto tab = go->GetComponent<Tab*>();
-            tabs->Add(tab);
-            tab->selector = this;
+            auto tab = go.GetComponent<Tab>();
+            tabs.Add(tab);
+            tab.selector = this;
         }
 
-        DEBUG("Got {} tabs!", tabs->get_Count());
+        DEBUG("Got {} tabs!", tabs.Count);
 
-        if (!Il2CppString::IsNullOrEmpty(leftButtonTag)) {
+        if (!System::String::IsNullOrEmpty(leftButtonTag)) {
             auto& leftButtons = parserParams.GetObjectsWithTag(leftButtonTag);
-            if (!leftButtons.empty()) leftButton = leftButtons[0]->GetComponent<UnityEngine::UI::Button*>();
+            if (!leftButtons.empty()) leftButton = leftButtons[0].GetComponent<UnityEngine::UI::Button>();
         }
         if (leftButton) {
-            auto delegate = MakeUnityAction(std::bind(&TabSelector::PageLeft, this));
-            leftButton->get_onClick()->AddListener(delegate);
+            auto delegate = MakeUnityAction([self = *this](){ self.PageLeft(); });
+            leftButton.onClick.AddListener(delegate);
         }
-        if (!Il2CppString::IsNullOrEmpty(rightButtonTag))  {
+        if (!System::String::IsNullOrEmpty(rightButtonTag))  {
             auto& rightButtons = parserParams.GetObjectsWithTag(rightButtonTag);
-            if (!rightButtons.empty()) rightButton = rightButtons[0]->GetComponent<UnityEngine::UI::Button*>();
+            if (!rightButtons.empty()) rightButton = rightButtons[0].GetComponent<UnityEngine::UI::Button>();
         }
         if (rightButton) {
-            auto delegate = MakeUnityAction(std::bind(&TabSelector::PageRight, this));
-            rightButton->get_onClick()->AddListener(delegate);
+            auto delegate = MakeUnityAction([self = *this](){ self.PageRight(); });
+            rightButton.onClick.AddListener(delegate);
         }
 
         DEBUG("left button: {}, right button: {}", leftButton != nullptr, rightButton != nullptr);
         Refresh();
 
-        auto tabSelectedInfo = il2cpp_functions::class_get_method_from_name(this->klass, "TabSelected", 2);
-        auto delegate = MakeSystemAction<HMUI::SegmentedControl*, int>(this, tabSelectedInfo);
-        textSegmentedControl->add_didSelectCellEvent(delegate);
-        textSegmentedControl->SelectCellWithNumber(0);
+        auto tabSelectedInfo = il2cpp_functions::class_get_method_from_name(il2cpp_functions::object_get_class(convert()), "TabSelected", 2);
+        auto delegate = MakeSystemAction<HMUI::SegmentedControl, int>(convert(), tabSelectedInfo);
+        textSegmentedControl.add_didSelectCellEvent(delegate);
+        textSegmentedControl.SelectCellWithNumber(0);
         TabSelected(textSegmentedControl, 0);
     }
 
-    void TabSelector::TabSelected(HMUI::SegmentedControl* segmentedControl, int index) {
+    void TabSelector::TabSelected(HMUI::SegmentedControl segmentedControl, int index) {
         lastClickedPage = currentPage;
         lastClickedIndex = index;
-        if (get_pageCount() != -1) index += get_pageCount() * currentPage;
+        if (get_pageCount() != -1) index += pageCount * currentPage;
         int visibleCount = 0;
-        Tab* theTab = nullptr;
+        Tab theTab {nullptr};
         for (auto tab : tabs) {
-            tab->get_gameObject()->SetActive(false);
-            if (tab->get_isVisible()) {
-                if (index == visibleCount) theTab = tab; 
+            tab.gameObject.SetActive(false);
+            if (tab.isVisible) {
+                if (index == visibleCount) theTab = tab;
                 visibleCount++;
             }
         }
 
         // if our index is above or equal to the visible cells, return
         if (index >= visibleCount) return;
-        if (theTab) theTab->get_gameObject()->SetActive(true);
+        if (theTab) theTab.gameObject.SetActive(true);
     }
 
     void TabSelector::Refresh() {
-        if (!get_isActiveAndEnabled()) {
+        if (!isActiveAndEnabled) {
             shouldRefresh = true;
             return;
         }
@@ -107,47 +107,47 @@ namespace BSML {
         DEBUG("TabSelector Refresh is ran!");
 
         shouldRefresh = false;
-        visibleTabs->Clear();
-        for (auto tab : tabs) if (tab->get_isVisible()) visibleTabs->Add(tab);
+        visibleTabs.Clear();
+        for (auto tab : tabs) if (tab.isVisible) visibleTabs.Add(tab);
 
-        if (get_pageCount() == -1) {
+        if (pageCount == -1) {
             SetSegmentedControlTexts(visibleTabs);
         } else {
             currentPage = get_page();
-            ListWrapper<Tab*> usableTabs = List<Tab*>::New_ctor();
-            usableTabs->EnsureCapacity(get_pageCount());
+            ListWrapper<Tab> usableTabs = List<Tab>::New_ctor();
+            usableTabs.EnsureCapacity(pageCount);
 
-            int start = get_pageCount() * currentPage;
-            int end = std::min(start + pageCount, visibleTabs->get_Count());
+            int start = pageCount * currentPage;
+            int end = std::min(start + pageCount, visibleTabs.Count);
             for (int i = start; i < end; i++) {
-                usableTabs->Add(visibleTabs[i]);
+                usableTabs.Add(visibleTabs[i]);
             }
 
             SetSegmentedControlTexts(usableTabs);
 
-            if (leftButton) leftButton->set_interactable(currentPage > 0);
-            if (rightButton) rightButton->set_interactable(currentPage < ((visibleTabs->get_Count() - 1) / pageCount));
+            if (leftButton) leftButton.interactable = currentPage > 0;
+            if (rightButton) rightButton.interactable = currentPage < ((visibleTabs.Count - 1) / pageCount);
 
             TabSelected(nullptr, 0);
         }
     }
 
-    void TabSelector::SetSegmentedControlTexts(ListWrapper<Tab*> tabs) {
+    void TabSelector::SetSegmentedControlTexts(ListWrapper<Tab> tabs) {
         // we have to use a list because Array does not implement IReadOnlyList
         auto texts = List<StringW>::New_ctor();
-        texts->EnsureCapacity(tabs->get_Count());
+        texts.EnsureCapacity(tabs.Count);
 
         for (auto tab : tabs) {
-            auto val = tab->get_tabKey();
-            if (Il2CppString::IsNullOrEmpty(val)) {
-                val = tab->get_tabName();
+            auto val = tab.tabKey;
+            if (System::String::IsNullOrEmpty(val)) {
+                val = tab.tabName;
             }
-            texts->Add(val);
+            texts.Add(val);
 
             DEBUG("tab Text added: {}", val);
         }
 
-        textSegmentedControl->SetTexts(texts->i_IReadOnlyList_1_T());
+        textSegmentedControl.SetTexts(texts);
     }
 
     void TabSelector::PageLeft() {

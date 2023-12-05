@@ -6,17 +6,17 @@
 namespace BSML {
     struct BSMLValue {
         std::string name;
-        Il2CppObject* host;
+        bs_hook::Il2CppWrapperType host;
 
         FieldInfo* fieldInfo;
         const MethodInfo* setterInfo;
         const MethodInfo* getterInfo;
 
-        virtual void SetValue(Il2CppObject* val);
-        virtual Il2CppObject* GetValue();
+        virtual void SetValue(bs_hook::Il2CppWrapperType val);
+        virtual bs_hook::Il2CppWrapperType GetValue();
 
         template<typename T>
-        requires(!std::is_same_v<Il2CppObject*, T>)
+        requires(!std::is_same_v<bs_hook::Il2CppWrapperType, T>)
         void SetValue(T val) {
             if (fieldInfo) {
                 il2cpp_functions::field_set_value(host, fieldInfo, &val);
@@ -26,7 +26,7 @@ namespace BSML {
         }
 
         template<typename T>
-        requires(std::is_default_constructible_v<T> && !std::is_same_v<Il2CppObject*, T>)
+        requires(std::is_default_constructible_v<T> && !std::is_same_v<bs_hook::Il2CppWrapperType, T>)
         T GetValue() {
             if (fieldInfo) {
                 T val;
@@ -39,7 +39,7 @@ namespace BSML {
         }
 
         template<typename T>
-        requires(!std::is_same_v<Il2CppObject*, T>)
+        requires(!std::is_same_v<bs_hook::Il2CppWrapperType, T>)
         std::optional<T> GetValueOpt() {
             if (fieldInfo) {
                 return il2cpp_utils::GetFieldValue<T>(host, fieldInfo);
@@ -49,6 +49,6 @@ namespace BSML {
             return std::nullopt;
         }
 
-        static std::map<std::string, BSMLValue*> MakeValues(Il2CppObject* host);
+        static std::map<std::string, BSMLValue*> MakeValues(bs_hook::Il2CppWrapperType host);
     };
 }

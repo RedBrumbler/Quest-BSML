@@ -16,14 +16,14 @@ namespace BSML {
         public:
             BSMLTag();
 
-            void Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const override;
+            void Handle(UnityEngine::Transform parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const override;
         protected:
             friend class ::BSML::BSMLDocParser;
             friend class ::BSML::BSMLNodeParserBase;
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
-            virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const;
-            void SetHostField(Il2CppObject* host, Il2CppObject* value) const;
+            virtual UnityEngine::GameObject CreateObject(UnityEngine::Transform parent) const;
+            void SetHostField(bs_hook::Il2CppWrapperType host, bs_hook::Il2CppWrapperType value) const;
             std::string id;
             std::vector<std::string> tags;
     };

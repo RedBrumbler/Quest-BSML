@@ -16,53 +16,53 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    LayoutElement* get_controllersTransformTemplate() {
+    LayoutElement get_controllersTransformTemplate() {
         static SafePtrUnity<LayoutElement> controllersTransformTemplate;
         if (!controllersTransformTemplate)
-                controllersTransformTemplate = Resources::FindObjectsOfTypeAll<LayoutElement*>().First([](auto x){ return x->get_name() == "PositionX"; });
-        return controllersTransformTemplate.ptr();
+            controllersTransformTemplate = Resources::FindObjectsOfTypeAll<LayoutElement>().First([](auto x){ return x.name == "PositionX"; });
+        return LayoutElement(controllersTransformTemplate.ptr());
     }
-    
-    UnityEngine::GameObject* GenericSliderSettingTagBase::CreateObject(UnityEngine::Transform* parent) const {
+
+    UnityEngine::GameObject GenericSliderSettingTagBase::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating SliderSettingBase");
         auto baseSetting = Object::Instantiate(get_controllersTransformTemplate(), parent, false);
-        auto gameObject = baseSetting->get_gameObject();
-        gameObject->set_name("BSMLSliderSetting");
+        auto gameObject = baseSetting.gameObject;
+        gameObject.name = "BSMLSliderSetting";
 
-        auto sliderSetting = reinterpret_cast<BSML::SliderSettingBase*>(gameObject->AddComponent(get_type()));
-        auto slider = gameObject->GetComponentInChildren<HMUI::CustomFormatRangeValuesSlider*>();
-        sliderSetting->slider = slider;
+        BSML::SliderSettingBase sliderSetting {gameObject.AddComponent(get_type())};
+        auto slider = gameObject.GetComponentInChildren<HMUI::CustomFormatRangeValuesSlider>();
+        sliderSetting.slider = slider;
 
         // colors to not be red
-        auto& colorBlock = slider->m_Colors;
-        colorBlock.set_normalColor({0, 0, 0, 0.5});
-        colorBlock.set_highlightedColor({1, 1, 1, 0.2});
-        colorBlock.set_pressedColor({1, 1, 1, 0.2});
-        colorBlock.set_selectedColor({1, 1, 1, 0.2});
-        colorBlock.set_disabledColor({0.8, 0.8, 0.8, 0.5});
+        auto& colorBlock = slider.m_Colors;
+        colorBlock.normalColor = {0, 0, 0, 0.5};
+        colorBlock.highlightedColor = {1, 1, 1, 0.2};
+        colorBlock.pressedColor = {1, 1, 1, 0.2};
+        colorBlock.selectedColor = {1, 1, 1, 0.2};
+        colorBlock.disabledColor = {0.8, 0.8, 0.8, 0.5};
 
-        slider->set_name("BSMLSlider");
-        slider->GetComponentInChildren<TMPro::TextMeshProUGUI*>()->set_enableWordWrapping(false);
-        slider->enableDragging = true;
-        auto sliderRect = reinterpret_cast<RectTransform*>(slider->get_transform());
-        sliderRect->set_anchorMin({1, 0});
-        sliderRect->set_anchorMax({1, 1});
-        sliderRect->set_sizeDelta({52, 0});
-        sliderRect->set_pivot({1, 0.5f});
-        sliderRect->set_anchoredPosition({0, 0});
+        slider.name = "BSMLSlider";
+        slider.GetComponentInChildren<TMPro::TextMeshProUGUI>().enableWordWrapping = false;
+        slider._enableDragging = true;
+        RectTransform sliderRect {slider.transform.convert()};
+        sliderRect.anchorMin = {1, 0};
+        sliderRect.anchorMax = {1, 1};
+        sliderRect.sizeDelta = {52, 0};
+        sliderRect.pivot = {1, 0.5f};
+        sliderRect.anchoredPosition = {0, 0};
 
-        auto nameText = gameObject->get_transform()->Find("Title")->get_gameObject();
-        Object::Destroy(nameText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        auto nameText = gameObject.transform.Find("Title").gameObject;
+        Object::Destroy(nameText.GetComponent<Polyglot::LocalizedTextMeshProUGUI>());
 
-        TMPro::TextMeshProUGUI* text = nameText->GetComponent<TMPro::TextMeshProUGUI*>();
-        text->set_richText(true);
-        text->set_text("BSMLSlider");
-        text->get_rectTransform()->set_anchorMax({1, 1});
+        auto text = nameText.GetComponent<TMPro::TextMeshProUGUI>();
+        text.richText = true;
+        text.text = "BSMLSlider";
+        text.rectTransform.anchorMax = {1, 1};
 
-        baseSetting->set_preferredWidth(90.0f);
+        baseSetting.preferredWidth = 90.0f;
 
-        auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
-        externalComponents->Add(text);
+        auto externalComponents = gameObject.AddComponent<ExternalComponents>();
+        externalComponents.Add(text);
 
         return gameObject;
     }

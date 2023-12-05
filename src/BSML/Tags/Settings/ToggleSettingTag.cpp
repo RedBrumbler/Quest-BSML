@@ -22,52 +22,52 @@ using namespace UnityEngine::UI;
 namespace BSML {
     static BSMLNodeParser<ToggleSettingTag> toggleSettingTagParser({"toggle-setting", "bool-setting", "checkbox-setting", "checkbox"});
 
-    GameObject* get_toggleTemplate() {
+    GameObject get_toggleTemplate() {
         static SafePtrUnity<GameObject> toggleTemplate;
         if (!toggleTemplate) {
             auto foundToggle = Resources::FindObjectsOfTypeAll<Toggle*>().FirstOrDefault([](auto x){
                 if (!x) return false;
-                auto parent = x->get_transform()->get_parent();
+                auto parent = x.transform.parent;
                 if (!parent) return false;
-                return parent->get_gameObject()->get_name() == "Fullscreen";
+                return parent.gameObject.name == "Fullscreen";
             });
-            toggleTemplate = foundToggle ? foundToggle->get_transform()->get_parent()->get_gameObject() : nullptr;
+            toggleTemplate = foundToggle ? foundToggle.transform.parent.gameObject : nullptr;
         }
-        return toggleTemplate.ptr();
+        return GameObject(toggleTemplate.ptr());
     }
 
-    UnityEngine::GameObject* ToggleSettingTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject ToggleSettingTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating ToggleSetting");
 
         auto go = Object::Instantiate(get_toggleTemplate(), parent, false);
-        go->SetActive(false);
-        auto transform = reinterpret_cast<UnityEngine::RectTransform*>(go->get_transform());
-        
-        auto nameText = transform->Find("NameText")->get_gameObject();
-        auto switchView = transform->Find("SwitchView")->get_gameObject();
-        Object::Destroy(go->GetComponent<GlobalNamespace::BoolSettingsController*>());
+        go.SetActive(false);
+        UnityEngine::RectTransform transform {go.transform.convert()};
 
-        go->set_name("BSMLToggle");
-        auto toggleSetting = go->AddComponent<ToggleSetting*>();
-        HMUI::AnimatedSwitchView* animatedSwitchView = switchView->GetComponent<HMUI::AnimatedSwitchView*>();
+        auto nameText = transform.Find("NameText").gameObject;
+        auto switchView = transform.Find("SwitchView").gameObject;
+        Object::Destroy(go.GetComponent<GlobalNamespace::BoolSettingsController>());
 
-        Object::Destroy(nameText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
-        toggleSetting->toggle = switchView->GetComponent<Toggle*>();
-        toggleSetting->toggle->onValueChanged = UnityEngine::UI::Toggle::ToggleEvent::New_ctor();
-        toggleSetting->toggle->set_interactable(true);
-        toggleSetting->toggle->set_isOn(false);
-        
-        toggleSetting->text = nameText->GetComponent<TMPro::TextMeshProUGUI*>();
-        toggleSetting->text->set_text("BSML Toggle");
-        toggleSetting->text->set_richText(true);
-        toggleSetting->text->set_overflowMode(TMPro::TextOverflowModes::Ellipsis);
+        go.name = "BSMLToggle";
+        auto toggleSetting = go.AddComponent<ToggleSetting>();
+        auto animatedSwitchView = switchView.GetComponent<HMUI::AnimatedSwitchView>();
 
-        auto layoutElement = go->GetComponent<LayoutElement*>();
-        layoutElement->set_preferredWidth(90.0f);
-        go->SetActive(true);
+        Object::Destroy(nameText.GetComponent<Polyglot::LocalizedTextMeshProUGUI>());
+        toggleSetting.toggle = switchView.GetComponent<Toggle>();
+        toggleSetting.toggle.onValueChanged = UnityEngine::UI::Toggle::ToggleEvent::New_ctor();
+        toggleSetting.toggle.interactable = true;
+        toggleSetting.toggle.isOn = false;
 
-        auto externalComponents = go->AddComponent<ExternalComponents*>();
-        externalComponents->Add(toggleSetting->text);
+        toggleSetting.text = nameText->GetComponent<TMPro::TextMeshProUGUI>();
+        toggleSetting.text.text = "BSML Toggle";
+        toggleSetting.text.richText = true;
+        toggleSetting.text.overflowMode = TMPro::TextOverflowModes::Ellipsis;
+
+        auto layoutElement = go.GetComponent<LayoutElement>();
+        layoutElement.preferredWidth = 90.0f;
+        go.SetActive(true);
+
+        auto externalComponents = go.AddComponent<ExternalComponents>();
+        externalComponents.Add(toggleSetting.text);
 
         return go;
     }

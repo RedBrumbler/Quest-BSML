@@ -14,20 +14,20 @@ using namespace UnityEngine;
 namespace BSML {
     static BSMLNodeParser<StackLayoutTag> stackLayoutTagParser({"stack"});
 
-    UnityEngine::GameObject* StackLayoutTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject StackLayoutTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating StackLayoutTag");
         auto gameObject = GameObject::New_ctor("BSMLStackLayoutGroup");
-        gameObject->get_transform()->SetParent(parent, false);
-        gameObject->AddComponent<HMUI::StackLayoutGroup*>();
-        gameObject->AddComponent<UI::ContentSizeFitter*>();
-        gameObject->AddComponent<Backgroundable*>();
+        gameObject.transform.SetParent(parent, false);
+        gameObject.AddComponent<HMUI::StackLayoutGroup>();
+        gameObject.AddComponent<UI::ContentSizeFitter>();
+        gameObject.AddComponent<Backgroundable>();
 
-        auto rectTransform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
-        rectTransform->set_anchorMin({0, 0});
-        rectTransform->set_anchorMax({1, 1});
-        rectTransform->set_sizeDelta({0, 0});
-        
-        gameObject->AddComponent<UI::LayoutElement*>();
+        RectTransform rectTransform {gameObject.transform.convert()};
+        rectTransform.anchorMin = {0, 0};
+        rectTransform.anchorMax = {1, 1};
+        rectTransform.sizeDelta = {0, 0};
+
+        gameObject.AddComponent<UI::LayoutElement>();
         return gameObject;
     }
 }

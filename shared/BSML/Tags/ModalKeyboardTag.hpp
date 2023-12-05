@@ -7,6 +7,6 @@ namespace BSML {
         public:
             ModalKeyboardTag() : ModalTag() {}
         protected:
-            virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
+            virtual UnityEngine::GameObject CreateObject(UnityEngine::Transform parent) const override;
     };
 }

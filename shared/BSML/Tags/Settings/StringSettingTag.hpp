@@ -9,6 +9,6 @@ namespace BSML {
         public:
             StringSettingTag() : Base() {}
         protected:
-            virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override;
+            virtual UnityEngine::GameObject CreateObject(UnityEngine::Transform parent) const override;
     };
 }

@@ -25,74 +25,75 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<DropdownListSettingTag> dropdownListSettingTagParser({"dropdown-list-setting"});
-    
-    GameObject* get_dropdownTemplate() {
+
+    GameObject get_dropdownTemplate() {
         static SafePtrUnity<GameObject> dropdownTemplate;
         if (!dropdownTemplate) {
-            dropdownTemplate = Resources::FindObjectsOfTypeAll<HMUI::SimpleTextDropdown*>().FirstOrDefault([](auto x){ 
-                auto parent = x->get_transform()->get_parent();
+            dropdownTemplate = Resources::FindObjectsOfTypeAll<HMUI::SimpleTextDropdown>().FirstOrDefault([](auto x){
+                auto parent = x.transform.parent;
                 if (!parent) return false;
-                return parent->get_name() == "NormalLevels";
-            })->get_transform()->get_parent()->get_gameObject();
+                return parent.name == "NormalLevels";
+            }).transform.parent.gameObject;
         }
-        return dropdownTemplate.ptr();
+        return GameObject(dropdownTemplate.ptr());
     }
 
-    GameObject* get_safePrefab() {
+    GameObject get_safePrefab() {
         static SafePtrUnity<GameObject> safePrefab;
         if (!safePrefab) {
             safePrefab = Object::Instantiate(get_dropdownTemplate());
             Object::DontDestroyOnLoad(safePrefab.ptr());
             safePrefab->SetActive(false);
-            safePrefab->set_name("BSMLDropdownListPrefab");
+            safePrefab->name = "BSMLDropdownListPrefab";
         }
-        return safePrefab.ptr();
+        return GameObject(safePrefab.ptr());
     }
 
     UnityEngine::GameObject* DropdownListSettingTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating DropdownListSetting");
 
         auto gameObject = Object::Instantiate(get_safePrefab(), parent, false);
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
-        auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
-        externalComponents->Add(transform);
+        RectTransform transform {gameObject.transform.convert()};
+        auto externalComponents = gameObject.AddComponent<ExternalComponents>();
+        externalComponents.Add(transform);
 
-        gameObject->set_name("BSMLDropdownList");
-        auto dropdown = gameObject->GetComponentInChildren<HMUI::SimpleTextDropdown*>(true);
-        dropdown->get_gameObject()->SetActive(false);
-        gameObject->SetActive(false);
-        
-        dropdown->set_name("Dropdown");
-        dropdown->get_gameObject()->GetComponentInChildren<VRUIControls::VRGraphicRaycaster*>(true)->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
-        dropdown->get_gameObject()->GetComponentInChildren<HMUI::ModalView*>(true)->container = Helpers::GetDiContainer();
-        dropdown->get_gameObject()->GetComponentInChildren<HMUI::ScrollView*>(true)->platformHelper = Helpers::GetIVRPlatformHelper();
+        gameObject.name = "BSMLDropdownList";
+        auto dropdown = gameObject.GetComponentInChildren<HMUI::SimpleTextDropdown>(true);
+        auto dropdownGo = dropdown.gameObject;
+        dropdownGo.SetActive(false);
+        gameObject.SetActive(false);
 
-        auto labelObject = transform->Find("Label")->get_gameObject();
-        Object::Destroy(labelObject->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        dropdown.name = "Dropdown";
+        dropdownGo.GetComponentInChildren<VRUIControls::VRGraphicRaycaster>(true).physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
+        dropdownGo.GetComponentInChildren<HMUI::ModalView>(true)._container = Helpers::GetDiContainer();
+        dropdownGo.GetComponentInChildren<HMUI::ScrollView>(true).platformHelper = Helpers::GetIVRPlatformHelper();
 
-        auto textMesh = labelObject->GetComponent<HMUI::CurvedTextMeshPro*>();
-        textMesh->set_text("BSMLDropdownSetting");
-        externalComponents->Add(textMesh);
+        auto labelObject = transform.Find("Label").gameObject;
+        Object::Destroy(labelObject.GetComponent<Polyglot::LocalizedTextMeshProUGUI>());
 
-        auto layoutElement = gameObject->AddComponent<LayoutElement*>();
-        layoutElement->set_preferredHeight(8.0f);
-        layoutElement->set_preferredWidth(90.0f);
-        externalComponents->Add(layoutElement);
+        auto textMesh = labelObject.GetComponent<HMUI::CurvedTextMeshPro>();
+        textMesh.text = "BSMLDropdownSetting";
+        externalComponents.Add(textMesh);
 
-        auto dropdownListSetting = dropdown->get_gameObject()->AddComponent<BSML::DropdownListSetting*>();
-        dropdownListSetting->dropdown = dropdown;
-        externalComponents->Add(dropdownListSetting);
-        
-        dropdown->get_gameObject()->SetActive(true);
-        gameObject->SetActive(true);
+        auto layoutElement = gameObject.AddComponent<LayoutElement>();
+        layoutElement.preferredHeight = 8.0f;
+        layoutElement.preferredWidth = 90.0f;
+        externalComponents.Add(layoutElement);
 
-        dropdown->tableView->preallocatedCells = Array<HMUI::TableView::CellsGroup*>::NewLength(0);
-        dropdown->tableView->visibleCells->Clear();
+        auto dropdownListSetting = dropdownGo.AddComponent<BSML::DropdownListSetting>();
+        dropdownListSetting.dropdown = dropdown;
+        externalComponents.Add(dropdownListSetting);
 
-        auto cont = dropdown->get_transform()->Find("DropdownTableView/Viewport/Content");
-        int childCount = cont ? cont->get_childCount() : 0;
+        dropdownGo.SetActive(true);
+        gameObject.SetActive(true);
+
+        dropdown.tableView.preallocatedCells = Array<HMUI::TableView::CellsGroup>::NewLength(0);
+        dropdown.tableView.visibleCells.Clear();
+
+        auto cont = dropdown.transform.Find("DropdownTableView/Viewport/Content");
+        int childCount = cont ? cont.childCount : 0;
         for (int i = childCount - 1; i >= 0; i--) {
-            cont->GetChild(i)->get_gameObject()->SetActive(false);
+            cont.GetChild(i).gameObject.SetActive(false);
         }
 
         return gameObject;

@@ -4,11 +4,11 @@ DEFINE_TYPE(BSML, CustomCellTableCell);
 
 namespace BSML {
     void CustomCellTableCell::ctor() {
-        selectedTags = List<UnityEngine::GameObject*>::New_ctor();
-        hoveredTags = List<UnityEngine::GameObject*>::New_ctor();
-        neitherTags = List<UnityEngine::GameObject*>::New_ctor();
+        selectedTags = List<UnityEngine::GameObject>::New_ctor();
+        hoveredTags = List<UnityEngine::GameObject>::New_ctor();
+        neitherTags = List<UnityEngine::GameObject>::New_ctor();
     }
-    
+
     void CustomCellTableCell::Reused() {
         if (dataObject) il2cpp_utils::RunMethod(dataObject, "Reused", this);
     }
@@ -29,23 +29,27 @@ namespace BSML {
         bool selected = get_selected();
         bool hovered = get_highlighted();
 
-        for (auto go : selectedTags) go->SetActive(selected);
-        for (auto go : hoveredTags) go->SetActive(hovered);
-        for (auto go : neitherTags) go->SetActive(!(selected || hovered));
+        for (auto go : selectedTags) go.SetActive(selected);
+        for (auto go : hoveredTags) go.SetActive(hovered);
+        for (auto go : neitherTags) go.SetActive(!(selected || hovered));
     }
 
     void CustomCellTableCell::SetupPostParse(const BSMLParserParams& parserParams) {
         auto selected = parserParams.GetObjectsWithTag("selected");
         auto hovered = parserParams.GetObjectsWithTag("hovered");
         auto neither = parserParams.GetObjectsWithTag("un-selected-un-hovered");
-        
-        selectedTags->EnsureCapacity(selected.size());
-        for (auto go : selected) selectedTags->Add(go);
-        hoveredTags->EnsureCapacity(hovered.size());
-        for (auto go : hovered) hoveredTags->Add(go);
-        neitherTags->EnsureCapacity(neither.size());
-        for (auto go : neither) neitherTags->Add(go);
 
-        if (dataObject) il2cpp_utils::RunMethod(dataObject, "Setup", this);
+        selectedTags.EnsureCapacity(selected.size());
+        for (auto go : selected) selectedTags.Add(go);
+        hoveredTags.EnsureCapacity(hovered.size());
+        for (auto go : hovered) hoveredTags.Add(go);
+        neitherTags.EnsureCapacity(neither.size());
+        for (auto go : neither) neitherTags.Add(go);
+
+        if (dataObject) il2cpp_utils::RunMethod(dataObject, "Setup", convert());
+    }
+
+    CustomCellTableCell::operator HMUI::TableView::IDataSource() {
+        return HMUI::TableView::IDataSource(convert());
     }
 }

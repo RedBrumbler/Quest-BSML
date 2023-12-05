@@ -10,10 +10,10 @@ DEFINE_TYPE(BSML, ListSliderSetting);
 
 namespace BSML {
     std::map<HMUI::RangeValuesTextSlider*, BSML::ListSliderSetting*> ListSliderSetting::remappers = {};
-    
+
     void ListSliderSetting::ctor() {
         SliderSettingBase::construct();
-        values = List<Il2CppObject*>::New_ctor();
+        values = List<bs_hook::Il2CppWrapperType>::New_ctor();
     }
 
     void ListSliderSetting::OnDestroy() {
@@ -23,70 +23,70 @@ namespace BSML {
     void ListSliderSetting::Setup() {
         if (slider) {
             remappers[slider] = this;
-            
+
             // steps is range(max - min) divided by increments;
             int steps = values.size();
-            slider->set_minValue(0);
-            slider->set_maxValue(steps - 1);
-            slider->set_numberOfSteps(steps);
-            text = slider->get_gameObject()->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
+            slider.minValue = 0;
+            slider.maxValue = steps - 1;
+            slider.numberOfSteps = steps;
+            text = slider.gameObject.GetComponentInChildren<TMPro::TextMeshProUGUI>();
             ReceiveValue();
 
-            auto onChangeInfo = il2cpp_functions::class_get_method_from_name(this->klass, "OnChange", 2);
-            auto delegate = MakeSystemAction<HMUI::RangeValuesTextSlider*, float>(this, onChangeInfo);
-            slider->add_valueDidChangeEvent(delegate);
+            auto onChangeInfo = il2cpp_functions::class_get_method_from_name(il2cpp_functions::object_get_class(*this), "OnChange", 2);
+            auto delegate = MakeSystemAction<HMUI::RangeValuesTextSlider, float>(*this, onChangeInfo);
+            slider.add_valueDidChangeEvent(delegate);
         }
     }
 
-    void ListSliderSetting::OnChange(HMUI::RangeValuesTextSlider* _, float value) {
+    void ListSliderSetting::OnChange(HMUI::RangeValuesTextSlider _, float value) {
         auto actualValue = get_Value();
         if (genericSetting) {
-            genericSetting->OnChange(actualValue);
-            if (genericSetting->applyOnChange) ApplyValue();
+            genericSetting.OnChange(actualValue);
+            if (genericSetting.applyOnChange) ApplyValue();
         }
     }
 
-    StringW ListSliderSetting::TextForValue(Il2CppObject* value) {
+    StringW ListSliderSetting::TextForValue(bs_hook::Il2CppWrapperType value) {
         if (formatter)
             return formatter(value);
         else {
-            return value ? value->ToString() : "NULL";
+            return value ? value.ToString() : "NULL";
         }
     }
 
 
     void ListSliderSetting::ReceiveValue() {
         if (!genericSetting) return;
-        set_Value(genericSetting->GetValue<Il2CppObject*>());
+        Value = genericSetting.GetValue<bs_hook::Il2CppWrapperType>();
     }
 
     void ListSliderSetting::ApplyValue() {
         if (!genericSetting) return;
-        genericSetting->SetValue(get_Value());
+        genericSetting.SetValue(Value);
     }
-    
-    Il2CppObject* ListSliderSetting::get_Value() {
+
+    bs_hook::Il2CppWrapperType ListSliderSetting::get_Value() {
         if (values.size() > 0)
-            return values[get_index()];
+            return values[index];
         return nullptr;
     }
 
-    void ListSliderSetting::set_Value(Il2CppObject* value) {
+    void ListSliderSetting::set_Value(bs_hook::Il2CppWrapperType value) {
         int index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value
-            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(v, "Equals", value).value_or(false)))
+            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(static_cast<Il2CppObject*>(v), "Equals", static_cast<Il2CppObject*>(value)).value_or(false)))
                 break;
             index++;
         }
 
         if (index == values.size())
             index = values.size() - 1;
-        
-        slider->set_value(index);
+
+        slider.value = index;
     }
 
     int ListSliderSetting::get_index() {
-        return slider ? slider->get_value() : 0;
+        return slider ? slider.value : 0;
     }
 }

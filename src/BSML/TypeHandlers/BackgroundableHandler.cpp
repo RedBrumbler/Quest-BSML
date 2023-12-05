@@ -16,11 +16,11 @@ namespace BSML {
 
     BackgroundableHandler::Base::SetterMap BackgroundableHandler::get_setters() const {
         return {
-            {"background", [](auto component, auto value){ component->ApplyBackground(value); }},
-            {"backgroundColor", [](auto component, auto value){ component->ApplyColor(value); }},
-            {"backgroundColor0", [](auto component, auto value){ component->ApplyColor0(value); }},
-            {"backgroundColor1", [](auto component, auto value){ component->ApplyColor1(value); }},
-            {"backgroundAlpha", [](auto component, auto value){ component->ApplyAlpha(value); }}
+            {"background", [](auto component, auto value){ component.ApplyBackground(value); }},
+            {"backgroundColor", [](auto component, auto value){ component.ApplyColor(value); }},
+            {"backgroundColor0", [](auto component, auto value){ component.ApplyColor0(value); }},
+            {"backgroundColor1", [](auto component, auto value){ component.ApplyColor1(value); }},
+            {"backgroundAlpha", [](auto component, auto value){ component.ApplyAlpha(value); }}
         };
     }
 }

@@ -7,20 +7,22 @@
 #include "System/Collections/Generic/Dictionary_2.hpp"
 
 
-MAKE_AUTO_HOOK_ORIG_MATCH(SegmentedControl_HandleCellSelectionDidChange, &HMUI::SegmentedControl::HandleCellSelectionDidChange, void, HMUI::SegmentedControl* self, HMUI::SelectableCell* selectableCell, HMUI::SelectableCell::TransitionType transitionType, Il2CppObject* changeOwner) {
-    if (self->selectedCellNumber == -1) {
-        auto segmentedCell = reinterpret_cast<HMUI::SegmentedControlCell*>(selectableCell);
-        self->selectedCellNumber = segmentedCell->cellNumber;
-        if (self->didSelectCellEvent) {
-            self->didSelectCellEvent->Invoke(self, segmentedCell->cellNumber);
+MAKE_AUTO_HOOK_ORIG_MATCH(SegmentedControl_HandleCellSelectionDidChange, &HMUI::SegmentedControl::HandleCellSelectionDidChange, void, HMUI::SegmentedControl* ptr, HMUI::SelectableCell selectableCell, HMUI::SelectableCell::TransitionType transitionType, bs_hook::Il2CppWrapperType changeOwner) {
+    HMUI::SegmentedControl self{ptr};
+
+    if (self.selectedCellNumber == -1) {
+        HMUI::SegmentedControlCell segmentedCell {selectableCell.convert()};
+        self.selectedCellNumber = segmentedCell.cellNumber;
+        if (self.didSelectCellEvent) {
+            self.didSelectCellEvent.Invoke(self, segmentedCell.cellNumber);
         }
 
-        System::Action_1<int>* value = nullptr;
-        if (self->callbacks->TryGetValue(segmentedCell->cellNumber, byref(value))) {
-            if (value) value->Invoke(segmentedCell->cellNumber);
+        System::Action_1<int> value{nullptr};
+        if (self.callbacks.TryGetValue(segmentedCell.cellNumber, byref(value))) {
+            if (value) value.Invoke(segmentedCell.cellNumber);
         }
 
     } else {
-        SegmentedControl_HandleCellSelectionDidChange(self, selectableCell, transitionType, changeOwner);
+        SegmentedControl_HandleCellSelectionDidChange(ptr, selectableCell, transitionType, changeOwner);
     }
 }

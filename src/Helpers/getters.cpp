@@ -21,67 +21,67 @@ using namespace GlobalNamespace;
 
 namespace BSML::Helpers {
     SafePtr<PhysicsRaycasterWithCache> physicsRaycaster;
-    PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache()
+    PhysicsRaycasterWithCache GetPhysicsRaycasterWithCache()
     {
         if(!physicsRaycaster)
-            physicsRaycaster = Resources::FindObjectsOfTypeAll<MainMenuViewController*>().First()->GetComponent<VRGraphicRaycaster*>()->physicsRaycaster;
+            physicsRaycaster = Resources::FindObjectsOfTypeAll<MainMenuViewController>().First().GetComponent<VRGraphicRaycaster>().physicsRaycaster;
         if(!physicsRaycaster)
             CacheNotFoundWarningLog(PhysicsRaycasterWithCache);
         return physicsRaycaster.ptr();
     }
 
     SafePtr<DiContainer> diContainer;
-    DiContainer* GetDiContainer()
+    DiContainer GetDiContainer()
     {
         if(!diContainer)
-            diContainer = Resources::FindObjectsOfTypeAll<TextSegmentedControl*>().FirstOrDefault([](TextSegmentedControl* x) { return x->get_transform()->get_parent()->get_name() == "PlayerStatisticsViewController" && x->container; })->container;
+            diContainer = Resources::FindObjectsOfTypeAll<TextSegmentedControl>().FirstOrDefault([](auto x) { return x.transform.parent.name == "PlayerStatisticsViewController" && x.container; }).container;
         if(!diContainer)
             CacheNotFoundWarningLog(DiContainer);
         return diContainer.ptr();
     }
 
     SafePtrUnity<HoverHintController> hoverHintController;
-    HoverHintController* GetHoverHintController() 
+    HoverHintController GetHoverHintController()
     {
         if(!hoverHintController)
-            hoverHintController = Resources::FindObjectsOfTypeAll<HoverHintController*>().FirstOrDefault();
+            hoverHintController = Resources::FindObjectsOfTypeAll<HoverHintController>().FirstOrDefault();
         if(!hoverHintController)
             CacheNotFoundWarningLog(HoverHintController);
         return hoverHintController.ptr();
     }
 
     SafePtr<IVRPlatformHelper> platformHelper;
-    IVRPlatformHelper* GetIVRPlatformHelper()
+    IVRPlatformHelper GetIVRPlatformHelper()
     {
         if (!platformHelper)
-            platformHelper = Resources::FindObjectsOfTypeAll<LevelCollectionTableView*>().First()->GetComponentInChildren<ScrollView*>()->platformHelper;
+            platformHelper = Resources::FindObjectsOfTypeAll<LevelCollectionTableView>().First().GetComponentInChildren<ScrollView>().platformHelper;
         if (!platformHelper)
             CacheNotFoundWarningLog(IVRPlatformHelper);
         return platformHelper.ptr();
     }
 
     SafePtrUnity<TMP_FontAsset> mainTextFont;
-    TMP_FontAsset* GetMainTextFont() {
+    TMP_FontAsset GetMainTextFont() {
         if (!mainTextFont)
-            mainTextFont = Resources::FindObjectsOfTypeAll<TMP_FontAsset*>().FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF"; });
+            mainTextFont = Resources::FindObjectsOfTypeAll<TMP_FontAsset>().FirstOrDefault([](auto x){ return x.name == "Teko-Medium SDF"; });
         if(!mainTextFont)
             CacheNotFoundWarningLog(TMP_FontAsset);
         return mainTextFont.ptr();
     }
 
     SafePtrUnity<Material> mainUIFontMaterial;
-    Material* GetMainUIFontMaterial() {
+    Material GetMainUIFontMaterial() {
         if (!mainUIFontMaterial)
-            mainUIFontMaterial = Resources::FindObjectsOfTypeAll<Material*>().FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF Curved Softer"; });
+            mainUIFontMaterial = Resources::FindObjectsOfTypeAll<Material>().FirstOrDefault([](auto x){ return x.name == "Teko-Medium SDF Curved Softer"; });
         if(!mainUIFontMaterial)
             CacheNotFoundWarningLog(Material);
         return mainUIFontMaterial.ptr();
     }
 
     SafePtrUnity<Material> noGlowUIMat;
-    Material* GetUINoGlowMat() {
+    Material GetUINoGlowMat() {
         if (!noGlowUIMat) {
-            noGlowUIMat = Resources::FindObjectsOfTypeAll<Material*>().FirstOrDefault([](auto x){ return x->get_name() == "UINoGlow"; });
+            noGlowUIMat = Resources::FindObjectsOfTypeAll<Material>().FirstOrDefault([](auto x){ return x.name == "UINoGlow"; });
         }
         if(!noGlowUIMat)
             CacheNotFoundWarningLog(Material);
@@ -89,10 +89,10 @@ namespace BSML::Helpers {
     }
 
     SafePtrUnity<MainFlowCoordinator> mainFlowCoordinator;
-    MainFlowCoordinator* GetMainFlowCoordinator()
+    MainFlowCoordinator GetMainFlowCoordinator()
     {
         if (!mainFlowCoordinator)
-            mainFlowCoordinator = Resources::FindObjectsOfTypeAll<MainFlowCoordinator*>().FirstOrDefault();
+            mainFlowCoordinator = Resources::FindObjectsOfTypeAll<MainFlowCoordinator>().FirstOrDefault();
         if(!mainFlowCoordinator)
             CacheNotFoundWarningLog(MainFlowCoordinator);
         return mainFlowCoordinator.ptr();

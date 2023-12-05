@@ -19,50 +19,50 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ButtonTag> buttonTagParser({"button"});
-    Button* ButtonTag::get_buttonPrefab() const {
+    Button ButtonTag::get_buttonPrefab() const {
         static SafePtrUnity<Button> buttonPrefab;
         if (!buttonPrefab) {
-            buttonPrefab = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
+            buttonPrefab = Resources::FindObjectsOfTypeAll<Button>().LastOrDefault([&](auto x){ return x.name == "PracticeButton"; });
         }
-        return buttonPrefab.ptr();
+        return Button(buttonPrefab.ptr());
     }
 
-    UnityEngine::GameObject* ButtonTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject ButtonTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Button");
 
         auto button = Object::Instantiate(get_buttonPrefab(), parent, false);
-        button->set_name("BSMLButton");
-        button->set_interactable(true);
+        button.name = "BSMLButton";
+        button.interactable = true;
 
-        auto transform = reinterpret_cast<RectTransform*>(button->get_transform());
-        auto gameObject = button->get_gameObject();
-        gameObject->SetActive(true);
-        auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
-        externalComponents->Add(button);
-        externalComponents->Add(transform);
+        RectTransform transform {button.transform.convert()};
+        auto gameObject = button.gameObject;
+        gameObject.SetActive(true);
+        auto externalComponents = gameObject.AddComponent<ExternalComponents>();
+        externalComponents.Add(button);
+        externalComponents.Add(transform);
 
-        auto textObject = button->get_transform()->Find("Content/Text")->get_gameObject();
-        Object::Destroy(textObject->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
-        
-        auto textMesh = textObject->GetComponent<TMPro::TextMeshProUGUI*>();
-        textMesh->set_text("BSMLButton");
-        textMesh->set_richText(true);
-        externalComponents->Add(textMesh);
+        auto textObject = button.transform.Find("Content/Text").gameObject;
+        Object::Destroy(textObject.GetComponent<Polyglot::LocalizedTextMeshProUGUI>());
 
-        Object::Destroy(transform->Find("Content")->GetComponent<LayoutElement*>());
-        
-        auto buttonSizeFitter = gameObject->AddComponent<ContentSizeFitter*>();
-        buttonSizeFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
-        buttonSizeFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
-        externalComponents->Add(buttonSizeFitter);
-        
-        auto stackLayoutGroup = button->GetComponentInChildren<LayoutGroup*>();
+        auto textMesh = textObject.GetComponent<TMPro::TextMeshProUGUI>();
+        textMesh.text = "BSMLButton";
+        textMesh.richText = true;
+        externalComponents.Add(textMesh);
+
+        Object::Destroy(transform.Find("Content").GetComponent<LayoutElement>());
+
+        auto buttonSizeFitter = gameObject.AddComponent<ContentSizeFitter>();
+        buttonSizeFitter.verticalFit = ContentSizeFitter::FitMode::PreferredSize;
+        buttonSizeFitter.horizontalFit = ContentSizeFitter::FitMode::PreferredSize;
+        externalComponents.Add(buttonSizeFitter);
+
+        auto stackLayoutGroup = button.GetComponentInChildren<LayoutGroup>();
         if (stackLayoutGroup)
-            externalComponents->Add(stackLayoutGroup);
+            externalComponents.Add(stackLayoutGroup);
 
-        auto layoutElement = gameObject->AddComponent<LayoutElement*>();
-        layoutElement->set_preferredWidth(30.0f);
-        externalComponents->Add(layoutElement);
+        auto layoutElement = gameObject.AddComponent<LayoutElement>();
+        layoutElement.preferredWidth = 30.0f;
+        externalComponents.Add(layoutElement);
 
         return gameObject;
     }

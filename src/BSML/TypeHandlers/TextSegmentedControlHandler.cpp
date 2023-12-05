@@ -17,7 +17,7 @@ namespace BSML {
     }
 
     void TextSegmentedControlHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
-        auto textControl = reinterpret_cast<HMUI::TextSegmentedControl*>(componentType.component);
+        auto textControl = HMUI::TextSegmentedControl(componentType.component.convert());
         auto& data = componentType.data;
 
         auto dataItr = data.find("data");
@@ -56,7 +56,7 @@ namespace BSML {
         auto selectCellItr = data.find("selectCell");
         if (selectCellItr != data.end() && !selectCellItr->second.empty()) {
             auto action = parserParams.TryGetAction(selectCellItr->second);
-            if (action) textControl->add_didSelectCellEvent(action->GetSystemAction<HMUI::SegmentedControl*, int>());
+            if (action) textControl.add_didSelectCellEvent(action->GetSystemAction<HMUI::SegmentedControl, int>());
             else ERROR("Action '{}' could not be found", selectCellItr->second);
         }
 

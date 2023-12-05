@@ -22,61 +22,61 @@ using HapticPresetSO = Libraries::HM::HMLib::VR::HapticPresetSO;
 namespace BSML {
     static BSMLNodeParser<ClickableTextTag> clickableTextTagParser({"clickable-text"});
 
-    GlobalNamespace::Signal* get_textClickedSignal() {
+    GlobalNamespace::Signal get_textClickedSignal() {
         static SafePtrUnity<GlobalNamespace::Signal> textClickedSignal;
         if (!textClickedSignal) {
-            auto menuShockWave = Resources::FindObjectsOfTypeAll<GlobalNamespace::MenuShockwave*>().FirstOrDefault();
-            textClickedSignal = menuShockWave ? menuShockWave->buttonClickEvents.LastOrDefault() : nullptr;
+            auto menuShockWave = Resources::FindObjectsOfTypeAll<GlobalNamespace::MenuShockwave>().FirstOrDefault();
+            textClickedSignal = menuShockWave ? menuShockWave.buttonClickEvents.LastOrDefault() : nullptr;
         }
-        return textClickedSignal.ptr();
+        return GlobalNamespace::Signal(textClickedSignal.ptr());
     }
 
-    HapticPresetSO* get_textHapticPreset() {
+    HapticPresetSO get_textHapticPreset() {
         static SafePtrUnity<HapticPresetSO> textHapticPreset;
         if (!textHapticPreset) {
-            textHapticPreset = UnityEngine::ScriptableObject::CreateInstance<HapticPresetSO*>();
-            textHapticPreset->duration = 0.02f;
-            textHapticPreset->strength = 1.0f;
-            textHapticPreset->frequency = 0.2f;
+            textHapticPreset = UnityEngine::ScriptableObject::CreateInstance<HapticPresetSO>();
+            textHapticPreset.duration = 0.02f;
+            textHapticPreset.strength = 1.0f;
+            textHapticPreset.frequency = 0.2f;
             Object::DontDestroyOnLoad(textHapticPreset.ptr());
         }
-        return textHapticPreset.ptr();
+        return HapticPresetSO(textHapticPreset.ptr());
     }
 
-    GlobalNamespace::HapticFeedbackController* get_textHapticFeedbackController() {
+    GlobalNamespace::HapticFeedbackController get_textHapticFeedbackController() {
         static SafePtrUnity<GlobalNamespace::HapticFeedbackController> textHapticFeedbackController;
         if (!textHapticFeedbackController) {
-            textHapticFeedbackController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::HapticFeedbackController*>();
+            textHapticFeedbackController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::HapticFeedbackController>();
         }
-        return textHapticFeedbackController.ptr();
+        return GlobalNamespace::HapticFeedbackController(textHapticFeedbackController.ptr());
     }
 
-    UnityEngine::GameObject* ClickableTextTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject ClickableTextTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Clickable text");
         auto gameObject = GameObject::New_ctor("BSMLClickableText");
-        gameObject->SetActive(false);
-        gameObject->get_transform()->SetParent(parent, false);
+        gameObject.SetActive(false);
+        gameObject.transform.SetParent(parent, false);
 
-        auto textMesh = gameObject->AddComponent<ClickableText*>();
-        textMesh->set_font(Helpers::GetMainTextFont());
-        textMesh->set_fontSharedMaterial(Helpers::GetMainUIFontMaterial());
-        textMesh->set_text("BSMLClickableText");
-        textMesh->set_fontSize(4);
-        textMesh->set_color({1.0f, 1.0f, 1.0f, 1.0f});
-        textMesh->set_richText(true);
+        auto textMesh = gameObject.AddComponent<ClickableText>();
+        textMesh.font = Helpers::GetMainTextFont();
+        textMesh.fontSharedMaterial = Helpers::GetMainUIFontMaterial();
+        textMesh.text = "BSMLClickableText";
+        textMesh.fontSize = 4;
+        textMesh.color = {1.0f, 1.0f, 1.0f, 1.0f};
+        textMesh.richText = true;
 
-        auto rectTransform = textMesh->get_rectTransform();
-        rectTransform->set_anchorMin({0.5f, 0.5f});
-        rectTransform->set_anchorMax({0.5f, 0.5f});
-        rectTransform->set_sizeDelta({90, 8});
-        
-        gameObject->AddComponent<UI::LayoutElement*>();
+        auto rectTransform = textMesh.rectTransform;
+        rectTransform.anchorMin = {0.5f, 0.5f};
+        rectTransform.anchorMax = {0.5f, 0.5f};
+        rectTransform.sizeDelta = {90, 8};
 
-        textMesh->buttonClickedSignal = get_textClickedSignal();
-        textMesh->hapticFeedbackPresetSO = get_textHapticPreset();
-        textMesh->hapticFeedbackController = get_textHapticFeedbackController();
+        gameObject.AddComponent<UI::LayoutElement>();
 
-        gameObject->SetActive(true);
+        textMesh.buttonClickedSignal = get_textClickedSignal();
+        textMesh.hapticFeedbackPresetSO = get_textHapticPreset();
+        textMesh.hapticFeedbackController = get_textHapticFeedbackController();
+
+        gameObject.SetActive(true);
         return gameObject;
     }
 }

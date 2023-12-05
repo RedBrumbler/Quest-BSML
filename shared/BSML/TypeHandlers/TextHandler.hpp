@@ -4,9 +4,9 @@
 #include "TMPro/TextMeshProUGUI.hpp"
 
 namespace BSML {
-    class TextHandler : public TypeHandler<TMPro::TextMeshProUGUI*> {
+    class TextHandler : public TypeHandler<TMPro::TextMeshProUGUI> {
         public:
-            using Base = TypeHandler<TMPro::TextMeshProUGUI*>;
+            using Base = TypeHandler<TMPro::TextMeshProUGUI>;
             TextHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

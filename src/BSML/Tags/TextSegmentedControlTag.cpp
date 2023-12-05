@@ -14,39 +14,38 @@ using namespace UnityEngine;
 namespace BSML {
     static BSMLNodeParser<TextSegmentedControlTag> textSegmentedControlTag({"text-segments"});
 
-    HMUI::TextSegmentedControl* get_textSegmentedControlTemplate() {
+    HMUI::TextSegmentedControl get_textSegmentedControlTemplate() {
         SafePtrUnity<HMUI::TextSegmentedControl> textSegmentedControlTemplate;
         if (!textSegmentedControlTemplate) {
-            textSegmentedControlTemplate = Resources::FindObjectsOfTypeAll<HMUI::TextSegmentedControl*>().FirstOrDefault(
-                [](auto x) { 
-                    auto name = x->get_name();
-                    if (name != "BeatmapDifficultySegmentedControl") return false;
-                    return x->container != nullptr;
+            textSegmentedControlTemplate = Resources::FindObjectsOfTypeAll<HMUI::TextSegmentedControl>().FirstOrDefault(
+                [](auto x) {
+                    if (x.name != "BeatmapDifficultySegmentedControl") return false;
+                    return x.container != nullptr;
                 });
         }
-        return textSegmentedControlTemplate.ptr();
+        return HMUI::TextSegmentedControl(textSegmentedControlTemplate.ptr());
     }
-    
-    UnityEngine::GameObject* TextSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
+
+    UnityEngine::GameObject TextSegmentedControlTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating TextSegmentedControl");
 
         auto textSegmentedControlTemplate = get_textSegmentedControlTemplate();
         auto textSegmentedControl = Object::Instantiate(textSegmentedControlTemplate, parent, false);
-        textSegmentedControl->dataSource = nullptr;
+        textSegmentedControl.dataSource = HMUI::SegmentedControl::IDataSource(nullptr);
 
-        auto gameObject = textSegmentedControl->get_gameObject();
-        gameObject->set_name("BSMLTextSegmentedControl");
-        textSegmentedControl->container = textSegmentedControlTemplate->container;
-        
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
-        transform->set_anchoredPosition({0, 0});
-        int childCount = transform->get_childCount();
+        auto gameObject = textSegmentedControl.gameObject;
+        gameObject.name = "BSMLTextSegmentedControl";
+        textSegmentedControl._container = textSegmentedControlTemplate._container;
+
+        RectTransform transform {gameObject.transform.convert()};
+        transform.anchoredPosition = {0, 0};
+        int childCount = transform.childCount;
         for (int i = 1; i <= childCount; i++) {
-            Object::DestroyImmediate(transform->GetChild(childCount - i)->get_gameObject());
+            Object::DestroyImmediate(transform.GetChild(childCount - i).gameObject);
         }
 
-        Object::Destroy(gameObject->GetComponent<GlobalNamespace::BeatmapDifficultySegmentedControlController*>());
-        gameObject->SetActive(true);
+        Object::Destroy(gameObject.GetComponent<GlobalNamespace::BeatmapDifficultySegmentedControlController>());
+        gameObject.SetActive(true);
         return gameObject;
     }
 }

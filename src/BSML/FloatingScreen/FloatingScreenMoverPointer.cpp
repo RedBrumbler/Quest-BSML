@@ -14,24 +14,28 @@
 DEFINE_TYPE(BSML, FloatingScreenMoverPointer);
 
 struct ExtendedRaycastHit : UnityEngine::RaycastHit {
-    UnityEngine::Transform* get_transform() {
-        auto rb = get_rigidbody();
-        if (rb && rb->m_CachedPtr.m_value) {
-            return rb->get_transform();
+    UnityEngine::Transform get_transform() {
+        auto rb = rigidbody;
+        if (rb && rb.m_CachedPtr) {
+            return rb.transform;
         } else {
-            auto col = get_collider();
-            if (col && col->m_CachedPtr.m_value) {
-                return col->get_transform();
+            auto col = collider;
+            if (col && col.m_CachedPtr) {
+                return col.transform;
             } else {
-                return nullptr;
+                return UnityEngine::Transform(nullptr);
             }
         }
     }
 
-    UnityEngine::Rigidbody* get_rigidbody() {
-        auto col = get_collider();
-        return (col && col->m_CachedPtr.m_value) ? col->get_attachedRigidbody() : nullptr;
+    __declspec(property(get=get_transform)) UnityEngine::Transform transform;
+
+    UnityEngine::Rigidbody get_rigidbody() {
+        auto col = collider;
+        return (col && col.m_CachedPtr) ? col.attachedRigidbody : UnityEngine::Rigidbody(nullptr);
     }
+
+    __declspec(property(get=get_rigidbody)) UnityEngine::Rigidbody rigidbody;
 };
 
 static_assert(sizeof(UnityEngine::RaycastHit) == sizeof(ExtendedRaycastHit));
@@ -40,34 +44,38 @@ inline UnityEngine::Vector3 Vector3Lerp(const UnityEngine::Vector3& a, const Uni
     return {std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t), std::lerp(a.z, b.z, t)};
 }
 
+static inline UnityEngine::Quaternion operator* (UnityEngine::Quaternion a, UnityEngine::Quaternion b) {
+    return UnityEngine::Quaternion::op_Multiply(a, b);
+}
+
 namespace BSML {
-    void FloatingScreenMoverPointer::Init(FloatingScreen* floatingScreen, VRUIControls::VRPointer* pointer) {
-        _floatingScreen = floatingScreen;
-        _screenHandle = floatingScreen->handle->get_transform();
-        _realPos = floatingScreen->get_transform()->get_position();
-        _realRot = floatingScreen->get_transform()->get_rotation();
+    void FloatingScreenMoverPointer::Init(FloatingScreen floatingScreen, VRUIControls::VRPointer pointer) {
+        this->floatingScreen = floatingScreen;
+        _screenHandle = floatingScreen.handle.transform;
+        _realPos = floatingScreen.transform.position;
+        _realRot = floatingScreen.transform.rotation;
         _vrPointer = pointer;
     }
 
-    void FloatingScreenMoverPointer::Init(FloatingScreen* floatingScreen) {
-        auto vrPointer = GetComponent<VRUIControls::VRPointer*>();
+    void FloatingScreenMoverPointer::Init(FloatingScreen floatingScreen) {
+        auto vrPointer = GetComponent<VRUIControls::VRPointer>();
         Init(floatingScreen, vrPointer);
     }
 
     void FloatingScreenMoverPointer::Update() {
         auto pointer = _vrPointer;
-        if (pointer && pointer->m_CachedPtr.m_value && pointer->vrController && pointer->vrController->m_CachedPtr.m_value) {
-            auto vrController = pointer->vrController;
-            if (vrController->get_triggerValue() > 0.9f) {
-                if (_grabbingController && _grabbingController->m_CachedPtr.m_value) return;
+        if (pointer && pointer.m_CachedPtr && pointer.vrController && pointer.vrController.m_CachedPtr) {
+            auto vrController = pointer.vrController;
+            if (vrController.triggerValue > 0.9f) {
+                if (_grabbingController && _grabbingController.m_CachedPtr) return;
                 ExtendedRaycastHit hit;
-                if (UnityEngine::Physics::Raycast(vrController->get_position(), vrController->get_forward(), ByRef<UnityEngine::RaycastHit>(&hit), MaxLaserDistance)) {
-                    auto t = hit.get_transform();
+                if (UnityEngine::Physics::Raycast(vrController.position, vrController.forward, ByRef<UnityEngine::RaycastHit>(&hit), MaxLaserDistance)) {
+                    auto t = hit.transform;
                     if (!_screenHandle || t != _screenHandle) return;
                     _grabbingController = vrController;
-                    _grabPos = vrController->get_transform()->InverseTransformPoint(_floatingScreen->get_transform()->get_position());
-                    _grabRot = UnityEngine::Quaternion::Inverse(vrController->get_transform()->get_rotation()) * _floatingScreen->get_transform()->get_rotation();
-                    _floatingScreen->OnHandleGrab(pointer);
+                    _grabPos = vrController.transform.InverseTransformPoint(floatingScreen.transform.position);
+                    _grabRot = UnityEngine::Quaternion::Inverse(vrController.transform.rotation) * floatingScreen.transform.rotation;
+                    floatingScreen.OnHandleGrab(pointer);
                 }
             }
         }
@@ -76,33 +84,44 @@ namespace BSML {
         // - no grabbing controller, or
         // - controller pressed
         // early return
-        if (!(_grabbingController && _grabbingController->m_CachedPtr.m_value) || _grabbingController->get_triggerValue() > 0.9f) return;
+        if (!(_grabbingController && _grabbingController.m_CachedPtr) || _grabbingController.triggerValue > 0.9f) return;
 
         _grabbingController = nullptr;
-        _floatingScreen->OnHandleReleased(pointer);
+        floatingScreen.OnHandleReleased(pointer);
 
     }
 
     void FloatingScreenMoverPointer::OnDestroy() {
-        _vrPointer = nullptr;
-        _floatingScreen = nullptr;
-        _screenHandle = nullptr;
-        _grabbingController = nullptr;
+        internal._vrPointer = nullptr;
+        internal._floatingScreen = nullptr;
+        internal._screenHandle = nullptr;
+        internal._grabbingController = nullptr;
     }
 
     void FloatingScreenMoverPointer::LateUpdate() {
         if (_grabbingController) {
-            float diff = _grabbingController->get_verticalAxisValue() * UnityEngine::Time::get_unscaledDeltaTime();
-            if (_grabPos.get_magnitude() > MinScrollDistance) {
+            float diff = _grabbingController.verticalAxisValue * UnityEngine::Time::get_unscaledDeltaTime();
+            if (_grabPos.magnitude > MinScrollDistance) {
                 _grabPos.z -= diff;
             } else {
                 _grabPos.z -= std::clamp(diff, std::numeric_limits<float>::min(), 0.0f);
             }
-            _realPos = _grabbingController->get_transform()->TransformPoint(_grabPos);
-            _realRot = _grabbingController->get_transform()->get_rotation() * _grabRot;
+            _realPos = _grabbingController.transform.TransformPoint(_grabPos);
+            _realRot = _grabbingController.transform.rotation * _grabRot;
         } else return;
 
-        _floatingScreen->get_transform()->set_position(Vector3Lerp(_floatingScreen->get_transform()->get_position(), _realPos, 10 * UnityEngine::Time::get_unscaledDeltaTime()));
-        _floatingScreen->get_transform()->set_rotation(UnityEngine::Quaternion::Slerp(_floatingScreen->get_transform()->get_rotation(), _realRot, 5 * UnityEngine::Time::get_unscaledDeltaTime()));
+        auto t = floatingScreen.transform;
+        t.position = Vector3Lerp(t.position, _realPos, 10 * UnityEngine::Time::get_unscaledDeltaTime());
+        t.rotation = UnityEngine::Quaternion::Slerp(t.rotation, _realRot, 5 * UnityEngine::Time::get_unscaledDeltaTime());
+    }
+
+    FloatingScreen FloatingScreenMoverPointer::__get__floatingScreen() {
+        static constexpr auto offset = FloatingScreenMoverPointer::___Base__Size + offsetof(___InternalRepresentation, _floatingScreen);
+        return custom_types::read_field<FloatingScreen>(convert(), offset);
+    }
+
+    void FloatingScreenMoverPointer::__set__floatingScreen(FloatingScreen value) {
+        static constexpr auto offset = FloatingScreenMoverPointer::___Base__Size + offsetof(___InternalRepresentation, _floatingScreen);
+        custom_types::write_field<FloatingScreen>(convert(), offset, std::forward(value));
     }
 }

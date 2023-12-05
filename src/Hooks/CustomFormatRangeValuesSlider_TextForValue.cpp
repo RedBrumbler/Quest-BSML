@@ -4,7 +4,9 @@
 #include "BSML/Components/Settings/ListSliderSetting.hpp"
 #include <map>
 
-MAKE_AUTO_HOOK_MATCH(CustomFormatRangeValuesSlider_TextForValue, &HMUI::CustomFormatRangeValuesSlider::TextForValue, StringW, HMUI::CustomFormatRangeValuesSlider* self, float value) {
+MAKE_AUTO_HOOK_MATCH(CustomFormatRangeValuesSlider_TextForValue, &HMUI::CustomFormatRangeValuesSlider::TextForValue, StringW, HMUI::CustomFormatRangeValuesSlider* ptr, float value) {
+    HMUI::CustomFormatRangeValuesSlider self{ptr};
+
     {
         auto itr = BSML::SliderSetting::remappers.find(self);
         if (itr != BSML::SliderSetting::remappers.end()) return itr->second->TextForValue(value);
@@ -13,5 +15,5 @@ MAKE_AUTO_HOOK_MATCH(CustomFormatRangeValuesSlider_TextForValue, &HMUI::CustomFo
         auto itr = BSML::ListSliderSetting::remappers.find(self);
         if (itr != BSML::ListSliderSetting::remappers.end()) return itr->second->TextForValue(itr->second->get_Value());
     }
-    return CustomFormatRangeValuesSlider_TextForValue(self, value);
+    return CustomFormatRangeValuesSlider_TextForValue(ptr, value);
 }

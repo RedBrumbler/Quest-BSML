@@ -10,11 +10,11 @@ namespace BSML {
         ValidateRange();
         return currentValue;
     }
-    
+
     void IncrementSetting::set_Value(float value) {
         if (isInt)
             currentValue = ConvertToInt(value);
-        else 
+        else
             currentValue = value;
         UpdateState();
     }
@@ -49,19 +49,19 @@ namespace BSML {
 
         if (genericSetting) {
             if (isInt) {
-                genericSetting->OnChange(ConvertToInt(currentValue));
+                genericSetting.OnChange(ConvertToInt(currentValue));
             } else {
-                genericSetting->OnChange(currentValue);
+                genericSetting.OnChange(currentValue);
             }
             if (onChange) onChange(currentValue);
-            if (genericSetting->applyOnChange) ApplyValue();
+            if (genericSetting.applyOnChange) ApplyValue();
         }
-        
+
     }
 
     void IncrementSetting::ReceiveValue() {
         if (!genericSetting) return;
-        set_Value(genericSetting->GetValue<float>());
+        Value = genericSetting.GetValue<float>();
     }
 
     void IncrementSetting::ApplyValue() {
@@ -69,11 +69,11 @@ namespace BSML {
             DEBUG("Can't apply value on nullptr genericSetting");
             return;
         }
-        
+
         if (isInt) {
-            genericSetting->SetValue(ConvertToInt(currentValue));
+            genericSetting.SetValue(ConvertToInt(currentValue));
         } else {
-            genericSetting->SetValue(currentValue);
+            genericSetting.SetValue(currentValue);
         }
     }
 

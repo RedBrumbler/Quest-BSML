@@ -13,27 +13,27 @@ using namespace UnityEngine;
 namespace BSML {
     static BSMLNodeParser<LeaderboardTag> leaderboardTagParser({"leaderboard", "custom-leaderboard"});
 
-    GlobalNamespace::LeaderboardTableView* get_leaderboardTemplate() {
+    GlobalNamespace::LeaderboardTableView get_leaderboardTemplate() {
         static SafePtrUnity<GlobalNamespace::LeaderboardTableView> leaderboardTemplate;
         if (!leaderboardTemplate) {
-            leaderboardTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::LeaderboardTableView*>().First([](auto x) {
-                return x->get_name() == "LeaderboardTableView";
+            leaderboardTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::LeaderboardTableView>().First([](auto x) {
+                return x.name == "LeaderboardTableView";
             });
         }
-        return leaderboardTemplate.ptr();
+        return GlobalNamespace::LeaderboardTableView(leaderboardTemplate.ptr());
     }
 
-    UnityEngine::GameObject* LeaderboardTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject LeaderboardTag::CreateObject(UnityEngine::Transform parent) const {
         auto table = Object::Instantiate(get_leaderboardTemplate(), parent, false);
-        table->set_name("BSMLLeaderboard");
-        table->cellPrefab->scoreText->set_enableWordWrapping(false);
-        table->GetComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
-        for (auto tableCell : table->GetComponentsInChildren<GlobalNamespace::LeaderboardTableCell*>()) 
-            UnityEngine::Object::Destroy(tableCell->get_gameObject());
-        
-        auto loadingControl = table->GetComponentInChildren<GlobalNamespace::LoadingControl*>();
-        if (loadingControl) loadingControl->Hide();
+        table.name = "BSMLLeaderboard";
+        table._cellPrefab._scoreText.enableWordWrapping = false;
+        table.GetComponent<VRUIControls::VRGraphicRaycaster>().physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
+        for (auto tableCell : table.GetComponentsInChildren<GlobalNamespace::LeaderboardTableCell>())
+            UnityEngine::Object::Destroy(tableCell.gameObject);
 
-        return table->get_gameObject();
+        auto loadingControl = table.GetComponentInChildren<GlobalNamespace::LoadingControl>();
+        if (loadingControl) loadingControl.Hide();
+
+        return table.gameObject;
     }
 }

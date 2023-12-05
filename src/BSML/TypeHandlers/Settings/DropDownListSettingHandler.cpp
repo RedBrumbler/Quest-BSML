@@ -14,16 +14,16 @@ namespace BSML {
     }
 
     void DropdownListSettingHandler::HandleType(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
-        auto component = reinterpret_cast<DropdownListSetting*>(componentType.component);
+        DropdownListSetting component {componentType.component.convert()};
         auto& data = componentType.data;
 
         auto optionsItr = data.find("options");
         if (optionsItr != data.end() && !optionsItr->second.empty()) {
             auto val = parserParams.TryGetValue(optionsItr->second);
-            if (val) component->values = val->GetValue<List<Il2CppObject*>*>();
+            if (val) component.values = val->GetValue<List<bs_hook::Il2CppWrapperType>*>();
         }
 
-        if (!component->values || component->values->get_Count() == 0) {
+        if (!component.values || component.values.Length() == 0) {
             ERROR("Did not give options for dropdown list! this is required!");
         }
 

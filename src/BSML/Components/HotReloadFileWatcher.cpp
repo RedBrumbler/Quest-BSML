@@ -55,9 +55,9 @@ namespace BSML {
         if (newHash != fileHash) {
             fileHash = newHash;
             auto t = get_transform();
-            int childCount = t->get_childCount();
+            int childCount = t.childCount;
             for (int i = 0; i < childCount; i++)
-            Object::DestroyImmediate(t->GetChild(0)->get_gameObject());
+            Object::DestroyImmediate(t.GetChild(0).gameObject);
 
             BSML::parse_and_construct(content, t, host);
         } else {

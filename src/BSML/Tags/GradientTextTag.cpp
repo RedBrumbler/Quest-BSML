@@ -5,10 +5,10 @@
 namespace BSML {
     static BSMLNodeParser<GradientTextTag> textTagParser({"gradient-text"});
 
-    UnityEngine::GameObject* GradientTextTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject GradientTextTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Gradient Text");
         auto gameObject = TextTag::CreateObject(parent);
-        gameObject->AddComponent<BSML::TextGradientUpdater*>();
+        gameObject.AddComponent<BSML::TextGradientUpdater>();
         return gameObject;
     }
 }

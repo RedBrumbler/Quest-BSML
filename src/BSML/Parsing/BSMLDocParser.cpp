@@ -25,7 +25,7 @@ namespace BSML {
             // Get the default bsml parser as a default parser, shortening lookup times later
             if (!defaultParser && alias == "bsml") {
                 defaultParser = parser;
-            } 
+            }
         }
 
     }
@@ -52,12 +52,12 @@ namespace BSML {
         for (auto& [key, parser] : tagNameToParser) {
             if (std::find(parsers.begin(), parsers.end(), parser) == parsers.end()) parsers.push_back(parser);
         }
-        
+
         auto& typeHandlers = TypeHandlerBase::get_typeHandlers();
         rapidjson::Document doc;
         doc.SetObject();
         auto& allocator = doc.GetAllocator();
-        
+
         rapidjson::Value tags;
         tags.SetArray();
         rapidjson::Value macros;
@@ -66,8 +66,8 @@ namespace BSML {
         typehandlers.SetArray();
 
         auto parentObject = UnityEngine::GameObject::New_ctor("BSMLDocParent");
-        auto t = parentObject->get_transform();
-        
+        auto t = parentObject.transform;
+
         // we should check every tag available
         for (auto parser : parsers) {
             // automatic cleanup if we forget
@@ -89,7 +89,7 @@ namespace BSML {
                         INFO("key: {}", key);
                         rapidjson::Value prop;
                         prop.SetObject();
-                        
+
                         rapidjson::Value aliasArray;
                         aliasArray.SetArray();
 
@@ -126,9 +126,9 @@ namespace BSML {
 
                     // create the object and set it to inactive so it can't do anything
                     auto obj = tag->CreateObject(t);
-                    obj->SetActive(false);
+                    obj.SetActive(false);
 
-                    auto externalComponents = obj->GetComponent<ExternalComponents*>();
+                    auto externalComponents = obj.GetComponent<ExternalComponents>();
 
                     // get all the typehandler type names that apply to this tag, we'll use it as a lookup system later
                     rapidjson::Value applicableTypeNames;
@@ -185,7 +185,7 @@ namespace BSML {
         rapidjson::StringBuffer buffer;
         rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
         doc.Accept(writer);
-        
+
         mkpath("/sdcard/ModData/com.beatgames.beatsaber/Mods/BSML/docs/");
 
         if (fileexists("/sdcard/ModData/com.beatgames.beatsaber/Mods/BSML/docs/docs.json")) deletefile("/sdcard/ModData/com.beatgames.beatsaber/Mods/BSML/docs/docs.json");

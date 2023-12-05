@@ -4,9 +4,9 @@
 #include "HMUI/InputFieldView.hpp"
 
 namespace BSML {
-    class InputFieldViewHandler : public TypeHandler<HMUI::InputFieldView*> {
+    class InputFieldViewHandler : public TypeHandler<HMUI::InputFieldView> {
         public:
-            using Base = TypeHandler<HMUI::InputFieldView*>;
+            using Base = TypeHandler<HMUI::InputFieldView>;
             InputFieldViewHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

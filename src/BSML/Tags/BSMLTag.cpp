@@ -10,12 +10,12 @@
 #include "System/Object.hpp"
 #include <string.h>
 
-UnityEngine::Component* GetExternalComponent(UnityEngine::GameObject* obj, BSML::ExternalComponents* externalComponents, System::Type* type) {
-    UnityEngine::Component* result = nullptr;
+UnityEngine::Component GetExternalComponent(UnityEngine::GameObject obj, BSML::ExternalComponents externalComponents, System::Type type) {
+    UnityEngine::Component result{nullptr};
     if (externalComponents) {
-        result = externalComponents->GetByType(type);
+        result = externalComponents.GetByType(type);
     }
-    return result ? result : obj->GetComponent(type);
+    return result ? result : obj.GetComponent(type);
 }
 
 namespace BSML {
@@ -26,10 +26,10 @@ namespace BSML {
         #endif
     }
 
-    void BSMLTag::Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const {
+    void BSMLTag::Handle(UnityEngine::Transform parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const {
         // create object
         auto currentObject = CreateObject(parent);
-        auto externalComponents = currentObject->GetComponent<ExternalComponents*>();
+        auto externalComponents = currentObject.GetComponent<ExternalComponents>();
 
         std::vector<ComponentTypeWithData*> localComponentInfo = {};
         auto& typeHandlers = TypeHandlerBase::get_typeHandlers();
@@ -57,14 +57,14 @@ namespace BSML {
         auto host = parserParams.host;
         if (host && !id.empty()) {
             // set the host field if we can
-            auto fieldInfo = il2cpp_functions::class_get_field_from_name(parserParams.host->klass, id.c_str());
+            auto fieldInfo = il2cpp_functions::class_get_field_from_name(static_cast<Il2CppObject*>(parserParams.host)->klass, id.c_str());
             if (fieldInfo) {
                 auto fieldSystemType = il2cpp_utils::GetSystemType(il2cpp_functions::field_get_type(fieldInfo));
                 static auto gameObjectSystemType = csTypeOf(UnityEngine::GameObject*);
                 if (gameObjectSystemType == fieldSystemType) {
                     // if the field is of type GameObject, set the field to the current object value
                     SetHostField(parserParams.host, currentObject);
-                } else { 
+                } else {
                     // if the field is not a GameObject, try to find the type of the field with the GetExternalComponent method, and set that on the field
                     auto component = GetExternalComponent(currentObject, externalComponents, fieldSystemType);
                     if (component) {
@@ -79,7 +79,7 @@ namespace BSML {
             parserParams.AddObjectWithTags(currentObject, tags);
         }
         // handle children
-        HandleChildren(currentObject->get_transform(), parserParams, componentInfo);
+        HandleChildren(currentObject.transform, parserParams, componentInfo);
 
         // handle type after children
         for (auto componentTypeWithData : localComponentInfo) {
@@ -90,19 +90,21 @@ namespace BSML {
         componentInfo.insert(componentInfo.begin(), localComponentInfo.begin(), localComponentInfo.end());
     }
 
-    UnityEngine::GameObject* BSMLTag::CreateObject(UnityEngine::Transform* parent) const {
-        return parent->get_gameObject();
+    UnityEngine::GameObject BSMLTag::CreateObject(UnityEngine::Transform parent) const {
+        return parent.gameObject;
     }
 
-    void BSMLTag::SetHostField(Il2CppObject* host, Il2CppObject* value) const {
+    void BSMLTag::SetHostField(bs_hook::Il2CppWrapperType host, bs_hook::Il2CppWrapperType value) const {
         if (!host || id.empty()) return;
 
+        auto hostKlass = static_cast<Il2CppObject*>(host)->klass;
+        auto valueKlass = static_cast<Il2CppObject*>(value)->klass;
         // get the field info with il2cpp reflection
-        auto fieldInfo = il2cpp_functions::class_get_field_from_name(host->klass, id.c_str());
+        auto fieldInfo = il2cpp_functions::class_get_field_from_name(hostKlass, id.c_str());
 
         if (fieldInfo) {
             // if value type is convertible to as field type, assign
-            if (il2cpp_utils::IsConvertibleFrom(fieldInfo->type, &value->klass->byval_arg))
+            if (il2cpp_utils::IsConvertibleFrom(fieldInfo->type, &valueKlass->byval_arg))
                 il2cpp_functions::field_set_value(host, fieldInfo, value);
         }
     }

@@ -9,41 +9,29 @@ namespace BSML {
     class Keyboard;
 }
 
-#define DECLARE_INSTANCE_FIELD_TYPENAME(type_, name_, namezpace_, klass_)   \
-private:                                                                    \
-struct ___FieldRegistrator_##name_ : ::custom_types::FieldRegistrator {     \
-    ___FieldRegistrator_##name_() {                                         \
-        ___TargetType::___TypeRegistration::addField(this);                 \
-    }                                                                       \
-    constexpr const char* name() const override {                           \
-        return #name_;                                                      \
-    }                                                                       \
-    const Il2CppType* type() const override {                               \
-        ::il2cpp_functions::Init();                                         \
-        return ::il2cpp_functions::class_get_type(                          \
-            il2cpp_utils::GetClassFromName(namezpace_, klass_)              \
-        );                                                                  \
-    }                                                                       \
-    constexpr uint16_t fieldAttributes() const override {                   \
-        return FIELD_ATTRIBUTE_PUBLIC;                                      \
-    }                                                                       \
-    constexpr size_t size() const override {                                \
-        return sizeof(type_);                                               \
-    }                                                                       \
-    int32_t offset() const override {                                       \
-        return offsetof(___TargetType, name_);                              \
-    }                                                                       \
-};                                                                          \
-static inline ___FieldRegistrator_##name_ ___##name_##_FieldRegistrator;    \
-public:                                                                     \
-type_ name_
+DECLARE_CLASS_CORDL(BSML, Key, bs_hook::Il2CppWrapperType,
+    DECLARE_FIELDS(
+        DECLARE_INSTANCE_FIELD(StringW, name);
+        DECLARE_INSTANCE_FIELD(StringW, value);
+        DECLARE_INSTANCE_FIELD(StringW, shifted);
+        DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button, button);
 
-DECLARE_CLASS_CODEGEN(BSML, Key, Il2CppObject,
-    DECLARE_INSTANCE_FIELD(StringW, name);
-    DECLARE_INSTANCE_FIELD(StringW, value);
-    DECLARE_INSTANCE_FIELD(StringW, shifted);
-    DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, button);
-    DECLARE_INSTANCE_FIELD_TYPENAME(Keyboard*, kb, "BSML", "Keyboard");
+        /* kb here is not declared as a Keyboard directly, because size constraints */
+        DECLARE_INSTANCE_FIELD(bs_hook::Il2CppWrapperType, kb);
+
+        std::function<void(Key*)> keyAction = nullptr;
+    );
+
+    FIELD_ACCESSOR(name);
+    FIELD_ACCESSOR(value);
+    FIELD_ACCESSOR(shifted);
+    FIELD_ACCESSOR(button);
+    FIELD_ACCESSOR(keyAction);
+
+    /* special field accessor because we have a weird field here */
+    Keyboard get_kb();
+    void set_kb(Keyboard value);
+    __declspec(property(get=get_kb, put=set_kb)) Keyboard kb;
 
     DECLARE_DEFAULT_CTOR();
     public:
@@ -51,9 +39,8 @@ DECLARE_CLASS_CODEGEN(BSML, Key, Il2CppObject,
         bool KeyAction();
         bool Enter();
 
-        Key* Set(StringW value);
-        static Key* construct();
-        static Key* construct(Keyboard* kb, UnityEngine::Vector2 position, StringW text, float width, float height, UnityEngine::Color color);
+        Key Set(StringW value);
+        static Key construct();
+        static Key construct(Keyboard kb, UnityEngine::Vector2 position, StringW text, float width, float height, UnityEngine::Color color);
 
-        std::function<void(Key*)> keyAction = nullptr;
 )

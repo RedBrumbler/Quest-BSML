@@ -36,18 +36,18 @@ namespace BSML {
 
     PageButtonHandler::Base::SetterMap PageButtonHandler::get_setters() const {
         return {
-            {"direction", SetButtonDirection}
+            {"direction", SetButtonDirection }
         };
     }
 }
 
-void SetButtonDirection(BSML::PageButton* pageButton, const StringParseHelper& value) {
+void SetButtonDirection(BSML::PageButton pageButton, const StringParseHelper& value) {
         bool isHorizontal = false;
         int angle = 0;
         auto pageButtonDirection = stringToPageButtonDirection(value);
-        auto buttonTransform = reinterpret_cast<UnityEngine::RectTransform*>(pageButton->get_transform()->Find("Icon"));
-        buttonTransform->set_anchoredPosition({0, 0});
-        auto layoutElement = pageButton->GetComponent<UnityEngine::UI::LayoutElement*>();
+        UnityEngine::RectTransform buttonTransform {pageButton.transform.Find("Icon").convert() };
+        buttonTransform.anchoredPosition = {0, 0};
+        auto layoutElement = pageButton.GetComponent<UnityEngine::UI::LayoutElement>();
         switch(pageButtonDirection) {
             case PageButtonDirection::Up:
                 isHorizontal = true;
@@ -66,12 +66,12 @@ void SetButtonDirection(BSML::PageButton* pageButton, const StringParseHelper& v
                 angle = 90;
                 break;
         }
-        buttonTransform->set_localRotation(UnityEngine::Quaternion::Euler(0, 0, angle));
-        if (layoutElement->get_preferredHeight() == -1) {
-            layoutElement->set_preferredHeight(isHorizontal ? 6 : 40);
+        buttonTransform.localRotation = UnityEngine::Quaternion::Euler(0, 0, angle);
+        if (layoutElement.preferredHeight == -1) {
+            layoutElement.preferredHeight = isHorizontal ? 6 : 40;
         }
 
-        if (layoutElement->get_preferredWidth() == -1) {
-            layoutElement->set_preferredWidth(isHorizontal ? 40 : 6);
+        if (layoutElement.preferredWidth == -1) {
+            layoutElement.preferredWidth = isHorizontal ? 40 : 6;
         }
 }

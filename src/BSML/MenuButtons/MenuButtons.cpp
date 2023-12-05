@@ -19,28 +19,28 @@ DEFINE_TYPE(BSML, MenuButtons)
 
 namespace BSML {
     SafePtr<MenuButtons> MenuButtons::instance;
-    MenuButtons* MenuButtons::get_instance() {
+    MenuButtons MenuButtons::get_instance() {
         if (!instance) {
             instance.emplace(MenuButtons::New_ctor());
         }
-        return instance.ptr();
+        return MenuButtons(instance.ptr());
     }
-    ListWrapper<Il2CppObject*> MenuButtons::get_buttons() {
+    ListWrapper<bs_hook::Il2CppWrapperType> MenuButtons::get_buttons() {
         if (!_buttons) {
-            _buttons = List<Il2CppObject*>::New_ctor();
+            _buttons = List<bs_hook::Il2CppWrapperType>::New_ctor();
         }
         return _buttons;
     }
 
-    bool MenuButtons::Registerbutton(MenuButton* button) {
+    bool MenuButtons::Registerbutton(MenuButton button) {
         if (!button) return false;
-        auto btns = get_buttons();
-        auto btnItr = std::find_if(btns.begin(), btns.end(), [button](auto b){ return b && (reinterpret_cast<MenuButton*>(b)->text == button->text); });
+        auto btns = buttons;
+        auto btnItr = std::find_if(btns.begin(), btns.end(), [button](auto b){ return b && (MenuButton(b.convert()).text == button.text); });
         if (btnItr != btns.end()) {
             ERROR("can't register a button with the same text ('{}') as an existing one!", button->text);
             return false;
         }
-        btns->Add(button);
+        btns.Add(button);
         Refresh();
         return true;
     }
@@ -60,7 +60,7 @@ namespace BSML {
             menuButtonsViewController = Helpers::CreateViewController<MenuButtonsViewController*>();
             menuButtonsViewController->buttons = get_buttons();
         }
-        
+
         auto coroStarter = GlobalNamespace::SharedCoroutineStarter::get_instance();
         if (presentViewCoroutine && presentViewCoroutine->m_Ptr.m_value) {
             coroStarter->StopCoroutine(presentViewCoroutine);

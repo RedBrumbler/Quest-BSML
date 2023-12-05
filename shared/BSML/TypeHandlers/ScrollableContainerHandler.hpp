@@ -4,9 +4,9 @@
 #include "../Components/ScrollableContainer.hpp"
 
 namespace BSML {
-    class ScrollableContainerHandler : public TypeHandler<BSML::ScrollableContainer*> {
+    class ScrollableContainerHandler : public TypeHandler<BSML::ScrollableContainer> {
         public:
-            using Base = TypeHandler<BSML::ScrollableContainer*>;
+            using Base = TypeHandler<BSML::ScrollableContainer>;
             ScrollableContainerHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

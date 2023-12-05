@@ -12,33 +12,33 @@
 
 namespace BSML {
     static BSMLNodeParser<TextPageScrollViewTag> textPageScrollViewTagParser({"text-page", "page"});
-    
-    HMUI::TextPageScrollView* get_textPageTemplate() {
+
+    HMUI::TextPageScrollView get_textPageTemplate() {
         static SafePtrUnity<HMUI::TextPageScrollView> textPageTemplate;
         if (!textPageTemplate) {
-            textPageTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>().First()->textPageScrollView;
+            textPageTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController>().First().textPageScrollView;
         }
-        return textPageTemplate.ptr();
+        return HMUI::TextPageScrollView(textPageTemplate.ptr());
     }
 
-    UnityEngine::GameObject* TextPageScrollViewTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject TextPageScrollViewTag::CreateObject(UnityEngine::Transform parent) const {
 
-        HMUI::TextPageScrollView* scrollView = UnityEngine::Object::Instantiate(get_textPageTemplate(), parent);
+        auto scrollView = UnityEngine::Object::Instantiate(get_textPageTemplate(), parent);
 
-        scrollView->set_name("BSMLTextScrollPageView");
-        scrollView->set_enabled(true);
+        scrollView.name = "BSMLTextScrollPageView";
+        scrollView.enabled = true;
 
-        scrollView->platformHelper = Helpers::GetIVRPlatformHelper();
+        scrollView.platformHelper = Helpers::GetIVRPlatformHelper();
 
-        TMPro::TextMeshProUGUI* textMesh = scrollView->text;
-        textMesh->set_text("Default Text");
+        auto textMesh = scrollView.text;
+        textMesh.text = "Default Text";
 
-        textMesh->get_gameObject()->AddComponent<BSML::TextPageScrollViewRefresher*>()->scrollView = scrollView;
+        textMesh.gameObject.AddComponent<BSML::TextPageScrollViewRefresher>().scrollView = scrollView;
 
-        auto externalComponents = scrollView->get_gameObject()->AddComponent<ExternalComponents*>();
+        auto externalComponents = scrollView.gameObject.AddComponent<ExternalComponents>();
 
-        externalComponents->Add(textMesh);
+        externalComponents.Add(textMesh);
 
-        return scrollView->get_gameObject();
+        return scrollView.gameObject;
     }
 }

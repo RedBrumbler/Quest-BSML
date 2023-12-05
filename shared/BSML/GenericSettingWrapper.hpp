@@ -2,20 +2,33 @@
 
 #include "custom-types/shared/macros.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
-    DECLARE_INSTANCE_FIELD(Il2CppObject*, host);
-    DECLARE_INSTANCE_FIELD(Il2CppObject*, onChangeHost);
-    DECLARE_INSTANCE_FIELD(bool, applyOnChange); /* default: true */
-    DECLARE_CTOR(ctor);
+DECLARE_CLASS_CORDL(BSML, GenericSettingWrapper, bs_hook::Il2CppWrapperType,
+    DECLARE_FIELDS(
+        DECLARE_INSTANCE_FIELD(bs_hook::Il2CppWrapperType, host);
+        DECLARE_INSTANCE_FIELD(bs_hook::Il2CppWrapperType, onChangeHost);
+        DECLARE_INSTANCE_FIELD(bool, applyOnChange); /* default: true */
 
     public:
         FieldInfo* valueInfo;
         const MethodInfo* setterInfo;
         const MethodInfo* getterInfo;
         const MethodInfo* onChangeInfo;
-        
-        Il2CppObject* get_onChangeHost();
-        Il2CppObject* get_host();
+    );
+
+    FIELD_ACCESSOR(host);
+    FIELD_ACCESSOR(onChangeHost);
+    FIELD_ACCESSOR(applyOnChange);
+    FIELD_ACCESSOR(valueInfo);
+    FIELD_ACCESSOR(setterInfo);
+    FIELD_ACCESSOR(getterInfo);
+    FIELD_ACCESSOR(onChangeInfo);
+
+    DECLARE_CTOR(ctor);
+
+    public:
+
+        bs_hook::Il2CppWrapperType get_onChangeHost();
+        bs_hook::Il2CppWrapperType get_host();
 
         template<typename T>
         void SetValue(T value) {

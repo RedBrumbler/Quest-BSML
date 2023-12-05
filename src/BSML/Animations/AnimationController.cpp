@@ -8,11 +8,11 @@ DEFINE_TYPE(BSML, AnimationController);
 
 namespace BSML {
     SafePtrUnity<AnimationController> AnimationController::instance;
-    AnimationController* AnimationController::get_instance() {
+    AnimationController AnimationController::get_instance() {
         if (!instance) {
-            instance = UnityEngine::GameObject::New_ctor()->AddComponent<AnimationController*>();
-            instance->get_gameObject()->set_name("AnimationController");
-            UnityEngine::Object::DontDestroyOnLoad(instance->get_gameObject());
+            instance = UnityEngine::GameObject::New_ctor().AddComponent<AnimationController>();
+            instance.gameObject.name = "AnimationController";
+            UnityEngine::Object::DontDestroyOnLoad(instance.gameObject);
         }
         return instance.ptr();
     }
@@ -25,7 +25,7 @@ namespace BSML {
         AnimationControllerData* data;
         if (TryGetAnimationControllerData(key, data)) { // we found it
             if (CanUnregister(data)) { // we can unregister
-                registeredAnimations->Remove(key);
+                registeredAnimations.Remove(key);
                 return true;
             } else { // we're not allowed to unregister
                 INFO("Was not able to unregister key {} because CanUnregister returned false, are you still using this animation somewhere?", key);
@@ -37,14 +37,14 @@ namespace BSML {
         }
     }
 
-    bool AnimationController::CanUnregister(AnimationControllerData* animationData) {
-        return animationData ? animationData->IsBeingUsed() : true;
+    bool AnimationController::CanUnregister(AnimationControllerData animationData) {
+        return animationData ? animationData.IsBeingUsed() : true;
     }
 
-    bool AnimationController::TryGetAnimationControllerData(StringW key, AnimationControllerData*& out) {
+    bool AnimationController::TryGetAnimationControllerData(StringW key, AnimationControllerData& out) {
         union {
-            Il2CppObject* data = nullptr;
-            AnimationControllerData* animationData;
+            bs_hook::Il2CppWrapperType data{nullptr};
+            AnimationControllerData animationData;
         };
 
         if (registeredAnimations->TryGetValue(key, byref(data))) {
@@ -55,7 +55,7 @@ namespace BSML {
         return false;
     }
 
-    AnimationControllerData* AnimationController::Register(StringW key, UnityEngine::Texture2D* texture, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays) {
+    AnimationControllerData AnimationController::Register(StringW key, UnityEngine::Texture2D texture, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays) {
         DEBUG("Registering {}", key);
         AnimationControllerData* animationData;
         if (!TryGetAnimationControllerData(key, animationData)) {
@@ -76,7 +76,7 @@ namespace BSML {
         auto time = std::chrono::system_clock::now();
         auto milis = std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch());
         auto now = milis.count();
-        auto enumerator = registeredAnimations->GetEnumerator();
+        auto enumerator = registeredAnimations.GetEnumerator();
 
         std::set<std::string> toUnregister = {};
         while (enumerator.MoveNext()) {
@@ -84,13 +84,13 @@ namespace BSML {
             auto current = reinterpret_cast<AnimationControllerData*>(curItr.get_Value());
 
             // if it's not being used, skip it and add it to the list to unregister
-            if (!current->IsBeingUsed()) {
+            if (!current.IsBeingUsed()) {
                 toUnregister.emplace(curItr.get_Key());
                 continue;
             }
 
-            if (current->get_isPlaying()) {
-                current->CheckFrame(now);
+            if (current.get_isPlaying()) {
+                current.CheckFrame(now);
             }
         }
 

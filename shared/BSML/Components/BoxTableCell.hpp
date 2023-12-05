@@ -8,16 +8,25 @@
 #include "HMUI/SelectableCell.hpp"
 #include "GlobalNamespace/AnnotatedBeatmapLevelCollectionCell.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, BoxTableCell, HMUI::TableCell,
-    DECLARE_INSTANCE_FIELD(HMUI::ImageView*, coverImage);
-    DECLARE_INSTANCE_FIELD(HMUI::ImageView*, selectionImage);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, selectedColor0);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, selectedColor1);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, highlightedColor0);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Color, highlightedColor1);
+DECLARE_CLASS_CORDL(BSML, BoxTableCell, HMUI::TableCell,
+    DECLARE_FIELDS(
+        DECLARE_INSTANCE_FIELD(HMUI::ImageView, coverImage);
+        DECLARE_INSTANCE_FIELD(HMUI::ImageView, selectionImage);
+        DECLARE_INSTANCE_FIELD(UnityEngine::Color, selectedColor0);
+        DECLARE_INSTANCE_FIELD(UnityEngine::Color, selectedColor1);
+        DECLARE_INSTANCE_FIELD(UnityEngine::Color, highlightedColor0);
+        DECLARE_INSTANCE_FIELD(UnityEngine::Color, highlightedColor1);
+    );
 
-    DECLARE_INSTANCE_METHOD(void, SetComponents, HMUI::ImageView* coverImage, HMUI::ImageView* selectionImage);
-    DECLARE_INSTANCE_METHOD(void, SetData, UnityEngine::Sprite* coverSprite);
+    FIELD_ACCESSOR(coverImage);
+    FIELD_ACCESSOR(selectionImage);
+    FIELD_ACCESSOR(selectedColor0);
+    FIELD_ACCESSOR(selectedColor1);
+    FIELD_ACCESSOR(highlightedColor0);
+    FIELD_ACCESSOR(highlightedColor1);
+
+    DECLARE_INSTANCE_METHOD(void, SetComponents, HMUI::ImageView coverImage, HMUI::ImageView selectionImage);
+    DECLARE_INSTANCE_METHOD(void, SetData, UnityEngine::Sprite coverSprite);
     DECLARE_INSTANCE_METHOD(void, RefreshVisuals);
 
     DECLARE_OVERRIDE_METHOD(void, SelectionDidChange, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::SelectableCell::SelectionDidChange>::get(), HMUI::SelectableCell::TransitionType transitionType);
@@ -25,6 +34,5 @@ DECLARE_CLASS_CODEGEN(BSML, BoxTableCell, HMUI::TableCell,
 
     DECLARE_CTOR(ctor);
     public:
-        static BoxTableCell* Create(GlobalNamespace::AnnotatedBeatmapLevelCollectionCell* prefab);
-
+        static BoxTableCell Create(GlobalNamespace::AnnotatedBeatmapLevelCollectionCell prefab);
 )

@@ -9,6 +9,6 @@ namespace BSML {
         public:
             PrimaryButtonTag() : Base() {}
         protected:
-            virtual UnityEngine::UI::Button* get_buttonPrefab() const override;
+            virtual UnityEngine::UI::Button get_buttonPrefab() const override;
     };
 }

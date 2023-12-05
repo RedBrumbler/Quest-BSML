@@ -8,7 +8,7 @@
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/HideFlags.hpp"
 
-#include "System/Collections/Generic/Dictionary_2.hpp" 
+#include "System/Collections/Generic/Dictionary_2.hpp"
 
 DEFINE_TYPE(BSML, Backgroundable);
 
@@ -57,51 +57,51 @@ namespace BSML {
         }
 
         if (!backgroundCache)
-            backgroundCache.emplace(Dictionary<StringW, HMUI::ImageView*>::New_ctor());
+            backgroundCache.emplace(Dictionary<StringW, HMUI::ImageView>::New_ctor());
 
-        HMUI::ImageView* bgTemplate = nullptr;
-        if (!backgroundCache->TryGetValue(name, byref(bgTemplate)) || (!bgTemplate || !bgTemplate->m_CachedPtr.m_value)) {
-            if (!bgTemplate || !bgTemplate->m_CachedPtr.m_value) {
-                backgroundCache->Remove(name);
+        HMUI::ImageView bgTemplate{nullptr};
+        if (!backgroundCache.TryGetValue(name, byref(bgTemplate)) || (!bgTemplate || !bgTemplate.m_CachedPtr)) {
+            if (!bgTemplate || !bgTemplate.m_CachedPtr) {
+                backgroundCache.Remove(name);
             }
 
             bgTemplate = FindTemplate(name, backgroundNameItr->second);
-            backgroundCache->Add(name, bgTemplate);
+            backgroundCache.Add(name, bgTemplate);
         }
 
-        background = get_gameObject()->AddComponent<HMUI::ImageView*>();
+        background = gameObject.AddComponent<HMUI::ImageView>();
 
         //Copy Image: some methods are probably not needed
-		background->set_alphaHitTestMinimumThreshold(bgTemplate->get_alphaHitTestMinimumThreshold());
-		background->set_color(bgTemplate->get_color());
-		background->set_color0(bgTemplate->get_color0());
-		background->set_color1(bgTemplate->get_color1());
-		background->set_gradient(bgTemplate->get_gradient());
-		background->gradientDirection = bgTemplate->gradientDirection;
-        background->flipGradientColors = bgTemplate->flipGradientColors;
-        background->skew = bgTemplate->skew;
-		background->set_eventAlphaThreshold(bgTemplate->get_eventAlphaThreshold());
-		background->set_fillAmount(bgTemplate->get_fillAmount());
-		background->set_fillCenter(bgTemplate->get_fillCenter());
-		background->set_fillClockwise(bgTemplate->get_fillClockwise());
-		background->set_fillMethod(bgTemplate->get_fillMethod());
-		background->set_fillOrigin(bgTemplate->get_fillOrigin());
-		background->set_hideFlags(bgTemplate->get_hideFlags());
-		background->set_maskable(bgTemplate->get_maskable());
-		background->set_material(bgTemplate->get_material());
-		background->set_onCullStateChanged(bgTemplate->get_onCullStateChanged());
-		background->set_overrideSprite(bgTemplate->get_overrideSprite());
-		background->set_pixelsPerUnitMultiplier(bgTemplate->get_pixelsPerUnitMultiplier());
-		background->set_preserveAspect(bgTemplate->get_preserveAspect());
-		background->set_raycastTarget(bgTemplate->get_raycastTarget());
-		background->set_sprite(bgTemplate->get_sprite());
-		background->set_tag(bgTemplate->get_tag());
-		background->set_type(bgTemplate->get_type());
-		background->set_useGUILayout(bgTemplate->get_useGUILayout());
-		background->set_useLegacyMeshGeneration(bgTemplate->get_useLegacyMeshGeneration());
-		background->set_useSpriteMesh(bgTemplate->get_useSpriteMesh());
+		background.alphaHitTestMinimumThreshold = bgTemplate.alphaHitTestMinimumThreshold;
+		background.color = bgTemplate.color;
+		background.color0 = bgTemplate.color0;
+		background.color1 = bgTemplate.color1;
+		background.gradient = bgTemplate.gradient;
+		background._gradientDirection = bgTemplate._gradientDirection;
+        background._flipGradientColors = bgTemplate._flipGradientColors;
+        background._skew = bgTemplate._skew;
+		background.eventAlphaThreshold = bgTemplate.eventAlphaThreshold;
+		background.fillAmount = bgTemplate.fillAmount;
+		background.fillCenter = bgTemplate.fillCenter;
+		background.fillClockwise = bgTemplate.fillClockwise;
+		background.fillMethod = bgTemplate.fillMethod;
+		background.fillOrigin = bgTemplate.fillOrigin;
+		background.hideFlags = bgTemplate.hideFlags;
+		background.maskable = bgTemplate.maskable;
+		background.material = bgTemplate.material;
+		background.onCullStateChanged = bgTemplate.onCullStateChanged;
+		background.overrideSprite = bgTemplate.overrideSprite;
+		background.pixelsPerUnitMultiplier = bgTemplate.pixelsPerUnitMultiplier;
+		background.preserveAspect = bgTemplate.preserveAspect;
+		background.raycastTarget = bgTemplate.raycastTarget;
+		background.sprite = bgTemplate.sprite;
+		background.tag = bgTemplate.tag;
+		background.type = bgTemplate.type;
+		background.useGUILayout = bgTemplate.useGUILayout;
+		background.useLegacyMeshGeneration = bgTemplate.useLegacyMeshGeneration;
+		background.useSpriteMesh = bgTemplate.useSpriteMesh;
 
-        background->set_enabled(true);
+        background.enabled = true;
     }
 
     void Backgroundable::ApplyColor(UnityEngine::Color color) {
@@ -109,14 +109,14 @@ namespace BSML {
             ERROR("No background exists yet!");
             return;
         }
-        UnityEngine::Color color0{1.0, 1.0, 1.0, background->get_color0().a};
-        UnityEngine::Color color1{1.0, 1.0, 1.0, background->get_color1().a};
-        color.a = background->get_color().a;
+        UnityEngine::Color color0{1.0, 1.0, 1.0, background.color0.a};
+        UnityEngine::Color color1{1.0, 1.0, 1.0, background.color1.a};
+        color.a = background.color.a;
 
-        background->set_gradient(false);
-        background->set_color0(color0);
-        background->set_color1(color1);
-        background->set_color(color);
+        background.gradient = false;
+        background.color0 = color0;
+        background.color1 = color1;
+        background.color = color;
     }
 
     void Backgroundable::ApplyGradient(UnityEngine::Color color0, UnityEngine::Color color1) {
@@ -124,11 +124,11 @@ namespace BSML {
             ERROR("No background exists yet!");
             return;
         }
-        UnityEngine::Color color = {1.0, 1.0, 1.0, background->get_color().a};
-        background->set_gradient(true);
-        background->set_color(color);
-        background->set_color0(color0);
-        background->set_color1(color1);
+        UnityEngine::Color color = {1.0, 1.0, 1.0, background.color.a};
+        background.gradient = true;
+        background.color = color;
+        background.color0 = color0;
+        background.color1 = color1;
     }
 
     void Backgroundable::ApplyColor0(UnityEngine::Color color) {
@@ -137,7 +137,7 @@ namespace BSML {
             return;
         }
 
-        ApplyGradient(color, background->get_color1());
+        ApplyGradient(color, background.color1);
     }
 
     void Backgroundable::ApplyColor1(UnityEngine::Color color) {
@@ -146,7 +146,7 @@ namespace BSML {
             return;
         }
 
-        ApplyGradient(background->get_color0(), color);
+        ApplyGradient(background.color0, color);
     }
 
 
@@ -155,30 +155,30 @@ namespace BSML {
             ERROR("No background exists yet!");
             return;
         }
-        auto col = background->get_color();
+        auto col = background.color;
         col.a = alpha;
-        background->set_color(col);
+        background.color = col;
     }
 
-    HMUI::ImageView* Backgroundable::FindTemplate(StringW name, StringW backgroundName) {
+    HMUI::ImageView Backgroundable::FindTemplate(StringW name, StringW backgroundName) {
         auto objectName = objectNames.find(name)->second;
         auto parentName = objectParentNames.find(name)->second;
 
-        auto images = Resources::FindObjectsOfTypeAll<HMUI::ImageView*>();
+        auto images = Resources::FindObjectsOfTypeAll<HMUI::ImageView>();
 
         for (auto image : images) {
-            auto sprite = image->get_sprite();
-            if (!sprite || sprite->get_name() != backgroundName) continue;
+            auto sprite = image.sprite;
+            if (!sprite || sprite.name != backgroundName) continue;
 
-            auto parent = image->get_transform()->get_parent();
-            if (!parent || parent->get_name() != parentName) continue;
+            auto parent = image.transform.parent;
+            if (!parent || parent.name != parentName) continue;
 
-            auto goName = image->get_gameObject()->get_name();
+            auto goName = image.gameObject.name;
             if (goName != objectName) continue;
 
             return image;
         }
 
-        return nullptr;
-    } 
+        return HMUI::ImageView{nullptr};
+    }
 }

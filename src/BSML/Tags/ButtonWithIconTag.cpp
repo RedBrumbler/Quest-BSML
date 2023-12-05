@@ -24,68 +24,68 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ButtonWithIconTag> buttonWithIconTagParser({"button-with-icon", "icon-button"});
-    
-    Button* get_buttonWithIconTemplate() {
+
+    Button get_buttonWithIconTemplate() {
         static SafePtrUnity<Button> buttonWithIconTemplate;
         if (!buttonWithIconTemplate) {
-            buttonWithIconTemplate = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
+            buttonWithIconTemplate = Resources::FindObjectsOfTypeAll<Button>().LastOrDefault([&](auto x){ return x.name == "PracticeButton"; });
         }
-        return buttonWithIconTemplate.ptr();
-    } 
+        return Button(buttonWithIconTemplate.ptr());
+    }
 
-    UnityEngine::GameObject* ButtonWithIconTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject ButtonWithIconTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Button with icon");
 
         auto button = Object::Instantiate(get_buttonWithIconTemplate(), parent, false);
-        button->set_name("BSMLIconButton");
-        button->set_interactable(true);
-        auto transform = reinterpret_cast<RectTransform*>(button->get_transform());
-        auto gameObject = button->get_gameObject();
+        button.name = "BSMLIconButton";
+        button.interactable = true;
+        RectTransform transform {button.transform.convert()};
+        auto gameObject = button.gameObject;
 
-        Object::Destroy(button->GetComponent<HMUI::HoverHint*>());
-        Object::Destroy(button->GetComponent<GlobalNamespace::LocalizedHoverHint*>());
+        Object::Destroy(button.GetComponent<HMUI::HoverHint>());
+        Object::Destroy(button.GetComponent<GlobalNamespace::LocalizedHoverHint>());
 
-        auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
-        externalComponents->Add(button);
-        externalComponents->Add(transform);
+        auto externalComponents = gameObject.AddComponent<ExternalComponents>();
+        externalComponents.Add(button);
+        externalComponents.Add(transform);
 
-        auto contentTransform = transform->Find("Content");
-        Object::Destroy(contentTransform->GetComponent<LayoutElement*>());
-        
-        Object::Destroy(contentTransform->Find("Text")->get_gameObject());
-        
-        auto iconImage = GameObject::New_ctor("Icon")->AddComponent<HMUI::ImageView*>();
+        auto contentTransform = transform.Find("Content");
+        Object::Destroy(contentTransform.GetComponent<LayoutElement>());
+
+        Object::Destroy(contentTransform.Find("Text").gameObject);
+
+        auto iconImage = GameObject::New_ctor("Icon").AddComponent<HMUI::ImageView>();
         DEBUG("Iconimage: {}", fmt::ptr(iconImage));
         auto mat = Helpers::GetUINoGlowMat();
         DEBUG("Material: {}", fmt::ptr(mat));
-        iconImage->set_material(mat);
-        auto iconRectTransform = iconImage->get_rectTransform();
-        iconRectTransform->SetParent(contentTransform, false);
-        iconRectTransform->set_anchoredPosition({0, 0});
-        iconRectTransform->set_sizeDelta({20, 20});
-        iconRectTransform->set_anchorMin({0.5f, 0.f});
-        iconRectTransform->set_anchorMax({0.5f, 0.5f});
-        iconImage->set_preserveAspect(true);
-        iconImage->set_sprite(Utilities::FindSpriteCached("EditIcon"));
+        iconImage.material = mat;
+        auto iconRectTransform = iconImage.rectTransform;
+        iconRectTransform.SetParent(contentTransform, false);
+        iconRectTransform.anchoredPosition = {0, 0};
+        iconRectTransform.sizeDelta = {20, 20};
+        iconRectTransform.anchorMin = {0.5f, 0.f};
+        iconRectTransform.anchorMax = {0.5f, 0.5f};
+        iconImage.preserveAspect = true;
+        iconImage.sprite = Utilities::FindSpriteCached("EditIcon");
 
-        auto btnIcon = button->get_gameObject()->AddComponent<ButtonIconImage*>();
-        btnIcon->image = iconImage;
-        externalComponents->Add(btnIcon);
+        auto btnIcon = button.gameObject.AddComponent<ButtonIconImage>();
+        btnIcon.image = iconImage;
+        externalComponents.Add(btnIcon);
 
-        auto buttonSizeFitter = gameObject->AddComponent<ContentSizeFitter*>();
-        buttonSizeFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
-        buttonSizeFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
-        externalComponents->Add(buttonSizeFitter);
-        
-        auto stackLayoutGroup = button->GetComponentInChildren<LayoutGroup*>();
+        auto buttonSizeFitter = gameObject.AddComponent<ContentSizeFitter>();
+        buttonSizeFitter.verticalFit = ContentSizeFitter::FitMode::PreferredSize;
+        buttonSizeFitter.horizontalFit = ContentSizeFitter::FitMode::PreferredSize;
+        externalComponents.Add(buttonSizeFitter);
+
+        auto stackLayoutGroup = button.GetComponentInChildren<LayoutGroup>();
         if (stackLayoutGroup)
-            externalComponents->Add(stackLayoutGroup);
+            externalComponents.Add(stackLayoutGroup);
 
-        auto layoutElement = gameObject->AddComponent<LayoutElement*>();
-        layoutElement->set_preferredWidth(30.0f);
-        externalComponents->Add(layoutElement);
+        auto layoutElement = gameObject.AddComponent<LayoutElement>();
+        layoutElement.preferredWidth = 30.0f;
+        externalComponents.Add(layoutElement);
 
-        gameObject->SetActive(true);
+        gameObject.SetActive(true);
         return gameObject;
     }
 }

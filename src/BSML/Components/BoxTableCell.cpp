@@ -14,43 +14,43 @@ namespace BSML {
         highlightedColor0 = {0, 0.75f, 1, 1};
         highlightedColor1 = {0, 0.75f, 1, 0};
     }
-    
-    BoxTableCell* BoxTableCell::Create(GlobalNamespace::AnnotatedBeatmapLevelCollectionCell* prefab) {
-        auto cell = Object::Instantiate(prefab);
-        auto coverImage = cell->coverImage;
-        auto selectionImage = cell->selectionImage;
 
-        auto imageTransform = coverImage->get_transform();
-        int childCount = imageTransform->get_childCount();
+    BoxTableCell BoxTableCell::Create(GlobalNamespace::AnnotatedBeatmapLevelCollectionCell prefab) {
+        auto cell = Object::Instantiate(prefab);
+        auto coverImage = cell.coverImage;
+        auto selectionImage = cell.selectionImage;
+
+        auto imageTransform = coverImage.transform;
+        int childCount = imageTransform.childCount;
         for (int i = 0; i < childCount; i++) {
-            Object::Destroy(imageTransform->GetChild(0)->get_gameObject());
+            Object::Destroy(imageTransform.GetChild(0).gameObject);
         }
 
-        auto cellObject = cell->get_gameObject();
+        auto cellObject = cell.gameObject;
         Object::Destroy(cell);
-        auto boxTableCell = cellObject->AddComponent<BoxTableCell*>();
-        boxTableCell->SetComponents(coverImage, selectionImage);
+        auto boxTableCell = cellObject.AddComponent<BoxTableCell>();
+        boxTableCell.SetComponents(coverImage, selectionImage);
         return boxTableCell;
     }
 
-    void BoxTableCell::SetComponents(HMUI::ImageView* coverImage, HMUI::ImageView* selectionImage) {
+    void BoxTableCell::SetComponents(HMUI::ImageView coverImage, HMUI::ImageView selectionImage) {
         this->coverImage = coverImage;
         this->selectionImage = selectionImage;
     }
 
-    void BoxTableCell::SetData(UnityEngine::Sprite* coverSprite) {
+    void BoxTableCell::SetData(UnityEngine::Sprite coverSprite) {
         if (coverSprite) {
-            coverImage->set_sprite(coverSprite);
+            coverImage.sprite = coverSprite;
         }
     }
 
     void BoxTableCell::RefreshVisuals() {
-        if (get_selected() || get_highlighted()) {
-            selectionImage->set_enabled(true);
-            selectionImage->set_color0( get_highlighted() ? highlightedColor0 : selectedColor0);
-            selectionImage->set_color1( get_highlighted() ? highlightedColor1 : selectedColor1);
+        if (selected || highlighted) {
+            selectionImage.enabled = true;
+            selectionImage.color0 =  highlighted ? highlightedColor0 : selectedColor0;
+            selectionImage.color1 =  highlighted ? highlightedColor1 : selectedColor1;
         } else {
-            selectionImage->set_enabled(false);
+            selectionImage.enabled = false;
         }
     }
 

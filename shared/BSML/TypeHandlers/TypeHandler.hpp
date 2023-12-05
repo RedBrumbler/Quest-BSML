@@ -29,7 +29,7 @@ namespace BSML {
             virtual void HandleTypeAfterChildren(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) { }
             virtual void HandleTypeAfterParse(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) { }
 
-            virtual System::Type* get_type() = 0;
+            virtual System::Type get_type() = 0;
             static std::vector<TypeHandlerBase*>& get_typeHandlers();
 
             virtual int get_priority() const { return 100; }
@@ -52,7 +52,7 @@ namespace BSML {
     };
 
     template<typename T>
-    requires(std::is_convertible_v<T, UnityEngine::Component*>)
+    requires(std::is_base_of_v<UnityEngine::Component, T>)
     class TypeHandler : public TypeHandlerBase {
         public:
             TypeHandler() : TypeHandlerBase() {};
@@ -67,9 +67,9 @@ namespace BSML {
                 return cachedSetters;
             }
 
-            virtual System::Type* get_type() override { 
-                if (cachedType) return cachedType; 
-                return (cachedType = reinterpret_cast<System::Type*>(csTypeOf(T))); 
+            virtual System::Type get_type() override {
+                if (cachedType) return cachedType;
+                return (cachedType = reinterpret_cast<System::Type*>(csTypeOf(T)));
             };
 
             virtual SetterMap get_setters() const = 0;
@@ -95,7 +95,7 @@ namespace BSML {
                 }
             }
         private:
-            System::Type* cachedType = nullptr;
+            System::Type cachedType{nullptr};
             SetterMap cachedSetters;
     };
 }

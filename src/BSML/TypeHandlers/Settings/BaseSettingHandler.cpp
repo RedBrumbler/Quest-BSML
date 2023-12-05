@@ -24,26 +24,26 @@ namespace BSML {
         auto component = componentType.component;
         auto& data = componentType.data;
 
-        auto genericSettings = il2cpp_utils::GetFieldValue<GenericSettingWrapper*>(component, "genericSetting").value_or(nullptr);
+        auto genericSettings = il2cpp_utils::GetFieldValue<GenericSettingWrapper>(component, "genericSetting").value_or(GenericSettingWrapper{nullptr});
         if (!genericSettings) {
-            ERROR("Type {}::{} did not have a 'genericSetting' field", component->klass->namespaze, component->klass->name);
+            ERROR("Type {}::{} did not have a 'genericSetting' field", static_cast<Il2CppObject*>(component)->klass->namespaze, static_cast<Il2CppObject*>(component)->klass->name);
             return;
         }
 
         auto applyOnChangeItr = data.find("applyOnChange");
         if (applyOnChangeItr != data.end()) {
             auto arg = StringParseHelper(applyOnChangeItr->second);
-            genericSettings->applyOnChange = arg.tryParseBool().value_or(true);
+            genericSettings.applyOnChange = arg.tryParseBool().value_or(true);
         }
 
         auto valueItr = data.find("value");
         if (valueItr != data.end() && !valueItr->second.empty()) {
             auto val = parserParams.TryGetValue(valueItr->second);
             if (val) {
-                genericSettings->host = val->host;
-                genericSettings->valueInfo = val->fieldInfo;
-                genericSettings->getterInfo = val->getterInfo;
-                genericSettings->setterInfo = val->setterInfo;
+                genericSettings.host = val->host;
+                genericSettings.valueInfo = val->fieldInfo;
+                genericSettings.getterInfo = val->getterInfo;
+                genericSettings.setterInfo = val->setterInfo;
             }
         }
 
@@ -51,8 +51,8 @@ namespace BSML {
         if (onChangeItr != data.end() && !onChangeItr->second.empty()) {
             auto action = parserParams.TryGetAction(onChangeItr->second);
             if (action) {
-                genericSettings->onChangeHost = action->host;
-                genericSettings->onChangeInfo = action->methodInfo;
+                genericSettings.onChangeHost = action->host;
+                genericSettings.onChangeInfo = action->methodInfo;
             } else ERROR("Action '{}' could not be found", onChangeItr->second);
         }
 
@@ -73,22 +73,22 @@ namespace BSML {
             if (setEventItr != data.end()) {
                 setEventName = setEventItr->second;
             }
-            parserParams.AddEvent(setEventName, 
-                [component, applyMinfo]{ 
-                    il2cpp_utils::RunMethod(component, applyMinfo); 
+            parserParams.AddEvent(setEventName,
+                [component, applyMinfo]{
+                    il2cpp_utils::RunMethod(component, applyMinfo);
                 }
             );
         }
-        
+
         if (receiveMinfo) {
             auto getEventItr = data.find("getEvent");
             std::string getEventName = "cancel";
             if (getEventItr != data.end()) {
                 getEventName = getEventItr->second;
             }
-            parserParams.AddEvent(getEventName, 
-                [component, receiveMinfo]{ 
-                    il2cpp_utils::RunMethod(component, receiveMinfo); 
+            parserParams.AddEvent(getEventName,
+                [component, receiveMinfo]{
+                    il2cpp_utils::RunMethod(component, receiveMinfo);
                 }
             );
         }
@@ -99,10 +99,10 @@ namespace BSML {
     void BaseSettingHandler::HandleTypeAfterChildren(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto baseSetupMethodInfo = StringParseHelper("BaseSetup").asMethodInfo(componentType.component, 0);
         if (baseSetupMethodInfo) il2cpp_utils::RunMethod(componentType.component, baseSetupMethodInfo);
-        
+
         auto setupMethodInfo = StringParseHelper("Setup").asMethodInfo(componentType.component, 0);
         if (setupMethodInfo) il2cpp_utils::RunMethod(componentType.component, setupMethodInfo);
-        
+
         Base::HandleTypeAfterChildren(componentType, parserParams);
     }
 

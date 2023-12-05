@@ -9,7 +9,7 @@ namespace BSML {
         nodeType = NodeType::None;
         #endif
     }
-    
+
     BSMLNode::~BSMLNode() {
         for (auto child : children) {
             delete child;
@@ -35,9 +35,9 @@ namespace BSML {
         }
     }
 
-    void BSMLNode::Handle(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& components) const {}
+    void BSMLNode::Handle(UnityEngine::Transform parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& components) const {}
 
-    void BSMLNode::HandleChildren(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& components) const {
+    void BSMLNode::HandleChildren(UnityEngine::Transform parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& components) const {
         for (auto child : children) {
             child->Handle(parent, parserParams, components);
         }

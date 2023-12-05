@@ -12,21 +12,25 @@
 
 #include "EasyGifReader.h"
 
+#define SIMPLE_CASE(enum_case) case enum_case: return #enum_case
+
 std::string errToString(const EasyGifReader::Error& err) {
     switch (err) {
-        default:
-        case EasyGifReader::Error::UNKNOWN: return "UNKNOWN";
-        case EasyGifReader::Error::INVALID_OPERATION: return "INVALID_OPERATION";
-        case EasyGifReader::Error::OPEN_FAILED: return "OPEN_FAILED";
-        case EasyGifReader::Error::READ_FAILED: return "READ_FAILED";
-        case EasyGifReader::Error::INVALID_FILENAME: return "INVALID_FILENAME";
-        case EasyGifReader::Error::NOT_A_GIF_FILE: return "NOT_A_GIF_FILE";
-        case EasyGifReader::Error::INVALID_GIF_FILE: return "INVALID_GIF_FILE";
-        case EasyGifReader::Error::OUT_OF_MEMORY: return "OUT_OF_MEMORY";
-        case EasyGifReader::Error::CLOSE_FAILED: return "CLOSE_FAILED";
-        case EasyGifReader::Error::NOT_READABLE: return "NOT_READABLE";
-        case EasyGifReader::Error::IMAGE_DEFECT: return "IMAGE_DEFECT";
-        case EasyGifReader::Error::UNEXPECTED_EOF: return "UNEXPECTED_EOF";
+        using EasyGifReader::Error;
+
+        default: [[fallthrough]]
+        SIMPLE_CASE(UNKNOWN);
+        SIMPLE_CASE(INVALID_OPERATION);
+        SIMPLE_CASE(OPEN_FAILED);
+        SIMPLE_CASE(READ_FAILED);
+        SIMPLE_CASE(INVALID_FILENAME);
+        SIMPLE_CASE(NOT_A_GIF_FILE);
+        SIMPLE_CASE(INVALID_GIF_FILE);
+        SIMPLE_CASE(OUT_OF_MEMORY);
+        SIMPLE_CASE(CLOSE_FAILED);
+        SIMPLE_CASE(NOT_READABLE);
+        SIMPLE_CASE(IMAGE_DEFECT);
+        SIMPLE_CASE(UNEXPECTED_EOF);
     }
 }
 

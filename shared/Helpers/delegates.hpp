@@ -59,15 +59,15 @@ namespace BSML {
     auto MakeSystemAction(const std::function<void(Targs...)>& fun) {
         constexpr int argc = sizeof...(Targs);
         if constexpr (argc == 0) return MakeDelegate<System::Action*>(fun);
-        else if constexpr (argc == 1) return MakeDelegate<System::Action_1<Targs...>*>(fun);
-        else if constexpr (argc == 2) return MakeDelegate<System::Action_2<Targs...>*>(fun);
-        else if constexpr (argc == 3) return MakeDelegate<System::Action_3<Targs...>*>(fun);
-        else if constexpr (argc == 4) return MakeDelegate<System::Action_4<Targs...>*>(fun);
-        else if constexpr (argc == 5) return MakeDelegate<System::Action_5<Targs...>*>(fun);
-        else if constexpr (argc == 6) return MakeDelegate<System::Action_6<Targs...>*>(fun);
-        else if constexpr (argc == 7) return MakeDelegate<System::Action_7<Targs...>*>(fun);
-        else if constexpr (argc == 8) return MakeDelegate<System::Action_8<Targs...>*>(fun);
-        else if constexpr (argc == 11) return MakeDelegate<System::Action_11<Targs...>*>(fun);
+        else if constexpr (argc == 1) return MakeDelegate<System::Action_1<Targs...>>(fun);
+        else if constexpr (argc == 2) return MakeDelegate<System::Action_2<Targs...>>(fun);
+        else if constexpr (argc == 3) return MakeDelegate<System::Action_3<Targs...>>(fun);
+        else if constexpr (argc == 4) return MakeDelegate<System::Action_4<Targs...>>(fun);
+        else if constexpr (argc == 5) return MakeDelegate<System::Action_5<Targs...>>(fun);
+        else if constexpr (argc == 6) return MakeDelegate<System::Action_6<Targs...>>(fun);
+        else if constexpr (argc == 7) return MakeDelegate<System::Action_7<Targs...>>(fun);
+        else if constexpr (argc == 8) return MakeDelegate<System::Action_8<Targs...>>(fun);
+        else if constexpr (argc == 11) return MakeDelegate<System::Action_11<Targs...>>(fun);
 
         /// 9 is not allowed, System::Action_9 does not exist
         static check_count_not_equals<argc, 9> check_9;
@@ -94,7 +94,7 @@ namespace BSML {
     /// @param methodInfo the methodInfo of the method to run on instance
     /// @return System::Action_N<Targs>
     template<typename...Targs>
-    auto MakeSystemAction(Il2CppObject* instance, const MethodInfo* methodInfo) {
+    auto MakeSystemAction(bs_hook::Il2CppWrapperType instance, const MethodInfo* methodInfo) {
         if (methodInfo->parameters_count != sizeof...(Targs)) {
             std::stringstream strm;
             strm << "Argcount mismatch between methodInfo and Targs: " << methodInfo->parameters_count << "!=" << sizeof...(Targs);
@@ -112,11 +112,11 @@ namespace BSML {
     template<typename... Targs>
     auto MakeUnityAction(std::function<void(Targs...)> fun) {
         constexpr int argc = sizeof...(Targs);
-        if constexpr (argc == 0) return MakeDelegate<UnityEngine::Events::UnityAction*>(fun);
-        else if constexpr (argc == 1) return MakeDelegate<UnityEngine::Events::UnityAction_1<Targs...>*>(fun);
-        else if constexpr (argc == 2) return MakeDelegate<UnityEngine::Events::UnityAction_2<Targs...>*>(fun);
-        else if constexpr (argc == 3) return MakeDelegate<UnityEngine::Events::UnityAction_3<Targs...>*>(fun);
-        else if constexpr (argc == 4) return MakeDelegate<UnityEngine::Events::UnityAction_4<Targs...>*>(fun);
+        if constexpr (argc == 0) return MakeDelegate<UnityEngine::Events::UnityAction>(fun);
+        else if constexpr (argc == 1) return MakeDelegate<UnityEngine::Events::UnityAction_1<Targs...>>(fun);
+        else if constexpr (argc == 2) return MakeDelegate<UnityEngine::Events::UnityAction_2<Targs...>>(fun);
+        else if constexpr (argc == 3) return MakeDelegate<UnityEngine::Events::UnityAction_3<Targs...>>(fun);
+        else if constexpr (argc == 4) return MakeDelegate<UnityEngine::Events::UnityAction_4<Targs...>>(fun);
 
         /// > 4 is not allowed, UnityEngine::Events::UnityAction_N does not exist with N > 4
         static check_count_smaller<argc, 4> check_4;
@@ -139,7 +139,7 @@ namespace BSML {
     /// @param methodInfo the methodInfo of the method to run on instance
     /// @return UnityEngine::Events::UnityAction_N<Targs>
     template<typename...Targs>
-    auto MakeUnityAction(Il2CppObject* instance, const MethodInfo* methodInfo) {
+    auto MakeUnityAction(bs_hook::Il2CppWrapperType instance, const MethodInfo* methodInfo) {
         if (methodInfo->parameters_count != sizeof...(Targs)) {
             std::stringstream strm;
             strm << "Argcount mismatch between methodInfo and Targs: " << methodInfo->parameters_count << "!=" << sizeof...(Targs);

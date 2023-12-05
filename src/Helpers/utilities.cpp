@@ -46,50 +46,50 @@ namespace BSML::Utilities {
     template<typename T, typename U>
     using Dictionary = System::Collections::Generic::Dictionary_2<T, U>;
 
-    SafePtr<Dictionary<StringW, UnityEngine::Sprite*>> spriteCache;
-    Sprite* FindSpriteCached(StringW name) {
+    SafePtr<Dictionary<StringW, UnityEngine::Sprite>> spriteCache;
+    Sprite FindSpriteCached(StringW name) {
         if (!spriteCache)
-            spriteCache.emplace(Dictionary<StringW, UnityEngine::Sprite*>::New_ctor());
+            spriteCache.emplace(Dictionary<StringW, UnityEngine::Sprite>::New_ctor());
 
-        UnityEngine::Sprite* sprite = nullptr;
+        UnityEngine::Sprite sprite = nullptr;
 
-        if (spriteCache->TryGetValue(name, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value)
+        if (spriteCache->TryGetValue(name, byref(sprite)) && sprite && sprite->m_CachedPtr)
             return sprite;
 
-        for (auto x : Resources::FindObjectsOfTypeAll<Sprite*>())
+        for (auto x : Resources::FindObjectsOfTypeAll<Sprite>())
         {
-            if (x->get_name()->get_Length() == 0)
+            if (x.name.Length() == 0)
                 continue;
-            UnityEngine::Sprite* a = nullptr;
-            if(!spriteCache->TryGetValue(x->get_name(), byref(a)) || !a)
-                spriteCache->Add(x->get_name(), x);
+            UnityEngine::Sprite a = nullptr;
+            if(!spriteCache->TryGetValue(x.name, byref(a)) || !a)
+                spriteCache->Add(x.name, x);
 
-            if (x->get_name() == name)
+            if (x.name == name)
                 sprite = x;
         }
 
         return sprite;
     }
 
-    SafePtr<Dictionary<StringW, UnityEngine::Texture*>> textureCache;
+    SafePtr<Dictionary<StringW, UnityEngine::Texture>> textureCache;
     Texture* FindTextureCached(StringW name) {
         if (!textureCache)
-            textureCache.emplace(Dictionary<StringW, UnityEngine::Texture*>::New_ctor());
+            textureCache.emplace(Dictionary<StringW, UnityEngine::Texture>::New_ctor());
 
-        UnityEngine::Texture* texture = nullptr;
+        UnityEngine::Texture texture = nullptr;
 
-        if (textureCache->TryGetValue(name, byref(texture)) && texture && texture->m_CachedPtr.m_value)
+        if (textureCache->TryGetValue(name, byref(texture)) && texture && texture->m_CachedPtr)
             return texture;
 
-        for (auto x : Resources::FindObjectsOfTypeAll<Texture*>())
+        for (auto x : Resources::FindObjectsOfTypeAll<Texture>())
         {
-            if (x->get_name()->get_Length() == 0)
+            if (x.name.Length() == 0)
                 continue;
-            UnityEngine::Texture* a = nullptr;
-            if(!textureCache->TryGetValue(x->get_name(), byref(a)) || !a)
-                textureCache->Add(x->get_name(), x);
+            UnityEngine::Texture a = nullptr;
+            if(!textureCache->TryGetValue(x.name, byref(a)) || !a)
+                textureCache->Add(x.name, x);
 
-            if (x->get_name() == name)
+            if (x->name == name)
                 texture = x;
         }
 
@@ -118,7 +118,9 @@ namespace BSML::Utilities {
         bool valid = false;
         auto color = CSSColorParser::parse(val, valid);
         if (!valid) return std::nullopt;
+
         return UnityEngine::Color32{
+            0,
             color.r,
             color.g,
             color.b,
@@ -127,12 +129,12 @@ namespace BSML::Utilities {
     }
 
     UnityEngine::Color32 ParseHTMLColor32(std::string_view str) {
-        return ParseHTMLColor32Opt(str).value_or(UnityEngine::Color32{255, 255, 255, 255});
+        return ParseHTMLColor32Opt(str).value_or(UnityEngine::Color32{0, 255, 255, 255, 255});
     }
 
-    Texture2D* DownScaleTexture(Texture2D* tex, const ScaleOptions& options) {
-        auto originalWidth = tex->get_width();
-        auto originalHeight = tex->get_height();
+    Texture2D DownScaleTexture(Texture2D tex, const ScaleOptions& options) {
+        auto originalWidth = tex.width;
+        auto originalHeight = tex.height;
 
         if (originalWidth + originalHeight <= options.width + options.height)
             return tex;
@@ -153,20 +155,20 @@ namespace BSML::Utilities {
         }
 
         auto rect = Rect(0, 0, newWidth, newHeight);
-        auto copy = Texture2D::New_ctor(rect.get_width(), rect.get_height(), TextureFormat::RGBA32, false);
+        auto copy = Texture2D::New_ctor(rect.width, rect.height, TextureFormat::RGBA32, false);
         auto currentRT = RenderTexture::get_active();
-        auto renderTexture = RenderTexture::GetTemporary(rect.get_width(), rect.get_height(), 32, RenderTextureFormat::Default, RenderTextureReadWrite::Default);
+        auto renderTexture = RenderTexture::GetTemporary(rect.width, rect.height, 32, RenderTextureFormat::Default, RenderTextureReadWrite::Default);
         Graphics::Blit(tex, renderTexture);
 
         RenderTexture::set_active(renderTexture);
-        copy->ReadPixels(rect, 0, 0);
-        copy->Apply();
+        copy.ReadPixels(rect, 0, 0);
+        copy.Apply();
         RenderTexture::set_active(currentRT);
         RenderTexture::ReleaseTemporary(renderTexture);
         return copy;
     }
 
-    UnityEngine::Sprite* DownScaleSprite(Sprite* sprite, const ScaleOptions& options) {
+    UnityEngine::Sprite DownScaleSprite(Sprite sprite, const ScaleOptions& options) {
         return LoadSpriteFromTexture(DownScaleTexture(sprite->get_texture(), options));
     }
 
@@ -177,10 +179,10 @@ namespace BSML::Utilities {
         }
 
         auto www = UnityWebRequest::Get(uri);
-        auto req = www->SendWebRequest();
-        while (!req->get_isDone()) co_yield nullptr;
+        auto req = www.SendWebRequest();
+        while (!req.isDone) co_yield nullptr;
 
-        onFinished((www->get_isNetworkError() || www->get_isHttpError()) ? nullptr : www->get_downloadHandler()->GetData());
+        onFinished((www.isNetworkError || www.isHttpError) ? {} : www.downloadHandler.GetData());
 
         co_return;
     }
@@ -222,56 +224,56 @@ namespace BSML::Utilities {
             ERROR("Unhandled Load Image error {}, Use the SetImage method that takes an error handler to handle it correctly!", err);
     }
 
-    void SetImage(UnityEngine::UI::Image* image, StringW path) {
+    void SetImage(UnityEngine::UI::Image image, StringW path) {
         SetImage(image, path, true, ScaleOptions(), true, nullptr, DefaultImageLoadErrorHandler);
     }
 
-    void SetImage(UnityEngine::UI::Image* image, StringW path, bool cached) {
+    void SetImage(UnityEngine::UI::Image image, StringW path, bool cached) {
         SetImage(image, path, true, ScaleOptions(), cached, nullptr, DefaultImageLoadErrorHandler);
     }
 
-    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished) {
+    void SetImage(UnityEngine::UI::Image image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished) {
         SetImage(image, path, loadingAnimation, scaleOptions, true, onFinished, DefaultImageLoadErrorHandler);
     }
 
-    Dictionary<StringW, UnityEngine::Sprite*>* get_bsmlSetImageCache() {
+    Dictionary<StringW, UnityEngine::Sprite> get_bsmlSetImageCache() {
         static SafePtr<Dictionary<StringW, UnityEngine::Sprite*>> bsmlSetImageCache;
         if (!bsmlSetImageCache) {
-            bsmlSetImageCache = Dictionary<StringW, UnityEngine::Sprite*>::New_ctor();
+            bsmlSetImageCache = Dictionary<StringW, UnityEngine::Sprite>::New_ctor();
         }
         return bsmlSetImageCache.ptr();
     }
 
     bool RemoveImage(StringW path) {
         auto cache = get_bsmlSetImageCache();
-        UnityEngine::Sprite* img = nullptr;
+        UnityEngine::Sprite img = nullptr;
         if (cache->TryGetValue(path, byref(img))) {
             cache->Remove(path);
-            if (img && img->m_CachedPtr.m_value) UnityEngine::Object::DestroyImmediate(img);
+            if (img && img->m_CachedPtr) UnityEngine::Object::DestroyImmediate(img);
             return true;
         }
         return false;
     }
 
-    void SetAndLoadImageAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+    void SetAndLoadImageAnimated(UnityEngine::UI::Image image, StringW path, bool loadingAnimation, std::pair<bool, System::Uri> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
         auto animationController = AnimationController::get_instance();
 
-        auto stateUpdater = image->get_gameObject()->AddComponent<AnimationStateUpdater*>();
-        stateUpdater->image = image;
+        auto stateUpdater = image.gameObject.AddComponent<AnimationStateUpdater>();
+        stateUpdater.image = image;
 
         if (loadingAnimation && false)
-            stateUpdater->set_controllerData(animationController->loadingAnimation);
+            stateUpdater.controllerData = animationController.loadingAnimation;
 
         // check if we already have it, union because easier
         union {
-            Il2CppObject* data = nullptr;
-            AnimationControllerData* animationControllerData;
+            bs_hook::Il2CppWrapperType data = nullptr;
+            AnimationControllerData animationControllerData;
         };
-        if (animationController->registeredAnimations->TryGetValue(path, byref(data))) {
-            stateUpdater->set_controllerData(animationControllerData);
+        if (animationController.registeredAnimations->TryGetValue(path, byref(data))) {
+            stateUpdater.controllerData = animationControllerData;
             if (onFinished) onFinished();
         } else {
-            bool isGif = path->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase) || (uri.first && uri.second->get_LocalPath()->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase));
+            bool isGif = path->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase) || (uri.first && uri.second.LocalPath->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase));
             auto animType = isGif ? AnimationLoader::AnimationType::GIF : AnimationLoader::AnimationType::APNG;
 
             auto errorType = uri.first ? ImageLoadError::NetworkError : ImageLoadError::GetDataError;
@@ -286,8 +288,8 @@ namespace BSML::Utilities {
                     animType,
                     data,
                     [stateUpdater, path, onFinished, animationController](auto tex, auto uvs, auto delays){
-                        auto controllerData = animationController->Register(path, tex, uvs, delays);
-                        stateUpdater->set_controllerData(controllerData);
+                        auto controllerData = animationController.Register(path, tex, uvs, delays);
+                        stateUpdater.controllerData = controllerData;
                         if (onFinished) onFinished();
                     },
                     [onError](){
@@ -297,14 +299,14 @@ namespace BSML::Utilities {
             };
 
             if (uri.first) {
-                DownloadData(uri.second->get_AbsoluteUri(), onDataFinished);
+                DownloadData(uri.second.AbsoluteUri, onDataFinished);
             } else {
                 GetData(path, onDataFinished);
             }
         }
     }
 
-    void SetAndLoadImageNonAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+    void SetAndLoadImageNonAnimated(UnityEngine::UI::Image image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::pair<bool, System::Uri> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
         auto errorType = uri.first ? ImageLoadError::NetworkError : ImageLoadError::GetDataError;
         auto onDataFinished = [path, onFinished, onError, errorType, image, scaleOptions, cached](ArrayW<uint8_t> data) {
             // somehow data was failed to be gotten
@@ -323,9 +325,9 @@ namespace BSML::Utilities {
                     }
                 }
                 auto sprite = LoadSpriteFromTexture(texture);
-                sprite->get_texture()->set_wrapMode(TextureWrapMode::Clamp);
-                image->set_sprite(sprite);
-                if (cached) get_bsmlSetImageCache()->Add(path, sprite);
+                sprite.texture.wrapMode = TextureWrapMode::Clamp;
+                image.sprite = sprite;
+                if (cached) get_bsmlSetImageCache().Add(path, sprite);
             }
 
             if (onFinished)
@@ -334,18 +336,18 @@ namespace BSML::Utilities {
         };
 
         if (uri.first) {
-            DownloadData(uri.second->get_AbsoluteUri(), onDataFinished);
+            DownloadData(uri.second.AbsoluteUri, onDataFinished);
         } else {
             GetData(path, onDataFinished);
         }
     }
 
-    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+    void SetImage(UnityEngine::UI::Image image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
         SetImage(image, path, loadingAnimation, scaleOptions, true, onFinished, onError);
     }
 
-    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
-                if (!image) {
+    void SetImage(UnityEngine::UI::Image image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+        if (!image) {
             ERROR("Can't set null image!");
             return;
         }
@@ -355,40 +357,40 @@ namespace BSML::Utilities {
             Object::DestroyImmediate(oldStateUpdater);
         }
 
-        if (path->get_Length() > 1 && path[0] == '#') { // it's a base game sprite that is requested
+        if (path.Length() > 1 && path[0] == '#') { // it's a base game sprite that is requested
             auto imgName = path->Substring(1);
-            image->set_sprite(FindSpriteCached(imgName));
+            image.sprite = FindSpriteCached(imgName);
 
-            if (image->get_sprite() == nullptr)
+            if (!image.sprite)
                 ERROR("Could not find base game Sprite with image name {}", imgName);
             return;
         }
 
-        UnityEngine::Sprite* sprite = nullptr;
-        if (get_bsmlSetImageCache()->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value) {
+        UnityEngine::Sprite sprite = nullptr;
+        if (get_bsmlSetImageCache().TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr) {
             // we got a sprite, use it
-            image->set_sprite(sprite);
+            image.sprite = sprite;
             if (onFinished) onFinished();
             return;
         } else if (sprite) {
             INFO("Removing {} from cache as the attached sprite was invalid", path);
-            get_bsmlSetImageCache()->Remove(path);
+            get_bsmlSetImageCache().Remove(path);
         }
 
         auto animationController = AnimationController::get_instance();
 
-        System::Uri* uri = nullptr;
+        System::Uri uri = nullptr;
         bool isUri = System::Uri::TryCreate(path, System::UriKind::Absolute, byref(uri));
         // animated just means ".gif || .apng"
         // TODO: support for animated sprites in the future
-        if (IsAnimated(path) || (isUri && IsAnimated(uri->get_LocalPath()))) {
+        if (IsAnimated(path) || (isUri && IsAnimated(uri.LocalPath))) {
             SetAndLoadImageAnimated(image, path, loadingAnimation, {isUri, uri}, onFinished, onError);
         } else { // not animated
             SetAndLoadImageNonAnimated(image, path, loadingAnimation, scaleOptions, cached, {isUri, uri}, onFinished, onError);
         }
     }
 
-    UnityEngine::Texture2D* LoadTextureRaw(ArrayW<uint8_t> data) {
+    UnityEngine::Texture2D LoadTextureRaw(ArrayW<uint8_t> data) {
         if (data.Length() > 0) {
             auto texture = Texture2D::New_ctor(0, 0, TextureFormat::RGBA32, false, false);
             if (ImageConversion::LoadImage(texture, data, false))
@@ -398,16 +400,16 @@ namespace BSML::Utilities {
         return nullptr;
     }
 
-    UnityEngine::Sprite* LoadSpriteRaw(ArrayW<uint8_t> data, float pixelsPerUnit) {
+    UnityEngine::Sprite LoadSpriteRaw(ArrayW<uint8_t> data, float pixelsPerUnit) {
         return LoadSpriteFromTexture(LoadTextureRaw(data), pixelsPerUnit);
     }
 
-    UnityEngine::Sprite* LoadSpriteFromTexture(UnityEngine::Texture2D* texture, float pixelsPerUnit) {
+    UnityEngine::Sprite LoadSpriteFromTexture(UnityEngine::Texture2D texture, float pixelsPerUnit) {
         if (!texture) {
             ERROR("Invalid Texture given");
             return nullptr;
         }
-        return Sprite::Create(texture, Rect(0.0f, 0.0f, texture->get_width(), texture->get_height()), Vector2(0.5f, 0.5f), pixelsPerUnit, 1u, SpriteMeshType::FullRect, Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
+        return Sprite::Create(texture, Rect(0.0f, 0.0f, texture.width, texture.height), Vector2(0.5f, 0.5f), pixelsPerUnit, 1u, SpriteMeshType::FullRect, Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
     }
 
     bool CheckIfClassIsParentClass(const Il2CppClass* klass, const Il2CppClass* possibleParent) {
@@ -418,9 +420,9 @@ namespace BSML::Utilities {
         return false;
     }
 
-    Il2CppObject* CopyFieldsAndProperties(UnityEngine::Component* comp, UnityEngine::Component* other, Il2CppClass* klass) {
+    bs_hook::Il2CppWrapperType CopyFieldsAndProperties(UnityEngine::Component comp, UnityEngine::Component other, Il2CppClass* klass) {
         if (!klass) return comp;
-        if (!CheckIfClassIsParentClass(comp->klass, klass) && !CheckIfClassIsParentClass(other->klass, klass)) {
+        if (!CheckIfClassIsParentClass(static_cast<Il2CppObject*>(comp)->klass, klass) && !CheckIfClassIsParentClass(static_cast<Il2CppObject*>(other)->klass, klass)) {
             return nullptr;
         }
 
@@ -469,32 +471,32 @@ namespace BSML::Utilities {
     }
 
     /// based on https://answers.unity.com/questions/530178/how-to-get-a-component-from-an-object-and-add-it-t.html
-    UnityEngine::Component* GetCopyOfComponent(UnityEngine::Component* comp, UnityEngine::Component* other) {
-        auto klass = comp->klass;
-        if (klass != other->klass) {
+    UnityEngine::Component GetCopyOfComponent(UnityEngine::Component comp, UnityEngine::Component other) {
+        auto klass = static_cast<Il2CppObject*>(comp)->klass;
+        if (klass != static_cast<Il2CppObject*>(other)->klass) {
             ERROR("Type Mismatch!");
             return nullptr;
         }
 
-        return reinterpret_cast<UnityEngine::Component*>(CopyFieldsAndProperties(comp, other, klass));
+        return UnityEngine::Component(CopyFieldsAndProperties(comp, other, klass).convert());
     }
 
     /// end of based on thing
 
     namespace ImageResources {
         SafePtrUnity<UnityEngine::Sprite> blankSprite;
-        UnityEngine::Sprite* GetBlankSprite() {
+        UnityEngine::Sprite GetBlankSprite() {
             if (!blankSprite) {
                 auto texture = Texture2D::get_blackTexture();
-                blankSprite = Sprite::Create(texture, Rect(0.0f, 0.0f, texture->get_width(), texture->get_height()), Vector2(0.5f, 0.5f), 100.0f, 1u, SpriteMeshType::FullRect, Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
-                blankSprite->set_name("BlankSprite");
+                blankSprite = Sprite::Create(texture, Rect(0.0f, 0.0f, texture.width, texture.height), Vector2(0.5f, 0.5f), 100.0f, 1u, SpriteMeshType::FullRect, Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
+                blankSprite.name = "BlankSprite";
                 Object::DontDestroyOnLoad(blankSprite.ptr());
             }
             return blankSprite.ptr();
         }
 
         SafePtrUnity<UnityEngine::Sprite> whitePixelSprite;
-        UnityEngine::Sprite* GetWhitePixel() {
+        UnityEngine::Sprite GetWhitePixel() {
             if (!whitePixelSprite) {
                 whitePixelSprite = FindSpriteCached("WhitePixel");
             }

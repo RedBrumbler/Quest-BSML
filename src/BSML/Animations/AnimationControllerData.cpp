@@ -10,26 +10,26 @@
 DEFINE_TYPE(BSML, AnimationControllerData);
 
 namespace BSML {
-    AnimationControllerData* AnimationControllerData::Make_new(UnityEngine::Texture2D* tex, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays) {
+    AnimationControllerData AnimationControllerData::Make_new(UnityEngine::Texture2D tex, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays) {
         auto self = AnimationControllerData::New_ctor();
-        self->animationStateUpdaters = {};
+        self.animationStateUpdaters = {};
 
-        self->_isPlaying = true;
-        self->isDelayConsistent = true;
+        self._isPlaying = true;
+        self.isDelayConsistent = true;
         auto time = std::chrono::system_clock::now();
         auto milis = std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch());
-        self->lastSwitch = milis.count();
+        self.lastSwitch = milis.count();
 
-        self->sprites = ArrayW<UnityEngine::Sprite*>(uvs.size());
+        self.sprites = ArrayW<UnityEngine::Sprite*>(uvs.size());
         float firstDelay = -1;
-        int texWidth = tex->get_width();
-        int texHeight = tex->get_height();
+        int texWidth = tex.width;
+        int texHeight = tex.height;
 
         for (int i = 0; i < uvs.size(); i++) {
-            self->sprites[i] = UnityEngine::Sprite::Create(
-                tex, 
+            self.sprites[i] = UnityEngine::Sprite::Create(
+                tex,
                 UnityEngine::Rect(
-                    uvs[i].m_XMin * texWidth, 
+                    uvs[i].m_XMin * texWidth,
                     uvs[i].m_YMin * texHeight,
                     uvs[i].m_Width * texWidth,
                     uvs[i].m_Height * texHeight
@@ -47,20 +47,20 @@ namespace BSML {
             }
 
             if (delays[i] != firstDelay) {
-                self->isDelayConsistent = false;
+                self.isDelayConsistent = false;
             }
         }
 
-        self->sprite = Utilities::LoadSpriteFromTexture(tex);
-        self->uvs = uvs;
-        self->delays = delays;
+        self.sprite = Utilities::LoadSpriteFromTexture(tex);
+        self.uvs = uvs;
+        self.delays = delays;
 
         return self;
     }
 
     void AnimationControllerData::dtor() {
-        if (sprite && sprite->m_CachedPtr.m_value) {
-            UnityEngine::Object::DestroyImmediate(sprite->get_texture());
+        if (sprite && sprite.m_CachedPtr.m_value) {
+            UnityEngine::Object::DestroyImmediate(sprite.texture);
             UnityEngine::Object::DestroyImmediate(sprite);
         }
 
@@ -75,11 +75,11 @@ namespace BSML {
     }
 
     bool AnimationControllerData::get_isPlaying() {
-        return _isPlaying;
+        return __get__isPlaying();
     }
 
     void AnimationControllerData::set_isPlaying(bool value) {
-        _isPlaying = value;
+        __set__isPlaying(value);
     }
 
     void AnimationControllerData::CheckFrame(unsigned long long now) {
@@ -105,24 +105,24 @@ namespace BSML {
         return !animationStateUpdaters.empty(); // if no anim updaters exist with this data, it's not being used
     }
 
-    bool AnimationControllerData::Add(AnimationStateUpdater* animationStateUpdater) {
+    bool AnimationControllerData::Add(AnimationStateUpdater& animationStateUpdater) {
         auto itr = animationStateUpdaters.find(animationStateUpdater);
         if (itr == animationStateUpdaters.end()) {
             animationStateUpdaters.emplace(animationStateUpdater);
             return true;
         } else {
-            ERROR("Trying to register {} twice!", fmt::ptr(animationStateUpdater));
+            ERROR("Trying to register {} twice!", fmt::ptr(animationStateUpdater.convert()));
             return false;
         }
     }
 
-    bool AnimationControllerData::Remove(AnimationStateUpdater* animationStateUpdater) {
+    bool AnimationControllerData::Remove(AnimationStateUpdater& animationStateUpdater) {
         auto itr = animationStateUpdaters.find(animationStateUpdater);
         if (itr != animationStateUpdaters.end()) {
             animationStateUpdaters.erase(itr);
             return true;
         } else {
-            ERROR("Trying to remove {} twice!", fmt::ptr(animationStateUpdater));
+            ERROR("Trying to remove {} twice!", fmt::ptr(animationStateUpdater.convert()));
             return false;
         }
 

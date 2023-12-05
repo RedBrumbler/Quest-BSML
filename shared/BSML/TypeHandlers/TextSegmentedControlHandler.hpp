@@ -4,9 +4,9 @@
 #include "HMUI/TextSegmentedControl.hpp"
 
 namespace BSML {
-    class TextSegmentedControlHandler : public TypeHandler<HMUI::TextSegmentedControl*> {
+    class TextSegmentedControlHandler : public TypeHandler<HMUI::TextSegmentedControl> {
         public:
-            using Base = TypeHandler<HMUI::TextSegmentedControl*>;
+            using Base = TypeHandler<HMUI::TextSegmentedControl>;
             TextSegmentedControlHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

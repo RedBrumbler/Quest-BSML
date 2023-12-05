@@ -13,40 +13,39 @@ using namespace UnityEngine;
 
 namespace BSML {
     static BSMLNodeParser<IconSegmentedControlTag> iconSegmentedControlTag({"icon-segments"});
-    
-    HMUI::IconSegmentedControl* get_iconSegmentedControlTemplate() {
+
+    HMUI::IconSegmentedControl get_iconSegmentedControlTemplate() {
         static SafePtrUnity<HMUI::IconSegmentedControl> iconSegmentedControlTemplate;
         if (!iconSegmentedControlTemplate) {
-            iconSegmentedControlTemplate = Resources::FindObjectsOfTypeAll<HMUI::IconSegmentedControl*>().FirstOrDefault(
-                [](auto x) { 
-                    auto name = x->get_name();
-                    if (name != "BeatmapCharacteristicSegmentedControl") return false;
-                    return x->container != nullptr;
+            iconSegmentedControlTemplate = Resources::FindObjectsOfTypeAll<HMUI::IconSegmentedControl>().FirstOrDefault(
+                [](auto x) {
+                    if (x.name != "BeatmapCharacteristicSegmentedControl") return false;
+                    return x.container != nullptr;
                 });
         }
-        return iconSegmentedControlTemplate.ptr();
+        return HMUI::IconSegmentedControl(iconSegmentedControlTemplate.ptr());
     }
 
-    UnityEngine::GameObject* IconSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject IconSegmentedControlTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating IconSegmentedControl");
 
         auto iconSegmentedControlTemplate = get_iconSegmentedControlTemplate();
         auto iconSegmentedControl = Object::Instantiate(iconSegmentedControlTemplate, parent, false);
-        iconSegmentedControl->dataSource = nullptr;
+        iconSegmentedControl.dataSource = HMUI::IconSegmentedControl::IDataSource{nullptr};
 
-        auto gameObject = iconSegmentedControl->get_gameObject();
-        gameObject->set_name("BSMLIconSegmentedControl");
-        iconSegmentedControl->container = iconSegmentedControlTemplate->container;
-        
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
-        transform->set_anchoredPosition({0, 0});
-        int childCount = transform->get_childCount();
+        auto gameObject = iconSegmentedControl.gameObject;
+        gameObject.name = "BSMLIconSegmentedControl";
+        iconSegmentedControl._container = iconSegmentedControlTemplate._container;
+
+        RectTransform transform {gameObject.transform.convert()};
+        transform.anchoredPosition = {0, 0};
+        int childCount = transform.childCount;
         for (int i = 1; i <= childCount; i++) {
-            Object::DestroyImmediate(transform->GetChild(childCount - i)->get_gameObject());
+            Object::DestroyImmediate(transform.GetChild(childCount - i).gameObject);
         }
 
-        Object::Destroy(gameObject->GetComponent<GlobalNamespace::BeatmapCharacteristicSegmentedControlController*>());
-        gameObject->SetActive(true);
+        Object::Destroy(gameObject.GetComponent<GlobalNamespace::BeatmapCharacteristicSegmentedControlController>());
+        gameObject.SetActive(true);
         return gameObject;
     }
 }

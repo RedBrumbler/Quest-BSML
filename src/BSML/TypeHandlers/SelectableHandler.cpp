@@ -11,7 +11,7 @@ namespace BSML {
 
     SelectableHandler::Base::SetterMap SelectableHandler::get_setters() const {
         return {
-            {"interactable", [](auto component, auto value){ component->set_interactable(value); }}
+            {"interactable", [](auto component, auto value){ component.interactable = value; }}
         };
     }
 }

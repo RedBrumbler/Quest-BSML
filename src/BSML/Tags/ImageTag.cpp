@@ -13,19 +13,19 @@ using namespace UnityEngine;
 
 namespace BSML {
     static BSMLNodeParser<ImageTag> imageTagParser({"image", "img"});
-    
-    UnityEngine::GameObject* ImageTag::CreateObject(UnityEngine::Transform* parent) const {
+
+    UnityEngine::GameObject ImageTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Image");
         auto gameObject = GameObject::New_ctor("BSMLImage");
-        auto image = gameObject->AddComponent<HMUI::ImageView*>();
-        image->set_material(Helpers::GetUINoGlowMat());
-        auto rectTransform = image->get_rectTransform();
-        rectTransform->set_sizeDelta({20, 20});
-        rectTransform->SetParent(parent, false);
+        auto image = gameObject.AddComponent<HMUI::ImageView>();
+        image.material = Helpers::GetUINoGlowMat();
+        auto rectTransform = image.rectTransform;
+        rectTransform.sizeDelta = {20, 20};
+        rectTransform.SetParent(parent, false);
         // TODO: maybe use a default placeholder sprite instead? maybe a BSML image
-        image->set_sprite(Utilities::ImageResources::GetBlankSprite());
+        image.sprite = Utilities::ImageResources::GetBlankSprite();
 
-        gameObject->AddComponent<UI::LayoutElement*>();
+        gameObject.AddComponent<UI::LayoutElement>();
         return gameObject;
     }
 }

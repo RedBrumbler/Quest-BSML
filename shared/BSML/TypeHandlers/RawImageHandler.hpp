@@ -4,9 +4,9 @@
 #include "UnityEngine/UI/RawImage.hpp"
 
 namespace BSML {
-    class RawImageHandler : public TypeHandler<UnityEngine::UI::RawImage*> {
+    class RawImageHandler : public TypeHandler<UnityEngine::UI::RawImage> {
         public:
-            using Base = TypeHandler<UnityEngine::UI::RawImage*>;
+            using Base = TypeHandler<UnityEngine::UI::RawImage>;
             RawImageHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

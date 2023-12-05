@@ -26,54 +26,54 @@ using namespace UnityEngine::UI;
 namespace BSML {
     static BSMLNodeParser<PageButtonTag> pageButtonTagParser({"page-button", "pg-button"});
 
-    Button* get_pageButtonTemplate() {
+    Button get_pageButtonTemplate() {
         static SafePtrUnity<Button> pageButtonTemplate;
         if (!pageButtonTemplate) {
-            pageButtonTemplate = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "UpButton"; });
+            pageButtonTemplate = Resources::FindObjectsOfTypeAll<Button>().LastOrDefault([&](auto x){ return x.name == "UpButton"; });
         }
-        return pageButtonTemplate.ptr();
+        return Button(pageButtonTemplate.ptr());
     }
 
-    UnityEngine::GameObject* PageButtonTag::CreateObject(UnityEngine::Transform* parent) const {
+    UnityEngine::GameObject PageButtonTag::CreateObject(UnityEngine::Transform parent) const {
         DEBUG("Creating Page button");
         auto pageButtonTemplate = get_pageButtonTemplate();
         auto button = Object::Instantiate(pageButtonTemplate, parent, false);
-        auto gameObject = button->get_gameObject();
-        gameObject->SetActive(false);
-        gameObject->set_name("BSMLPageButton");
-        button->set_interactable(true);
+        auto gameObject = button.gameObject;
+        gameObject.SetActive(false);
+        gameObject.name = "BSMLPageButton";
+        button.interactable = true;
 
-        auto transform = reinterpret_cast<RectTransform*>(button->get_transform());
-        auto pageButton = gameObject->AddComponent<PageButton*>();
-        
-        auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
-        externalComponents->Add(button);
-        externalComponents->Add(transform);
-        externalComponents->Add(pageButton);
+        RectTransform transform {button.transform.convert()};
+        auto pageButton = gameObject.AddComponent<PageButton>();
 
-        auto btnIcon = gameObject->AddComponent<ButtonIconImage*>();
-        btnIcon->image = gameObject->GetComponentsInChildren<Image*>(true).FirstOrDefault([&](auto x){ return x->get_name() == "Icon"; });
-        externalComponents->Add(btnIcon);
+        auto externalComponents = gameObject.AddComponent<ExternalComponents>();
+        externalComponents.Add(button);
+        externalComponents.Add(transform);
+        externalComponents.Add(pageButton);
 
-        auto buttonSizeFitter = gameObject->AddComponent<ContentSizeFitter*>();
-        buttonSizeFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
-        buttonSizeFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
-        externalComponents->Add(buttonSizeFitter);
+        auto btnIcon = gameObject.AddComponent<ButtonIconImage>();
+        btnIcon.image = gameObject.GetComponentsInChildren<Image>(true).FirstOrDefault([&](auto x){ return x.name == "Icon"; });
+        externalComponents.Add(btnIcon);
 
-        auto layoutElement = gameObject->AddComponent<LayoutElement*>();
-        layoutElement->set_preferredWidth(-1);
-        layoutElement->set_preferredHeight(-1);
-        layoutElement->set_flexibleHeight(0);
-        layoutElement->set_flexibleWidth(0);
+        auto buttonSizeFitter = gameObject.AddComponent<ContentSizeFitter>();
+        buttonSizeFitter.verticalFit = ContentSizeFitter::FitMode::PreferredSize;
+        buttonSizeFitter.horizontalFit = ContentSizeFitter::FitMode::PreferredSize;
+        externalComponents.Add(buttonSizeFitter);
 
-        auto buttonTransform = reinterpret_cast<RectTransform*>(transform->GetChild(0));
-        buttonTransform->set_anchorMin({0, 0});
-        buttonTransform->set_anchorMax({1, 1});
-        buttonTransform->set_sizeDelta({0, 0});
-        transform->set_pivot({ 0.5f, 0.5f });
-        externalComponents->Add(layoutElement);
+        auto layoutElement = gameObject.AddComponent<LayoutElement>();
+        layoutElement.preferredWidth = -1;
+        layoutElement.preferredHeight = -1;
+        layoutElement.flexibleHeight = 0;
+        layoutElement.flexibleWidth = 0;
 
-        gameObject->SetActive(true);
+        RectTransform buttonTransform {transform.GetChild(0).convert()};
+        buttonTransform.anchorMin = {0, 0};
+        buttonTransform.anchorMax = {1, 1};
+        buttonTransform.sizeDelta = {0, 0};
+        transform.pivot = { 0.5f, 0.5f };
+        externalComponents.Add(layoutElement);
+
+        gameObject.SetActive(true);
         return gameObject;
     }
 }

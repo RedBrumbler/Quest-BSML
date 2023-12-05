@@ -16,12 +16,12 @@ namespace BSML {
 
     SliderSettingHandler::Base::SetterMap SliderSettingHandler::get_setters() const {
         return {
-            {"increment", [](auto component, auto value){ component->increments = value; }},
-            {"minValue", [](auto component, auto value){ component->slider->set_minValue(value); }},
-            {"maxValue", [](auto component, auto value){ component->slider->set_maxValue(value); }},
-            {"isInt", [](auto component, auto value){ component->isInt = value; }},
-            {"digits", [](auto component, auto value){ component->digits = value; }},
-            {"showButtons", [](auto component, auto value){ component->showButtons = value; }}
+            {"increment", [](auto component, auto value){ component.increments = value; }},
+            {"minValue", [](auto component, auto value){ component.slider.minValue = value; }},
+            {"maxValue", [](auto component, auto value){ component.slider.maxValue = value; }},
+            {"isInt", [](auto component, auto value){ component.isInt = value; }},
+            {"digits", [](auto component, auto value){ component.digits = value; }},
+            {"showButtons", [](auto component, auto value){ component.showButtons = value; }}
         };
     }
 }

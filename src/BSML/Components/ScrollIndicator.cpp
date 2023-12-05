@@ -4,13 +4,11 @@ DEFINE_TYPE(BSML, ScrollIndicator);
 
 namespace BSML
 {
-    UnityEngine::RectTransform *ScrollIndicator::get_Handle()
-    {
-        return handle;
+    UnityEngine::RectTransform ScrollIndicator::get_Handle() {
+        return _handle;
     }
 
-    void ScrollIndicator::set_Handle(UnityEngine::RectTransform *value)
-    {
-        handle = value;
+    void ScrollIndicator::set_Handle(UnityEngine::RectTransform value) {
+        _handle = value;
     }
 }

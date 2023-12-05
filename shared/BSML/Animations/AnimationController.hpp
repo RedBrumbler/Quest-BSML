@@ -10,19 +10,25 @@
 #include "System/Collections/Generic/Dictionary_2.hpp"
 #include "System/Collections/Generic/IReadOnlyDictionary_2.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, AnimationController, UnityEngine::MonoBehaviour,
-    DECLARE_INSTANCE_FIELD(AnimationControllerData*, loadingAnimation);
-    using StringToAnimDataDictionary = System::Collections::Generic::Dictionary_2<StringW, Il2CppObject*>;
-    DECLARE_INSTANCE_FIELD(StringToAnimDataDictionary*, registeredAnimations);
-    DECLARE_INSTANCE_METHOD(AnimationControllerData*, Register, StringW key, UnityEngine::Texture2D* texture, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays);
+DECLARE_CLASS_CORDL(BSML, AnimationController, UnityEngine::MonoBehaviour,
+    using StringToAnimDataDictionary = System::Collections::Generic::Dictionary_2<StringW, bs_hook::Il2CppWrapperType>;
+    DECLARE_FIELDS(
+        DECLARE_INSTANCE_FIELD(AnimationControllerData, loadingAnimation);
+        DECLARE_INSTANCE_FIELD(StringToAnimDataDictionary, registeredAnimations);
+    );
+
+    FIELD_ACCESSOR(loadingAnimation);
+    FIELD_ACCESSOR(registeredAnimations);
+
     DECLARE_INSTANCE_METHOD(void, InitializeLoadingAnimation);
     DECLARE_INSTANCE_METHOD(void, Update);
-    
+    DECLARE_INSTANCE_METHOD(AnimationControllerData, Register, StringW key, UnityEngine::Texture2D texture, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays);
+
     public:
-        bool TryGetAnimationControllerData(StringW key, AnimationControllerData*& out);
+        bool TryGetAnimationControllerData(StringW key, AnimationControllerData& out);
         bool Unregister(StringW key);
-        bool CanUnregister(AnimationControllerData* animationData);
-        static AnimationController* get_instance();
+        bool CanUnregister(AnimationControllerData animationData);
+        static AnimationController get_instance();
         DECLARE_CTOR(ctor);
     protected:
         static SafePtrUnity<AnimationController> instance;

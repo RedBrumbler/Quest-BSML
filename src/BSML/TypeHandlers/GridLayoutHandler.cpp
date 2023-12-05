@@ -15,10 +15,10 @@ namespace BSML {
 
     GridLayoutHandler::Base::SetterMap GridLayoutHandler::get_setters() const {
         return {
-            {"cellSizeX",   [](auto component, auto value){ component->set_cellSize(UnityEngine::Vector2(value, component->get_cellSize().y)); }},
-            {"cellSizeY",   [](auto component, auto value){ component->set_cellSize(UnityEngine::Vector2(component->get_cellSize().x, value)); }},
-            {"spacingX",    [](auto component, auto value){ component->set_spacing(UnityEngine::Vector2(value, component->get_spacing().y)); }},
-            {"spacingY",    [](auto component, auto value){ component->set_spacing(UnityEngine::Vector2(component->get_spacing().x, value)); }}
+            {"cellSizeX",   [](auto component, auto value){ component.cellSize = UnityEngine::Vector2(value, component.cellSize.y); }},
+            {"cellSizeY",   [](auto component, auto value){ component.cellSize = UnityEngine::Vector2(component.cellSize.x, value); }},
+            {"spacingX",    [](auto component, auto value){ component.spacing = UnityEngine::Vector2(value, component.spacing.y); }},
+            {"spacingY",    [](auto component, auto value){ component.spacing = UnityEngine::Vector2(component.spacing.x, value); }}
         };
     }
 }

@@ -4,9 +4,9 @@
 #include "UnityEngine/RectTransform.hpp"
 
 namespace BSML {
-    class RectTransformHandler : public TypeHandler<UnityEngine::RectTransform*> {
+    class RectTransformHandler : public TypeHandler<UnityEngine::RectTransform> {
         public:
-            using Base = TypeHandler<UnityEngine::RectTransform*>;
+            using Base = TypeHandler<UnityEngine::RectTransform>;
             RectTransformHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

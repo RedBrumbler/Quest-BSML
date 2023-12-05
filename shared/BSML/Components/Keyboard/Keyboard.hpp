@@ -8,23 +8,43 @@
 #include "Key.hpp"
 #include <functional>
 
-DECLARE_CLASS_CODEGEN(BSML, Keyboard, Il2CppObject,
-    DECLARE_INSTANCE_FIELD(ListWrapper<Key*>, keys);
-    DECLARE_INSTANCE_FIELD(Key*, dummy);
+DECLARE_CLASS_CORDL(BSML, Keyboard, bs_hook::Il2CppWrapperType,
+    DECLARE_FIELDS(
+        DECLARE_INSTANCE_FIELD(ListWrapper<Key>, keys);
+        DECLARE_INSTANCE_FIELD(Key, dummy);
 
-    DECLARE_INSTANCE_FIELD(bool, enableInputField);     /* default: true;  */
-    DECLARE_INSTANCE_FIELD(bool, shift);                /* default: false; */
-    DECLARE_INSTANCE_FIELD(bool, caps);                 /* default: false; */
-    DECLARE_INSTANCE_FIELD(UnityEngine::RectTransform*, container);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Vector2, currentPosition);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Vector2, basePosition);
-    DECLARE_INSTANCE_FIELD(float, scale);               /* default: 0.5f;  */
-    DECLARE_INSTANCE_FIELD(float, padding);             /* default: 0.5f;  */
-    DECLARE_INSTANCE_FIELD(float, buttonWidth);         /* default: 12.0f; */
+        DECLARE_INSTANCE_FIELD(bool, enableInputField);     /* default: true;  */
+        DECLARE_INSTANCE_FIELD(bool, shift);                /* default: false; */
+        DECLARE_INSTANCE_FIELD(bool, caps);                 /* default: false; */
+        DECLARE_INSTANCE_FIELD(UnityEngine::RectTransform, container);
+        DECLARE_INSTANCE_FIELD(UnityEngine::Vector2, currentPosition);
+        DECLARE_INSTANCE_FIELD(UnityEngine::Vector2, basePosition);
+        DECLARE_INSTANCE_FIELD(float, scale);               /* default: 0.5f;  */
+        DECLARE_INSTANCE_FIELD(float, padding);             /* default: 0.5f;  */
+        DECLARE_INSTANCE_FIELD(float, buttonWidth);         /* default: 12.0f; */
 
-    DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, keyboardText);
-    DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, keyboardCursor);
-    DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, baseButton);
+        DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI, keyboardText);
+        DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI, keyboardCursor);
+        DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button, baseButton);
+
+        std::function<void(StringW)> enterPressed = nullptr;
+    );
+
+    FIELD_ACCESSOR(keys);
+    FIELD_ACCESSOR(dummy);
+    FIELD_ACCESSOR(enableInputField);
+    FIELD_ACCESSOR(shift);
+    FIELD_ACCESSOR(caps);
+    FIELD_ACCESSOR(container);
+    FIELD_ACCESSOR(currentPosition);
+    FIELD_ACCESSOR(basePosition);
+    FIELD_ACCESSOR(scale);
+    FIELD_ACCESSOR(padding);
+    FIELD_ACCESSOR(buttonWidth);
+    FIELD_ACCESSOR(keyboardText);
+    FIELD_ACCESSOR(keyboardCursor);
+    FIELD_ACCESSOR(baseButton);
+    FIELD_ACCESSOR(enterPressed);
 
     DECLARE_CTOR(ctor);
 
@@ -35,8 +55,8 @@ DECLARE_CLASS_CODEGEN(BSML, Keyboard, Il2CppObject,
         static const std::string DVORAK;
 
         void add_text(StringW value);
-        
-        Key* get_key(StringW index);
+
+        Key get_key(StringW index);
         void SetButtonType(std::string_view ButtonName);
         void SetValue(std::string_view keyLabel, std::string_view value);
         void SetAction(std::string_view keyName, std::function<void(Key*)> action);
@@ -51,12 +71,11 @@ DECLARE_CLASS_CODEGEN(BSML, Keyboard, Il2CppObject,
         void Caps(Key* key);
         void DrawCursor();
 
-        std::function<void(StringW)> enterPressed = nullptr;
 
         static Keyboard* construct(UnityEngine::RectTransform* container, std::string_view defaultKeyboard = QWERTY, bool enableInputField = false, float x = 0, float y = 0);
     private:
-        Key* AddKey(StringW keyLabel, float width = 12.0f, float height = 10.0f, int color = 0xffffff);
-        Key* AddKey(StringW keyLabel, StringW shifted, float width = 12.0f, float height = 10.0f);
+        Key AddKey(StringW keyLabel, float width = 12.0f, float height = 10.0f, int color = 0xffffff);
+        Key AddKey(StringW keyLabel, StringW shifted, float width = 12.0f, float height = 10.0f);
         void EmitKey(float& spacing, float& width, StringW& label, StringW& key, bool& space, StringW& newValue, float& height, int& color);
         bool ReadFloat(StringW& data, int& position, float& result);
 )
