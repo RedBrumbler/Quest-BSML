@@ -2,6 +2,7 @@
 
 #include <vector>
 // this is just included because otherwise the SafePtr complains about conversion to unity object
+#include "beatsaber-hook/shared/utils/typedefs.h"
 #include "UnityEngine/Object.hpp"
 
 namespace BSML {
@@ -13,7 +14,7 @@ namespace BSML {
             int frameCount = 0;
             std::vector<FrameInfo*> frames;
     };
-    
+
     class FrameInfo {
         public:
             int width, height, bpp;

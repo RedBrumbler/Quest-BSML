@@ -18,11 +18,11 @@ namespace BSML {
     }
 
     bool DropdownListSetting::get_interactable() {
-        return dropdown ? dropdown->button->get_interactable() : false;
+        return dropdown ? dropdown->_button->get_interactable() : false;
     }
 
     void DropdownListSetting::set_interactable(bool value) {
-        if (dropdown) dropdown->button->set_interactable(value);
+        if (dropdown) dropdown->_button->set_interactable(value);
     }
 
     void DropdownListSetting::Setup() {
@@ -50,9 +50,9 @@ namespace BSML {
             }
         }
 
-        dropdown->SetTexts(texts->i_IReadOnlyList_1_T());
+        dropdown->SetTexts(*texts);
     }
-    
+
     void DropdownListSetting::ValidateRange() {
         if (index >= values.size())
             index = values.size() - 1;
@@ -62,12 +62,12 @@ namespace BSML {
     }
 
     void DropdownListSetting::UpdateState() {
-        if (dropdown && dropdown->text) {
+        if (dropdown && dropdown->_text) {
             auto value = get_Value();
             if (value) {
-                dropdown->text->set_text(formatter ? formatter(value) : value->ToString() );
+                dropdown->_text->set_text(formatter ? formatter(value) : value->ToString() );
             } else {
-                dropdown->text->set_text("NULL");
+                dropdown->_text->set_text("NULL");
             }
         }
     }
@@ -109,7 +109,7 @@ namespace BSML {
 
         if (index == values.size())
             index = values.size() - 1;
-        
+
         dropdown->SelectCellWithIdx(index);
 
         UpdateState();

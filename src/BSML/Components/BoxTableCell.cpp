@@ -14,11 +14,11 @@ namespace BSML {
         highlightedColor0 = {0, 0.75f, 1, 1};
         highlightedColor1 = {0, 0.75f, 1, 0};
     }
-    
+
     BoxTableCell* BoxTableCell::Create(GlobalNamespace::AnnotatedBeatmapLevelCollectionCell* prefab) {
         auto cell = Object::Instantiate(prefab);
-        auto coverImage = cell->coverImage;
-        auto selectionImage = cell->selectionImage;
+        auto coverImage = cell->_coverImage;
+        auto selectionImage = cell->_selectionImage;
 
         auto imageTransform = coverImage->get_transform();
         int childCount = imageTransform->get_childCount();

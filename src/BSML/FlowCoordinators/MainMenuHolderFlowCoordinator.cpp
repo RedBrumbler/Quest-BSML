@@ -3,9 +3,6 @@
 
 #include "custom-types/shared/delegate.hpp"
 #include "logging.hpp"
-#include "HMUI/ViewController_AnimationDirection.hpp"
-#include "HMUI/ViewController_AnimationType.hpp"
-#include "HMUI/ViewController_DidActivateDelegate.hpp"
 #include "UnityEngine/WaitForEndOfFrame.hpp"
 #include "Helpers/creation.hpp"
 #include "Helpers/getters.hpp"
@@ -34,7 +31,7 @@ namespace BSML {
 
     void MainMenuHolderFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController) {
         DEBUG("Back Button was pressed");
-        parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
+        _parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
     }
 
     custom_types::Helpers::Coroutine MainMenuHolderFlowCoordinator::EndOfFramePresentVC() {
@@ -42,7 +39,7 @@ namespace BSML {
 
         if (currentRegistration) {
             SetTitle(currentRegistration->title, HMUI::ViewController::AnimationType::Out);
-            if (!mainScreenViewControllers->Contains(currentRegistration->viewController)) {
+            if (!_mainScreenViewControllers->Contains(currentRegistration->viewController)) {
                 ReplaceTopViewController(currentRegistration->viewController, this, this, nullptr, HMUI::ViewController::AnimationType::In, HMUI::ViewController::AnimationDirection::Horizontal);
             } else {
                 currentRegistration->viewController->__Activate(false, false);
@@ -87,7 +84,7 @@ namespace BSML {
     }
 
     void MainMenuRegistration::OnGameDidRestart() {
-        if (viewController && viewController->m_CachedPtr.m_value) {
+        if (viewController && viewController->m_CachedPtr) {
             UnityEngine::Object::DestroyImmediate(viewController);
         }
 
@@ -114,7 +111,7 @@ namespace BSML {
     }
 
     void MainMenuRegistration::PresentWithFlowCoordinator(HMUI::FlowCoordinator* presentOn) {
-        if (!flowCoordinator || !flowCoordinator->m_CachedPtr.m_value) {
+        if (!flowCoordinator || !flowCoordinator->m_CachedPtr) {
             flowCoordinator = BSML::Helpers::CreateFlowCoordinator(const_cast<System::Type*>(csType));
         }
 
@@ -122,7 +119,7 @@ namespace BSML {
     }
 
     void MainMenuRegistration::PresentWithViewController(HMUI::FlowCoordinator* presentOn) {
-        if (!viewController || !viewController->m_CachedPtr.m_value) {
+        if (!viewController || !viewController->m_CachedPtr) {
             viewController = BSML::Helpers::CreateViewController(const_cast<System::Type*>(csType));
         }
 
@@ -133,7 +130,7 @@ namespace BSML {
     }
 
     void MainMenuRegistration::PresentWithMethod(HMUI::FlowCoordinator* presentOn) {
-        if (!viewController || !viewController->m_CachedPtr.m_value) {
+        if (!viewController || !viewController->m_CachedPtr) {
             viewController = BSML::Helpers::CreateViewController(const_cast<System::Type*>(csType));
             viewController->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(viewController, setupFunc));
         }

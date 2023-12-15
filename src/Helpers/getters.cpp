@@ -24,7 +24,7 @@ namespace BSML::Helpers {
     PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache()
     {
         if(!physicsRaycaster)
-            physicsRaycaster = Resources::FindObjectsOfTypeAll<MainMenuViewController*>().First()->GetComponent<VRGraphicRaycaster*>()->physicsRaycaster;
+            physicsRaycaster = Resources::FindObjectsOfTypeAll<MainMenuViewController*>().First()->GetComponent<VRGraphicRaycaster*>()->_physicsRaycaster;
         if(!physicsRaycaster)
             CacheNotFoundWarningLog(PhysicsRaycasterWithCache);
         return physicsRaycaster.ptr();
@@ -34,14 +34,14 @@ namespace BSML::Helpers {
     DiContainer* GetDiContainer()
     {
         if(!diContainer)
-            diContainer = Resources::FindObjectsOfTypeAll<TextSegmentedControl*>().FirstOrDefault([](TextSegmentedControl* x) { return x->get_transform()->get_parent()->get_name() == "PlayerStatisticsViewController" && x->container; })->container;
+            diContainer = Resources::FindObjectsOfTypeAll<TextSegmentedControl*>().FirstOrDefault([](TextSegmentedControl* x) { return x->get_transform()->get_parent()->get_name() == "PlayerStatisticsViewController" && x->_container; })->_container;
         if(!diContainer)
             CacheNotFoundWarningLog(DiContainer);
         return diContainer.ptr();
     }
 
     SafePtrUnity<HoverHintController> hoverHintController;
-    HoverHintController* GetHoverHintController() 
+    HoverHintController* GetHoverHintController()
     {
         if(!hoverHintController)
             hoverHintController = Resources::FindObjectsOfTypeAll<HoverHintController*>().FirstOrDefault();
@@ -54,7 +54,7 @@ namespace BSML::Helpers {
     IVRPlatformHelper* GetIVRPlatformHelper()
     {
         if (!platformHelper)
-            platformHelper = Resources::FindObjectsOfTypeAll<LevelCollectionTableView*>().First()->GetComponentInChildren<ScrollView*>()->platformHelper;
+            platformHelper = Resources::FindObjectsOfTypeAll<LevelCollectionTableView*>().First()->GetComponentInChildren<ScrollView*>()->_platformHelper;
         if (!platformHelper)
             CacheNotFoundWarningLog(IVRPlatformHelper);
         return platformHelper.ptr();

@@ -7,6 +7,7 @@
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "HMUI/StackLayoutGroup.hpp"
 
 using namespace UnityEngine;
@@ -26,7 +27,7 @@ namespace BSML {
         rectTransform->set_anchorMin({0, 0});
         rectTransform->set_anchorMax({1, 1});
         rectTransform->set_sizeDelta({0, 0});
-        
+
         gameObject->AddComponent<UI::LayoutElement*>();
         return gameObject;
     }

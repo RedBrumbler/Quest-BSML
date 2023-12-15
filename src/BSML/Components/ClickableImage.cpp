@@ -1,7 +1,9 @@
 #include "BSML/Components/ClickableImage.hpp"
 #include "logging.hpp"
 
-#include "VRUIControls/VRPointer.hpp"
+#include "GlobalNamespace/VRController.hpp"
+#include "UnityEngine/Resources.hpp"
+#include "UnityEngine/XR/XRNode.hpp"
 
 DEFINE_TYPE(BSML, ClickableImage);
 
@@ -16,7 +18,7 @@ namespace BSML {
         onExit = nullptr;
 
         buttonClickedSignal = nullptr;
-        hapticFeedbackController = nullptr;
+        hapticFeedbackManager = nullptr;
         hapticFeedbackPresetSO = nullptr;
 
         static auto base_ctor = il2cpp_functions::class_get_method_from_name(classof(HMUI::ImageView*), ".ctor", 0);
@@ -39,7 +41,7 @@ namespace BSML {
         INFO("Enter");
         set_isHighlighted(true);
         if (onEnter) onEnter();
-        Vibrate(!VRUIControls::VRPointer::_get__lastControllerUsedWasRight());
+        Vibrate(vrPointer->lastSelectedVrController->node == UnityEngine::XR::XRNode::LeftHand);
     }
 
     void ClickableImage::OnPointerExit(UnityEngine::EventSystems::PointerEventData* eventData) {
@@ -51,7 +53,7 @@ namespace BSML {
     void ClickableImage::Vibrate(bool left)
     {
         UnityEngine::XR::XRNode node = left ? UnityEngine::XR::XRNode::LeftHand : UnityEngine::XR::XRNode::RightHand;
-        if (hapticFeedbackController && hapticFeedbackPresetSO) hapticFeedbackController->PlayHapticFeedback(node, hapticFeedbackPresetSO);
+        if (hapticFeedbackManager && hapticFeedbackPresetSO) hapticFeedbackManager->PlayHapticFeedback(node, hapticFeedbackPresetSO);
     }
 
     void ClickableImage::set_highlightColor(UnityEngine::Color color) {
@@ -79,5 +81,16 @@ namespace BSML {
     void ClickableImage::set_isHighlighted(bool value) {
         isHighlighted = value;
         UpdateHighlight();
+    }
+
+    VRUIControls::VRPointer* ClickableImage::get_vrPointer() {
+        if (_vrPointer && _vrPointer->m_CachedPtr) {
+            return _vrPointer;
+        } else {
+            _vrPointer = nullptr;
+        }
+
+        _vrPointer = UnityEngine::Resources::FindObjectsOfTypeAll<VRUIControls::VRPointer*>().FirstOrDefault();
+        return _vrPointer;
     }
 }

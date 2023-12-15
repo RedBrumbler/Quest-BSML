@@ -8,14 +8,13 @@
 
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Vector2.hpp"
-#include "HMUI/ViewController_DidActivateDelegate.hpp"
 #include "custom-types/shared/delegate.hpp"
 
 DEFINE_TYPE(BSML, SettingsMenu);
 
 namespace BSML {
     bool SettingsMenu::get_didSetup() {
-        return viewController && viewController->m_CachedPtr.m_value || flowCoordinator && flowCoordinator->m_CachedPtr.m_value;
+        return viewController && viewController->m_CachedPtr || flowCoordinator && flowCoordinator->m_CachedPtr;
     }
 
     HMUI::ViewController* SettingsMenu::get_viewController() {

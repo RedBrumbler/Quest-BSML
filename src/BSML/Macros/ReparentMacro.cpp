@@ -31,7 +31,7 @@ namespace BSML {
         if (transformsItr != data.end()) {
             auto value = parserParams.TryGetValue(transformsItr->second);
             if (value) {
-                ListWrapper<UnityEngine::Transform*> transforms = value->GetValue<List<UnityEngine::Transform*>*>();
+                ListW<UnityEngine::Transform*> transforms = value->GetValue<List<UnityEngine::Transform*>*>();
                 if (transforms) {
                     for (auto t : transforms) {
                         t->SetParent(parent, false);

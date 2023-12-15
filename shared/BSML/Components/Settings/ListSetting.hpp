@@ -16,7 +16,7 @@ DECLARE_CLASS_CUSTOM(BSML, ListSetting, BSML::IncDecSetting,
     DECLARE_INSTANCE_METHOD(Il2CppObject*, get_Value);
     DECLARE_INSTANCE_METHOD(void, set_Value, Il2CppObject* value);
 
-    DECLARE_INSTANCE_FIELD(ListWrapper<Il2CppObject*>, values);
+    DECLARE_INSTANCE_FIELD(ListW<Il2CppObject*>, values);
     DECLARE_INSTANCE_FIELD(int, index); /* default: 0; */ 
 
     DECLARE_CTOR(ctor);

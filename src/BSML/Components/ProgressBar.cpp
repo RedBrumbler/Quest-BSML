@@ -11,11 +11,19 @@
 #include "UnityEngine/Texture2D.hpp"
 #include "UnityEngine/Sprite.hpp"
 #include "UnityEngine/SpriteMeshType.hpp"
+#include "UnityEngine/Vector3.hpp"
 #include "HMUI/CurvedCanvasSettings.hpp"
 
 // type borrowed from https://github.com/darknight1050/QuestUI
 DEFINE_TYPE(BSML, ProgressBar);
 
+static inline UnityEngine::Vector3 operator/(UnityEngine::Vector3 vec, float v) {
+    return {
+        vec.x / v,
+        vec.y / v,
+        vec.z / v
+    };
+}
 namespace BSML {
     void ProgressBar::OnDisable() {
         if (!inited) return;
@@ -28,7 +36,7 @@ namespace BSML {
     }
 
     void ProgressBar::Update() {
-        if (!canvas || !canvas->m_CachedPtr.m_value || !canvas->get_enabled()) return;
+        if (!canvas || !canvas->m_CachedPtr || !canvas->get_enabled()) return;
         float pong = UnityEngine::Time::get_time() * 0.35f;
 
         float graph = std::fmod(pong, 2);
@@ -86,7 +94,7 @@ namespace BSML {
         auto barObjectTransform = bar->get_transform();
         barObjectTransform->set_position(position);
         barObjectTransform->set_eulerAngles(rotation);
-        barObjectTransform->set_localScale(scale / 100);
+        barObjectTransform->set_localScale(scale / 100.0f);
 
         bar->canvas = barGameObject->AddComponent<UnityEngine::Canvas*>();
         bar->canvas->set_renderMode(UnityEngine::RenderMode::WorldSpace);

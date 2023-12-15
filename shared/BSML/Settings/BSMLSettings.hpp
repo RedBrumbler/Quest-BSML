@@ -17,7 +17,7 @@ DECLARE_CLASS_CODEGEN(BSML, BSMLSettings, Il2CppObject,
     DECLARE_INSTANCE_FIELD(UnityEngine::Coroutine*, addButtonCoroutine);
     DECLARE_INSTANCE_FIELD(ModSettingsFlowCoordinator*, modSettingsFlowCoordinator);
 
-    DECLARE_INSTANCE_METHOD(ListWrapper<BSML::CustomCellInfo*>, get_settingsMenus);
+    DECLARE_INSTANCE_METHOD(ListW<BSML::CustomCellInfo*>, get_settingsMenus);
     DECLARE_INSTANCE_METHOD(ModSettingsFlowCoordinator*, get_modSettingsFlowCoordinator);
     DECLARE_INSTANCE_METHOD(void, Setup);
     DECLARE_INSTANCE_METHOD(void, PresentSettings);

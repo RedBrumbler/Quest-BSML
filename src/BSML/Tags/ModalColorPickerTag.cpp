@@ -9,6 +9,7 @@
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/Vector2.hpp"
 
 #include "HMUI/ImageView.hpp"
 #include "BSML/Components/ModalColorPicker.hpp"
@@ -25,29 +26,29 @@ namespace BSML {
             <button text='Cancel' on-click='CancelPressed' pref-width='30'/>\
             <action-button text='Done' on-click='DonePressed' pref-width='30'/>\
         </horizontal>\
-        "    
+        "
     };
 
     GlobalNamespace::RGBPanelController* get_rgbTemplate() {
         static SafePtrUnity<GlobalNamespace::RGBPanelController> rgbTemplate;
-        if (!rgbTemplate) 
+        if (!rgbTemplate)
             rgbTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::RGBPanelController*>().FirstOrDefault([](auto x){ return x->get_name() == "RGBColorPicker"; });
         return rgbTemplate.ptr();
     }
     GlobalNamespace::HSVPanelController* get_hsvTemplate() {
         static SafePtrUnity<GlobalNamespace::HSVPanelController> hsvTemplate;
-        if (!hsvTemplate) 
+        if (!hsvTemplate)
             hsvTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::HSVPanelController*>().FirstOrDefault([](auto x){ return x->get_name() == "HSVColorPicker"; });
         return hsvTemplate.ptr();
     }
     HMUI::ImageView* get_currentColorTemplate() {
         static SafePtrUnity<HMUI::ImageView> currentColorTemplate;
         if (!currentColorTemplate) {
-            currentColorTemplate = Resources::FindObjectsOfTypeAll<HMUI::ImageView*>().FirstOrDefault([](auto x){ 
+            currentColorTemplate = Resources::FindObjectsOfTypeAll<HMUI::ImageView*>().FirstOrDefault([](auto x){
                 if (x->get_name() != "SaberColorA") return false;
                 auto parent = x->get_transform()->get_parent();
                 if (!parent) return false;
-                return parent->get_name() == "ColorSchemeView"; 
+                return parent->get_name() == "ColorSchemeView";
             });
         }
         return currentColorTemplate.ptr();
@@ -65,7 +66,7 @@ namespace BSML {
         auto colorPicker = gameObject->AddComponent<ModalColorPicker*>();
         colorPicker->modalView = externalComponents->Get<ModalView*>();
 
-                        
+
 
         auto onChangeInfo = il2cpp_functions::class_get_method_from_name(colorPicker->klass, "OnChange", 2);
         auto delegate = MakeSystemAction<UnityEngine::Color, GlobalNamespace::ColorChangeUIEventType>(colorPicker, onChangeInfo);

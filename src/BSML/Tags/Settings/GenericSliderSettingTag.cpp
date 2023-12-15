@@ -9,6 +9,9 @@
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
+#include "UnityEngine/UI/ColorBlock.hpp"
+#include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/Color.hpp"
 #include "HMUI/CustomFormatRangeValuesSlider.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
 
@@ -22,7 +25,7 @@ namespace BSML {
                 controllersTransformTemplate = Resources::FindObjectsOfTypeAll<LayoutElement*>().First([](auto x){ return x->get_name() == "PositionX"; });
         return controllersTransformTemplate.ptr();
     }
-    
+
     UnityEngine::GameObject* GenericSliderSettingTagBase::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating SliderSettingBase");
         auto baseSetting = Object::Instantiate(get_controllersTransformTemplate(), parent, false);
@@ -43,7 +46,7 @@ namespace BSML {
 
         slider->set_name("BSMLSlider");
         slider->GetComponentInChildren<TMPro::TextMeshProUGUI*>()->set_enableWordWrapping(false);
-        slider->enableDragging = true;
+        slider->_enableDragging = true;
         auto sliderRect = reinterpret_cast<RectTransform*>(slider->get_transform());
         sliderRect->set_anchorMin({1, 0});
         sliderRect->set_anchorMax({1, 1});

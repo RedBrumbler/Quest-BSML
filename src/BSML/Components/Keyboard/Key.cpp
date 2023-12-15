@@ -6,8 +6,8 @@
 #include "System/StringComparison.hpp"
 #include "UnityEngine/Events/UnityAction.hpp"
 #include "UnityEngine/UI/Image.hpp"
-#include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/Vector3.hpp"
 #include "HMUI/UIKeyboardKey.hpp"
 #include "HMUI/HoverHint.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
@@ -76,7 +76,7 @@ namespace BSML {
         button->get_onClick()->AddListener(delegate);
         auto hintText = button->get_gameObject()->AddComponent<HMUI::HoverHint*>();
         hintText->set_text(self->value);
-        hintText->hoverHintController = Helpers::GetHoverHintController();
+        hintText->_hoverHintController = Helpers::GetHoverHintController();
 
         return self;
     }
@@ -93,7 +93,7 @@ namespace BSML {
         }
         kb->DrawCursor();
     }
-    
+
     bool Key::KeyAction() {
         if (!keyAction) return false;
         keyAction(this);

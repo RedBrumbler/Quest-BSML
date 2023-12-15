@@ -20,8 +20,8 @@ DECLARE_CLASS_CODEGEN(BSML, BoxTableCell, HMUI::TableCell,
     DECLARE_INSTANCE_METHOD(void, SetData, UnityEngine::Sprite* coverSprite);
     DECLARE_INSTANCE_METHOD(void, RefreshVisuals);
 
-    DECLARE_OVERRIDE_METHOD(void, SelectionDidChange, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::SelectableCell::SelectionDidChange>::get(), HMUI::SelectableCell::TransitionType transitionType);
-    DECLARE_OVERRIDE_METHOD(void, HighlightDidChange, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::SelectableCell::HighlightDidChange>::get(), HMUI::SelectableCell::TransitionType transitionType);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, SelectionDidChange, &HMUI::SelectableCell::SelectionDidChange, HMUI::SelectableCell::TransitionType transitionType);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, HighlightDidChange, &HMUI::SelectableCell::HighlightDidChange, HMUI::SelectableCell::TransitionType transitionType);
 
     DECLARE_CTOR(ctor);
     public:

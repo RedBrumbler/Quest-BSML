@@ -13,7 +13,7 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
         const MethodInfo* setterInfo;
         const MethodInfo* getterInfo;
         const MethodInfo* onChangeInfo;
-        
+
         Il2CppObject* get_onChangeHost();
         Il2CppObject* get_host();
 

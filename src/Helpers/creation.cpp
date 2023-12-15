@@ -9,6 +9,7 @@
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/AdditionalCanvasShaderChannels.hpp"
 #include "UnityEngine/RenderMode.hpp"
+#include "UnityEngine/Color.hpp"
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 
 using namespace UnityEngine;
@@ -41,7 +42,7 @@ namespace BSML::Helpers {
     HMUI::ViewController* CreateViewController(System::Type* type) {
         if (!canvasTemplate)
             canvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x) { return x->get_name() == "DropdownTableView"; });
-        
+
         auto go = GameObject::New_ctor(type->get_Name());
         auto cv = go->AddComponent<Canvas*>();
 
@@ -55,7 +56,7 @@ namespace BSML::Helpers {
         cv->set_sortingOrder(canvasTemplate->get_sortingOrder());
         cv->set_worldCamera(canvasTemplate->get_worldCamera());
 
-        go->AddComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = GetPhysicsRaycasterWithCache();
+        go->AddComponent<VRUIControls::VRGraphicRaycaster*>()->_physicsRaycaster = GetPhysicsRaycasterWithCache();
         go->AddComponent<CanvasGroup*>();
         auto vc = reinterpret_cast<HMUI::ViewController*>(go->AddComponent(type));
 
@@ -69,14 +70,14 @@ namespace BSML::Helpers {
 
     HMUI::FlowCoordinator* CreateFlowCoordinator(System::Type* type) {
         auto flow = reinterpret_cast<HMUI::FlowCoordinator*>(GameObject::New_ctor(type->get_Name())->AddComponent(type));
-        flow->baseInputModule = GetMainFlowCoordinator()->baseInputModule;
+        flow->_baseInputModule = GetMainFlowCoordinator()->_baseInputModule;
         return flow;
     }
 
     HMUI::HoverHint* AddHoverHint(UnityEngine::GameObject* object, StringW text) {
         auto hintText = object->AddComponent<HMUI::HoverHint*>();
         hintText->set_text(text);
-        hintText->hoverHintController = GetHoverHintController();
+        hintText->_hoverHintController = GetHoverHintController();
         return hintText;
     }
 }

@@ -38,7 +38,7 @@ namespace BSML {
             co_yield nullptr;
         }
 
-        while (!scrollView || !scrollView->m_CachedPtr.m_value) {
+        while (!scrollView || !scrollView->m_CachedPtr) {
             co_yield nullptr;
         }
         UpdateScrollView();
@@ -46,7 +46,7 @@ namespace BSML {
     }
 
     void ScrollViewContent::UpdateScrollView() {
-        if (!scrollView || !scrollView->m_CachedPtr.m_value) {
+        if (!scrollView || !scrollView->m_CachedPtr) {
             return;
         }
 

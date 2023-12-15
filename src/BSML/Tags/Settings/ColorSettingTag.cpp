@@ -13,7 +13,7 @@
 #include "UnityEngine/Sprite.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/Toggle.hpp"
-#include "UnityEngine/UI/Toggle_ToggleEvent.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
 #include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
@@ -25,7 +25,7 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ColorSettingTag> colorSettingTagParser({"color-setting"});
-    
+
     GlobalNamespace::FormattedFloatListSettingsValueController* get_baseSettings() {
         static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsValueController> baseSettings;
         if (!baseSettings) {
@@ -77,7 +77,7 @@ namespace BSML {
         auto text = nameText->GetComponent<TMPro::TextMeshProUGUI*>();
         text->set_text("BSMLColorSetting");
         externalComponents->Add(text);
-        
+
         auto layoutElement = gameObject->GetComponent<LayoutElement*>();
         layoutElement->set_preferredWidth(90.0f);
         externalComponents->Add(layoutElement);

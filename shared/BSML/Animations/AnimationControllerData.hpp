@@ -19,7 +19,7 @@ DECLARE_CLASS_CODEGEN(BSML, AnimationControllerData, Il2CppObject,
     DECLARE_INSTANCE_FIELD(UnityEngine::Material*, animMaterial);
     DECLARE_INSTANCE_FIELD(bool, isDelayConsistent);
     DECLARE_INSTANCE_FIELD(List<UnityEngine::UI::Image*>*, activeImages);
-    DECLARE_INSTANCE_METHOD(ListWrapper<UnityEngine::UI::Image*>, get_activeImages);
+    DECLARE_INSTANCE_METHOD(ListW<UnityEngine::UI::Image*>, get_activeImages);
 
     DECLARE_INSTANCE_METHOD(bool, IsBeingUsed);
 

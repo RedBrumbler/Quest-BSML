@@ -8,7 +8,6 @@
 #include "../Components/TabSelector.hpp"
 #include "../Components/CustomListTableData.hpp"
 #include "../Components/ModalView.hpp"
-#include "HMUI/TableView_IDataSource.hpp"
 #include "GameplaySetupCell.hpp"
 #include "MenuType.hpp"
 
@@ -17,7 +16,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, Il2CppObject, classof(HMUI
     DECLARE_INSTANCE_FIELD(GlobalNamespace::GameplaySetupViewController*, gameplaySetupViewController);
     DECLARE_INSTANCE_FIELD(bool, listParsed);
     DECLARE_INSTANCE_FIELD(bool, _loaded);
-    
+
     DECLARE_INSTANCE_FIELD(BSML::ModalView*, listModal);
     DECLARE_INSTANCE_FIELD(CustomListTableData*, modsList);
     DECLARE_INSTANCE_FIELD(List<Il2CppObject*>*, _menus);
@@ -29,8 +28,8 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, Il2CppObject, classof(HMUI
     DECLARE_INSTANCE_FIELD(UnityEngine::Transform*, modsTab);
     DECLARE_INSTANCE_FIELD(StringW, reuseIdentifier);
 
-    DECLARE_INSTANCE_METHOD(ListWrapper<Il2CppObject*>, get_menus);
-    DECLARE_INSTANCE_METHOD(ListWrapper<UnityEngine::Transform*>, get_vanillaItems);
+    DECLARE_INSTANCE_METHOD(ListW<Il2CppObject*>, get_menus);
+    DECLARE_INSTANCE_METHOD(ListW<UnityEngine::Transform*>, get_vanillaItems);
     DECLARE_INSTANCE_METHOD(bool, get_loaded);
     DECLARE_INSTANCE_METHOD(void, set_loaded, bool value);
 
@@ -41,9 +40,9 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, Il2CppObject, classof(HMUI
     DECLARE_INSTANCE_METHOD(void, ShowModal);
 
     DECLARE_INSTANCE_METHOD(GameplaySetupCell*, GetCell);
-    DECLARE_OVERRIDE_METHOD(float, CellSize, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::TableView::IDataSource::CellSize>::get());
-    DECLARE_OVERRIDE_METHOD(int, NumberOfCells, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::TableView::IDataSource::NumberOfCells>::get());
-    DECLARE_OVERRIDE_METHOD(HMUI::TableCell*, CellForIdx, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::TableView::IDataSource::CellForIdx>::get(), HMUI::TableView* tableView, int idx);
+    DECLARE_OVERRIDE_METHOD_MATCH(float, CellSize, &HMUI::TableView::IDataSource::CellSize);
+    DECLARE_OVERRIDE_METHOD_MATCH(int, NumberOfCells, &HMUI::TableView::IDataSource::NumberOfCells);
+    DECLARE_OVERRIDE_METHOD_MATCH(HMUI::TableCell*, CellForIdx, &HMUI::TableView::IDataSource::CellForIdx, HMUI::TableView* tableView, int idx);
 
     DECLARE_DEFAULT_CTOR();
     public:

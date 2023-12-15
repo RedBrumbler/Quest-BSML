@@ -20,7 +20,7 @@ namespace BSML {
 
     extern GlobalNamespace::Signal* get_textClickedSignal();
     extern HapticPresetSO* get_textHapticPreset();
-    extern GlobalNamespace::HapticFeedbackController* get_textHapticFeedbackController();
+    extern GlobalNamespace::HapticFeedbackManager* get_textHapticFeedbackManager();
 
     ModSettingsFlowCoordinator* get_flow() {
         static SafePtrUnity<ModSettingsFlowCoordinator> flow;

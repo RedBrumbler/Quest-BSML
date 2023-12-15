@@ -17,11 +17,11 @@ namespace BSML {
         static SafePtrUnity<HMUI::TextSegmentedControl> tabSelectorTagTemplate;
         if (!tabSelectorTagTemplate) {
             tabSelectorTagTemplate = Resources::FindObjectsOfTypeAll<HMUI::TextSegmentedControl*>().FirstOrDefault(
-                [](auto x) { 
+                [](auto x) {
                     auto parent = x->get_transform()->get_parent();
                     if (!parent) return false;
                     if (parent->get_name() != "PlayerStatisticsViewController") return false;
-                    return x->container != nullptr;
+                    return x->_container != nullptr;
                 });
         }
         return tabSelectorTagTemplate.ptr();
@@ -33,7 +33,7 @@ namespace BSML {
 
         auto gameObject = textSegmentedControl->get_gameObject();
         gameObject->set_name("BSMLTabSelector");
-        textSegmentedControl->container = get_tabSelectorTagTemplate()->container;
+        textSegmentedControl->_container = get_tabSelectorTagTemplate()->_container;
 
         auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
         transform->set_anchoredPosition({0, 0});
@@ -44,7 +44,7 @@ namespace BSML {
 
         gameObject->AddComponent<TabSelector*>()->textSegmentedControl = textSegmentedControl;
         gameObject->SetActive(true);
-        
+
         return gameObject;
     }
 }

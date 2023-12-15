@@ -6,9 +6,9 @@
 
 DECLARE_CLASS_CODEGEN(BSML, SettingsMenuListViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(CustomListTableData*, list);
-    DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::ViewController::DidActivate>::get(), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, DidActivate, &HMUI::ViewController::DidActivate, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
     DECLARE_INSTANCE_METHOD(void, SettingsClick, HMUI::TableView* tableView, int idx);
-    
+
     public:
         std::function<void(SettingsMenu*)> clickedMenu;
 )

@@ -9,7 +9,7 @@
 #include <functional>
 
 DECLARE_CLASS_CODEGEN(BSML, Keyboard, Il2CppObject,
-    DECLARE_INSTANCE_FIELD(ListWrapper<Key*>, keys);
+    DECLARE_INSTANCE_FIELD(ListW<Key*>, keys);
     DECLARE_INSTANCE_FIELD(Key*, dummy);
 
     DECLARE_INSTANCE_FIELD(bool, enableInputField);     /* default: true;  */

@@ -13,7 +13,7 @@
 
 #include "GlobalNamespace/Signal.hpp"
 #include "GlobalNamespace/MenuShockwave.hpp"
-#include "GlobalNamespace/HapticFeedbackController.hpp"
+#include "GlobalNamespace/HapticFeedbackManager.hpp"
 #include "Libraries/HM/HMLib/VR/HapticPresetSO.hpp"
 
 using namespace UnityEngine;
@@ -26,7 +26,7 @@ namespace BSML {
         static SafePtrUnity<GlobalNamespace::Signal> textClickedSignal;
         if (!textClickedSignal) {
             auto menuShockWave = Resources::FindObjectsOfTypeAll<GlobalNamespace::MenuShockwave*>().FirstOrDefault();
-            textClickedSignal = menuShockWave ? menuShockWave->buttonClickEvents.LastOrDefault() : nullptr;
+            textClickedSignal = menuShockWave ? menuShockWave->_buttonClickEvents.LastOrDefault() : nullptr;
         }
         return textClickedSignal.ptr();
     }
@@ -35,20 +35,20 @@ namespace BSML {
         static SafePtrUnity<HapticPresetSO> textHapticPreset;
         if (!textHapticPreset) {
             textHapticPreset = UnityEngine::ScriptableObject::CreateInstance<HapticPresetSO*>();
-            textHapticPreset->duration = 0.02f;
-            textHapticPreset->strength = 1.0f;
-            textHapticPreset->frequency = 0.2f;
+            textHapticPreset->_duration = 0.02f;
+            textHapticPreset->_strength = 1.0f;
+            textHapticPreset->_frequency = 0.2f;
             Object::DontDestroyOnLoad(textHapticPreset.ptr());
         }
         return textHapticPreset.ptr();
     }
 
-    GlobalNamespace::HapticFeedbackController* get_textHapticFeedbackController() {
-        static SafePtrUnity<GlobalNamespace::HapticFeedbackController> textHapticFeedbackController;
-        if (!textHapticFeedbackController) {
-            textHapticFeedbackController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::HapticFeedbackController*>();
+    GlobalNamespace::HapticFeedbackManager* get_textHapticFeedbackManager() {
+        static SafePtrUnity<GlobalNamespace::HapticFeedbackManager> textHapticFeedbackManager;
+        if (!textHapticFeedbackManager) {
+            textHapticFeedbackManager = UnityEngine::Object::FindObjectOfType<GlobalNamespace::HapticFeedbackManager*>();
         }
-        return textHapticFeedbackController.ptr();
+        return textHapticFeedbackManager.ptr();
     }
 
     UnityEngine::GameObject* ClickableTextTag::CreateObject(UnityEngine::Transform* parent) const {
@@ -69,12 +69,12 @@ namespace BSML {
         rectTransform->set_anchorMin({0.5f, 0.5f});
         rectTransform->set_anchorMax({0.5f, 0.5f});
         rectTransform->set_sizeDelta({90, 8});
-        
+
         gameObject->AddComponent<UI::LayoutElement*>();
 
         textMesh->buttonClickedSignal = get_textClickedSignal();
         textMesh->hapticFeedbackPresetSO = get_textHapticPreset();
-        textMesh->hapticFeedbackController = get_textHapticFeedbackController();
+        textMesh->hapticFeedbackManager = get_textHapticFeedbackManager();
 
         gameObject->SetActive(true);
         return gameObject;

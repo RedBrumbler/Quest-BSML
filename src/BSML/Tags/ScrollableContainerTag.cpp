@@ -72,9 +72,9 @@ namespace BSML {
         go->AddComponent<HMUI::Touchable*>(); // Required by EventSystemListener
         go->AddComponent<HMUI::EventSystemListener*>(); // Required by ScrollView
         auto scrollView = go->AddComponent<ScrollableContainer*>();
-        scrollView->contentRectTransform = content;
-        scrollView->viewport = viewport;
-        scrollView->platformHelper = Helpers::GetIVRPlatformHelper();
+        scrollView->_contentRectTransform = content;
+        scrollView->_viewport = viewport;
+        scrollView->_platformHelper = Helpers::GetIVRPlatformHelper();
 
         auto externalComponents = contentGo->AddComponent<ExternalComponents*>();
         externalComponents->Add(scrollView);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "beatsaber-hook/shared/utils/typedefs.h"
+
 #include "UnityEngine/GameObject.hpp"
 #include "BSMLValue.hpp"
 #include "BSMLAction.hpp"
@@ -22,7 +24,7 @@ namespace BSML {
             /// @param tag the tag to look for
             /// @return const reference to the vector
             const std::vector<UnityEngine::GameObject*>& GetObjectsWithTag(const std::string& tag) const;
-            
+
             /// @brief add object with tag to the backing map;
             /// @param object the object to add
             /// @param tag the tag to add the object to
@@ -32,7 +34,7 @@ namespace BSML {
             /// @param objects the objects to add
             /// @param tag the tag to add the objects to
             void AddObjectsWithTag(const std::vector<UnityEngine::GameObject*>& objects, const std::string& tag);
-            
+
             /// @brief add an object to multiple tags in the backing map
             /// @param object the object to add
             /// @param tags the tags to add the object to
@@ -73,7 +75,7 @@ namespace BSML {
             /// @param key the key the event is saved to
             /// @param event the function to run for the specific event
             void AddEvent(const std::string& key, std::function<void(void)> event);
-            
+
             /// @brief get the host object
             Il2CppObject* get_host();
         private:

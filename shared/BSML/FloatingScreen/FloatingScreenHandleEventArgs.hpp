@@ -12,7 +12,16 @@ namespace BSML {
         const UnityEngine::Quaternion rotation;
 
         bool operator==(const FloatingScreenHandleEventArgs& other) const {
-            return other.position == position && other.rotation == rotation;
+            return (
+                position.x == other.position.x &&
+                position.y == other.position.y &&
+                position.z == other.position.z
+            ) && (
+                rotation.x == other.rotation.x &&
+                rotation.y == other.rotation.y &&
+                rotation.z == other.rotation.z &&
+                rotation.w == other.rotation.w
+            );
         }
 
         bool operator!=(const FloatingScreenHandleEventArgs& other) const {

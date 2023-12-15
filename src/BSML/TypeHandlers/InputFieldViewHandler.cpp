@@ -1,6 +1,5 @@
 #include "BSML/TypeHandlers/InputFieldViewHandler.hpp"
 
-#include "HMUI/InputFieldView_InputFieldChanged.hpp"
 #include "UnityEngine/Events/UnityAction_1.hpp"
 
 namespace BSML {
@@ -15,7 +14,7 @@ namespace BSML {
 
     InputFieldViewHandler::Base::SetterMap InputFieldViewHandler::get_setters() const {
         return {
-            {"textLengthLimit", [](auto component, auto value){ component->textLengthLimit = value; }}
+            {"textLengthLimit", [](auto component, auto value){ component->_textLengthLimit = value; }}
         };
     }
 

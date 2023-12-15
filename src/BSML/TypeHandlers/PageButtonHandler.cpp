@@ -1,6 +1,7 @@
 #include "BSML/TypeHandlers/PageButtonHandler.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/Quaternion.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 
 enum class PageButtonDirection {

@@ -71,10 +71,10 @@ static std::optional<TMPro::TextOverflowModes> stringToOverflowMode(const std::s
 
 TMPro::FontStyles SetStyle(TMPro::FontStyles existing, TMPro::FontStyles modify, bool flag) {
     if (flag)
-        return existing.value |= modify.value;
+        return TMPro::FontStyles(existing.value__ | modify.value__);
     else
-        return existing.value &= ~modify.value;
-    
+        return TMPro::FontStyles(existing.value__ & ~modify.value__);
+
 }
 
 namespace BSML {

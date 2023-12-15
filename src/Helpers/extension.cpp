@@ -16,7 +16,7 @@ namespace BSML::Helpers {
 
             auto tmpUgui = button->GetComponentInChildren<TMP_Text*>();
             if (tmpUgui)
-                tmpUgui->SetText(text);
+                tmpUgui->SetText(text, true);
     }
 
 }

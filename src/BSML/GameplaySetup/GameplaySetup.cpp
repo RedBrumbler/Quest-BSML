@@ -5,9 +5,9 @@
 #include "logging.hpp"
 #include "BSML.hpp"
 
-#include "HMUI/ViewController_DidActivateDelegate.hpp"
-#include "HMUI/ViewController_DidDeactivateDelegate.hpp"
 #include "UnityEngine/Resources.hpp"
+#include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "GlobalNamespace/SinglePlayerLevelSelectionFlowCoordinator.hpp"
 #include "GlobalNamespace/CampaignFlowCoordinator.hpp"
 #include "GlobalNamespace/GameServerLobbyFlowCoordinator.hpp"
@@ -25,8 +25,8 @@ namespace BSML {
         return instance.ptr();
     }
 
-    HMUI::TableView::IDataSource* GameplaySetup::i_DataSource() { 
-        return reinterpret_cast<HMUI::TableView::IDataSource*>(this); 
+    HMUI::TableView::IDataSource* GameplaySetup::i_DataSource() {
+        return reinterpret_cast<HMUI::TableView::IDataSource*>(this);
     }
 
     void GameplaySetup::Setup() {
@@ -154,7 +154,7 @@ namespace BSML {
     }
 
     void GameplaySetup::SetTabVisibility(std::string_view name, bool isVisible) {
-        if (!gameplaySetupViewController || !gameplaySetupViewController->m_CachedPtr.m_value || !gameplaySetupViewController->get_isActiveAndEnabled()) {
+        if (!gameplaySetupViewController || !gameplaySetupViewController->m_CachedPtr || !gameplaySetupViewController->get_isActiveAndEnabled()) {
             return;
         }
 
@@ -181,7 +181,7 @@ namespace BSML {
         INFO("Getting Cell");
         auto cell = reinterpret_cast<GameplaySetupCell*>(modsList->tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
 
-        if (!cell || !cell->m_CachedPtr.m_value) {
+        if (!cell || !cell->m_CachedPtr) {
             cell = UnityEngine::GameObject::New_ctor("GameplaySetupCell")->AddComponent<GameplaySetupCell*>();
             cell->set_interactable(true);
             cell->set_reuseIdentifier(reuseIdentifier);
@@ -205,14 +205,14 @@ namespace BSML {
     }
 
 
-    ListWrapper<Il2CppObject*> GameplaySetup::get_menus() {
+    ListW<Il2CppObject*> GameplaySetup::get_menus() {
         if (!_menus) {
             _menus = List<Il2CppObject*>::New_ctor();
         }
         return _menus;
     }
 
-    ListWrapper<UnityEngine::Transform*> GameplaySetup::get_vanillaItems() {
+    ListW<UnityEngine::Transform*> GameplaySetup::get_vanillaItems() {
         if (!_vanillaItems) {
             _vanillaItems = List<UnityEngine::Transform*>::New_ctor();
         }
@@ -225,7 +225,7 @@ namespace BSML {
 
     void GameplaySetup::set_loaded(bool value) {
         _loaded = value;
-        if (modsList && modsList->m_CachedPtr.m_value) modsList->get_gameObject()->SetActive(value);
-        if (loading && loading->m_CachedPtr.m_value) loading->get_gameObject()->SetActive(!value);
+        if (modsList && modsList->m_CachedPtr) modsList->get_gameObject()->SetActive(value);
+        if (loading && loading->m_CachedPtr) loading->get_gameObject()->SetActive(!value);
     }
 }

@@ -13,7 +13,7 @@ DECLARE_CLASS_CODEGEN(BSML, MenuButtons, Il2CppObject,
     DECLARE_INSTANCE_FIELD(List<Il2CppObject*>*, _buttons);
     DECLARE_INSTANCE_FIELD(UnityEngine::Coroutine*, presentViewCoroutine);
 
-    DECLARE_INSTANCE_METHOD(ListWrapper<Il2CppObject*>, get_buttons);
+    DECLARE_INSTANCE_METHOD(ListW<Il2CppObject*>, get_buttons);
     DECLARE_INSTANCE_METHOD(bool, Registerbutton, MenuButton* button);
     DECLARE_INSTANCE_METHOD(bool, UnRegisterbutton, MenuButton* button);
     DECLARE_INSTANCE_METHOD(void, Setup);

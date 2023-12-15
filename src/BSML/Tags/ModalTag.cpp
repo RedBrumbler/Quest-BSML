@@ -7,8 +7,10 @@
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Resources.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/UI/Image.hpp"
 #include "UnityEngine/UI/ScrollRect.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "HMUI/TableView.hpp"
 #include "HMUI/ScrollView.hpp"
 #include "HMUI/EventSystemListener.hpp"
@@ -40,17 +42,17 @@ namespace BSML {
         // we use our own custom modalView type, this differs from PC BSML but it just makes it easier to set things up
         auto modalView = gameObject->AddComponent<BSML::ModalView*>();
 
-        
-        modalView->presentPanelAnimations = modalViewTemplate->presentPanelAnimations;
-        modalView->dismissPanelAnimation = modalViewTemplate->dismissPanelAnimation;
-        modalView->container = Helpers::GetDiContainer();
-        gameObject->GetComponent<VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
-        
+
+        modalView->_presentPanelAnimations = modalViewTemplate->_presentPanelAnimations;
+        modalView->_dismissPanelAnimation = modalViewTemplate->_dismissPanelAnimation;
+        modalView->_container = Helpers::GetDiContainer();
+        gameObject->GetComponent<VRGraphicRaycaster*>()->_physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
+
         Object::DestroyImmediate(gameObject->GetComponent<TableView*>());
         Object::DestroyImmediate(gameObject->GetComponent<ScrollRect*>());
         Object::DestroyImmediate(gameObject->GetComponent<ScrollView*>());
         Object::DestroyImmediate(gameObject->GetComponent<EventSystemListener*>());
-        
+
         auto rectTransform = reinterpret_cast<RectTransform*>(modalView->get_transform());
         int childCount = rectTransform->get_childCount();
 

@@ -19,7 +19,7 @@ set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # compile options used
-add_compile_options(-frtti -fPIE -fPIC -fexceptions)
+add_compile_options(-frtti -fPIE -fPIC -fexceptions -fdeclspec)
 
 # get git info
 execute_process(COMMAND git config user.name OUTPUT_VARIABLE GIT_USER)
@@ -47,6 +47,7 @@ add_compile_definitions(GIT_MODIFIED=${GIT_MODIFIED})
 add_compile_definitions(VERSION=\"${MOD_VERSION}\")
 add_compile_definitions(MOD_ID=\"${MOD_ID}\")
 add_compile_definitions(MAKE_DOCS=${MAKE_DOCS})
+add_compile_definitions(UNITY_2021)
 
 # recursively get all src files
 RECURSE_FILES(cpp_file_list ${SOURCE_DIR}/*.cpp)

@@ -11,7 +11,7 @@ void AddHoverHint(UnityEngine::RectTransform* rectTransform, const std::string& 
         hoverHint = rectTransform->get_gameObject()->AddComponent<HMUI::HoverHint*>();
     }
     hoverHint->set_text(text);
-    hoverHint->hoverHintController = BSML::Helpers::GetHoverHintController();
+    hoverHint->_hoverHintController = BSML::Helpers::GetHoverHintController();
 }
 
 // for now, because I wanna have the option later

@@ -44,7 +44,7 @@ namespace BSML::Helpers {
     T CreateViewController() {
         return reinterpret_cast<T>(CreateViewController(reinterpret_cast<System::Type*>(csTypeOf(T))));
     }
-    
+
     /// @brief creates flow coordinator with type
     /// @param type the type to use for the flow coordinator
     /// @return the flow coordinator

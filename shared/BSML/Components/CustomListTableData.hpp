@@ -2,7 +2,6 @@
 
 #include "custom-types/shared/macros.hpp"
 #include "HMUI/TableView.hpp"
-#include "HMUI/TableView_IDataSource.hpp"
 #include "UnityEngine/MonoBehaviour.hpp"
 #include "UnityEngine/Sprite.hpp"
 
@@ -29,10 +28,10 @@ DECLARE_CLASS_CODEGEN(BSML, CustomCellInfo, Il2CppObject,
 )
 
 DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomListTableData, UnityEngine::MonoBehaviour, classof(HMUI::TableView::IDataSource*),
-    
+
     /* pls no touchy raw listStyle if you value your sanity */
-    DECLARE_INSTANCE_FIELD(int, listStyle);
-    DECLARE_INSTANCE_FIELD(ListWrapper<CustomCellInfo*>, data);
+    DECLARE_INSTANCE_FIELD(int, _listStyle);
+    DECLARE_INSTANCE_FIELD(ListW<CustomCellInfo*>, data);
     DECLARE_INSTANCE_FIELD(float, cellSize);
     DECLARE_INSTANCE_FIELD(StringW, reuseIdentifier);
     DECLARE_INSTANCE_FIELD(HMUI::TableView*, tableView);
@@ -47,9 +46,9 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomListTableData, UnityEngine::MonoBeh
     DECLARE_INSTANCE_METHOD(GlobalNamespace::SimpleTextTableCell*, GetSimpleTextTableCell);
     DECLARE_INSTANCE_METHOD(BSML::BoxTableCell*, GetBoxTableCell);
 
-    DECLARE_OVERRIDE_METHOD(float, CellSize, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::TableView::IDataSource::CellSize>::get());
-    DECLARE_OVERRIDE_METHOD(int, NumberOfCells, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::TableView::IDataSource::NumberOfCells>::get());
-    DECLARE_OVERRIDE_METHOD(HMUI::TableCell*, CellForIdx, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::TableView::IDataSource::CellForIdx>::get(), HMUI::TableView* tableView, int idx);
+    DECLARE_OVERRIDE_METHOD_MATCH(float, CellSize, &HMUI::TableView::IDataSource::CellSize);
+    DECLARE_OVERRIDE_METHOD_MATCH(int, NumberOfCells, &HMUI::TableView::IDataSource::NumberOfCells);
+    DECLARE_OVERRIDE_METHOD_MATCH(HMUI::TableCell*, CellForIdx, &HMUI::TableView::IDataSource::CellForIdx, HMUI::TableView* tableView, int idx);
 
     DECLARE_CTOR(ctor);
 
@@ -60,7 +59,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomListTableData, UnityEngine::MonoBeh
 
         static ListStyle stringToListStyle(const std::string& str);
         ListStyle get_listStyle();
-        void set_listStyle(ListStyle value);  
-
+        void set_listStyle(ListStyle value);
+        __declspec(property(get=get_listStyle, put=set_listStyle)) ListStyle listStyle;
         HMUI::TableView::IDataSource* i_IDataSource();
 )

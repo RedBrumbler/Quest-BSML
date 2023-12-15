@@ -11,7 +11,6 @@
 #include "UnityEngine/Object.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/Toggle.hpp"
-#include "UnityEngine/UI/Toggle_ToggleEvent.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
 #include "GlobalNamespace/BoolSettingsController.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"

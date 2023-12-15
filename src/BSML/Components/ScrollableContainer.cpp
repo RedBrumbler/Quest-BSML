@@ -11,6 +11,7 @@
 #include "UnityEngine/Time.hpp"
 #include "UnityEngine/UI/Image.hpp"
 #include "UnityEngine/UI/Button.hpp"
+#include "UnityEngine/Vector2.hpp"
 
 DEFINE_TYPE(BSML, ScrollableContainer);
 
@@ -39,14 +40,14 @@ T abs(T v) {
 
 namespace BSML {
     void ScrollableContainer::UpdateViewPortMask() {
-        auto img = viewport->GetComponent<Image*>();
+        auto img = _viewport->GetComponent<Image*>();
         if (img) {
             img->set_enabled(get_maskOverflow());
         }
     }
 
     void ScrollableContainer::Awake() {
-        buttonBinder = HMUI::ButtonBinder::New_ctor();
+        _buttonBinder = HMUI::ButtonBinder::New_ctor();
 
         RefreshContent();
         RefreshBindings();
@@ -54,37 +55,37 @@ namespace BSML {
     }
 
     void ScrollableContainer::RefreshBindings() {
-        if (!buttonBinder) {
+        if (!_buttonBinder) {
             ERROR("No button binder");
             return;
         }
 
-        buttonBinder->ClearBindings();
-        if (pageUpButton) {
+        _buttonBinder->ClearBindings();
+        if (_pageUpButton) {
             if (!upButtonAction)
                 upButtonAction = MakeSystemAction(this, il2cpp_functions::class_get_method_from_name(klass, "PageUpButtonPressed", 0));
-            buttonBinder->AddBinding(pageUpButton, upButtonAction);
+            _buttonBinder->AddBinding(_pageUpButton, upButtonAction);
         }
-        if (pageDownButton) {
+        if (_pageDownButton) {
             if (!downButtonAction)
                 downButtonAction = MakeSystemAction(this, il2cpp_functions::class_get_method_from_name(klass, "PageDownButtonPressed", 0));
-            buttonBinder->AddBinding(pageDownButton, downButtonAction);
+            _buttonBinder->AddBinding(_pageDownButton, downButtonAction);
         }
     }
 
     void ScrollableContainer::RefreshContent() {
-        SetContentSize(contentRectTransform->get_rect().get_height());
-        contentHeight = contentRectTransform->get_rect().get_height();
+        SetContentSize(_contentRectTransform->get_rect().get_height());
+        contentHeight = _contentRectTransform->get_rect().get_height();
         RefreshBindings();
         ComputeScrollFocusPosY();
     }
 
     void ScrollableContainer::RefreshButtons() {
-        if (pageUpButton) {
-            pageUpButton->set_interactable(destinationPos > 0);
+        if (_pageUpButton) {
+            _pageUpButton->set_interactable(_destinationPos > 0);
         }
-        if (pageDownButton) {
-            pageDownButton->set_interactable(destinationPos < contentHeight - (viewport ? viewport->get_rect().get_height() : 0));
+        if (_pageDownButton) {
+            _pageDownButton->set_interactable(_destinationPos < contentHeight - (_viewport ? _viewport->get_rect().get_height() : 0));
         }
     }
 
@@ -95,42 +96,42 @@ namespace BSML {
     }
 
     void ScrollableContainer::Update() {
-        auto height = contentRectTransform->get_rect().get_height();
+        auto height = _contentRectTransform->get_rect().get_height();
         if (contentHeight != height && height > 0.0f)
             ContentSizeUpdated();
 
         if (runScrollAnim) {
-            float num = lerp(contentRectTransform->get_anchoredPosition().y, destinationPos, Time::get_deltaTime() * smooth);
-            if (abs(num - destinationPos) < 0.01f)
+            float num = lerp(_contentRectTransform->get_anchoredPosition().y, _destinationPos, Time::get_deltaTime() * _smooth);
+            if (abs(num - _destinationPos) < 0.01f)
             {
-                num = destinationPos;
+                num = _destinationPos;
                 runScrollAnim = false;
             }
 
-            contentRectTransform->set_anchoredPosition({0, num});
+            _contentRectTransform->set_anchoredPosition({0, num});
             UpdateVerticalScrollIndicator(num);
         }
     }
 
     void ScrollableContainer::ComputeScrollFocusPosY() {
         auto componentsInChildren = GetComponentsInChildren<HMUI::ItemForFocussedScrolling*>(true);
-        scrollFocusPositions = ArrayW<float>(il2cpp_array_size_t(componentsInChildren.size()));
+        _scrollFocusPositions = ArrayW<float>(il2cpp_array_size_t(componentsInChildren.size()));
 
         int i = 0;
         for (auto comp : componentsInChildren) {
-            scrollFocusPositions[i] = WorldPositionToScrollViewPosition(comp->get_transform()->get_position()).y;
+            _scrollFocusPositions[i] = WorldPositionToScrollViewPosition(comp->get_transform()->get_position()).y;
             i++;
         }
 
-        std::sort(scrollFocusPositions.begin(), scrollFocusPositions.end(), [](float a, float b) {
+        std::sort(_scrollFocusPositions.begin(), _scrollFocusPositions.end(), [](float a, float b) {
             return a < b;
         });
     }
 
     void ScrollableContainer::UpdateVerticalScrollIndicator(float posY) {
-        if (verticalScrollIndicator) {
-            auto progress = posY / (contentHeight - viewport->get_rect().get_height());
-            verticalScrollIndicator->set_progress(progress);
+        if (_verticalScrollIndicator) {
+            auto progress = posY / (contentHeight - _viewport->get_rect().get_height());
+            _verticalScrollIndicator->set_progress(progress);
         }
     }
 
@@ -147,8 +148,8 @@ namespace BSML {
     void ScrollableContainer::ScrollToWorldPositionIfOutsideArea(UnityEngine::Vector3 worldPosition, float pageRelativePosition, float relativeBoundaryStart, float relativeBoundaryEnd, bool animated) {
         float num = WorldPositionToScrollViewPosition(worldPosition).y;
         float scrollPageHeight = get_scrollPageHeight();
-        float num2 = destinationPos + relativeBoundaryStart * scrollPageHeight;
-        float num3 = destinationPos + relativeBoundaryEnd * scrollPageHeight;
+        float num2 = _destinationPos + relativeBoundaryStart * scrollPageHeight;
+        float num3 = _destinationPos + relativeBoundaryEnd * scrollPageHeight;
         if (num > num2 && num < num3)
         {
             return;
@@ -164,33 +165,33 @@ namespace BSML {
     void ScrollableContainer::ScrollTo(float dstPosY, bool animated) {
         SetDestinationPosY(dstPosY);
         if (!animated)
-            contentRectTransform->set_anchoredPosition({0.0f, destinationPos});
+            _contentRectTransform->set_anchoredPosition({0.0f, _destinationPos});
         RefreshButtons();
         runScrollAnim = true;
     }
 
     void ScrollableContainer::PageUpButtonPressed() {
-        float num = destinationPos;
-        switch (scrollType)
+        float num = _destinationPos;
+        switch (_scrollType)
         {
             case ScrollType::PageSize:
-                num -= pageStepNormalizedSize * get_scrollPageHeight();
+                num -= _pageStepNormalizedSize * get_scrollPageHeight();
                 break;
             case ScrollType::FixedCellSize:
-                num -= fixedCellSize * (float)(floor(get_scrollPageHeight() / fixedCellSize) - 1);
-                num = (float)floor(num / fixedCellSize) * fixedCellSize;
+                num -= _fixedCellSize * (float)(floor(get_scrollPageHeight() / _fixedCellSize) - 1);
+                num = (float)floor(num / _fixedCellSize) * _fixedCellSize;
                 break;
             case ScrollType::FocusItems:
                 {
-                    float threshold = destinationPos + scrollItemRelativeThresholdPosition * get_scrollPageHeight();
+                    float threshold = _destinationPos + _scrollItemRelativeThresholdPosition * get_scrollPageHeight();
 
-                    float max = destinationPos;
-                    for (auto posy : scrollFocusPositions) {
+                    float max = _destinationPos;
+                    for (auto posy : _scrollFocusPositions) {
                         if (posy >= threshold) continue;
                         if (posy > max) max = posy;
                     }
                     num = max;
-                    num -= pageStepNormalizedSize * get_scrollPageHeight();
+                    num -= _pageStepNormalizedSize * get_scrollPageHeight();
                     break;
                 }
         }
@@ -201,26 +202,26 @@ namespace BSML {
     }
 
     void ScrollableContainer::PageDownButtonPressed() {
-        float num = destinationPos;
-        switch (scrollType)
+        float num = _destinationPos;
+        switch (_scrollType)
         {
             case ScrollType::PageSize:
-                num += pageStepNormalizedSize * get_scrollPageHeight();
+                num += _pageStepNormalizedSize * get_scrollPageHeight();
                 break;
             case ScrollType::FixedCellSize:
-                num += fixedCellSize * (float)(ceil(get_scrollPageHeight() / fixedCellSize) - 1);
-                num = (float)ceil(num / fixedCellSize) * fixedCellSize;
+                num += _fixedCellSize * (float)(ceil(get_scrollPageHeight() / _fixedCellSize) - 1);
+                num = (float)ceil(num / _fixedCellSize) * _fixedCellSize;
                 break;
             case ScrollType::FocusItems:
                 {
-                    float threshold = destinationPos + (1.0f - scrollItemRelativeThresholdPosition) * get_scrollPageHeight();
-                    float min = destinationPos + get_scrollPageHeight();
-                    for (auto posy : scrollFocusPositions) {
+                    float threshold = _destinationPos + (1.0f - _scrollItemRelativeThresholdPosition) * get_scrollPageHeight();
+                    float min = _destinationPos + get_scrollPageHeight();
+                    for (auto posy : _scrollFocusPositions) {
                         if (posy <= threshold) continue;
                         if (posy < min) min = posy;
                     }
                     num = min;
-                    num -= (1.0f - pageStepNormalizedSize) * get_scrollPageHeight();
+                    num -= (1.0f - _pageStepNormalizedSize) * get_scrollPageHeight();
                     break;
                 }
         }
@@ -233,7 +234,7 @@ namespace BSML {
     void ScrollableContainer::SetDestinationPosY(float value) {
         float maxPosition = get_maxPosition();
         if (maxPosition < 0 && !alignBottom) maxPosition = 0.0f;
-        destinationPos = min(maxPosition, max(0.0f, value));
+        _destinationPos = min(maxPosition, max(0.0f, value));
     }
 
     bool ScrollableContainer::get_alignBottom() {
@@ -242,7 +243,7 @@ namespace BSML {
 
     void ScrollableContainer::set_alignBottom(bool value) {
         alignBottom = value;
-        this->ScrollTo(destinationPos, true);
+        this->ScrollTo(_destinationPos, true);
     }
 
     bool ScrollableContainer::get_maskOverflow() {
@@ -255,10 +256,10 @@ namespace BSML {
     }
 
     float ScrollableContainer::get_scrollPageHeight() {
-        return viewport ? viewport->get_rect().get_height() : 0.0f;
+        return _viewport ? _viewport->get_rect().get_height() : 0.0f;
     }
 
     float ScrollableContainer::get_maxPosition() {
-        return contentHeight - viewport->get_rect().get_height();
+        return contentHeight - _viewport->get_rect().get_height();
     }
 }

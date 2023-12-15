@@ -2,8 +2,6 @@
 #include "Helpers/delegates.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 
-#include "HMUI/IconSegmentedControl_DataItem.hpp"
-
 namespace BSML {
     static IconSegmentedControlHandler textSegmentedControlHandler{};
 

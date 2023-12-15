@@ -6,10 +6,8 @@
 #include "UnityEngine/Resources.hpp"
 #include "HMUI/Screen.hpp"
 #include "HMUI/ModalView.hpp"
-#include "HMUI/ViewController_DidActivateDelegate.hpp"
-#include "HMUI/ViewController_AnimationType.hpp"
 
-#include "GlobalNamespace/SharedCoroutineStarter.hpp"
+#include "BSML/SharedCoroutineStarter.hpp"
 
 #include "Helpers/creation.hpp"
 #include "Helpers/getters.hpp"
@@ -25,7 +23,7 @@ namespace BSML {
         }
         return instance.ptr();
     }
-    ListWrapper<Il2CppObject*> MenuButtons::get_buttons() {
+    ListW<Il2CppObject*> MenuButtons::get_buttons() {
         if (!_buttons) {
             _buttons = List<Il2CppObject*>::New_ctor();
         }
@@ -55,14 +53,14 @@ namespace BSML {
 
     void MenuButtons::Setup() {
         DEBUG("Setup");
-        if (!menuButtonsViewController || !menuButtonsViewController->m_CachedPtr.m_value) {
+        if (!menuButtonsViewController || !menuButtonsViewController->m_CachedPtr) {
             DEBUG("Making View Controller");
             menuButtonsViewController = Helpers::CreateViewController<MenuButtonsViewController*>();
             menuButtonsViewController->buttons = get_buttons();
         }
-        
-        auto coroStarter = GlobalNamespace::SharedCoroutineStarter::get_instance();
-        if (presentViewCoroutine && presentViewCoroutine->m_Ptr.m_value) {
+
+        auto coroStarter = BSML::SharedCoroutineStarter::get_instance();
+        if (presentViewCoroutine && presentViewCoroutine->m_Ptr) {
             coroStarter->StopCoroutine(presentViewCoroutine);
         }
 
@@ -70,12 +68,12 @@ namespace BSML {
     }
 
     void MenuButtons::Refresh() {
-        if (!menuButtonsViewController || !menuButtonsViewController->m_CachedPtr.m_value) return;
+        if (!menuButtonsViewController || !menuButtonsViewController->m_CachedPtr) return;
         menuButtonsViewController->RefreshView();
     }
 
     void MenuButtons::ShowView(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
-        if (!leftScreen || !leftScreen->m_CachedPtr.m_value) {
+        if (!leftScreen || !leftScreen->m_CachedPtr) {
             leftScreen = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::Screen*>().FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "LeftScreen"; });
         }
 
@@ -84,7 +82,7 @@ namespace BSML {
             m->OnDisable();
         }
         auto mainFc = BSML::Helpers::GetMainFlowCoordinator();
-        mainFc->providedLeftScreenViewController = menuButtonsViewController;
+        mainFc->_providedLeftScreenViewController = menuButtonsViewController;
         mainFc->SetLeftScreenViewController(menuButtonsViewController, HMUI::ViewController::AnimationType::None);
     }
 

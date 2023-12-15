@@ -14,7 +14,7 @@ DECLARE_CLASS_CUSTOM(BSML, ListSliderSetting, BSML::SliderSettingBase,
     DECLARE_INSTANCE_METHOD(void, set_Value, Il2CppObject* value);
     DECLARE_INSTANCE_METHOD(int, get_index);
 
-    DECLARE_INSTANCE_FIELD(ListWrapper<Il2CppObject*>, values);
+    DECLARE_INSTANCE_FIELD(ListW<Il2CppObject*>, values);
 
     DECLARE_INSTANCE_METHOD(void, OnChange, HMUI::RangeValuesTextSlider* _, float value);
     DECLARE_INSTANCE_METHOD(StringW, TextForValue, Il2CppObject* value);

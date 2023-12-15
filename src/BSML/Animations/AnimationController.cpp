@@ -2,6 +2,7 @@
 #include "logging.hpp"
 
 #include "UnityEngine/GameObject.hpp"
+#include "System/Collections/Generic/KeyValuePair_2.hpp"
 #include <chrono>
 
 DEFINE_TYPE(BSML, AnimationController);

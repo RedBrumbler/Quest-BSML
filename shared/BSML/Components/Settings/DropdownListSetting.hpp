@@ -9,7 +9,7 @@
 DECLARE_CLASS_CUSTOM(BSML, DropdownListSetting, BSML::BaseSetting,
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(HMUI::SimpleTextDropdown*, dropdown);
-    DECLARE_INSTANCE_FIELD(ListWrapper<Il2CppObject*>, values);
+    DECLARE_INSTANCE_FIELD(ListW<Il2CppObject*>, values);
     DECLARE_INSTANCE_FIELD(int, index);                             /* default: 0; */
     
     DECLARE_INSTANCE_METHOD(Il2CppObject*, get_Value);

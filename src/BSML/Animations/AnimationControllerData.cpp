@@ -5,6 +5,8 @@
 
 #include "UnityEngine/SpriteMeshType.hpp"
 #include "UnityEngine/Texture2D.hpp"
+#include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/Vector4.hpp"
 #include <chrono>
 
 DEFINE_TYPE(BSML, AnimationControllerData);
@@ -27,9 +29,9 @@ namespace BSML {
 
         for (int i = 0; i < uvs.size(); i++) {
             self->sprites[i] = UnityEngine::Sprite::Create(
-                tex, 
+                tex,
                 UnityEngine::Rect(
-                    uvs[i].m_XMin * texWidth, 
+                    uvs[i].m_XMin * texWidth,
                     uvs[i].m_YMin * texHeight,
                     uvs[i].m_Width * texWidth,
                     uvs[i].m_Height * texHeight
@@ -59,7 +61,7 @@ namespace BSML {
     }
 
     void AnimationControllerData::dtor() {
-        if (sprite && sprite->m_CachedPtr.m_value) {
+        if (sprite && sprite->m_CachedPtr) {
             UnityEngine::Object::DestroyImmediate(sprite->get_texture());
             UnityEngine::Object::DestroyImmediate(sprite);
         }
@@ -67,7 +69,7 @@ namespace BSML {
         Finalize();
     }
 
-    ListWrapper<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {
+    ListW<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {
         if (!activeImages) {
             activeImages = List<UnityEngine::UI::Image*>::New_ctor();
         }

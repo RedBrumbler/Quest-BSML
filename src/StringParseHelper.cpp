@@ -123,7 +123,7 @@ StringParseHelper::operator UnityEngine::Color32() const {
     auto result = tryParseColor32();
     if (!result.has_value()) {
         ERROR("Could not parse color from input '{}'", *this);
-        return {255, 255, 255, 255};
+        return {0, 255, 255, 255, 255};
     }
     return result.value();
 }

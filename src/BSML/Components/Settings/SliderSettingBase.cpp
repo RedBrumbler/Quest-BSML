@@ -6,6 +6,7 @@
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/Vector2.hpp"
 
 DEFINE_TYPE(BSML, SliderSettingBase);
 
@@ -42,9 +43,9 @@ namespace BSML {
     }
 
     void SliderSettingBase::BaseSetup() {
-        incButton = slider->incButton;
-        decButton = slider->decButton;
-        
+        incButton = slider->_incButton;
+        decButton = slider->_decButton;
+
         if (!showButtons) {
             slider->get_image()->set_sprite(Utilities::FindSpriteCached("RoundRect10"));
             UnityEngine::Object::Destroy(incButton->get_gameObject());

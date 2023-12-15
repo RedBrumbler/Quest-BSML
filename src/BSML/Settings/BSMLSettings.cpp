@@ -13,11 +13,9 @@
 #include "UnityEngine/WaitForFixedUpdate.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/TextureWrapMode.hpp"
-#include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
-#include "HMUI/ViewController_AnimationDirection.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
 
-#include "GlobalNamespace/SharedCoroutineStarter.hpp"
+#include "BSML/SharedCoroutineStarter.hpp"
 #include "GlobalNamespace/OptionsViewController.hpp"
 #include "HMUI/ButtonSpriteSwap.hpp"
 
@@ -32,14 +30,14 @@ namespace BSML {
         return instance.ptr();
     }
 
-    ListWrapper<BSML::CustomCellInfo*> BSMLSettings::get_settingsMenus() {
+    ListW<BSML::CustomCellInfo*> BSMLSettings::get_settingsMenus() {
         if (!settingsMenus) {
             settingsMenus = List<CustomCellInfo*>::New_ctor();
         }
         return settingsMenus;
     }
     ModSettingsFlowCoordinator* BSMLSettings::get_modSettingsFlowCoordinator() {
-        if (!modSettingsFlowCoordinator || !modSettingsFlowCoordinator->m_CachedPtr.m_value) {
+        if (!modSettingsFlowCoordinator || !modSettingsFlowCoordinator->m_CachedPtr) {
             modSettingsFlowCoordinator = Helpers::CreateFlowCoordinator<ModSettingsFlowCoordinator*>();
         }
         return modSettingsFlowCoordinator;
@@ -50,17 +48,17 @@ namespace BSML {
         auto menus = get_settingsMenus();
         for (auto& cell : menus) {
             auto menu = reinterpret_cast<BSML::SettingsMenu*>(cell);
-            if (menu->viewController && menu->viewController->m_CachedPtr.m_value) {
+            if (menu->viewController && menu->viewController->m_CachedPtr) {
                 UnityEngine::Object::DestroyImmediate(menu->viewController->get_gameObject());
             }
         }
 
-        auto starter = GlobalNamespace::SharedCoroutineStarter::get_instance();
-        if (addButtonCoroutine && addButtonCoroutine->m_Ptr.m_value) {
+        auto starter = BSML::SharedCoroutineStarter::get_instance();
+        if (addButtonCoroutine && addButtonCoroutine->m_Ptr) {
             starter->StopCoroutine(addButtonCoroutine);
         }
 
-        if (!button || !button->m_CachedPtr.m_value) {
+        if (!button || !button->m_CachedPtr) {
             addButtonCoroutine = starter->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(AddButtonToMainScreen()));
         }
 
@@ -91,7 +89,7 @@ namespace BSML {
             menu->Setup();
         }
 
-        if (button && button->m_CachedPtr.m_value) {
+        if (button && button->m_CachedPtr) {
             button->get_gameObject()->SetActive(true);
         }
         return true;
@@ -157,7 +155,7 @@ namespace BSML {
             co_yield reinterpret_cast<System::Collections::IEnumerator*>(wait);
         }
 
-        button = UnityEngine::Object::Instantiate(optionsViewController->settingsButton, optionsViewController->get_transform()->Find("Wrapper"));
+        button = UnityEngine::Object::Instantiate(optionsViewController->_settingsButton, optionsViewController->get_transform()->Find("Wrapper"));
         button->GetComponentInChildren<Polyglot::LocalizedTextMeshProUGUI*>()->set_Key("Mod Settings");
         auto onClick = UnityEngine::UI::Button::ButtonClickedEvent::New_ctor();
         button->set_onClick(onClick);
@@ -165,17 +163,17 @@ namespace BSML {
 
         if (get_settingsMenus().size() == 0)
             button->get_gameObject()->SetActive(false);
-        
+
         normal = Utilities::LoadSpriteRaw(Assets::mods_idle_png);
         normal->get_texture()->set_wrapMode(UnityEngine::TextureWrapMode::Clamp);
         hover = Utilities::LoadSpriteRaw(Assets::mods_selected_png);
         hover->get_texture()->set_wrapMode(UnityEngine::TextureWrapMode::Clamp);
 
         auto buttonSpriteSwap = button->GetComponent<HMUI::ButtonSpriteSwap*>();
-        buttonSpriteSwap->disabledStateSprite = normal;
-        buttonSpriteSwap->normalStateSprite = normal;
-        buttonSpriteSwap->highlightStateSprite = hover;
-        buttonSpriteSwap->pressedStateSprite = hover;
+        buttonSpriteSwap->_disabledStateSprite = normal;
+        buttonSpriteSwap->_normalStateSprite = normal;
+        buttonSpriteSwap->_highlightStateSprite = hover;
+        buttonSpriteSwap->_pressedStateSprite = hover;
         button->get_transform()->SetAsFirstSibling();
         co_return;
     }

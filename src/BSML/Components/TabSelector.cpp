@@ -4,7 +4,6 @@
 #include "Helpers/delegates.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Events/UnityAction.hpp"
-#include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
 
 DEFINE_TYPE(BSML, TabSelector);
 
@@ -17,11 +16,13 @@ namespace BSML {
 
     int TabSelector::get_page() {
         if (currentPage < 0) {
-            return currentPage = 0;
+            currentPage = 0;
+            return currentPage;
         }
         int maxPages = (visibleTabs->get_Count() - 1) / get_pageCount();
         if (currentPage > maxPages) {
-            return currentPage = maxPages;
+            currentPage = maxPages;
+            return currentPage;
         }
         return currentPage;
     }
@@ -88,7 +89,7 @@ namespace BSML {
         for (auto tab : tabs) {
             tab->get_gameObject()->SetActive(false);
             if (tab->get_isVisible()) {
-                if (index == visibleCount) theTab = tab; 
+                if (index == visibleCount) theTab = tab;
                 visibleCount++;
             }
         }
@@ -114,7 +115,7 @@ namespace BSML {
             SetSegmentedControlTexts(visibleTabs);
         } else {
             currentPage = get_page();
-            ListWrapper<Tab*> usableTabs = List<Tab*>::New_ctor();
+            ListW<Tab*> usableTabs = List<Tab*>::New_ctor();
             usableTabs->EnsureCapacity(get_pageCount());
 
             int start = get_pageCount() * currentPage;
@@ -132,7 +133,7 @@ namespace BSML {
         }
     }
 
-    void TabSelector::SetSegmentedControlTexts(ListWrapper<Tab*> tabs) {
+    void TabSelector::SetSegmentedControlTexts(ListW<Tab*> tabs) {
         // we have to use a list because Array does not implement IReadOnlyList
         auto texts = List<StringW>::New_ctor();
         texts->EnsureCapacity(tabs->get_Count());
@@ -147,7 +148,7 @@ namespace BSML {
             DEBUG("tab Text added: {}", val);
         }
 
-        textSegmentedControl->SetTexts(texts->i_IReadOnlyList_1_T());
+        textSegmentedControl->SetTexts(*texts);
     }
 
     void TabSelector::PageLeft() {

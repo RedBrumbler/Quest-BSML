@@ -16,6 +16,7 @@
 #include "UnityEngine/UI/LayoutGroup.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "HMUI/HoverHint.hpp"
 #include "HMUI/ImageView.hpp"
 #include "GlobalNamespace/LocalizedHoverHint.hpp"
@@ -45,7 +46,7 @@ namespace BSML {
 
         auto transform = reinterpret_cast<RectTransform*>(button->get_transform());
         auto pageButton = gameObject->AddComponent<PageButton*>();
-        
+
         auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
         externalComponents->Add(button);
         externalComponents->Add(transform);

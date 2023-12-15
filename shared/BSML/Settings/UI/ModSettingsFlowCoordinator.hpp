@@ -22,8 +22,8 @@ DECLARE_CLASS_CODEGEN(BSML, ModSettingsFlowCoordinator, HMUI::FlowCoordinator,
     DECLARE_INSTANCE_FIELD(Stack<HMUI::ViewController*>*, submenuStack);
     DECLARE_INSTANCE_FIELD(UnityEngine::Transform*, bottomButtons);
 
-    DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::FlowCoordinator::DidActivate>::get(), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
-    DECLARE_OVERRIDE_METHOD(void, BackButtonWasPressed, il2cpp_utils::il2cpp_type_check::MetadataGetter<&HMUI::FlowCoordinator::BackButtonWasPressed>::get(), HMUI::ViewController* topViewController);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, DidActivate, &HMUI::FlowCoordinator::DidActivate, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, BackButtonWasPressed, &HMUI::FlowCoordinator::BackButtonWasPressed, HMUI::ViewController* topViewController);
 
     DECLARE_INSTANCE_METHOD(void, Ok);
     DECLARE_INSTANCE_METHOD(void, Cancel);

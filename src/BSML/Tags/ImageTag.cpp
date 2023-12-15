@@ -7,13 +7,14 @@
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "HMUI/ImageView.hpp"
 
 using namespace UnityEngine;
 
 namespace BSML {
     static BSMLNodeParser<ImageTag> imageTagParser({"image", "img"});
-    
+
     UnityEngine::GameObject* ImageTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Image");
         auto gameObject = GameObject::New_ctor("BSMLImage");
