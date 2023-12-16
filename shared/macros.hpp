@@ -25,10 +25,10 @@ inline List<T>* initializer_list_to_List(std::initializer_list<std::string> list
 // the id of the list is the same as what you use for options="listid" in BSML, make sure your IDs are valid c++ identifiers!
 #define BSML_OPTIONS_LIST_OBJECT(choices_id, ...) \
 public: \
-List<Il2CppObject*>* get_##choices_id() { return initializer_list_to_List<Il2CppObject*>({__VA_ARGS__}); };\
+List<System::Object*>* get_##choices_id() { return initializer_list_to_List<System::Object*>({__VA_ARGS__}); };\
 ___CREATE_INSTANCE_METHOD(get_ ##choices_id, "get_" #choices_id, METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_HIDE_BY_SIG, nullptr)
 
-// same as BSML_OPTIONS_LIST_OBJECT but returns a List<StringW>* instead of a List<Il2CppObject*>*
+// same as BSML_OPTIONS_LIST_OBJECT but returns a List<StringW>* instead of a List<System::Object*>*
 #define BSML_OPTIONS_LIST_STRING(choices_id, ...) \
 public: \
 List<StringW>* get_##choices_id() { return initializer_list_to_List<StringW>({__VA_ARGS__}); };\

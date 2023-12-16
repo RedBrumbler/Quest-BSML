@@ -38,7 +38,7 @@ static inline ___FieldRegistrator_##name_ ___##name_##_FieldRegistrator;    \
 public:                                                                     \
 type_ name_
 
-DECLARE_CLASS_CODEGEN(BSML, Key, Il2CppObject,
+DECLARE_CLASS_CODEGEN(BSML, Key, System::Object,
     DECLARE_INSTANCE_FIELD(StringW, name);
     DECLARE_INSTANCE_FIELD(StringW, value);
     DECLARE_INSTANCE_FIELD(StringW, shifted);

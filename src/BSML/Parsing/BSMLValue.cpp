@@ -25,7 +25,7 @@ void collect_minfos(Il2CppClass* klass, std::vector<const MethodInfo*>& minfos) 
 }
 
 namespace BSML {
-    std::map<std::string, BSMLValue*> BSMLValue::MakeValues(Il2CppObject* host) {
+    std::map<std::string, BSMLValue*> BSMLValue::MakeValues(System::Object* host) {
         std::vector<FieldInfo*> finfos{};
         std::vector<const PropertyInfo*> pinfos{};
         std::vector<const MethodInfo*> minfos{};
@@ -88,7 +88,7 @@ namespace BSML {
         return values;
     }
 
-    void BSMLValue::SetValue(Il2CppObject* val) {
+    void BSMLValue::SetValue(System::Object* val) {
         if (fieldInfo) {
             il2cpp_functions::field_set_value(host, fieldInfo, &val);
         } else if (setterInfo) {
@@ -96,13 +96,13 @@ namespace BSML {
         }
     }
 
-    Il2CppObject* BSMLValue::GetValue() {
+    System::Object* BSMLValue::GetValue() {
         if (fieldInfo) {
-            Il2CppObject* val;
+            System::Object* val;
             il2cpp_functions::field_get_value(host, fieldInfo, &val);
             return val;
         } else if (getterInfo) {
-            return il2cpp_utils::RunMethod<Il2CppObject*>(host, getterInfo).value_or(nullptr);
+            return il2cpp_utils::RunMethod<System::Object*>(host, getterInfo).value_or(nullptr);
         }
         return nullptr;
     }

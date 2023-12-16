@@ -269,7 +269,7 @@ namespace BSML::Utilities {
 
         // check if we already have it, union because easier
         union {
-            Il2CppObject* data = nullptr;
+            System::Object* data = nullptr;
             AnimationControllerData* animationControllerData;
         };
         if (animationController->registeredAnimations->TryGetValue(path, byref(data))) {
@@ -423,7 +423,7 @@ namespace BSML::Utilities {
         return false;
     }
 
-    Il2CppObject* CopyFieldsAndProperties(UnityEngine::Component* comp, UnityEngine::Component* other, Il2CppClass* klass) {
+    System::Object* CopyFieldsAndProperties(UnityEngine::Component* comp, UnityEngine::Component* other, Il2CppClass* klass) {
         if (!klass) return comp;
         if (!CheckIfClassIsParentClass(comp->klass, klass) && !CheckIfClassIsParentClass(other->klass, klass)) {
             return nullptr;

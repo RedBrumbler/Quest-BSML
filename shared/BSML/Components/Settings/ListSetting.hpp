@@ -13,15 +13,15 @@ DECLARE_CLASS_CUSTOM(BSML, ListSetting, BSML::IncDecSetting,
     DECLARE_INSTANCE_METHOD(void, ValidateRange);
     DECLARE_INSTANCE_METHOD(void, UpdateState);
     
-    DECLARE_INSTANCE_METHOD(Il2CppObject*, get_Value);
-    DECLARE_INSTANCE_METHOD(void, set_Value, Il2CppObject* value);
+    DECLARE_INSTANCE_METHOD(System::Object*, get_Value);
+    DECLARE_INSTANCE_METHOD(void, set_Value, System::Object* value);
 
-    DECLARE_INSTANCE_FIELD(ListW<Il2CppObject*>, values);
+    DECLARE_INSTANCE_FIELD(ListW<System::Object*>, values);
     DECLARE_INSTANCE_FIELD(int, index); /* default: 0; */ 
 
     DECLARE_CTOR(ctor);
 
     public:
         /* set a formatter if you want to give your own format to the setting */
-        std::function<StringW(Il2CppObject*)> formatter = nullptr;
+        std::function<StringW(System::Object*)> formatter = nullptr;
 )

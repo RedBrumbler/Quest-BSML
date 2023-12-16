@@ -9,11 +9,11 @@
 DECLARE_CLASS_CUSTOM(BSML, DropdownListSetting, BSML::BaseSetting,
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(HMUI::SimpleTextDropdown*, dropdown);
-    DECLARE_INSTANCE_FIELD(ListW<Il2CppObject*>, values);
+    DECLARE_INSTANCE_FIELD(ListW<System::Object*>, values);
     DECLARE_INSTANCE_FIELD(int, index);                             /* default: 0; */
     
-    DECLARE_INSTANCE_METHOD(Il2CppObject*, get_Value);
-    DECLARE_INSTANCE_METHOD(void, set_Value, Il2CppObject* value);
+    DECLARE_INSTANCE_METHOD(System::Object*, get_Value);
+    DECLARE_INSTANCE_METHOD(void, set_Value, System::Object* value);
 
     DECLARE_INSTANCE_METHOD(bool, get_interactable);
     DECLARE_INSTANCE_METHOD(void, set_interactable, bool value);
@@ -29,6 +29,6 @@ DECLARE_CLASS_CUSTOM(BSML, DropdownListSetting, BSML::BaseSetting,
     DECLARE_CTOR(ctor);
 
     public:
-        std::function<void(Il2CppObject*)> onChange = nullptr;
-        std::function<StringW(Il2CppObject*)> formatter = nullptr;
+        std::function<void(System::Object*)> onChange = nullptr;
+        std::function<StringW(System::Object*)> formatter = nullptr;
 )

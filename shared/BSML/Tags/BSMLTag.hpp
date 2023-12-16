@@ -25,7 +25,7 @@ namespace BSML {
             virtual void parse(const tinyxml2::XMLElement& elem) override;
 
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const;
-            void SetHostField(Il2CppObject* host, Il2CppObject* value) const;
+            void SetHostField(System::Object* host, System::Object* value) const;
             std::string id;
             std::vector<std::string> tags;
     };

@@ -20,7 +20,7 @@ namespace BSML {
         if (hostsItr != data.end()) {
             auto value = parserParams.TryGetValue(hostsItr->second);
             if (value) {
-                ListW<Il2CppObject*> hosts = value->GetValue<List<Il2CppObject*>*>();
+                ListW<System::Object*> hosts = value->GetValue<List<System::Object*>*>();
                 if (hosts) {
                     bool passTags = false;
                     auto passTagsItr = data.find("passTags");

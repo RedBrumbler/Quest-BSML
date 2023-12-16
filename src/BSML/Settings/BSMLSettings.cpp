@@ -95,7 +95,7 @@ namespace BSML {
         return true;
     }
 
-    bool BSMLSettings::TryAddSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons) {
+    bool BSMLSettings::TryAddSettingsMenu(std::string_view name, std::string_view content_key, System::Object* host, bool enableExtraButtons) {
         auto menu = SettingsMenu::Make_new(name, content_key, host, enableExtraButtons);
         if (!TryAddSettingsMenu(menu)) {
             menu->Finalize();
@@ -122,7 +122,7 @@ namespace BSML {
         return true;
     }
 
-    bool BSMLSettings::RemoveSettingsMenu(Il2CppObject* host) {
+    bool BSMLSettings::RemoveSettingsMenu(System::Object* host) {
         auto menus = get_settingsMenus();
         for (auto& cell : menus) {
             auto menu = reinterpret_cast<BSML::SettingsMenu*>(cell);

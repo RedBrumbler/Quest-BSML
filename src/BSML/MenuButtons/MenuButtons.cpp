@@ -23,9 +23,9 @@ namespace BSML {
         }
         return instance.ptr();
     }
-    ListW<Il2CppObject*> MenuButtons::get_buttons() {
+    ListW<System::Object*> MenuButtons::get_buttons() {
         if (!_buttons) {
-            _buttons = List<Il2CppObject*>::New_ctor();
+            _buttons = List<System::Object*>::New_ctor();
         }
         return _buttons;
     }

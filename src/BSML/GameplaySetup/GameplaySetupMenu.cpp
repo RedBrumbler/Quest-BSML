@@ -10,7 +10,7 @@
 DEFINE_TYPE(BSML, GameplaySetupMenu);
 
 namespace BSML {
-    GameplaySetupMenu* GameplaySetupMenu::Make_new(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType) {
+    GameplaySetupMenu* GameplaySetupMenu::Make_new(std::string_view name, std::string_view content_key, System::Object* host, MenuType menuType) {
         auto self = GameplaySetupMenu::New_ctor();
 
         self->name = name;

@@ -104,13 +104,13 @@ namespace BSML {
         auto dataItr = data.find("data");
         if (dataItr != data.end() && !dataItr->second.empty()) {
             auto val = parserParams.TryGetValue(dataItr->second);
-            List<Il2CppObject*>* cellData = val ? val->GetValue<List<Il2CppObject*>*>() : nullptr;
-            static auto dataKlass = classof(List<Il2CppObject*>*);
+            List<System::Object*>* cellData = val ? val->GetValue<List<System::Object*>*>() : nullptr;
+            static auto dataKlass = classof(List<System::Object*>*);
             if (cellData && il2cpp_functions::class_is_assignable_from(cellData->klass, dataKlass)) {
                 tableData->data = cellData;
                 tableView->ReloadData();
             } else if (cellData && !il2cpp_functions::class_is_assignable_from(cellData->klass, dataKlass)){
-                ERROR("The class of the data field was not Correct! this should be a 'List<Il2CppObject*>*' or equivalent!");
+                ERROR("The class of the data field was not Correct! this should be a 'List<System::Object*>*' or equivalent!");
                 ERROR("Class {}::{} is not assignable from {}::{}", cellData->klass->namespaze, cellData->klass->name, dataKlass->namespaze, dataKlass->name);
             } else {
                 ERROR("IconSegmentedControl needs to have at least 1 value!");

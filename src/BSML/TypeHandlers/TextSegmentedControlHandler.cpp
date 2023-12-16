@@ -24,10 +24,10 @@ namespace BSML {
         if (dataItr != data.end() && !dataItr->second.empty()) {
             auto val = parserParams.TryGetValue(dataItr->second);
             ListW<StringW> texts = List<StringW>::New_ctor();
-            static auto dataKlass = classof(List<Il2CppObject*>*);
+            static auto dataKlass = classof(List<System::Object*>*);
             static auto stringDataKlass = classof(List<Il2CppString*>*);
 
-            List<Il2CppObject*>* data = val ? val->GetValue<List<Il2CppObject*>*>() : nullptr;
+            List<System::Object*>* data = val ? val->GetValue<List<System::Object*>*>() : nullptr;
 
             if (data) {
                 if (il2cpp_functions::class_is_assignable_from(data->klass, stringDataKlass)) {
@@ -36,7 +36,7 @@ namespace BSML {
                     for (auto str : strings) texts->Add(str);
                 } else if (il2cpp_functions::class_is_assignable_from(data->klass, dataKlass)) {
                     // it's a list of objects, use ToString
-                    ListW<Il2CppObject*> objects = data;
+                    ListW<System::Object*> objects = data;
                     for (auto obj : objects) texts->Add(obj ? obj->ToString() : StringW(""));
                 }
             } else if (data && !il2cpp_functions::class_is_assignable_from(data->klass, dataKlass)) {

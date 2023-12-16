@@ -23,7 +23,7 @@ namespace BSML {
         auto optionsItr = data.find("options");
         if (optionsItr != data.end() && !optionsItr->second.empty()) {
             auto val = parserParams.TryGetValue(optionsItr->second);
-            if (val) component->values = val->GetValue<List<Il2CppObject*>*>();
+            if (val) component->values = val->GetValue<List<System::Object*>*>();
         }
 
         if (!component->values || component->values->get_Count() == 0) {

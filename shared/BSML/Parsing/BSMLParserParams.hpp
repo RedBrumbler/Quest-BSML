@@ -77,12 +77,12 @@ namespace BSML {
             void AddEvent(const std::string& key, std::function<void(void)> event);
 
             /// @brief get the host object
-            Il2CppObject* get_host();
+            System::Object* get_host();
         private:
             std::map<std::string, std::vector<UnityEngine::GameObject*>> objectsWithIds;
             std::map<std::string, BSMLValue*> values;
             std::map<std::string, BSMLAction*> actions;
             std::map<std::string, std::shared_ptr<BSMLEvent>> events;
-            Il2CppObject* host;
+            System::Object* host;
     };
 }

@@ -6,7 +6,7 @@ std::string BSMLValueToString(BSML::BSMLValue* v, Il2CppTypeEnum type);
 namespace BSML {
     std::map<std::string, std::string> ComponentTypeWithData::GetParameters(const std::map<std::string, std::string>& allParams, const BSMLParserParams& parserParams, const std::map<std::string, std::vector<std::string>>& props) {
         std::map<std::string, std::string> result;
-        
+
         for (const auto& [prop, vec] : props) {
             for (const auto& alias : vec) {
                 auto itr = allParams.find(alias);
@@ -27,7 +27,7 @@ namespace BSML {
                         ERROR("Could not find value for '{}'", key);
                     }
                     // if the value was not found we assign the actual name to the prop so it can at least try to be used
-                } 
+                }
                 result[prop] = itr->second;
                 break;
             }
@@ -74,7 +74,6 @@ std::string BSMLValueToString(BSML::BSMLValue* v, Il2CppTypeEnum type) {
         case Il2CppTypeEnum::IL2CPP_TYPE_PTR: [[fallthrough]];
         case Il2CppTypeEnum::IL2CPP_TYPE_BYREF: [[fallthrough]];
         case Il2CppTypeEnum::IL2CPP_TYPE_VALUETYPE: [[fallthrough]];
-        case Il2CppTypeEnum::IL2CPP_TYPE_CLASS: [[fallthrough]];
         case Il2CppTypeEnum::IL2CPP_TYPE_VAR: [[fallthrough]];
         case Il2CppTypeEnum::IL2CPP_TYPE_ARRAY: [[fallthrough]];
         case Il2CppTypeEnum::IL2CPP_TYPE_GENERICINST: [[fallthrough]];
@@ -86,6 +85,7 @@ std::string BSMLValueToString(BSML::BSMLValue* v, Il2CppTypeEnum type) {
             return fmt::format("{}", v->GetValue<uint>());
         case Il2CppTypeEnum::IL2CPP_TYPE_FNPTR:
             return "0";
+        case Il2CppTypeEnum::IL2CPP_TYPE_CLASS: [[fallthrough]];
         case Il2CppTypeEnum::IL2CPP_TYPE_OBJECT: {
             auto obj = v->GetValue();
             if (!obj) return "NULL";

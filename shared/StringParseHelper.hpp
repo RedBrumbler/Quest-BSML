@@ -75,22 +75,22 @@ struct StringParseHelper : std::string_view {
     /// @param host the object in which' klass to look for a method
     /// @param argCount amount of args for the expected method
     /// @return method info for the method this string view would point to on host klass, nullptr if not found or wrong argCount
-    const MethodInfo* asMethodInfo(Il2CppObject* host, int argCount = 0) const;
+    const MethodInfo* asMethodInfo(System::Object* host, int argCount = 0) const;
     
     /// @brief use the string for a setter lookup in host->klass
     /// @param host the object in which' klass to look for a method
     /// @return method info for the setter this string view would point to on host klass, nullptr if not found
-    const MethodInfo* asSetter(Il2CppObject* host) const;
+    const MethodInfo* asSetter(System::Object* host) const;
 
     /// @brief use the string for a getter lookup in host->klass
     /// @param host the object in which' klass to look for a method
     /// @return method info for the getter this string view would point to on host klass, nullptr if not found
-    const MethodInfo* asGetter(Il2CppObject* host) const;
+    const MethodInfo* asGetter(System::Object* host) const;
 
     /// @brief use the string for a field lookup in host->klass
     /// @param host the object in which' klass to look for a field
     /// @return field info for the getter this string view would point to on host klass, nullptr if not found
-    FieldInfo* asFieldInfo(Il2CppObject* host) const;
+    FieldInfo* asFieldInfo(System::Object* host) const;
 
     /// @brief a method to make the string view this helper refers to a lowercase string
     /// @return string of this helper, lowercase

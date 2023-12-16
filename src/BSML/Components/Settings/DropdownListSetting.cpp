@@ -6,13 +6,14 @@
 #include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "System/Action_2.hpp"
+#include "System/Object.hpp"
 
 DEFINE_TYPE(BSML, DropdownListSetting);
 
 namespace BSML {
     void DropdownListSetting::ctor() {
         genericSetting = GenericSettingWrapper::New_ctor();
-        values = List<Il2CppObject*>::New_ctor();
+        values = List<System::Object*>::New_ctor();
         index = 0;
         formatter = nullptr;
     }
@@ -85,7 +86,7 @@ namespace BSML {
 
     void DropdownListSetting::ReceiveValue() {
         if (!genericSetting) return;
-        set_Value(genericSetting->GetValue<Il2CppObject*>());
+        set_Value(genericSetting->GetValue<System::Object*>());
     }
 
     void DropdownListSetting::ApplyValue() {
@@ -93,12 +94,12 @@ namespace BSML {
             genericSetting->SetValue(get_Value());
     }
 
-    Il2CppObject* DropdownListSetting::get_Value() {
+    System::Object* DropdownListSetting::get_Value() {
         ValidateRange();
         return values[index];
     }
 
-    void DropdownListSetting::set_Value(Il2CppObject* value) {
+    void DropdownListSetting::set_Value(System::Object* value) {
         index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value

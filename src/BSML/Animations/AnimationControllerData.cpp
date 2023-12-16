@@ -7,6 +7,7 @@
 #include "UnityEngine/Texture2D.hpp"
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/Vector4.hpp"
+#include "System/Object.hpp"
 #include <chrono>
 
 DEFINE_TYPE(BSML, AnimationControllerData);

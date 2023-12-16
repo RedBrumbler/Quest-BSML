@@ -11,7 +11,7 @@
 #include "GameplaySetupCell.hpp"
 #include "MenuType.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, Il2CppObject, classof(HMUI::TableView::IDataSource*),
+DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, System::Object, classof(HMUI::TableView::IDataSource*),
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::LayoutGroup*, layoutGroup);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::GameplaySetupViewController*, gameplaySetupViewController);
     DECLARE_INSTANCE_FIELD(bool, listParsed);
@@ -19,7 +19,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, Il2CppObject, classof(HMUI
 
     DECLARE_INSTANCE_FIELD(BSML::ModalView*, listModal);
     DECLARE_INSTANCE_FIELD(CustomListTableData*, modsList);
-    DECLARE_INSTANCE_FIELD(List<Il2CppObject*>*, _menus);
+    DECLARE_INSTANCE_FIELD(List<System::Object*>*, _menus);
     DECLARE_INSTANCE_FIELD(List<UnityEngine::Transform*>*, _vanillaItems);
 
     DECLARE_INSTANCE_FIELD(HMUI::ImageView*, loading);
@@ -28,7 +28,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, Il2CppObject, classof(HMUI
     DECLARE_INSTANCE_FIELD(UnityEngine::Transform*, modsTab);
     DECLARE_INSTANCE_FIELD(StringW, reuseIdentifier);
 
-    DECLARE_INSTANCE_METHOD(ListW<Il2CppObject*>, get_menus);
+    DECLARE_INSTANCE_METHOD(ListW<System::Object*>, get_menus);
     DECLARE_INSTANCE_METHOD(ListW<UnityEngine::Transform*>, get_vanillaItems);
     DECLARE_INSTANCE_METHOD(bool, get_loaded);
     DECLARE_INSTANCE_METHOD(void, set_loaded, bool value);
@@ -46,7 +46,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, Il2CppObject, classof(HMUI
 
     DECLARE_DEFAULT_CTOR();
     public:
-        bool AddTab(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType = MenuType::All);
+        bool AddTab(std::string_view name, std::string_view content_key, System::Object* host, MenuType menuType = MenuType::All);
         bool AddTab(System::Type* csType, std::string_view name, MenuType menuType = MenuType::All);
         bool AddTab(std::function<void(UnityEngine::GameObject*, bool)> didActivate, std::string_view name, MenuType menuType = MenuType::All);
         void SetTabVisibility(std::string_view name, bool isVisible);

@@ -16,7 +16,7 @@ namespace GlobalNamespace {
     using LevelPackCell = AnnotatedBeatmapLevelCollectionCell;
 }
 
-DECLARE_CLASS_CODEGEN(BSML, CustomCellInfo, Il2CppObject,
+DECLARE_CLASS_CODEGEN(BSML, CustomCellInfo, System::Object,
         DECLARE_INSTANCE_FIELD(StringW, text);
         DECLARE_INSTANCE_FIELD(StringW, subText);
         DECLARE_INSTANCE_FIELD(UnityEngine::Sprite*, icon);

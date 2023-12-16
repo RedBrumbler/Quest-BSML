@@ -122,7 +122,7 @@ namespace BSML {
         listModal->HMUI::ModalView::Show(true, true, delegate);
     }
 
-    bool GameplaySetup::AddTab(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType) {
+    bool GameplaySetup::AddTab(std::string_view name, std::string_view content_key, System::Object* host, MenuType menuType) {
         auto menus = get_menus();
         auto menu = std::find_if(menus.begin(), menus.end(), [name](auto x){ return reinterpret_cast<GameplaySetupMenu*>(x)->name == name; });
         if (menu != menus.end()) {
@@ -205,9 +205,9 @@ namespace BSML {
     }
 
 
-    ListW<Il2CppObject*> GameplaySetup::get_menus() {
+    ListW<System::Object*> GameplaySetup::get_menus() {
         if (!_menus) {
-            _menus = List<Il2CppObject*>::New_ctor();
+            _menus = List<System::Object*>::New_ctor();
         }
         return _menus;
     }

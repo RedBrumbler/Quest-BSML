@@ -94,7 +94,7 @@ namespace BSML {
         return parent->get_gameObject();
     }
 
-    void BSMLTag::SetHostField(Il2CppObject* host, Il2CppObject* value) const {
+    void BSMLTag::SetHostField(System::Object* host, System::Object* value) const {
         if (!host || id.empty()) return;
 
         // get the field info with il2cpp reflection

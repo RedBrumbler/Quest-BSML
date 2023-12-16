@@ -40,7 +40,7 @@ namespace BSML {
         return cell;
     }
 
-    BSML::CustomCellTableCell* CustomCellListTableData::NewCellForData(Il2CppObject* data) {
+    BSML::CustomCellTableCell* CustomCellListTableData::NewCellForData(System::Object* data) {
         auto cellGo = GameObject::New_ctor("BSMLCustomCellTableCell");
         auto cell = cellGo->AddComponent<BSML::CustomCellTableCell*>();
         

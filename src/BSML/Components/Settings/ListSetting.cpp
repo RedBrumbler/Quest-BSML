@@ -1,11 +1,13 @@
 #include "BSML/Components/Settings/ListSetting.hpp"
 
+#include "System/Object.hpp"
+
 DEFINE_TYPE(BSML, ListSetting);
 
 namespace BSML {
     void ListSetting::ctor() {
         IncDecSetting::construct();
-        values = List<Il2CppObject*>::New_ctor();
+        values = List<System::Object*>::New_ctor();
         index = 0;
     }
 
@@ -36,7 +38,7 @@ namespace BSML {
 
     void ListSetting::ReceiveValue() {
         if (!genericSetting) return;
-        set_Value(genericSetting->GetValue<Il2CppObject*>());
+        set_Value(genericSetting->GetValue<System::Object*>());
     }
 
     void ListSetting::ApplyValue() {
@@ -55,7 +57,7 @@ namespace BSML {
         if (values.size() > 0) {
             set_enableDec(index > 0);
             set_enableInc(index < values.size() - 1);
-            StringW text; 
+            StringW text;
             if (formatter)
                 text = formatter(values[index]);
             else {
@@ -74,13 +76,13 @@ namespace BSML {
         }
     }
 
-    Il2CppObject* ListSetting::get_Value() {
+    System::Object* ListSetting::get_Value() {
         ValidateRange();
         if (values.size() == 0) return nullptr;
         return values[index];
     }
 
-    void ListSetting::set_Value(Il2CppObject* value) {
+    void ListSetting::set_Value(System::Object* value) {
         index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value
@@ -91,7 +93,7 @@ namespace BSML {
 
         if (index == values.size())
             index = values.size() - 1;
-        
+
         UpdateState();
     }
 }

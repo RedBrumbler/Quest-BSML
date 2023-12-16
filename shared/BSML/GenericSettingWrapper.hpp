@@ -2,9 +2,9 @@
 
 #include "custom-types/shared/macros.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
-    DECLARE_INSTANCE_FIELD(Il2CppObject*, host);
-    DECLARE_INSTANCE_FIELD(Il2CppObject*, onChangeHost);
+DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, System::Object,
+    DECLARE_INSTANCE_FIELD(System::Object*, host);
+    DECLARE_INSTANCE_FIELD(System::Object*, onChangeHost);
     DECLARE_INSTANCE_FIELD(bool, applyOnChange); /* default: true */
     DECLARE_CTOR(ctor);
 
@@ -14,8 +14,8 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
         const MethodInfo* getterInfo;
         const MethodInfo* onChangeInfo;
 
-        Il2CppObject* get_onChangeHost();
-        Il2CppObject* get_host();
+        System::Object* get_onChangeHost();
+        System::Object* get_host();
 
         template<typename T>
         void SetValue(T value) {

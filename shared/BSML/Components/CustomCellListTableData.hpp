@@ -10,7 +10,7 @@
 #include <string>
 
 DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomCellListTableData, UnityEngine::MonoBehaviour, classof(HMUI::TableView::IDataSource*),
-    DECLARE_INSTANCE_FIELD(ListW<Il2CppObject*>, data);
+    DECLARE_INSTANCE_FIELD(ListW<System::Object*>, data);
     DECLARE_INSTANCE_FIELD(float, cellSize);
     DECLARE_INSTANCE_FIELD(bool, clickableCells);
     DECLARE_INSTANCE_FIELD(StringW, reuseIdentifier);
@@ -19,7 +19,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomCellListTableData, UnityEngine::Mon
     DECLARE_OVERRIDE_METHOD_MATCH(float, CellSize, &HMUI::TableView::IDataSource::CellSize);
     DECLARE_OVERRIDE_METHOD_MATCH(int, NumberOfCells, &HMUI::TableView::IDataSource::NumberOfCells);
     DECLARE_OVERRIDE_METHOD_MATCH(HMUI::TableCell*, CellForIdx, &HMUI::TableView::IDataSource::CellForIdx, HMUI::TableView* tableView, int idx);
-    DECLARE_INSTANCE_METHOD(CustomCellTableCell*, NewCellForData, Il2CppObject* data);
+    DECLARE_INSTANCE_METHOD(CustomCellTableCell*, NewCellForData, System::Object* data);
 
     DECLARE_CTOR(ctor);
 

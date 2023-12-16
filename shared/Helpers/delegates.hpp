@@ -94,7 +94,7 @@ namespace BSML {
     /// @param methodInfo the methodInfo of the method to run on instance
     /// @return System::Action_N<Targs>
     template<typename...Targs>
-    auto MakeSystemAction(Il2CppObject* instance, const MethodInfo* methodInfo) {
+    auto MakeSystemAction(System::Object* instance, const MethodInfo* methodInfo) {
         if (methodInfo->parameters_count != sizeof...(Targs)) {
             std::stringstream strm;
             strm << "Argcount mismatch between methodInfo and Targs: " << methodInfo->parameters_count << "!=" << sizeof...(Targs);
@@ -139,7 +139,7 @@ namespace BSML {
     /// @param methodInfo the methodInfo of the method to run on instance
     /// @return UnityEngine::Events::UnityAction_N<Targs>
     template<typename...Targs>
-    auto MakeUnityAction(Il2CppObject* instance, const MethodInfo* methodInfo) {
+    auto MakeUnityAction(System::Object* instance, const MethodInfo* methodInfo) {
         if (methodInfo->parameters_count != sizeof...(Targs)) {
             std::stringstream strm;
             strm << "Argcount mismatch between methodInfo and Targs: " << methodInfo->parameters_count << "!=" << sizeof...(Targs);

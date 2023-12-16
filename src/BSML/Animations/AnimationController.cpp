@@ -44,7 +44,7 @@ namespace BSML {
 
     bool AnimationController::TryGetAnimationControllerData(StringW key, AnimationControllerData*& out) {
         union {
-            Il2CppObject* data = nullptr;
+            System::Object* data = nullptr;
             AnimationControllerData* animationData;
         };
 
