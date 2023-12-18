@@ -106,4 +106,8 @@ namespace BSML {
         kb->Enter(this);
         return true;
     }
+
+    Keyboard* Key::get_kb() { return reinterpret_cast<Keyboard*>(_kb); }
+    Keyboard const* Key::get_kb() const { return reinterpret_cast<Keyboard const*>(_kb); }
+    void Key::set_kb(Keyboard* value) { _kb = value; }
 }
