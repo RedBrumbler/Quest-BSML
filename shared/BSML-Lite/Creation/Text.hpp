@@ -3,6 +3,7 @@
 #include "../TransformWrapper.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "TMPro/TextRenderFlags.hpp"
+#include "TMPro/FontStyles.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "../../BSML/Components/ClickableText.hpp"
 
