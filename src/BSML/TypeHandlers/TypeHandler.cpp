@@ -2,6 +2,7 @@
 #include "Helpers/utilities.hpp"
 
 namespace BSML {
+
     std::vector<TypeHandlerBase*>& TypeHandlerBase::get_typeHandlers() {
         static std::vector<TypeHandlerBase*> typeHandlers = {};
         return typeHandlers;

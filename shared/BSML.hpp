@@ -9,6 +9,9 @@
 #include "BSML/GameplaySetup/MenuType.hpp"
 #include "BSML/MenuSource.hpp"
 
+// include direct creation methods
+#include "BSML-Lite.hpp"
+
 #include <memory>
 #include <string>
 #include <functional>

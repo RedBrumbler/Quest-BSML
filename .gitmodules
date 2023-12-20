@@ -4,3 +4,6 @@
 [submodule "EasyGifReader"]
 	path = include/submodules/EasyGifReader
 	url = https://github.com/Chlumsky/EasyGifReader.git
+[submodule "cppcodec"]
+	path = include/submodules/cppcodec
+	url = https://github.com/tplgy/cppcodec.git
