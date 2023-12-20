@@ -39,7 +39,7 @@ namespace BSML {
             auto component = GetExternalComponent(currentObject, externalComponents, type);
             if (component)
             {
-                INFO("Found component {}", type->get_FullName());
+                INFO("Found component {}", type->FullNameOrDefault);
                 auto componentTypeWithData = new ComponentTypeWithData();
                 componentTypeWithData->typeHandler = typeHandler;
                 componentTypeWithData->component = component;
@@ -64,7 +64,7 @@ namespace BSML {
                 if (gameObjectSystemType == fieldSystemType) {
                     // if the field is of type GameObject, set the field to the current object value
                     SetHostField(parserParams.host, currentObject);
-                } else { 
+                } else {
                     // if the field is not a GameObject, try to find the type of the field with the GetExternalComponent method, and set that on the field
                     auto component = GetExternalComponent(currentObject, externalComponents, fieldSystemType);
                     if (component) {

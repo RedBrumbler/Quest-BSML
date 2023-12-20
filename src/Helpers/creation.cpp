@@ -43,7 +43,7 @@ namespace BSML::Helpers {
         if (!canvasTemplate)
             canvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x) { return x->get_name() == "DropdownTableView"; });
 
-        auto go = GameObject::New_ctor(type->get_Name());
+        auto go = GameObject::New_ctor(type->NameOrDefault);
         auto cv = go->AddComponent<Canvas*>();
 
         cv->set_additionalShaderChannels(canvasTemplate->get_additionalShaderChannels());
@@ -69,7 +69,7 @@ namespace BSML::Helpers {
     }
 
     HMUI::FlowCoordinator* CreateFlowCoordinator(System::Type* type) {
-        auto flow = reinterpret_cast<HMUI::FlowCoordinator*>(GameObject::New_ctor(type->get_Name())->AddComponent(type));
+        auto flow = reinterpret_cast<HMUI::FlowCoordinator*>(GameObject::New_ctor(type->NameOrDefault)->AddComponent(type));
         flow->_baseInputModule = GetMainFlowCoordinator()->_baseInputModule;
         return flow;
     }

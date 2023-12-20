@@ -2,7 +2,6 @@
 #include "Helpers/utilities.hpp"
 
 namespace BSML {
-    
     std::vector<TypeHandlerBase*>& TypeHandlerBase::get_typeHandlers() {
         static std::vector<TypeHandlerBase*> typeHandlers = {};
         return typeHandlers;
@@ -34,7 +33,7 @@ namespace BSML {
         }
         INFO("type handler count: {}", typeHandlers.size());
     }
-    
+
     #if MAKE_DOCS
     void TypeHandlerBase::AddToArray(rapidjson::Value& val, rapidjson::Document::AllocatorType& allocator) {
         val.PushBack(ToJson(allocator), allocator);
@@ -43,7 +42,7 @@ namespace BSML {
     rapidjson::Value TypeHandlerBase::ToJson(rapidjson::Document::AllocatorType& allocator) {
         rapidjson::Value typehandler;
         typehandler.SetObject();
-        std::string name =  get_type()->get_FullName();
+        std::string name =  get_type()->FullNameOrDefault;
         typehandler.AddMember("typename", rapidjson::Value(name.c_str(), name.size(), allocator), allocator);
 
         rapidjson::Value propertiesArray;
