@@ -1,3 +1,4 @@
+#include "BSML/MainThreadScheduler.hpp"
 #include "scotland2/shared/loader.hpp"
 #include "beatsaber-hook/shared/utils/typedefs.h"
 #include "hooking.hpp"
@@ -7,6 +8,12 @@
 #include "assets.hpp"
 #include "config.hpp"
 #include "custom-types/shared/register.hpp"
+
+#include "BSML/MainThreadScheduler.hpp"
+#include "BSML/SharedCoroutineStarter.hpp"
+#include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/Object.hpp"
+#include "UnityEngine/HideFlags.hpp"
 
 namespace BSML {}
 using namespace BSML;
@@ -40,6 +47,23 @@ extern "C" void load() {
         SaveConfig();
     custom_types::Register::AutoRegister();
     Hooks::InstallHooks(BSML::Logging::getLogger());
+}
+
+static constexpr inline UnityEngine::HideFlags operator |(UnityEngine::HideFlags a, UnityEngine::HideFlags b) {
+    return UnityEngine::HideFlags(a.value__ | b.value__);
+}
+
+extern "C" void late_load() {
+    // late load is on main thread and really early, great time to setup these singletons
+    auto mts = UnityEngine::GameObject::New_ctor("BSMLMainThreadScheduler");
+    UnityEngine::Object::DontDestroyOnLoad(mts);
+    mts->hideFlags = UnityEngine::HideFlags::DontUnloadUnusedAsset | UnityEngine::HideFlags::HideAndDontSave;
+    mts->AddComponent<BSML::MainThreadScheduler*>();
+
+    auto scs = UnityEngine::GameObject::New_ctor("BSMLSharedCoroutineStarter");
+    UnityEngine::Object::DontDestroyOnLoad(scs);
+    scs->hideFlags = UnityEngine::HideFlags::DontUnloadUnusedAsset | UnityEngine::HideFlags::HideAndDontSave;
+    scs->AddComponent<BSML::SharedCoroutineStarter*>();
 }
 
 BSML_DATACACHE(settings_about) {

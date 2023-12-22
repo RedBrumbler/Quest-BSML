@@ -8,10 +8,22 @@ namespace BSML {
     SafePtrUnity<UnityEngine::MonoBehaviour> SharedCoroutineStarter::instance;
 
     UnityEngine::MonoBehaviour* SharedCoroutineStarter::get_instance() {
-        if (!instance) {
-            auto go = UnityEngine::GameObject::New_ctor("BSMLSharedCoroutineStarter");
-            instance = go->AddComponent<SharedCoroutineStarter*>();
-        }
         return instance.ptr();
+    }
+
+    void SharedCoroutineStarter::Awake() {
+        instance = this;
+    }
+
+    void SharedCoroutineStarter::StopCoroutine(UnityEngine::Coroutine* coroutine) {
+        instance->StopCoroutine(coroutine);
+    }
+
+    UnityEngine::Coroutine* SharedCoroutineStarter::StartCoroutine(::System::Collections::IEnumerator* enumerator) {
+        return instance->StartCoroutine(enumerator);
+    }
+
+    UnityEngine::Coroutine* SharedCoroutineStarter::StartCoroutine(custom_types::Helpers::Coroutine coroutine) {
+        return StartCoroutine(custom_types::Helpers::CoroutineHelper::New(std::move(coroutine)));
     }
 }
