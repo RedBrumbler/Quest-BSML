@@ -9,8 +9,8 @@ DEFINE_TYPE(BSML, TabSelector);
 
 namespace BSML {
     void TabSelector::ctor() {
-        tabs = SListW<Tab*>::New_ctor();
-        visibleTabs = SListW<Tab*>::New_ctor();
+        tabs = ListW<Tab*>::New();
+        visibleTabs = ListW<Tab*>::New();
         pageCount = -1;
     }
 
@@ -115,7 +115,7 @@ namespace BSML {
             SetSegmentedControlTexts(visibleTabs);
         } else {
             currentPage = get_page();
-            SListW<Tab*> usableTabs = SListW<Tab*>::New_ctor();
+            ListW<Tab*> usableTabs = ListW<Tab*>::New();
             usableTabs->EnsureCapacity(get_pageCount());
 
             int start = get_pageCount() * currentPage;
@@ -133,9 +133,9 @@ namespace BSML {
         }
     }
 
-    void TabSelector::SetSegmentedControlTexts(SListW<Tab*> tabs) {
+    void TabSelector::SetSegmentedControlTexts(ListW<Tab*> tabs) {
         // we have to use a list because Array does not implement IReadOnlyList
-        auto texts = SListW<StringW>::New_ctor();
+        auto texts = ListW<StringW>::New();
         texts->EnsureCapacity(tabs->get_Count());
 
         for (auto tab : tabs) {

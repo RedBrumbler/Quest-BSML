@@ -84,7 +84,7 @@ namespace BSML::Lite {
     template<TableView_IDataSource T>
     requires(std::is_convertible_v<T, UnityEngine::MonoBehaviour*>)
     T CreateCustomSourceList(const TransformWrapper& parent, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return reinterpet_cast<T>(CreateCustomSourceList(csTypeOf(T). parent, anchoredPosition, sizeDelta, onCellWithIdxClicked));
+        return reinterpet_cast<T>(CreateCustomSourceList(csTypeOf(T), parent, anchoredPosition, sizeDelta, onCellWithIdxClicked));
     }
 
     /// @brief creates a List with a custom HMUI::TableView::IDataSource
@@ -95,7 +95,7 @@ namespace BSML::Lite {
     template<TableView_IDataSource T>
     requires(std::is_convertible_v<T, UnityEngine::MonoBehaviour*>)
     T CreateCustomSourceList(const TransformWrapper& parent, UnityEngine::Vector2 sizeDelta, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return reinterpet_cast<T>(CreateCustomSourceList(csTypeOf(T). parent, {}, sizeDelta, onCellWithIdxClicked));
+        return reinterpet_cast<T>(CreateCustomSourceList(csTypeOf(T), parent, {}, sizeDelta, onCellWithIdxClicked));
     }
 
     /// @brief creates a List with a custom HMUI::TableView::IDataSource
@@ -105,7 +105,7 @@ namespace BSML::Lite {
     template<TableView_IDataSource T>
     requires(std::is_convertible_v<T, UnityEngine::MonoBehaviour*>)
     T CreateCustomSourceList(const TransformWrapper& parent, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return reinterpet_cast<T>(CreateCustomSourceList(csTypeOf(T). parent, {}, {35.0f, 60.0f}, onCellWithIdxClicked));
+        return reinterpet_cast<T>(CreateCustomSourceList(csTypeOf(T), parent, {}, {35.0f, 60.0f}, onCellWithIdxClicked));
     }
 
     /// @brief creates a List with a custom IDataSource

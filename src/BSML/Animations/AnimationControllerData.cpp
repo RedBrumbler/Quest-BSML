@@ -70,9 +70,9 @@ namespace BSML {
         Finalize();
     }
 
-    SListW<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {
+    ListW<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {
         if (!_activeImages) {
-            _activeImages = SListW<UnityEngine::UI::Image*>::New_ctor();
+            _activeImages = ListW<UnityEngine::UI::Image*>::New();
         }
         return _activeImages;
     }

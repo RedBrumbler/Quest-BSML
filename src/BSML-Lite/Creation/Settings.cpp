@@ -130,7 +130,7 @@ namespace BSML::Lite {
         auto dropdownSetting = go->GetComponent<BSML::DropdownListSetting*>();
         auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
 
-        auto valuesList = SListW<System::Object*>::New_ctor();
+        auto valuesList = ListW<System::Object*>::New();
         valuesList->EnsureCapacity(values.size());
         for (auto v : values) valuesList->Add(static_cast<System::Object*>(StringW(v).convert()));
         dropdownSetting->values = valuesList;

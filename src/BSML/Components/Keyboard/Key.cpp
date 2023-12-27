@@ -20,7 +20,7 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    Key* Key::Set(SStringW value) {
+    Key* Key::Set(StringW value) {
         if (!System::String::IsNullOrEmpty(value))
             this->value = value;
         return this;
@@ -30,7 +30,7 @@ namespace BSML {
         return Key::New_ctor();
     }
 
-    Key* Key::construct(Keyboard* kb, UnityEngine::Vector2 position, SStringW text, float width, float height, UnityEngine::Color color) {
+    Key* Key::construct(Keyboard* kb, UnityEngine::Vector2 position, StringW text, float width, float height, UnityEngine::Color color) {
         auto self = construct();
         self->value = text;
         self->kb = kb;

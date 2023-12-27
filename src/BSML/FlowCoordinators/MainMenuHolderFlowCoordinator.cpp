@@ -7,8 +7,6 @@
 #include "Helpers/creation.hpp"
 #include "Helpers/getters.hpp"
 
-#define systemTypeOf(...) (reinterpret_cast<System::Type*>(csTypeOf(__VA_ARGS__)))
-
 DEFINE_TYPE(BSML, MainMenuHolderFlowCoordinator);
 
 namespace BSML {
@@ -74,7 +72,7 @@ namespace BSML {
         title(title),
         buttonText(buttonText),
         hoverHint(hoverHint),
-        csType(systemTypeOf(HMUI::ViewController*)),
+        csType(csTypeOf(HMUI::ViewController*)),
         setupFunc(setupFunc),
         registrationType(MenuSource::Method),
         viewController(nullptr) {

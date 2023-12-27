@@ -1,7 +1,6 @@
 #include "BSML/TypeHandlers/TextSegmentedControlHandler.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 #include "Helpers/delegates.hpp"
-#include "typedefs.hpp"
 
 namespace BSML {
     static TextSegmentedControlHandler textSegmentedControlHandler{};
@@ -24,7 +23,7 @@ namespace BSML {
         auto dataItr = data.find("data");
         if (dataItr != data.end() && !dataItr->second.empty()) {
             auto val = parserParams.TryGetValue(dataItr->second);
-            auto texts = SListW<SStringW>::New_ctor();
+            auto texts = ListW<StringW>::New();
             static auto dataKlass = classof(List<System::Object*>*);
             static auto stringDataKlass = classof(List<Il2CppString*>*);
 

@@ -4,16 +4,15 @@
 #include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/Color.hpp"
 #include "UnityEngine/Vector2.hpp"
-#include "../../../typedefs.hpp"
 
 namespace BSML {
     class Keyboard;
 }
 
 DECLARE_CLASS_CODEGEN(BSML, Key, System::Object,
-    DECLARE_INSTANCE_FIELD(SStringW, name);
-    DECLARE_INSTANCE_FIELD(SStringW, value);
-    DECLARE_INSTANCE_FIELD(SStringW, shifted);
+    DECLARE_INSTANCE_FIELD(StringW, name);
+    DECLARE_INSTANCE_FIELD(StringW, value);
+    DECLARE_INSTANCE_FIELD(StringW, shifted);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, button);
     DECLARE_INSTANCE_FIELD(System::Object*, _kb);
     Keyboard* get_kb();
@@ -27,9 +26,9 @@ DECLARE_CLASS_CODEGEN(BSML, Key, System::Object,
         bool KeyAction();
         bool Enter();
 
-        Key* Set(SStringW value);
+        Key* Set(StringW value);
         static Key* construct();
-        static Key* construct(Keyboard* kb, UnityEngine::Vector2 position, SStringW text, float width, float height, UnityEngine::Color color);
+        static Key* construct(Keyboard* kb, UnityEngine::Vector2 position, StringW text, float width, float height, UnityEngine::Color color);
 
         std::function<void(Key*)> keyAction = nullptr;
 )

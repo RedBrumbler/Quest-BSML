@@ -1,6 +1,6 @@
 #pragma once
 
-#include "typedefs.hpp"
+#include "beatsaber-hook/shared/utils/typedefs.h"
 
 /// This macro defines a backing field, a getter and a setter for a property.
 /// The field is declared as _name, the getter as get_name and the setter as set_name.
@@ -16,11 +16,11 @@ ___CREATE_INSTANCE_METHOD(set_##name, "set_" #name, METHOD_ATTRIBUTE_PUBLIC | ME
 
 /// method to be used by BSML_OPTIONS_LIST to convert the given options into an on demand getter for options
 template<typename T>
-inline ::BSML::SListW<T> initializer_list_to_List(std::initializer_list<std::string> list) {
-    auto result = ::BSML::SListW<T>::New_ctor();
+inline ::ListW<T> initializer_list_to_List(std::initializer_list<std::string> list) {
+    auto result = ::ListW<T>::New();
     result->EnsureCapacity(list.size());
     if constexpr (std::is_pointer_v<T>) {
-        for (auto& v : list) result->Add(reinterpret_cast<T>(::BSML::SStringW(v).convert()));
+        for (auto& v : list) result->Add(reinterpret_cast<T>(::StringW(v).convert()));
     } else {
         for (auto& v : list) result->Add(T(v));
     }
@@ -31,11 +31,11 @@ inline ::BSML::SListW<T> initializer_list_to_List(std::initializer_list<std::str
 // the id of the list is the same as what you use for options="listid" in BSML, make sure your IDs are valid c++ identifiers!
 #define BSML_OPTIONS_LIST_OBJECT(choices_id, ...) \
 public: \
-::BSML::SListW<System::Object*> get_##choices_id() { return initializer_list_to_List<System::Object*>({__VA_ARGS__}); };\
+::ListW<System::Object*> get_##choices_id() { return initializer_list_to_List<System::Object*>({__VA_ARGS__}); };\
 ___CREATE_INSTANCE_METHOD(get_ ##choices_id, "get_" #choices_id, METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_HIDE_BY_SIG, nullptr)
 
 // same as BSML_OPTIONS_LIST_OBJECT but returns a List<StringW>* instead of a List<System::Object*>*
 #define BSML_OPTIONS_LIST_STRING(choices_id, ...) \
 public: \
-::BSML::SListW<::BSML::SStringW>* get_##choices_id() { return initializer_list_to_List<::BSML::SStringW>({__VA_ARGS__}); };\
+::ListW<::StringW>* get_##choices_id() { return initializer_list_to_List<::StringW>({__VA_ARGS__}); };\
 ___CREATE_INSTANCE_METHOD(get_ ##choices_id, "get_" #choices_id, METHOD_ATTRIBUTE_PUBLIC | METHOD_ATTRIBUTE_HIDE_BY_SIG, nullptr)

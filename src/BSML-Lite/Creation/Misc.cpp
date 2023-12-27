@@ -9,7 +9,6 @@
 
 #include "UnityEngine/RectTransform.hpp"
 #include "System/Action_2.hpp"
-#include "typedefs.hpp"
 
 namespace BSML::Lite {
     HMUI::HoverHint* AddHoverHint(const GameObjectWrapper& parent, StringW text) {
@@ -35,7 +34,7 @@ namespace BSML::Lite {
         rect->set_anchoredPosition(anchoredPosition);
         rect->set_sizeDelta(sizeDelta);
 
-        auto texts = SListW<StringW>::New_ctor();
+        auto texts = ListW<StringW>::New();
         texts->EnsureCapacity(values.size());
         for (const auto& text : values) texts->Add(text);
         textSegmentedControl->SetTexts(*texts);

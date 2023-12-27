@@ -2,7 +2,6 @@
 
 #include "custom-types/shared/macros.hpp"
 #include "IncDecSetting.hpp"
-#include "../../../typedefs.hpp"
 
 DECLARE_CLASS_CUSTOM(BSML, ListSetting, BSML::IncDecSetting,
     DECLARE_INSTANCE_METHOD(void, Setup);
@@ -17,7 +16,7 @@ DECLARE_CLASS_CUSTOM(BSML, ListSetting, BSML::IncDecSetting,
     DECLARE_INSTANCE_METHOD(System::Object*, get_Value);
     DECLARE_INSTANCE_METHOD(void, set_Value, System::Object* value);
 
-    DECLARE_INSTANCE_FIELD(SListW<System::Object*>, values);
+    DECLARE_INSTANCE_FIELD(ListW<System::Object*>, values);
     DECLARE_INSTANCE_FIELD(int, index); /* default: 0; */
 
     DECLARE_CTOR(ctor);

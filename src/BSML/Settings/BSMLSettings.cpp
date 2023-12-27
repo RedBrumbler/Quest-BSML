@@ -31,9 +31,9 @@ namespace BSML {
         return instance.ptr();
     }
 
-    SListW<BSML::CustomCellInfo*> BSMLSettings::get_settingsMenus() {
+    ListW<BSML::CustomCellInfo*> BSMLSettings::get_settingsMenus() {
         if (!settingsMenus) {
-            settingsMenus = SListW<CustomCellInfo*>::New_ctor();
+            settingsMenus = ListW<CustomCellInfo*>::New();
         }
         return settingsMenus;
     }

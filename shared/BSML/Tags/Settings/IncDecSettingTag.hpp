@@ -21,6 +21,6 @@ namespace BSML {
             virtual UnityEngine::GameObject* CreateObject(UnityEngine::Transform* parent) const override {
                 return IncDecSettingTagBase::CreateObject(parent);
             }
-            System::Type* get_type() const override { return reinterpret_cast<System::Type*>(csTypeOf(T)); };
+            System::Type* get_type() const override { return csTypeOf(T); };
     };
 }

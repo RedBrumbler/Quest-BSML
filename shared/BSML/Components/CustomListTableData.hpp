@@ -9,7 +9,6 @@
 #include "GlobalNamespace/LevelListTableCell.hpp"
 #include "GlobalNamespace/AnnotatedBeatmapLevelCollectionCell.hpp"
 #include "GlobalNamespace/SimpleTextTableCell.hpp"
-#include "../../typedefs.hpp"
 
 #include <string>
 
@@ -32,7 +31,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomListTableData, UnityEngine::MonoBeh
 
     /* pls no touchy raw listStyle if you value your sanity */
     DECLARE_INSTANCE_FIELD(int, _listStyle);
-    DECLARE_INSTANCE_FIELD(SListW<CustomCellInfo*>, data);
+    DECLARE_INSTANCE_FIELD(ListW<CustomCellInfo*>, data);
     DECLARE_INSTANCE_FIELD(float, cellSize);
     DECLARE_INSTANCE_FIELD(StringW, reuseIdentifier);
     DECLARE_INSTANCE_FIELD(HMUI::TableView*, tableView);

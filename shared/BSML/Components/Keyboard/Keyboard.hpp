@@ -6,11 +6,10 @@
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "UnityEngine/UI/Button.hpp"
 #include "Key.hpp"
-#include "../../../typedefs.hpp"
 #include <functional>
 
 DECLARE_CLASS_CODEGEN(BSML, Keyboard, System::Object,
-    DECLARE_INSTANCE_FIELD(SListW<Key*>, keys);
+    DECLARE_INSTANCE_FIELD(ListW<Key*>, keys);
     DECLARE_INSTANCE_FIELD(Key*, dummy);
 
     DECLARE_INSTANCE_FIELD(bool, enableInputField);     /* default: true;  */
@@ -59,5 +58,5 @@ DECLARE_CLASS_CODEGEN(BSML, Keyboard, System::Object,
         Key* AddKey(StringW keyLabel, float width = 12.0f, float height = 10.0f, int color = 0xffffff);
         Key* AddKey(StringW keyLabel, StringW shifted, float width = 12.0f, float height = 10.0f);
         void EmitKey(float& spacing, float& width, StringW& label, StringW& key, bool& space, StringW& newValue, float& height, int& color);
-        bool ReadFloat(SStringW data, int& position, float& result);
+        bool ReadFloat(StringW data, int& position, float& result);
 )

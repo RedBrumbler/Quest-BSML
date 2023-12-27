@@ -16,7 +16,7 @@ using namespace UnityEngine;
 
 namespace BSML {
     void CustomListTableData::ctor() {
-        data = SListW<CustomCellInfo*>::New_ctor();
+        data = ListW<CustomCellInfo*>::New();
         cellSize = 8.5f;
         reuseIdentifier = "BSMLListTableCell";
 

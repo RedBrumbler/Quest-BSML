@@ -14,7 +14,7 @@ namespace BSML {
 
     void ListSliderSetting::ctor() {
         SliderSettingBase::construct();
-        values = SListW<System::Object*>::New_ctor();
+        values = ListW<System::Object*>::New();
     }
 
     void ListSliderSetting::OnDestroy() {

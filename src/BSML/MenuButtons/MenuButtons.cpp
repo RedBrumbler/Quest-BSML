@@ -23,9 +23,9 @@ namespace BSML {
         }
         return instance.ptr();
     }
-    SListW<System::Object*> MenuButtons::get_buttons() {
+    ListW<System::Object*> MenuButtons::get_buttons() {
         if (!_buttons) {
-            _buttons = SListW<System::Object*>::New_ctor();
+            _buttons = ListW<System::Object*>::New();
         }
         return _buttons;
     }

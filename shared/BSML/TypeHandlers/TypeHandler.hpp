@@ -67,9 +67,9 @@ namespace BSML {
                 return cachedSetters;
             }
 
-            virtual System::Type* get_type() override { 
-                if (cachedType) return cachedType; 
-                return (cachedType = reinterpret_cast<System::Type*>(csTypeOf(T))); 
+            virtual System::Type* get_type() override {
+                if (cachedType) return cachedType;
+                return (cachedType = csTypeOf(T));
             };
 
             virtual SetterMap get_setters() const = 0;

@@ -1,6 +1,7 @@
 #include "Helpers/creation.hpp"
 #include "Helpers/getters.hpp"
 
+#include "System/Type.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Resources.hpp"

@@ -39,7 +39,6 @@
 
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-functions.hpp"
-#include "typedefs.hpp"
 
 #define coro(coroutine) BSML::SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(coroutine))
 
@@ -63,7 +62,7 @@ namespace BSML::Utilities {
 
         for (auto x : Resources::FindObjectsOfTypeAll<Sprite*>())
         {
-            if (x->get_name()->length == 0)
+            if (x->name->Length == 0)
                 continue;
             UnityEngine::Sprite* a = nullptr;
             if(!spriteCache->TryGetValue(x->get_name(), byref(a)) || !a)
@@ -88,7 +87,7 @@ namespace BSML::Utilities {
 
         for (auto x : Resources::FindObjectsOfTypeAll<Texture*>())
         {
-            if (x->get_name()->length == 0)
+            if (x->name->Length == 0)
                 continue;
             UnityEngine::Texture* a = nullptr;
             if(!textureCache->TryGetValue(x->get_name(), byref(a)) || !a)
@@ -215,7 +214,7 @@ namespace BSML::Utilities {
         }
     }
 
-    bool IsAnimated(SStringW str)
+    bool IsAnimated(StringW str)
     {
         return  str->EndsWith(".gif", System::StringComparison::OrdinalIgnoreCase) ||
                 str->EndsWith("_gif", System::StringComparison::OrdinalIgnoreCase) ||
@@ -228,15 +227,15 @@ namespace BSML::Utilities {
             ERROR("Unhandled Load Image error {}, Use the SetImage method that takes an error handler to handle it correctly!", err);
     }
 
-    void SetImage(UnityEngine::UI::Image* image, SStringW path) {
+    void SetImage(UnityEngine::UI::Image* image, StringW path) {
         SetImage(image, path, true, ScaleOptions(), true, nullptr, DefaultImageLoadErrorHandler);
     }
 
-    void SetImage(UnityEngine::UI::Image* image, SStringW path, bool cached) {
+    void SetImage(UnityEngine::UI::Image* image, StringW path, bool cached) {
         SetImage(image, path, true, ScaleOptions(), cached, nullptr, DefaultImageLoadErrorHandler);
     }
 
-    void SetImage(UnityEngine::UI::Image* image, SStringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished) {
+    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished) {
         SetImage(image, path, loadingAnimation, scaleOptions, true, onFinished, DefaultImageLoadErrorHandler);
     }
 
@@ -259,7 +258,7 @@ namespace BSML::Utilities {
         return false;
     }
 
-    void SetAndLoadImageAnimated(UnityEngine::UI::Image* image, SStringW path, bool loadingAnimation, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+    void SetAndLoadImageAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
         auto animationController = AnimationController::get_instance();
 
         auto stateUpdater = image->get_gameObject()->AddComponent<AnimationStateUpdater*>();
@@ -277,7 +276,7 @@ namespace BSML::Utilities {
             stateUpdater->set_controllerData(animationControllerData);
             if (onFinished) onFinished();
         } else {
-            bool isGif = path->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase) || (uri.first && SStringW(uri.second->get_LocalPath())->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase));
+            bool isGif = path->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase) || (uri.first && StringW(uri.second->get_LocalPath())->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase));
             auto animType = isGif ? AnimationLoader::AnimationType::GIF : AnimationLoader::AnimationType::APNG;
 
             auto errorType = uri.first ? ImageLoadError::NetworkError : ImageLoadError::GetDataError;
@@ -310,7 +309,7 @@ namespace BSML::Utilities {
         }
     }
 
-    void SetAndLoadImageNonAnimated(UnityEngine::UI::Image* image, SStringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+    void SetAndLoadImageNonAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
         auto errorType = uri.first ? ImageLoadError::NetworkError : ImageLoadError::GetDataError;
         auto onDataFinished = [path, onFinished, onError, errorType, image, scaleOptions, cached](ArrayW<uint8_t> data) {
             // somehow data was failed to be gotten
@@ -346,11 +345,11 @@ namespace BSML::Utilities {
         }
     }
 
-    void SetImage(UnityEngine::UI::Image* image, SStringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
         SetImage(image, path, loadingAnimation, scaleOptions, true, onFinished, onError);
     }
 
-    void SetImage(UnityEngine::UI::Image* image, SStringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
                 if (!image) {
             ERROR("Can't set null image!");
             return;

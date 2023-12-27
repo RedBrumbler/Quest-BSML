@@ -4,9 +4,9 @@ DEFINE_TYPE(BSML, CustomCellTableCell);
 
 namespace BSML {
     void CustomCellTableCell::ctor() {
-        selectedTags = SListW<UnityEngine::GameObject*>::New_ctor();
-        hoveredTags = SListW<UnityEngine::GameObject*>::New_ctor();
-        neitherTags = SListW<UnityEngine::GameObject*>::New_ctor();
+        selectedTags = ListW<UnityEngine::GameObject*>::New();
+        hoveredTags = ListW<UnityEngine::GameObject*>::New();
+        neitherTags = ListW<UnityEngine::GameObject*>::New();
     }
 
     void CustomCellTableCell::Reused() {

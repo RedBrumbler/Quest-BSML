@@ -4,7 +4,7 @@ DEFINE_TYPE(BSML, ExternalComponents);
 
 namespace BSML {
     void ExternalComponents::ctor() {
-        components = SListW<UnityEngine::Component*>::New_ctor();
+        components = ListW<UnityEngine::Component*>::New();
     }
 
     void ExternalComponents::Add(UnityEngine::Component* component) {

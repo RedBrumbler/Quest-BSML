@@ -9,6 +9,7 @@
 #include "UnityEngine/UI/Image.hpp"
 #include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/Resources.hpp"
+#include "System/Globalization/NumberStyles.hpp"
 
 DEFINE_TYPE(BSML, Keyboard);
 
@@ -45,7 +46,7 @@ namespace BSML {
 /23 (!!) (@@) [SPACE]/40 (##) (__)";
 
         void Keyboard::ctor() {
-            keys = SListW<Key*>::New_ctor();
+            keys = ListW<Key*>::New();
             dummy = Key::New_ctor();
             enableInputField = true;
             shift = false;
@@ -97,7 +98,7 @@ namespace BSML {
         }
 
         Keyboard* Keyboard::AddKeys(std::string_view keyboard_view, float scale) {
-            SStringW keyboard{keyboard_view};
+            StringW keyboard{keyboard_view};
             int keyboardLength = keyboard->get_Length();
             this->scale = scale;
             bool space = true;
@@ -236,7 +237,7 @@ namespace BSML {
         }
 
         void Keyboard::Backspace(Key* key) {
-            auto text = SStringW(key->kb->keyboardText->get_text());
+            auto text = key->kb->keyboardText->get_text();
             int length = text ? text->get_Length() : 0;
             if (length > 0) {
                 key->kb->keyboardText->set_text(text->Remove(length -1));
@@ -353,7 +354,7 @@ namespace BSML {
             return;
         }
 
-        bool Keyboard::ReadFloat(SStringW data, int& position, float& result) {
+        bool Keyboard::ReadFloat(StringW data, int& position, float& result) {
             if (position >= data->get_Length())
                 return false;
 

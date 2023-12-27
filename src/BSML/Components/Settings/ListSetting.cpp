@@ -7,7 +7,7 @@ DEFINE_TYPE(BSML, ListSetting);
 namespace BSML {
     void ListSetting::ctor() {
         IncDecSetting::construct();
-        values = SListW<System::Object*>::New_ctor();
+        values = ListW<System::Object*>::New();
         index = 0;
     }
 
