@@ -13,6 +13,6 @@ namespace BSML {
     }
 
     System::Object* BSMLStringValue::GetValue() {
-        return StringW(value);
+        return static_cast<System::Object*>(StringW(value).convert());
     }
 }

@@ -45,7 +45,7 @@ namespace BSML {
 /23 (!!) (@@) [SPACE]/40 (##) (__)";
 
         void Keyboard::ctor() {
-            keys = List<Key*>::New_ctor();
+            keys = SListW<Key*>::New_ctor();
             dummy = Key::New_ctor();
             enableInputField = true;
             shift = false;
@@ -63,7 +63,7 @@ namespace BSML {
 
         Key* Keyboard::get_key(StringW index) {
             for(auto& key : keys) {
-                if (key->name == index) return key;
+                if (StringW(key->name) == index) return key;
             }
 
             return dummy;
@@ -97,7 +97,7 @@ namespace BSML {
         }
 
         Keyboard* Keyboard::AddKeys(std::string_view keyboard_view, float scale) {
-            StringW keyboard{keyboard_view};
+            SStringW keyboard{keyboard_view};
             int keyboardLength = keyboard->get_Length();
             this->scale = scale;
             bool space = true;
@@ -173,7 +173,7 @@ namespace BSML {
                             }
 
                             if (space) {
-                                if (!Il2CppString::IsNullOrEmpty(label) || !Il2CppString::IsNullOrEmpty(key))
+                                if (!System::String::IsNullOrEmpty(label) || !System::String::IsNullOrEmpty(key))
                                     EmitKey(spacing, width, label, key, space, newValue, height, color);
                                 spacing = number;
                             } else {
@@ -236,7 +236,7 @@ namespace BSML {
         }
 
         void Keyboard::Backspace(Key* key) {
-            auto text = key->kb->keyboardText->get_text();
+            auto text = SStringW(key->kb->keyboardText->get_text());
             int length = text ? text->get_Length() : 0;
             if (length > 0) {
                 key->kb->keyboardText->set_text(text->Remove(length -1));
@@ -250,7 +250,7 @@ namespace BSML {
             auto& keys = key->kb->keys;
             for(auto k : keys) {
                 auto x = isShift ? k->shifted : k->value;
-                if (!Il2CppString::IsNullOrWhiteSpace(k->shifted)) {
+                if (!System::String::IsNullOrWhiteSpace(k->shifted)) {
                     Helpers::SetButtonText(k->button, x);
                 }
             }
@@ -332,9 +332,9 @@ namespace BSML {
         void Keyboard::EmitKey(float& spacing, float& width, StringW& label, StringW& key, bool& space, StringW& newValue, float& height, int& color) {
             currentPosition.x += spacing;
 
-            if (!Il2CppString::IsNullOrEmpty(label))
+            if (!System::String::IsNullOrEmpty(label))
                 AddKey(label, width, height, color)->Set(newValue);
-            else if (!Il2CppString::IsNullOrEmpty(key)) {
+            else if (!System::String::IsNullOrEmpty(key)) {
                 auto first = std::u16string_view{&key[0], 1};
                 auto second = std::u16string_view{&key[1], 1};
 
@@ -353,7 +353,7 @@ namespace BSML {
             return;
         }
 
-        bool Keyboard::ReadFloat(StringW& data, int& position, float& result) {
+        bool Keyboard::ReadFloat(SStringW data, int& position, float& result) {
             if (position >= data->get_Length())
                 return false;
 

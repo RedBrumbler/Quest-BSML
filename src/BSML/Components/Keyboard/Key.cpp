@@ -20,8 +20,8 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    Key* Key::Set(StringW value) {
-        if (!Il2CppString::IsNullOrEmpty(value))
+    Key* Key::Set(SStringW value) {
+        if (!System::String::IsNullOrEmpty(value))
             this->value = value;
         return this;
     }
@@ -30,7 +30,7 @@ namespace BSML {
         return Key::New_ctor();
     }
 
-    Key* Key::construct(Keyboard* kb, UnityEngine::Vector2 position, StringW text, float width, float height, UnityEngine::Color color) {
+    Key* Key::construct(Keyboard* kb, UnityEngine::Vector2 position, SStringW text, float width, float height, UnityEngine::Color color) {
         auto self = construct();
         self->value = text;
         self->kb = kb;
@@ -84,7 +84,7 @@ namespace BSML {
     void Key::OnClick() {
         // if there is no key action, or the key does not end in %CR%, then just use the value
         if (!KeyAction() && !Enter()) {
-            StringW x = kb->shift ? shifted : value;
+            auto x = kb->shift ? shifted : value;
             if (x == "") x = value;
 
             if (kb->caps) x = value->ToUpper();

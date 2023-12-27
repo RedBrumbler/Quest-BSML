@@ -9,8 +9,8 @@ DEFINE_TYPE(BSML, TabSelector);
 
 namespace BSML {
     void TabSelector::ctor() {
-        tabs = List<Tab*>::New_ctor();
-        visibleTabs = List<Tab*>::New_ctor();
+        tabs = SListW<Tab*>::New_ctor();
+        visibleTabs = SListW<Tab*>::New_ctor();
         pageCount = -1;
     }
 
@@ -38,7 +38,7 @@ namespace BSML {
 
     void TabSelector::Setup(const BSMLParserParams& parserParams) {
         DEBUG("TabSelector setup is ran!");
-        if (Il2CppString::IsNullOrEmpty(tabTag)) {
+        if (System::String::IsNullOrEmpty(tabTag)) {
             ERROR("Tab selector must have tab-tag!");
             return;
         }
@@ -53,7 +53,7 @@ namespace BSML {
 
         DEBUG("Got {} tabs!", tabs->get_Count());
 
-        if (!Il2CppString::IsNullOrEmpty(leftButtonTag)) {
+        if (!System::String::IsNullOrEmpty(leftButtonTag)) {
             auto& leftButtons = parserParams.GetObjectsWithTag(leftButtonTag);
             if (!leftButtons.empty()) leftButton = leftButtons[0]->GetComponent<UnityEngine::UI::Button*>();
         }
@@ -61,7 +61,7 @@ namespace BSML {
             auto delegate = MakeUnityAction(std::bind(&TabSelector::PageLeft, this));
             leftButton->get_onClick()->AddListener(delegate);
         }
-        if (!Il2CppString::IsNullOrEmpty(rightButtonTag))  {
+        if (!System::String::IsNullOrEmpty(rightButtonTag))  {
             auto& rightButtons = parserParams.GetObjectsWithTag(rightButtonTag);
             if (!rightButtons.empty()) rightButton = rightButtons[0]->GetComponent<UnityEngine::UI::Button*>();
         }
@@ -115,7 +115,7 @@ namespace BSML {
             SetSegmentedControlTexts(visibleTabs);
         } else {
             currentPage = get_page();
-            ListW<Tab*> usableTabs = List<Tab*>::New_ctor();
+            SListW<Tab*> usableTabs = SListW<Tab*>::New_ctor();
             usableTabs->EnsureCapacity(get_pageCount());
 
             int start = get_pageCount() * currentPage;
@@ -133,14 +133,14 @@ namespace BSML {
         }
     }
 
-    void TabSelector::SetSegmentedControlTexts(ListW<Tab*> tabs) {
+    void TabSelector::SetSegmentedControlTexts(SListW<Tab*> tabs) {
         // we have to use a list because Array does not implement IReadOnlyList
-        auto texts = List<StringW>::New_ctor();
+        auto texts = SListW<StringW>::New_ctor();
         texts->EnsureCapacity(tabs->get_Count());
 
         for (auto tab : tabs) {
             auto val = tab->get_tabKey();
-            if (Il2CppString::IsNullOrEmpty(val)) {
+            if (System::String::IsNullOrEmpty(val)) {
                 val = tab->get_tabName();
             }
             texts->Add(val);

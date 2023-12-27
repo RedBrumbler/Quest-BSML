@@ -2,6 +2,7 @@
 
 #include "custom-types/shared/macros.hpp"
 #include "SliderSettingBase.hpp"
+#include "../../../typedefs.hpp"
 #include <map>
 
 DECLARE_CLASS_CUSTOM(BSML, ListSliderSetting, BSML::SliderSettingBase,
@@ -14,7 +15,7 @@ DECLARE_CLASS_CUSTOM(BSML, ListSliderSetting, BSML::SliderSettingBase,
     DECLARE_INSTANCE_METHOD(void, set_Value, System::Object* value);
     DECLARE_INSTANCE_METHOD(int, get_index);
 
-    DECLARE_INSTANCE_FIELD(ListW<System::Object*>, values);
+    DECLARE_INSTANCE_FIELD(SListW<System::Object*>, values);
 
     DECLARE_INSTANCE_METHOD(void, OnChange, HMUI::RangeValuesTextSlider* _, float value);
     DECLARE_INSTANCE_METHOD(StringW, TextForValue, System::Object* value);

@@ -4,7 +4,7 @@ DEFINE_TYPE(BSML, ExternalComponents);
 
 namespace BSML {
     void ExternalComponents::ctor() {
-        components = List<UnityEngine::Component*>::New_ctor();
+        components = SListW<UnityEngine::Component*>::New_ctor();
     }
 
     void ExternalComponents::Add(UnityEngine::Component* component) {
@@ -14,7 +14,7 @@ namespace BSML {
     UnityEngine::Component* ExternalComponents::GetByType(System::Type* type) const {
         return GetByType(reinterpret_cast<Il2CppReflectionType*>(type));
     }
-    
+
     UnityEngine::Component* ExternalComponents::GetByType(Il2CppReflectionType* type) const {
         if (!type) {
             return nullptr;

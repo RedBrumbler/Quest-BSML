@@ -17,6 +17,7 @@
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 
 #include "VRPointerEnabledPatch.hpp"
+#define systemTypeOf(...) (reinterpret_cast<System::Type*>(csTypeOf(__VA_ARGS__)))
 
 DEFINE_TYPE(BSML, FloatingScreen);
 
@@ -28,11 +29,11 @@ namespace BSML {
     SafePtrUnity<UnityEngine::Material> FloatingScreen::_fogMaterial;
     FloatingScreen* FloatingScreen::CreateFloatingScreen(UnityEngine::Vector2 screenSize, bool createHandle, UnityEngine::Vector3 position, UnityEngine::Quaternion rotation, float curvatureRadius, bool hasBackground) {
         auto components = ArrayW<System::Type*>(static_cast<il2cpp_array_size_t>(5));
-        components[0] = csTypeOf(BSML::FloatingScreen*);
-        components[1] = csTypeOf(UnityEngine::UI::CanvasScaler*);
-        components[2] = csTypeOf(UnityEngine::UI::RectMask2D*);
-        components[3] = csTypeOf(VRUIControls::VRGraphicRaycaster*);
-        components[4] = csTypeOf(HMUI::CurvedCanvasSettings*);
+        components[0] = systemTypeOf(BSML::FloatingScreen*);
+        components[1] = systemTypeOf(UnityEngine::UI::CanvasScaler*);
+        components[2] = systemTypeOf(UnityEngine::UI::RectMask2D*);
+        components[3] = systemTypeOf(VRUIControls::VRGraphicRaycaster*);
+        components[4] = systemTypeOf(HMUI::CurvedCanvasSettings*);
 
         auto screen = UnityEngine::GameObject::New_ctor("BSMLFloatingScreen", components)->GetComponent<FloatingScreen*>();
         screen->GetComponent<VRUIControls::VRGraphicRaycaster*>()->_physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
@@ -51,8 +52,8 @@ namespace BSML {
         if (hasBackground)
         {
             auto components = ArrayW<System::Type*>(static_cast<il2cpp_array_size_t>(2));
-            components[0] = csTypeOf(UnityEngine::RectTransform*);
-            components[1] = csTypeOf(HMUI::ImageView*);
+            components[0] = systemTypeOf(UnityEngine::RectTransform*);
+            components[1] = systemTypeOf(HMUI::ImageView*);
 
             auto backGroundGo = UnityEngine::GameObject::New_ctor("bg", components);
             backGroundGo->get_transform()->SetParent(canvas->get_transform(), false);
@@ -88,7 +89,7 @@ namespace BSML {
 
     FloatingScreen* FloatingScreen::CreateFloatingScreenWithViewcontroller(Il2CppReflectionType* vcType, UnityEngine::Vector2 screenSize, bool createHandle, UnityEngine::Vector3 position, UnityEngine::Quaternion rotation, float curvatureRadius, bool hasBackground) {
         auto scr = CreateFloatingScreen(screenSize, createHandle, position, rotation, curvatureRadius, hasBackground);
-        auto vc = BSML::Helpers::CreateViewController(vcType);
+        auto vc = BSML::Helpers::CreateViewController(reinterpret_cast<System::Type*>(vcType));
         scr->SetRootViewController(vc, HMUI::ViewController::AnimationType::In);
         return scr;
     }

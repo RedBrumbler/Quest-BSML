@@ -1,6 +1,7 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
+#include "System/Object.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, System::Object,
     DECLARE_INSTANCE_FIELD(System::Object*, host);

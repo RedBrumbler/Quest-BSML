@@ -70,11 +70,11 @@ namespace BSML {
         Finalize();
     }
 
-    ListW<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {
-        if (!activeImages) {
-            activeImages = List<UnityEngine::UI::Image*>::New_ctor();
+    SListW<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {
+        if (!_activeImages) {
+            _activeImages = SListW<UnityEngine::UI::Image*>::New_ctor();
         }
-        return activeImages;
+        return _activeImages;
     }
 
     bool AnimationControllerData::get_isPlaying() {
@@ -86,7 +86,7 @@ namespace BSML {
     }
 
     void AnimationControllerData::CheckFrame(unsigned long long now) {
-        if (get_activeImages().size() == 0) return;
+        if (activeImages.size() == 0) return;
 
         auto diffMs = (now - lastSwitch);
         if (diffMs < delays[uvIndex]) return;
@@ -99,7 +99,7 @@ namespace BSML {
             if (uvIndex >= uvs.size()) uvIndex = 0;
         } while (!isDelayConsistent && delays[uvIndex] == 0);
 
-        for (auto image : get_activeImages()) {
+        for (auto image : activeImages) {
             image->set_sprite(sprites[uvIndex]);
         }
     }

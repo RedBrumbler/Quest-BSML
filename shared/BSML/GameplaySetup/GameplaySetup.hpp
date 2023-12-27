@@ -19,8 +19,8 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, System::Object, classof(HM
 
     DECLARE_INSTANCE_FIELD(BSML::ModalView*, listModal);
     DECLARE_INSTANCE_FIELD(CustomListTableData*, modsList);
-    DECLARE_INSTANCE_FIELD(List<System::Object*>*, _menus);
-    DECLARE_INSTANCE_FIELD(List<UnityEngine::Transform*>*, _vanillaItems);
+    DECLARE_INSTANCE_FIELD(SListW<System::Object*>, _menus);
+    DECLARE_INSTANCE_FIELD(SListW<UnityEngine::Transform*>, _vanillaItems);
 
     DECLARE_INSTANCE_FIELD(HMUI::ImageView*, loading);
     DECLARE_INSTANCE_FIELD(BSML::TabSelector*, tabSelector);
@@ -28,8 +28,8 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, System::Object, classof(HM
     DECLARE_INSTANCE_FIELD(UnityEngine::Transform*, modsTab);
     DECLARE_INSTANCE_FIELD(StringW, reuseIdentifier);
 
-    DECLARE_INSTANCE_METHOD(ListW<System::Object*>, get_menus);
-    DECLARE_INSTANCE_METHOD(ListW<UnityEngine::Transform*>, get_vanillaItems);
+    DECLARE_INSTANCE_METHOD(SListW<System::Object*>, get_menus);
+    DECLARE_INSTANCE_METHOD(SListW<UnityEngine::Transform*>, get_vanillaItems);
     DECLARE_INSTANCE_METHOD(bool, get_loaded);
     DECLARE_INSTANCE_METHOD(void, set_loaded, bool value);
 

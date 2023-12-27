@@ -7,17 +7,18 @@
 #include "UnityEngine/Sprite.hpp"
 #include "UnityEngine/Coroutine.hpp"
 #include "UI/ModSettingsFlowCoordinator.hpp"
+#include "../../typedefs.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, BSMLSettings, System::Object,
     DECLARE_INSTANCE_FIELD(bool, isInitialized);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, button);
     DECLARE_INSTANCE_FIELD(UnityEngine::Sprite*, normal);
     DECLARE_INSTANCE_FIELD(UnityEngine::Sprite*, hover);
-    DECLARE_INSTANCE_FIELD(List<BSML::CustomCellInfo*>*, settingsMenus);
+    DECLARE_INSTANCE_FIELD(SListW<BSML::CustomCellInfo*>, settingsMenus);
     DECLARE_INSTANCE_FIELD(UnityEngine::Coroutine*, addButtonCoroutine);
     DECLARE_INSTANCE_FIELD(ModSettingsFlowCoordinator*, modSettingsFlowCoordinator);
 
-    DECLARE_INSTANCE_METHOD(ListW<BSML::CustomCellInfo*>, get_settingsMenus);
+    DECLARE_INSTANCE_METHOD(SListW<BSML::CustomCellInfo*>, get_settingsMenus);
     DECLARE_INSTANCE_METHOD(ModSettingsFlowCoordinator*, get_modSettingsFlowCoordinator);
     DECLARE_INSTANCE_METHOD(void, Setup);
     DECLARE_INSTANCE_METHOD(void, PresentSettings);

@@ -9,6 +9,7 @@
 
 #include "assets.hpp"
 
+#include "UnityEngine/Object.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/WaitForFixedUpdate.hpp"
 #include "UnityEngine/Resources.hpp"
@@ -30,9 +31,9 @@ namespace BSML {
         return instance.ptr();
     }
 
-    ListW<BSML::CustomCellInfo*> BSMLSettings::get_settingsMenus() {
+    SListW<BSML::CustomCellInfo*> BSMLSettings::get_settingsMenus() {
         if (!settingsMenus) {
-            settingsMenus = List<CustomCellInfo*>::New_ctor();
+            settingsMenus = SListW<CustomCellInfo*>::New_ctor();
         }
         return settingsMenus;
     }

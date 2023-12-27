@@ -10,7 +10,7 @@
 #include <string>
 
 DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomCellListTableData, UnityEngine::MonoBehaviour, classof(HMUI::TableView::IDataSource*),
-    DECLARE_INSTANCE_FIELD(ListW<System::Object*>, data);
+    DECLARE_INSTANCE_FIELD(SListW<System::Object*>, data);
     DECLARE_INSTANCE_FIELD(float, cellSize);
     DECLARE_INSTANCE_FIELD(bool, clickableCells);
     DECLARE_INSTANCE_FIELD(StringW, reuseIdentifier);

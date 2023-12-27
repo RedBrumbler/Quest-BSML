@@ -205,16 +205,16 @@ namespace BSML {
     }
 
 
-    ListW<System::Object*> GameplaySetup::get_menus() {
+    SListW<System::Object*> GameplaySetup::get_menus() {
         if (!_menus) {
-            _menus = List<System::Object*>::New_ctor();
+            _menus = SListW<System::Object*>::New_ctor();
         }
         return _menus;
     }
 
-    ListW<UnityEngine::Transform*> GameplaySetup::get_vanillaItems() {
+    SListW<UnityEngine::Transform*> GameplaySetup::get_vanillaItems() {
         if (!_vanillaItems) {
-            _vanillaItems = List<UnityEngine::Transform*>::New_ctor();
+            _vanillaItems = SListW<UnityEngine::Transform*>::New_ctor();
         }
         return _vanillaItems;
     }

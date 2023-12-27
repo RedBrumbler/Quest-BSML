@@ -5,6 +5,7 @@
 #include "UnityEngine/Rect.hpp"
 #include "UnityEngine/Material.hpp"
 #include "UnityEngine/UI/Image.hpp"
+#include "../../typedefs.hpp"
 
 namespace BSML {
     class AnimationStateUpdater;
@@ -18,8 +19,8 @@ DECLARE_CLASS_CODEGEN(BSML, AnimationControllerData, System::Object,
     DECLARE_INSTANCE_FIELD(ArrayW<UnityEngine::Sprite*>, sprites);
     DECLARE_INSTANCE_FIELD(UnityEngine::Material*, animMaterial);
     DECLARE_INSTANCE_FIELD(bool, isDelayConsistent);
-    DECLARE_INSTANCE_FIELD(List<UnityEngine::UI::Image*>*, activeImages);
-    DECLARE_INSTANCE_METHOD(ListW<UnityEngine::UI::Image*>, get_activeImages);
+    DECLARE_INSTANCE_FIELD(SListW<UnityEngine::UI::Image*>, _activeImages);
+    DECLARE_INSTANCE_METHOD(SListW<UnityEngine::UI::Image*>, get_activeImages);
 
     DECLARE_INSTANCE_METHOD(bool, IsBeingUsed);
 
@@ -30,6 +31,7 @@ DECLARE_CLASS_CODEGEN(BSML, AnimationControllerData, System::Object,
     DECLARE_DEFAULT_CTOR();
     DECLARE_DTOR(dtor);
     public:
+        __declspec(property(get=get_activeImages)) SListW<UnityEngine::UI::Image*> activeImages;
         bool Add(AnimationStateUpdater* animationStateUpdater);
         bool Remove(AnimationStateUpdater* animationStateUpdater);
 

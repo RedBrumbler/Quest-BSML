@@ -1,6 +1,7 @@
 #include "BSML/TypeHandlers/TextSegmentedControlHandler.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 #include "Helpers/delegates.hpp"
+#include "typedefs.hpp"
 
 namespace BSML {
     static TextSegmentedControlHandler textSegmentedControlHandler{};
@@ -23,7 +24,7 @@ namespace BSML {
         auto dataItr = data.find("data");
         if (dataItr != data.end() && !dataItr->second.empty()) {
             auto val = parserParams.TryGetValue(dataItr->second);
-            ListW<StringW> texts = List<StringW>::New_ctor();
+            auto texts = SListW<SStringW>::New_ctor();
             static auto dataKlass = classof(List<System::Object*>*);
             static auto stringDataKlass = classof(List<Il2CppString*>*);
 
@@ -46,7 +47,7 @@ namespace BSML {
             }
 
             if (texts->get_Count() > 0) {
-                textControl->SetTexts(*texts);
+                textControl->SetTexts(*reinterpret_cast<System::Collections::Generic::List_1<StringW>*>(texts.convert()));
             } else {
                 ERROR("TextSegmentedControl needs to have at least 1 value!");
                 ERROR("This means BSML could not find field '{0}' or method 'get_{0}'", dataItr->second);

@@ -3,9 +3,10 @@
 #include "custom-types/shared/macros.hpp"
 #include "UnityEngine/MonoBehaviour.hpp"
 #include "UnityEngine/Component.hpp"
+#include "../../typedefs.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, ExternalComponents, UnityEngine::MonoBehaviour,
-    DECLARE_INSTANCE_FIELD(ListW<UnityEngine::Component*>, components);
+    DECLARE_INSTANCE_FIELD(SListW<UnityEngine::Component*>, components);
 
     DECLARE_INSTANCE_METHOD(void, Add, UnityEngine::Component* component);
     DECLARE_CTOR(ctor);

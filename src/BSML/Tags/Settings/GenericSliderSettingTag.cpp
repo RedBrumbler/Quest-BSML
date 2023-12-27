@@ -37,7 +37,7 @@ namespace BSML {
         sliderSetting->slider = slider;
 
         // colors to not be red
-        auto& colorBlock = slider->m_Colors;
+        auto& colorBlock = slider->___m_Colors;
         colorBlock.set_normalColor({0, 0, 0, 0.5});
         colorBlock.set_highlightedColor({1, 1, 1, 0.2});
         colorBlock.set_pressedColor({1, 1, 1, 0.2});

@@ -13,7 +13,7 @@ DEFINE_TYPE(BSML, DropdownListSetting);
 namespace BSML {
     void DropdownListSetting::ctor() {
         genericSetting = GenericSettingWrapper::New_ctor();
-        values = List<System::Object*>::New_ctor();
+        values = SListW<System::Object*>::New_ctor();
         index = 0;
         formatter = nullptr;
     }
@@ -39,7 +39,7 @@ namespace BSML {
     }
 
     void DropdownListSetting::UpdateChoices() {
-        auto texts = List<StringW>::New_ctor();
+        auto texts = SListW<StringW>::New_ctor();
         texts->EnsureCapacity(values->get_Count());
         bool formatted = formatter != nullptr;
         for (auto v : values) {

@@ -5,13 +5,14 @@
 #include "../../GenericSettingWrapper.hpp"
 #include "HMUI/DropdownWithTableView.hpp"
 #include "HMUI/SimpleTextDropdown.hpp"
+#include "../../../typedefs.hpp"
 
 DECLARE_CLASS_CUSTOM(BSML, DropdownListSetting, BSML::BaseSetting,
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(HMUI::SimpleTextDropdown*, dropdown);
-    DECLARE_INSTANCE_FIELD(ListW<System::Object*>, values);
+    DECLARE_INSTANCE_FIELD(SListW<System::Object*>, values);
     DECLARE_INSTANCE_FIELD(int, index);                             /* default: 0; */
-    
+
     DECLARE_INSTANCE_METHOD(System::Object*, get_Value);
     DECLARE_INSTANCE_METHOD(void, set_Value, System::Object* value);
 
