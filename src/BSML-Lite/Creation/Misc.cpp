@@ -8,7 +8,10 @@
 #undef protected
 
 #include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/UI/CanvasScaler.hpp"
+#include "UnityEngine/AdditionalCanvasShaderChannels.hpp"
 #include "System/Action_2.hpp"
+#include "VRUIControls/VRGraphicRaycaster.hpp"
 
 namespace BSML::Lite {
     HMUI::HoverHint* AddHoverHint(const GameObjectWrapper& parent, StringW text) {
@@ -48,5 +51,32 @@ namespace BSML::Lite {
         }
 
         return textSegmentedControl;
+    }
+
+    static inline UnityEngine::AdditionalCanvasShaderChannels operator |(UnityEngine::AdditionalCanvasShaderChannels a, UnityEngine::AdditionalCanvasShaderChannels b) {
+        return UnityEngine::AdditionalCanvasShaderChannels(a.value__ | b.value__);
+    }
+
+    UnityEngine::GameObject* CreateCanvas() {
+        static ConstString name("BSMLCanvas");
+        auto go = UnityEngine::GameObject::New_ctor(name);
+        go->set_layer(5);
+        auto cv = go->AddComponent<UnityEngine::Canvas*>();
+        cv->set_additionalShaderChannels(UnityEngine::AdditionalCanvasShaderChannels::TexCoord1 | UnityEngine::AdditionalCanvasShaderChannels::TexCoord2);
+        cv->set_sortingOrder(4);
+
+        auto scaler = go->AddComponent<UnityEngine::UI::CanvasScaler*>();
+        scaler->set_scaleFactor(1.0f);
+        scaler->set_dynamicPixelsPerUnit(3.44f);
+        scaler->set_referencePixelsPerUnit(10.0f);
+
+        auto* physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
+        if(physicsRaycaster)
+            go->AddComponent<VRUIControls::VRGraphicRaycaster*>()->_physicsRaycaster = physicsRaycaster;
+
+        auto rectTransform = go->GetComponent<UnityEngine::RectTransform*>();
+        float scale = 1.5f * 0.02f; //Wrapper->ScreenSystem: 1.5 Wrapper->ScreenSystem->ScreenContainer: 0.02
+        rectTransform->set_localScale(UnityEngine::Vector3(scale, scale, scale));
+        return go;
     }
 }

@@ -91,4 +91,8 @@ namespace BSML::Lite {
     static inline HMUI::TextSegmentedControl* CreateTextSegmentedControl(const TransformWrapper& parent, std::function<void(int)> onCellWithIdxClicked) {
         return CreateTextSegmentedControl(parent, {}, {}, {}, onCellWithIdxClicked);
     }
+
+    /// @brief creates a Unity canvas gameobject that's setup for beat saber UI
+    /// @return the created canvas gameobject
+    UnityEngine::GameObject* CreateCanvas();
 }
