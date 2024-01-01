@@ -1,4 +1,5 @@
 #include "BSML-Lite/Creation/Buttons.hpp"
+#include "logging.hpp"
 
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
@@ -37,8 +38,13 @@ namespace BSML::Lite {
                 buttonCopy = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::UI::Button*>().LastOrDefault([&buttonTemplate](auto* x) { return x->get_name() == buttonTemplate; });
             }
 
+            if (!buttonCopy) {
+                ERROR("Could not find button template {}, returning nullptr", buttonTemplate);
+                return nullptr;
+            }
+
             // it was none of the BSML provided buttons, let's just make it manually
-            auto button = UnityEngine::Object::Instantiate(buttonCopy.ptr(), parent, false);
+            button = UnityEngine::Object::Instantiate(buttonCopy.ptr(), parent, false);
             button->set_name("BSMLButton");
             button->set_interactable(true);
 
@@ -49,16 +55,18 @@ namespace BSML::Lite {
             externalComponents->Add(button);
             externalComponents->Add(transform);
 
-            auto textT = button->get_transform()->Find("Content/Text");
+            auto textT = button->transform->Find("Content/Text");
             if (textT) {
-                auto textObject = textT->get_gameObject();
+                auto textObject = textT->gameObject;
                 auto localizer = textObject->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>();
                 if (localizer) UnityEngine::Object::Destroy(localizer);
 
                 auto textMesh = textObject->GetComponent<TMPro::TextMeshProUGUI*>();
-                textMesh->set_text("BSMLButton");
-                textMesh->set_richText(true);
-                externalComponents->Add(textMesh);
+                if (textMesh) {
+                    textMesh->set_text("BSMLButton");
+                    textMesh->set_richText(true);
+                    externalComponents->Add(textMesh);
+                }
             }
 
             auto content = transform->Find("Content");
@@ -87,8 +95,9 @@ namespace BSML::Lite {
         rect->set_sizeDelta(sizeDelta);
 
         button->set_onClick(UnityEngine::UI::Button::ButtonClickedEvent::New_ctor());
-        if (onClick)
+        if (onClick) {
             button->get_onClick()->AddListener(custom_types::MakeDelegate<UnityEngine::Events::UnityAction*>(onClick));
+        }
         return button;
     }
 
@@ -110,8 +119,14 @@ namespace BSML::Lite {
 
 
     void SetButtonText(UnityEngine::UI::Button* button, StringW text) {
+        if (!button) {
+            ERROR("Can't set button text on nullptr button");
+            return;
+        }
+
         auto textMesh = button->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
-        if (textMesh) textMesh->set_text(text);
+        if (textMesh)
+            textMesh->set_text(text);
     }
 
     void SetButtonTextSize(UnityEngine::UI::Button* button, float fontSize) {
