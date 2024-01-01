@@ -45,6 +45,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomListTableData, UnityEngine::MonoBeh
     DECLARE_INSTANCE_METHOD(GlobalNamespace::LevelListTableCell*, GetTableCell);
     DECLARE_INSTANCE_METHOD(GlobalNamespace::SimpleTextTableCell*, GetSimpleTextTableCell);
     DECLARE_INSTANCE_METHOD(BSML::BoxTableCell*, GetBoxTableCell);
+    DECLARE_INSTANCE_METHOD(void, Awake);
 
     DECLARE_OVERRIDE_METHOD_MATCH(float, CellSize, &HMUI::TableView::IDataSource::CellSize);
     DECLARE_OVERRIDE_METHOD_MATCH(int, NumberOfCells, &HMUI::TableView::IDataSource::NumberOfCells);

@@ -20,6 +20,9 @@ namespace BSML {
         cellSize = 8.5f;
         reuseIdentifier = "BSMLListTableCell";
 
+    }
+
+    void CustomListTableData::Awake() {
         blackSprite = Utilities::LoadSpriteFromTexture(Texture2D::get_blackTexture(), 1);
     }
 
@@ -118,7 +121,7 @@ namespace BSML {
 
 
     CustomListTableData::ListStyle CustomListTableData::get_listStyle() {
-        return static_cast<CustomListTableData::ListStyle>(listStyle);
+        return static_cast<CustomListTableData::ListStyle>(_listStyle);
     }
 
     float CustomListTableData::CellSize() {
