@@ -21,7 +21,7 @@ if (($clean.IsPresent) -or (-not (Test-Path -Path "build")))
 
 $make_docs = "-DMAKE_DOCS=" + $docs.IsPresent.ToString().ToLower()
 
-& cmake -G "Ninja" -DCMAKE_BUILD_TYPE="Debug" $make_docs . -B build 
+& cmake -G "Ninja" -DCMAKE_BUILD_TYPE="RelWithDebInfo" $make_docs . -B build
 & cmake --build ./build
 
 exit $LastExitCode
