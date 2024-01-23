@@ -4,7 +4,7 @@
   "info": {
     "name": "BSML",
     "id": "bsml",
-    "version": "0.2.11",
+    "version": "0.4.0",
     "url": "https://github.com/RedBrumbler/Quest-BSML",
     "additionalData": {
       "overrideSoName": "libbsml.so",
@@ -14,12 +14,12 @@
   "dependencies": [
     {
       "id": "libil2cpp",
-      "versionRange": "^0.2.3",
+      "versionRange": "^0.3.0",
       "additionalData": {}
     },
     {
       "id": "beatsaber-hook",
-      "versionRange": "^4.0.0",
+      "versionRange": "^5.0.0",
       "additionalData": {
         "extraFiles": [
           "src/inline-hook"
@@ -27,13 +27,13 @@
       }
     },
     {
-      "id": "codegen",
-      "versionRange": "^0.34.1",
+      "id": "bs-cordl",
+      "versionRange": "^3402.*",
       "additionalData": {}
     },
     {
       "id": "custom-types",
-      "versionRange": "^0.15.27",
+      "versionRange": "^0.16.0",
       "additionalData": {}
     },
     {
@@ -47,7 +47,9 @@
     {
       "id": "paper",
       "versionRange": "^3.0.0",
-      "additionalData": {}
+      "additionalData": {
+        "private": true
+      }
     },
     {
       "id": "tinyxml2",
@@ -57,12 +59,16 @@
     {
       "id": "gif-lib",
       "versionRange": "^5.2.2",
-      "additionalData": {}
+      "additionalData": {
+        "private": true
+      }
     },
     {
       "id": "kaleb",
       "versionRange": "^0.1.6",
-      "additionalData": {}
+      "additionalData": {
+        "private": true
+      }
     }
   ],
   "workspace": {
