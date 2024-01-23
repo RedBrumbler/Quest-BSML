@@ -20,11 +20,7 @@
     {
       "id": "beatsaber-hook",
       "versionRange": "^5.0.0",
-      "additionalData": {
-        "extraFiles": [
-          "src/inline-hook"
-        ]
-      }
+      "additionalData": {}
     },
     {
       "id": "bs-cordl",

@@ -21,11 +21,7 @@
       {
         "id": "beatsaber-hook",
         "versionRange": "^5.0.0",
-        "additionalData": {
-          "extraFiles": [
-            "src/inline-hook"
-          ]
-        }
+        "additionalData": {}
       },
       {
         "id": "bs-cordl",
@@ -82,14 +78,14 @@
           "qpm qmod build --isLibrary true",
           "pwsh ./scripts/createqmod.ps1 BSML -clean"
         ],
+        "build": [
+          "pwsh ./scripts/build.ps1"
+        ],
         "copy": [
           "pwsh ./scripts/copy.ps1"
         ],
         "log": [
           "pwsh ./scripts/log.ps1"
-        ],
-        "build": [
-          "pwsh ./scripts/build.ps1"
         ]
       }
     }
