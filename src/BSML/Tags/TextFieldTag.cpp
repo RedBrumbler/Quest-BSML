@@ -16,7 +16,7 @@ namespace BSML {
     HMUI::InputFieldView* TextFieldTag::get_fieldViewPrefab() const {
         static SafePtrUnity<HMUI::InputFieldView> fieldViewPrefab;
         if (!fieldViewPrefab) {
-            fieldViewPrefab = Resources::FindObjectsOfTypeAll<HMUI::InputFieldView*>().FirstOrDefault([](auto x){ return x->get_name() == "GuestNameInputField"; });
+            fieldViewPrefab = Resources::FindObjectsOfTypeAll<HMUI::InputFieldView*>()->FirstOrDefault([](auto x){ return x->get_name() == "GuestNameInputField"; });
         }
         return fieldViewPrefab.ptr();
     }
@@ -28,7 +28,7 @@ namespace BSML {
         auto layoutElement = go->AddComponent<UI::LayoutElement*>();
         layoutElement->set_preferredWidth(90.0f);
         layoutElement->set_preferredHeight(8.0f);
-        auto transform = reinterpret_cast<RectTransform*>(go->get_transform());
+        auto transform = go->transform.cast<RectTransform>();
         transform->set_anchoredPosition({0, 0});
 
         auto fieldView = go->GetComponent<HMUI::InputFieldView*>();

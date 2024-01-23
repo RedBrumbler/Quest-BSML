@@ -17,7 +17,7 @@ namespace BSML {
     HMUI::TextSegmentedControl* get_textSegmentedControlTemplate() {
         SafePtrUnity<HMUI::TextSegmentedControl> textSegmentedControlTemplate;
         if (!textSegmentedControlTemplate) {
-            textSegmentedControlTemplate = Resources::FindObjectsOfTypeAll<HMUI::TextSegmentedControl*>().FirstOrDefault(
+            textSegmentedControlTemplate = Resources::FindObjectsOfTypeAll<HMUI::TextSegmentedControl*>()->FirstOrDefault(
                 [](auto x) {
                     auto name = x->get_name();
                     if (name != "BeatmapDifficultySegmentedControl") return false;
@@ -38,7 +38,7 @@ namespace BSML {
         gameObject->set_name("BSMLTextSegmentedControl");
         textSegmentedControl->_container = textSegmentedControlTemplate->_container;
 
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
+        auto transform = gameObject->transform.cast<RectTransform>();
         transform->set_anchoredPosition({0, 0});
         int childCount = transform->get_childCount();
         for (int i = 1; i <= childCount; i++) {

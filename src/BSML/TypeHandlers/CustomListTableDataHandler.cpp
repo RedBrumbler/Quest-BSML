@@ -57,7 +57,7 @@ namespace BSML {
         auto selectCellItr = data.find("selectCell");
         if (selectCellItr != data.end() && !selectCellItr->second.empty()) {
             auto action = parserParams.TryGetAction(selectCellItr->second);
-            if (action) tableView->add_didSelectCellWithIdxEvent(action->GetSystemAction<HMUI::TableView *, int>());
+            if (action) tableView->add_didSelectCellWithIdxEvent(action->GetSystemAction<UnityW<HMUI::TableView>, int>());
             else ERROR("Action '{}' could not be found", selectCellItr->second);
         }
 
@@ -91,7 +91,7 @@ namespace BSML {
                 auto pageDownButton = textScrollView->_pageDownButton;
 
                 auto scrollIndicator = textScrollView->_verticalScrollIndicator;
-                auto scrollBar = reinterpret_cast<RectTransform*>(scrollIndicator->get_transform()->get_parent());
+                auto scrollBar = scrollIndicator->transform->parent.cast<RectTransform>();
 
                 scrollView->_pageUpButton = pageUpButton;
                 scrollView->_pageDownButton = pageDownButton;
@@ -124,7 +124,7 @@ namespace BSML {
         }
 
         INFO("set sizeDelta");
-        auto transform = reinterpret_cast<RectTransform*>(tableData->get_transform());
+        auto transform = tableData->transform.cast<RectTransform>();
         switch(tableView->get_tableType()) {
             case HMUI::TableView::TableType::Vertical: {
                 auto listWidthItr = data.find("listWidth");

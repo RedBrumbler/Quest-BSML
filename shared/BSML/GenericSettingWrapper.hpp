@@ -59,7 +59,7 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, System::Object,
         template<typename T>
         requires(std::is_default_constructible_v<T>)
         T GetProperty()  {
-            return getterInfo ? il2cpp_utils::RunMethod<T>(get_host(), getterInfo).value_or(T{}) : T{};
+            return getterInfo ? il2cpp_utils::RunMethodOpt<T>(get_host(), getterInfo).value_or(T{}) : T{};
         }
 
         template<typename T>
@@ -80,7 +80,7 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, System::Object,
 
         template<typename T>
         std::optional<T> GetPropertyOpt()  {
-            return getterInfo ? il2cpp_utils::RunMethod<T>(get_host(), getterInfo) : std::nullopt;
+            return getterInfo ? il2cpp_utils::RunMethodOpt<T>(get_host(), getterInfo) : std::nullopt;
         }
 
         void OnChange() {

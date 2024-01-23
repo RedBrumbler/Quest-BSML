@@ -91,7 +91,7 @@ namespace BSML {
     ProgressBar* ProgressBar::CreateProgressBar(UnityEngine::Vector3 position, UnityEngine::Vector3 scale, UnityEngine::Vector3 rotation, StringW mainText, StringW subText1, StringW subText2) {
         auto bar = UnityEngine::GameObject::New_ctor("LoadingStatus")->AddComponent<ProgressBar*>();
         auto barGameObject = bar->get_gameObject();
-        auto barObjectTransform = bar->get_transform();
+        auto barObjectTransform = bar->transform;
         barObjectTransform->set_position(position);
         barObjectTransform->set_eulerAngles(rotation);
         barObjectTransform->set_localScale(scale / 100.0f);
@@ -100,13 +100,13 @@ namespace BSML {
         bar->canvas->set_renderMode(UnityEngine::RenderMode::WorldSpace);
         barGameObject->AddComponent<HMUI::CurvedCanvasSettings*>()->SetRadius(0.0f);
 
-        auto ct = bar->canvas->get_transform();
+        auto ct = bar->canvas->transform;
         ct->set_position(position);
         ct->set_localScale(scale / 100);
 
         UnityEngine::Vector2 LoadingBarSize = {100, 10};
         UnityEngine::Color BackgroundColor = {0, 0, 0, 0.2f};
-        auto rectTransform = reinterpret_cast<UnityEngine::RectTransform*>(ct);
+        auto rectTransform = ct.cast<UnityEngine::RectTransform>();
         rectTransform->set_sizeDelta({200, 50});
 
         // why set everything after creating it in the first place ?
@@ -118,13 +118,13 @@ namespace BSML {
         bar->headerText->set_fontSize(15.0f);
 
         bar->loadingBackground = UnityEngine::GameObject::New_ctor("Background")->AddComponent<UnityEngine::UI::Image*>();
-        rectTransform = reinterpret_cast<UnityEngine::RectTransform*>(bar->loadingBackground->get_transform());
+        rectTransform = bar->loadingBackground->transform.cast<UnityEngine::RectTransform>();
         rectTransform->SetParent(ct, false);
         rectTransform->set_sizeDelta(LoadingBarSize);
         bar->loadingBackground->set_color(BackgroundColor);
 
         bar->loadingBar = UnityEngine::GameObject::New_ctor("Loading Bar")->AddComponent<UnityEngine::UI::Image*>();
-        rectTransform = reinterpret_cast<UnityEngine::RectTransform*>(bar->loadingBar->get_transform());
+        rectTransform = bar->loadingBar->transform.cast<UnityEngine::RectTransform>();
         rectTransform->SetParent(ct, false);
         rectTransform->set_sizeDelta(LoadingBarSize);
 

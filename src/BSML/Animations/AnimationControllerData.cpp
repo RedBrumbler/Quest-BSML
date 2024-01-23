@@ -29,13 +29,14 @@ namespace BSML {
         int texHeight = tex->get_height();
 
         for (int i = 0; i < uvs.size(); i++) {
+            UnityEngine::Rect& uv = uvs[i];
             self->sprites[i] = UnityEngine::Sprite::Create(
                 tex,
                 UnityEngine::Rect(
-                    uvs[i].m_XMin * texWidth,
-                    uvs[i].m_YMin * texHeight,
-                    uvs[i].m_Width * texWidth,
-                    uvs[i].m_Height * texHeight
+                    uv.m_XMin * texWidth,
+                    uv.m_YMin * texHeight,
+                    uv.m_Width * texWidth,
+                    uv.m_Height * texHeight
                 ),
                 {0, 0},
                 100.0f,

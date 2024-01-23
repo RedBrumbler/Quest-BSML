@@ -152,7 +152,7 @@ namespace BSML {
         GlobalNamespace::OptionsViewController* optionsViewController = nullptr;
         auto wait = UnityEngine::WaitForFixedUpdate::New_ctor();
         while (!optionsViewController) {
-            optionsViewController = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::OptionsViewController*>().FirstOrDefault();
+            optionsViewController = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::OptionsViewController*>()->FirstOrDefault();
             co_yield reinterpret_cast<System::Collections::IEnumerator*>(wait);
         }
 

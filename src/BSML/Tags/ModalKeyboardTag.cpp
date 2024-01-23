@@ -29,7 +29,7 @@ namespace BSML {
     UnityEngine::GameObject* ModalKeyboardTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Modal Keyboard");
         auto gameObject = ModalTag::CreateObject(parent);
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
+        auto transform = gameObject->transform.cast<RectTransform>();
         gameObject->set_name("BSMLModalKeyboard");
         transform->set_sizeDelta({135, 75});
 

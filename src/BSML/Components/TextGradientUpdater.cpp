@@ -69,11 +69,11 @@ namespace BSML {
                 if (scrollRepeat == 0) {
                     auto col = gradient->Sample(currentPos);
                     for (int i = 0; i < materialCount; i++) {
-                        for (auto& c : textInfo->meshInfo[i].colors32) c = col;
+                        for (auto& c : textInfo->meshInfo[i]->colors32) c = col;
                     }
                 } else {
                     for (int i = 0; i < materialCount; i++) {
-                        auto colors = textInfo->meshInfo[i].colors32;
+                        auto colors = textInfo->meshInfo[i]->colors32;
                         auto size = colors.size();
                         if (fixedStep) {
                             for (int j = 0; j < size; j++) {

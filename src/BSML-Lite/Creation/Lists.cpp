@@ -20,7 +20,7 @@ namespace BSML::Lite {
         auto list = go->GetComponent<BSML::CustomListTableData*>();
         list->tableView->scrollView->_platformHelper = BSML::Helpers::GetIVRPlatformHelper();
 
-        auto rect = reinterpret_cast<UnityEngine::RectTransform*>(go->get_transform());
+        auto rect = go->transform.cast<UnityEngine::RectTransform>();
         rect->set_anchoredPosition(anchoredPosition);
         rect->set_sizeDelta(sizeDelta);
 
@@ -36,7 +36,7 @@ namespace BSML::Lite {
 
         if (onCellWithIdxClicked) {
             list->tableView->add_didSelectCellWithIdxEvent(
-                custom_types::MakeDelegate<System::Action_2<HMUI::TableView*, int>*>(
+                custom_types::MakeDelegate<System::Action_2<UnityW<HMUI::TableView>, int>*>(
                     std::function<void(HMUI::TableView*, int)>(
                         [onCellWithIdxClicked](HMUI::TableView* _, int idx){ onCellWithIdxClicked(idx); }
                     )
@@ -69,17 +69,17 @@ namespace BSML::Lite {
 
     BSML::CustomListTableData* CreateScrollableList(const TransformWrapper& parent, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::function<void(int)> onCellWithIdxClicked) {
         auto vertical = CreateVerticalLayoutGroup(parent);
-        auto rect = vertical->get_rectTransform();
+        auto rect = vertical->rectTransform;
         rect->set_anchoredPosition(anchoredPosition);
         rect->set_sizeDelta(sizeDelta);
 
-        auto list = CreateList(rect, {}, {sizeDelta.x, sizeDelta.y - 16}, onCellWithIdxClicked);
-        auto pageUp = CreateClickableImage(vertical, get_carat_up(), [scrollView = list->tableView->scrollView](){
+        auto list = CreateList(rect.unsafePtr(), {}, {sizeDelta.x, sizeDelta.y - 16}, onCellWithIdxClicked);
+        auto pageUp = CreateClickableImage(vertical, get_carat_up(), [scrollView = list->tableView->scrollView.unsafePtr()](){
             if (scrollView && scrollView->m_CachedPtr) scrollView->PageUpButtonPressed();
         });
         pageUp->highlightColor = {1.0, 1.0, 1.0, 0.5};
         pageUp->get_transform()->SetAsFirstSibling();
-        auto pageDown = CreateClickableImage(vertical, get_carat_down(), [scrollView = list->tableView->scrollView](){
+        auto pageDown = CreateClickableImage(vertical, get_carat_down(), [scrollView = list->tableView->scrollView.unsafePtr()](){
             if (scrollView && scrollView->m_CachedPtr) scrollView->PageDownButtonPressed();
         });
         pageDown->highlightColor = {1.0, 1.0, 1.0, 0.5};
@@ -97,7 +97,7 @@ namespace BSML::Lite {
         auto go = list->get_gameObject();
         UnityEngine::Object::DestroyImmediate(list);
         auto dataSource = go->AddComponent(type);
-        auto iDataSource = reinterpret_cast<HMUI::TableView::IDataSource*>(dataSource);
+        auto iDataSource = reinterpret_cast<HMUI::TableView::IDataSource*>(dataSource.unsafePtr());
 
         auto finfo = il2cpp_functions::class_get_field_from_name(dataSource->klass, "tableView");
         if (finfo) // there is a field named tableView
@@ -114,7 +114,7 @@ namespace BSML::Lite {
         auto go = list->get_gameObject();
         UnityEngine::Object::DestroyImmediate(list);
         auto dataSource = go->AddComponent(type);
-        auto iDataSource = reinterpret_cast<HMUI::TableView::IDataSource*>(dataSource);
+        auto iDataSource = reinterpret_cast<HMUI::TableView::IDataSource*>(dataSource.unsafePtr());
         auto finfo = il2cpp_functions::class_get_field_from_name(dataSource->klass, "tableView");
         if (finfo) // there is a field named tableView
             il2cpp_utils::SetFieldValue(dataSource, finfo, tableView);

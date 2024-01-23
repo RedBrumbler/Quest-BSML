@@ -74,7 +74,7 @@ namespace BSML {
 
     void MenuButtons::ShowView(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if (!leftScreen || !leftScreen->m_CachedPtr) {
-            leftScreen = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::Screen*>().FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "LeftScreen"; });
+            leftScreen = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::Screen*>()->FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "LeftScreen"; });
         }
 
         auto modals = leftScreen->GetComponentsInChildren<HMUI::ModalView*>();
@@ -92,7 +92,7 @@ namespace BSML {
         GlobalNamespace::MainFlowCoordinator* mainFlowCoordinator = BSML::Helpers::GetMainFlowCoordinator();
 
         ShowView(false, false, false);
-        auto vc = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::MainMenuViewController*>().FirstOrDefault();
+        auto vc = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::MainMenuViewController*>()->FirstOrDefault();
         std::function<void(bool, bool, bool)> fun = std::bind(&MenuButtons::ShowView, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
         vc->add_didActivateEvent(MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(fun));
 

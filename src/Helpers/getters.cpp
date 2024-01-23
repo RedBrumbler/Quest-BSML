@@ -24,7 +24,7 @@ namespace BSML::Helpers {
     PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache()
     {
         if(!physicsRaycaster)
-            physicsRaycaster = Resources::FindObjectsOfTypeAll<MainMenuViewController*>().First()->GetComponent<VRGraphicRaycaster*>()->_physicsRaycaster;
+            physicsRaycaster = Resources::FindObjectsOfTypeAll<MainMenuViewController*>()->First()->GetComponent<VRGraphicRaycaster*>()->_physicsRaycaster;
         if(!physicsRaycaster)
             CacheNotFoundWarningLog(PhysicsRaycasterWithCache);
         return physicsRaycaster.ptr();
@@ -34,7 +34,7 @@ namespace BSML::Helpers {
     DiContainer* GetDiContainer()
     {
         if(!diContainer)
-            diContainer = Resources::FindObjectsOfTypeAll<TextSegmentedControl*>().FirstOrDefault([](TextSegmentedControl* x) { return x->get_transform()->get_parent()->get_name() == "PlayerStatisticsViewController" && x->_container; })->_container;
+            diContainer = Resources::FindObjectsOfTypeAll<TextSegmentedControl*>()->FirstOrDefault([](TextSegmentedControl* x) { return x->get_transform()->get_parent()->get_name() == "PlayerStatisticsViewController" && x->_container; })->_container;
         if(!diContainer)
             CacheNotFoundWarningLog(DiContainer);
         return diContainer.ptr();
@@ -44,7 +44,7 @@ namespace BSML::Helpers {
     HoverHintController* GetHoverHintController()
     {
         if(!hoverHintController)
-            hoverHintController = Resources::FindObjectsOfTypeAll<HoverHintController*>().FirstOrDefault();
+            hoverHintController = Resources::FindObjectsOfTypeAll<HoverHintController*>()->FirstOrDefault();
         if(!hoverHintController)
             CacheNotFoundWarningLog(HoverHintController);
         return hoverHintController.ptr();
@@ -54,7 +54,7 @@ namespace BSML::Helpers {
     IVRPlatformHelper* GetIVRPlatformHelper()
     {
         if (!platformHelper)
-            platformHelper = Resources::FindObjectsOfTypeAll<LevelCollectionTableView*>().First()->GetComponentInChildren<ScrollView*>()->_platformHelper;
+            platformHelper = Resources::FindObjectsOfTypeAll<LevelCollectionTableView*>()->First()->GetComponentInChildren<ScrollView*>()->_platformHelper;
         if (!platformHelper)
             CacheNotFoundWarningLog(IVRPlatformHelper);
         return platformHelper.ptr();
@@ -63,7 +63,7 @@ namespace BSML::Helpers {
     SafePtrUnity<TMP_FontAsset> mainTextFont;
     TMP_FontAsset* GetMainTextFont() {
         if (!mainTextFont)
-            mainTextFont = Resources::FindObjectsOfTypeAll<TMP_FontAsset*>().FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF"; });
+            mainTextFont = Resources::FindObjectsOfTypeAll<TMP_FontAsset*>()->FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF"; });
         if(!mainTextFont)
             CacheNotFoundWarningLog(TMP_FontAsset);
         return mainTextFont.ptr();
@@ -72,7 +72,7 @@ namespace BSML::Helpers {
     SafePtrUnity<Material> mainUIFontMaterial;
     Material* GetMainUIFontMaterial() {
         if (!mainUIFontMaterial)
-            mainUIFontMaterial = Resources::FindObjectsOfTypeAll<Material*>().FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF Curved Softer"; });
+            mainUIFontMaterial = Resources::FindObjectsOfTypeAll<Material*>()->FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF Curved Softer"; });
         if(!mainUIFontMaterial)
             CacheNotFoundWarningLog(Material);
         return mainUIFontMaterial.ptr();
@@ -81,7 +81,7 @@ namespace BSML::Helpers {
     SafePtrUnity<Material> noGlowUIMat;
     Material* GetUINoGlowMat() {
         if (!noGlowUIMat) {
-            noGlowUIMat = Resources::FindObjectsOfTypeAll<Material*>().FirstOrDefault([](auto x){ return x->get_name() == "UINoGlow"; });
+            noGlowUIMat = Resources::FindObjectsOfTypeAll<Material*>()->FirstOrDefault([](auto x){ return x->get_name() == "UINoGlow"; });
         }
         if(!noGlowUIMat)
             CacheNotFoundWarningLog(Material);
@@ -92,7 +92,7 @@ namespace BSML::Helpers {
     MainFlowCoordinator* GetMainFlowCoordinator()
     {
         if (!mainFlowCoordinator)
-            mainFlowCoordinator = Resources::FindObjectsOfTypeAll<MainFlowCoordinator*>().FirstOrDefault();
+            mainFlowCoordinator = Resources::FindObjectsOfTypeAll<MainFlowCoordinator*>()->FirstOrDefault();
         if(!mainFlowCoordinator)
             CacheNotFoundWarningLog(MainFlowCoordinator);
         return mainFlowCoordinator.ptr();

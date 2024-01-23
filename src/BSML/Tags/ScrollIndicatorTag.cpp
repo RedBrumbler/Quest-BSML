@@ -16,7 +16,7 @@ namespace BSML {
         static SafePtrUnity<HMUI::VerticalScrollIndicator> scrollIndicatorTemplate;
         if (!scrollIndicatorTemplate)
         {
-            scrollIndicatorTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::VerticalScrollIndicator* >().FirstOrDefault();
+            scrollIndicatorTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::VerticalScrollIndicator* >()->FirstOrDefault();
         }
         return scrollIndicatorTemplate.ptr();
     }

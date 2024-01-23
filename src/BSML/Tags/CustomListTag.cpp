@@ -30,7 +30,7 @@ namespace BSML {
     Canvas* get_customListCanvasTemplate() {
         static SafePtrUnity<Canvas> customListCanvasTemplate;
         if (!customListCanvasTemplate) {
-            customListCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
+            customListCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>()->FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
         }
         return customListCanvasTemplate.ptr();
     }
@@ -90,7 +90,7 @@ namespace BSML {
         viewPort->set_anchoredPosition({0, 0});
         viewPort->set_sizeDelta({0, 0});
 
-        auto tableViewRectTransform = reinterpret_cast<RectTransform*>(tableView->get_transform());
+        auto tableViewRectTransform = tableView->transform.cast<RectTransform>();
         tableViewRectTransform->set_anchorMin({0, 0});
         tableViewRectTransform->set_anchorMax({1, 1});
         tableViewRectTransform->set_anchoredPosition({0, 0});

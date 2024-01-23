@@ -74,7 +74,7 @@ namespace BSML {
         Refresh();
 
         auto tabSelectedInfo = il2cpp_functions::class_get_method_from_name(this->klass, "TabSelected", 2);
-        auto delegate = MakeSystemAction<HMUI::SegmentedControl*, int>(this, tabSelectedInfo);
+        auto delegate = MakeSystemAction<UnityW<HMUI::SegmentedControl>, int>(this, tabSelectedInfo);
         textSegmentedControl->add_didSelectCellEvent(delegate);
         textSegmentedControl->SelectCellWithNumber(0);
         TabSelected(textSegmentedControl, 0);

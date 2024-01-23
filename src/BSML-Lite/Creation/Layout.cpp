@@ -3,6 +3,7 @@
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/RectTransform.hpp"
 
 #include "BSML/Components/ExternalComponents.hpp"
 #define protected public
@@ -48,7 +49,7 @@ namespace BSML::Lite {
     BSML::ModalView* CreateModal(const TransformWrapper& parent, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::function<void()> onBlockerClicked, bool dismissOnBlockerClicked) {
         auto go = BSML::ModalTag{}.CreateObject(parent);
         auto modalView = go->GetComponent<BSML::ModalView*>();
-        auto rect = reinterpret_cast<UnityEngine::RectTransform*>(modalView->get_transform());
+        auto rect = modalView->transform.cast<UnityEngine::RectTransform>();
         rect->set_anchoredPosition(anchoredPosition);
         rect->set_sizeDelta(sizeDelta);
 
@@ -59,12 +60,12 @@ namespace BSML::Lite {
     }
 
     UnityEngine::GameObject* CreateScrollableModalContainer(BSML::ModalView* modal) {
-        auto rect = reinterpret_cast<UnityEngine::RectTransform*>(modal->get_transform());
+        auto rect = modal->transform.cast<UnityEngine::RectTransform>();
         auto sizeDelta = rect->get_sizeDelta();
         float width = sizeDelta.x;
         float height = sizeDelta.y;
 
-        auto parent = modal->get_transform();
+        UnityEngine::Transform* parent = modal->transform;
         auto content = CreateScrollView(parent);
 
         auto externalComponents = content->GetComponent<BSML::ExternalComponents*>();

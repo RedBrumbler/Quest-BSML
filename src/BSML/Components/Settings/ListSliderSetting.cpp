@@ -34,7 +34,7 @@ namespace BSML {
             ReceiveValue();
 
             auto onChangeInfo = il2cpp_functions::class_get_method_from_name(this->klass, "OnChange", 2);
-            auto delegate = MakeSystemAction<HMUI::RangeValuesTextSlider*, float>(this, onChangeInfo);
+            auto delegate = MakeSystemAction<UnityW<HMUI::RangeValuesTextSlider>, float>(this, onChangeInfo);
             slider->add_valueDidChangeEvent(delegate);
         }
     }
@@ -76,7 +76,7 @@ namespace BSML {
         int index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value
-            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(v, "Equals", value).value_or(false)))
+            if ((v == value) || (v && v->Equals(value)))
                 break;
             index++;
         }

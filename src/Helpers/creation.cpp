@@ -21,7 +21,7 @@ namespace BSML::Helpers {
         auto gameObj = GameObject::New_ctor("CustomUIText");
         gameObj->SetActive(false);
 
-        auto textComponent = reinterpret_cast<TMP_Text*>(gameObj->AddComponent(type));
+        auto textComponent = gameObj->AddComponent(type).cast<TMP_Text>();
         textComponent->set_font(GetMainTextFont());
         textComponent->set_fontSharedMaterial(GetMainUIFontMaterial());
         textComponent->get_rectTransform()->SetParent(parent, false);
@@ -42,7 +42,7 @@ namespace BSML::Helpers {
     SafePtrUnity<Canvas> canvasTemplate;
     HMUI::ViewController* CreateViewController(System::Type* type) {
         if (!canvasTemplate)
-            canvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x) { return x->get_name() == "DropdownTableView"; });
+            canvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>()->FirstOrDefault([](auto x) { return x->get_name() == "DropdownTableView"; });
 
         auto go = GameObject::New_ctor(type->NameOrDefault);
         auto cv = go->AddComponent<Canvas*>();
@@ -59,7 +59,7 @@ namespace BSML::Helpers {
 
         go->AddComponent<VRUIControls::VRGraphicRaycaster*>()->_physicsRaycaster = GetPhysicsRaycasterWithCache();
         go->AddComponent<CanvasGroup*>();
-        auto vc = reinterpret_cast<HMUI::ViewController*>(go->AddComponent(type));
+        auto vc = go->AddComponent(type).cast<HMUI::ViewController>();
 
         vc->get_rectTransform()->set_anchorMin({0, 0});
         vc->get_rectTransform()->set_anchorMax({1, 1});
@@ -70,7 +70,7 @@ namespace BSML::Helpers {
     }
 
     HMUI::FlowCoordinator* CreateFlowCoordinator(System::Type* type) {
-        auto flow = reinterpret_cast<HMUI::FlowCoordinator*>(GameObject::New_ctor(type->NameOrDefault)->AddComponent(type));
+        auto flow = GameObject::New_ctor(type->NameOrDefault)->AddComponent(type).cast<HMUI::FlowCoordinator>();
         flow->_baseInputModule = GetMainFlowCoordinator()->_baseInputModule;
         return flow;
     }

@@ -56,7 +56,7 @@ namespace BSML {
         }
 
         auto data = entry->get_data();
-        return std::string_view(reinterpret_cast<char*>(data.begin()), size_t(data.size()));
+        return std::string_view(reinterpret_cast<char*>(data->begin()), size_t(data.size()));
     }
 
     void SettingsMenu::SetupViewControllerTransform(HMUI::ViewController* viewController) {

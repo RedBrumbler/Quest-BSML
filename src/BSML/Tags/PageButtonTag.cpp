@@ -30,7 +30,7 @@ namespace BSML {
     Button* get_pageButtonTemplate() {
         static SafePtrUnity<Button> pageButtonTemplate;
         if (!pageButtonTemplate) {
-            pageButtonTemplate = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "UpButton"; });
+            pageButtonTemplate = Resources::FindObjectsOfTypeAll<Button*>()->LastOrDefault([&](auto x){ return x->get_name() == "UpButton"; });
         }
         return pageButtonTemplate.ptr();
     }
@@ -44,7 +44,7 @@ namespace BSML {
         gameObject->set_name("BSMLPageButton");
         button->set_interactable(true);
 
-        auto transform = reinterpret_cast<RectTransform*>(button->get_transform());
+        auto transform = button->transform.cast<RectTransform>();
         auto pageButton = gameObject->AddComponent<PageButton*>();
 
         auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
@@ -53,7 +53,7 @@ namespace BSML {
         externalComponents->Add(pageButton);
 
         auto btnIcon = gameObject->AddComponent<ButtonIconImage*>();
-        btnIcon->image = gameObject->GetComponentsInChildren<Image*>(true).FirstOrDefault([&](auto x){ return x->get_name() == "Icon"; });
+        btnIcon->image = gameObject->GetComponentsInChildren<Image*>(true)->FirstOrDefault([&](auto x){ return x->get_name() == "Icon"; });
         externalComponents->Add(btnIcon);
 
         auto buttonSizeFitter = gameObject->AddComponent<ContentSizeFitter*>();
@@ -67,7 +67,7 @@ namespace BSML {
         layoutElement->set_flexibleHeight(0);
         layoutElement->set_flexibleWidth(0);
 
-        auto buttonTransform = reinterpret_cast<RectTransform*>(transform->GetChild(0));
+        auto buttonTransform = transform->GetChild(0).cast<RectTransform>();
         buttonTransform->set_anchorMin({0, 0});
         buttonTransform->set_anchorMax({1, 1});
         buttonTransform->set_sizeDelta({0, 0});

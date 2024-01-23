@@ -33,7 +33,7 @@ namespace BSML::Lite {
         auto go = BSML::TextSegmentedControlTag{}.CreateObject(parent);
         auto textSegmentedControl = go->GetComponent<HMUI::TextSegmentedControl*>();
 
-        auto rect = reinterpret_cast<UnityEngine::RectTransform*>(go->get_transform());
+        auto rect = go->transform.cast<UnityEngine::RectTransform>();
         rect->set_anchoredPosition(anchoredPosition);
         rect->set_sizeDelta(sizeDelta);
 
@@ -44,7 +44,7 @@ namespace BSML::Lite {
 
         if (onCellWithIdxClicked) {
             textSegmentedControl->add_didSelectCellEvent(
-                custom_types::MakeDelegate<System::Action_2<HMUI::SegmentedControl*, int>*>(
+                custom_types::MakeDelegate<System::Action_2<UnityW<HMUI::SegmentedControl>, int>*>(
                     std::function<void(HMUI::SegmentedControl*, int)>( [onCellWithIdxClicked](HMUI::SegmentedControl* _, int idx) { onCellWithIdxClicked(idx); } )
                 )
             );

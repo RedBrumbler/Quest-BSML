@@ -69,9 +69,9 @@ namespace BSML {
                 scrollView->_verticalScrollIndicator = scrollIndicator->GetComponent<HMUI::VerticalScrollIndicator*>();
                 if (scrollView->_verticalScrollIndicator) break;
             }
-            INFO("upButton: {}", fmt::ptr(scrollView->_pageUpButton));
-            INFO("downButton: {}", fmt::ptr(scrollView->_pageDownButton));
-            INFO("scrollIndicator: {}", fmt::ptr(scrollView->_verticalScrollIndicator));
+            INFO("upButton: {}", fmt::ptr(scrollView->_pageUpButton.unsafePtr()));
+            INFO("downButton: {}", fmt::ptr(scrollView->_pageDownButton.unsafePtr()));
+            INFO("scrollIndicator: {}", fmt::ptr(scrollView->_verticalScrollIndicator.unsafePtr()));
         }
 
         scrollView->RefreshContent();

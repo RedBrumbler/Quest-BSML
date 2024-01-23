@@ -123,7 +123,7 @@ namespace BSML {
             i++;
         }
 
-        std::sort(_scrollFocusPositions.begin(), _scrollFocusPositions.end(), [](float a, float b) {
+        std::sort(_scrollFocusPositions->begin(), _scrollFocusPositions->end(), [](float a, float b) {
             return a < b;
         });
     }

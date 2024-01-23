@@ -35,7 +35,7 @@ namespace BSML::Lite {
             static std::unordered_map<std::string, SafePtrUnity<UnityEngine::UI::Button>> buttonCopyMap;
             auto& buttonCopy = buttonCopyMap[std::string(buttonTemplate)];
             if (!buttonCopy) {
-                buttonCopy = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::UI::Button*>().LastOrDefault([&buttonTemplate](auto* x) { return x->get_name() == buttonTemplate; });
+                buttonCopy = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::UI::Button*>()->LastOrDefault([&buttonTemplate](auto* x) { return x->get_name() == buttonTemplate; });
             }
 
             if (!buttonCopy) {
@@ -48,7 +48,7 @@ namespace BSML::Lite {
             button->set_name("BSMLButton");
             button->set_interactable(true);
 
-            auto transform = reinterpret_cast<UnityEngine::RectTransform*>(button->get_transform());
+            auto transform = button->transform.cast<UnityEngine::RectTransform>();
             auto gameObject = button->get_gameObject();
             gameObject->SetActive(true);
             auto externalComponents = gameObject->AddComponent<BSML::ExternalComponents*>();
@@ -90,7 +90,7 @@ namespace BSML::Lite {
 
         SetButtonText(button, buttonText);
 
-        auto rect = reinterpret_cast<UnityEngine::RectTransform*>(button->get_transform());
+        auto rect = button->transform.cast<UnityEngine::RectTransform>();
         rect->set_anchoredPosition(anchoredPosition);
         rect->set_sizeDelta(sizeDelta);
 
@@ -107,7 +107,7 @@ namespace BSML::Lite {
 
         SetButtonText(button, buttonText);
 
-        auto rect = reinterpret_cast<UnityEngine::RectTransform*>(button->get_transform());
+        auto rect = button->transform.cast<UnityEngine::RectTransform>();
         rect->set_anchoredPosition(anchoredPosition);
         rect->set_sizeDelta(sizeDelta);
 
@@ -140,12 +140,12 @@ namespace BSML::Lite {
     }
 
     void SetButtonIcon(UnityEngine::UI::Button* button, UnityEngine::Sprite* icon) {
-        auto iconImage = button->GetComponentsInChildren<UnityEngine::UI::Image*>().FirstOrDefault([](auto x){ return x->get_name() == "Icon"; });
+        auto iconImage = button->GetComponentsInChildren<UnityEngine::UI::Image*>()->FirstOrDefault([](auto x){ return x->get_name() == "Icon"; });
         if (iconImage) iconImage->set_sprite(icon);
     }
 
     void SetButtonBackground(UnityEngine::UI::Button* button, UnityEngine::Sprite* background) {
-        auto iconImage = button->GetComponentsInChildren<UnityEngine::UI::Image*>().FirstOrDefault([](auto x){ return x->get_name() == "Background"; });
+        auto iconImage = button->GetComponentsInChildren<UnityEngine::UI::Image*>()->FirstOrDefault([](auto x){ return x->get_name() == "Background"; });
         if (iconImage) iconImage->set_sprite(background);
     }
 

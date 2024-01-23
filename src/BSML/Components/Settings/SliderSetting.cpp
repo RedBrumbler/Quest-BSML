@@ -37,19 +37,19 @@ namespace BSML {
         if (slider) {
             remappers[slider] = this;
             text = slider->get_gameObject()->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
-            
+
             // steps is range(max - min) divided by increments;
             int steps = (slider->get_maxValue() - slider->get_minValue()) / increments;
             slider->set_numberOfSteps(steps + 1);
             ReceiveValue();
 
             auto onChangeInfo = il2cpp_functions::class_get_method_from_name(this->klass, "OnChange", 2);
-            auto delegate = MakeSystemAction<HMUI::RangeValuesTextSlider*, float>(this, onChangeInfo);
+            auto delegate = MakeSystemAction<UnityW<HMUI::RangeValuesTextSlider>, float>(this, onChangeInfo);
 
             slider->add_valueDidChangeEvent(delegate);
         }
     }
-    
+
     void SliderSetting::OnChange(HMUI::RangeValuesTextSlider* _, float value) {
         if (isInt)
             value = (int)value;

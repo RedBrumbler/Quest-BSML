@@ -27,13 +27,13 @@ namespace BSML::Lite {
         auto go = BSML::TextFieldTag{}.CreateObject(parent);
         auto textField = go->GetComponent<HMUI::InputFieldView*>();
         textField->_keyboardPositionOffset = keyboardPositionOffset;
-        auto rect = reinterpret_cast<UnityEngine::RectTransform*>(go->get_transform());
+        auto rect = go->transform.cast<UnityEngine::RectTransform>();
         rect->set_anchoredPosition(anchoredPosition);
 
         textField->onValueChanged = HMUI::InputFieldView::InputFieldChanged::New_ctor();
         if (onValueChange) {
             textField->onValueChanged->AddListener(
-                    custom_types::MakeDelegate<UnityEngine::Events::UnityAction_1<HMUI::InputFieldView*>*>(
+                    custom_types::MakeDelegate<UnityEngine::Events::UnityAction_1<UnityW<HMUI::InputFieldView>>*>(
                         std::function<void(HMUI::InputFieldView*)>(
                             [onValueChange](auto fieldView){
                                 onValueChange(fieldView->get_text());
@@ -60,7 +60,7 @@ namespace BSML::Lite {
             img->set_sprite(iconSprite);
         }
 
-        auto rect = reinterpret_cast<UnityEngine::RectTransform*>(go->get_transform());
+        auto rect = go->transform.cast<UnityEngine::RectTransform>();
         if (onClick) {
             toggle->onValueChanged = UnityEngine::UI::Toggle::ToggleEvent::New_ctor();
             toggle->onValueChanged->AddListener(
@@ -195,7 +195,7 @@ namespace BSML::Lite {
         auto text = externalComponents->Get<TMPro::TextMeshProUGUI*>();
         text->set_text(label);
 
-        auto rect = reinterpret_cast<UnityEngine::RectTransform*>(go->get_transform());
+        auto rect = go->transform.cast<UnityEngine::RectTransform>();
         if (onToggle) {
             toggle->toggle->onValueChanged = UnityEngine::UI::Toggle::ToggleEvent::New_ctor();
             toggle->toggle->onValueChanged->AddListener(

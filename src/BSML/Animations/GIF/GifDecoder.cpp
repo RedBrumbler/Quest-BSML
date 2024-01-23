@@ -72,7 +72,7 @@ namespace BSML {
     void GifDecoder::ProcessingThread(ArrayW<uint8_t> gifData, AnimationInfo* animationInfo, std::function<void()> onError) {
         DEBUG("Open gif");
         try {
-            auto gifReader = EasyGifReader::openMemory(gifData.begin(), gifData.size());
+            auto gifReader = EasyGifReader::openMemory(gifData->values, gifData.size());
             int width = gifReader.width(), height = gifReader.height(), frameCount = gifReader.frameCount();
 
             animationInfo->frameCount = frameCount;
@@ -85,7 +85,7 @@ namespace BSML {
 
                 const uint8_t* pixels = (const uint8_t*)gifFrame.pixels();
                 // get end of the data
-                uint8_t* colorData = currentFrame->colors.ptr()->values + currentFrame->colors.ptr()->Length();
+                uint8_t* colorData = currentFrame->colors.ptr()->values + currentFrame->colors->get_Length();
                 int height = gifFrame.height();
                 int rowSize = sizeof(uint32_t) * gifFrame.width();
                 // we need to iterate the given data in reverse due to unity's texture system

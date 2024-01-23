@@ -68,7 +68,7 @@ namespace BSML {
             background->set_type(UnityEngine::UI::Image::Type::Sliced);
             background->set_color({0.7450981f, 0.7450981f, 0.7450981f, 1.0f});
             if (!_fogMaterial)
-                _fogMaterial = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::Material*>().FirstOrDefault([](auto x){ return x->get_name() == "UIFogBG"; });
+                _fogMaterial = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::Material*>()->FirstOrDefault([](auto x){ return x->get_name() == "UIFogBG"; });
             background->set_material(_fogMaterial.ptr());
             background->set_preserveAspect(true);
         }
@@ -99,7 +99,7 @@ namespace BSML {
 
     void FloatingScreen::CreateHandle(VRUIControls::VRPointer* pointer) {
         if (!pointer || !pointer->m_CachedPtr) {
-            pointer = UnityEngine::Resources::FindObjectsOfTypeAll<VRUIControls::VRPointer*>().FirstOrDefault();
+            pointer = UnityEngine::Resources::FindObjectsOfTypeAll<VRUIControls::VRPointer*>()->FirstOrDefault();
         }
 
         if (pointer && pointer->m_CachedPtr) {
@@ -169,7 +169,7 @@ namespace BSML {
 
 
     UnityEngine::RectTransform* FloatingScreen::get_rectTransform() {
-        return reinterpret_cast<UnityEngine::RectTransform*>(get_transform());
+        return transform.cast<UnityEngine::RectTransform>();
     }
 
     UnityEngine::Vector2 FloatingScreen::get_ScreenSize() {

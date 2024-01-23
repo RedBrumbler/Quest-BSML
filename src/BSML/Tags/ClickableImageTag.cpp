@@ -26,8 +26,8 @@ namespace BSML {
     GlobalNamespace::Signal* get_imageClickedSignal() {
         static SafePtrUnity<GlobalNamespace::Signal> imageClickedSignal;
         if (!imageClickedSignal) {
-            auto menuShockWave = Resources::FindObjectsOfTypeAll<GlobalNamespace::MenuShockwave*>().FirstOrDefault();
-            imageClickedSignal = menuShockWave ? menuShockWave->_buttonClickEvents.LastOrDefault() : nullptr;
+            auto menuShockWave = Resources::FindObjectsOfTypeAll<GlobalNamespace::MenuShockwave*>()->FirstOrDefault();
+            imageClickedSignal = menuShockWave ? menuShockWave->_buttonClickEvents->LastOrDefault() : nullptr;
         }
         return imageClickedSignal.ptr();
     }

@@ -73,7 +73,7 @@ namespace BSML {
         void Keyboard::SetButtonType(std::string_view buttonName) {
             auto allButtons = Resources::FindObjectsOfTypeAll<Button*>();
             Button* q;
-            baseButton = allButtons.First([&](auto x){
+            baseButton = allButtons->First([&](auto x){
                 if (x->get_name() == "Q") q = x;
                 return x->get_name() == buttonName;
             });
@@ -269,7 +269,7 @@ namespace BSML {
             auto v = keyboardText->GetPreferredValues(keyboardText->get_text() + "I");
             v.y = 15.0f;
             v.x = v.x / 2 + 30.0f - 0.5f;
-            reinterpret_cast<RectTransform*>(keyboardCursor->get_transform())->set_anchoredPosition(v);
+            keyboardCursor->transform.cast<RectTransform>()->set_anchoredPosition(v);
         }
 
         Keyboard* Keyboard::construct(UnityEngine::RectTransform* container, std::string_view defaultKeyboard, bool enableInputField, float x, float y) {

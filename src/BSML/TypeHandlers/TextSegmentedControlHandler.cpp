@@ -56,7 +56,7 @@ namespace BSML {
         auto selectCellItr = data.find("selectCell");
         if (selectCellItr != data.end() && !selectCellItr->second.empty()) {
             auto action = parserParams.TryGetAction(selectCellItr->second);
-            if (action) textControl->add_didSelectCellEvent(action->GetSystemAction<HMUI::SegmentedControl*, int>());
+            if (action) textControl->add_didSelectCellEvent(action->GetSystemAction<UnityW<HMUI::SegmentedControl>, int>());
             else ERROR("Action '{}' could not be found", selectCellItr->second);
         }
 

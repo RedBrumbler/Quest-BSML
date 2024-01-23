@@ -30,7 +30,7 @@ namespace BSML {
     GameObject* get_dropdownTemplate() {
         static SafePtrUnity<GameObject> dropdownTemplate;
         if (!dropdownTemplate) {
-            dropdownTemplate = Resources::FindObjectsOfTypeAll<HMUI::SimpleTextDropdown*>().FirstOrDefault([](auto x){
+            dropdownTemplate = Resources::FindObjectsOfTypeAll<HMUI::SimpleTextDropdown*>()->FirstOrDefault([](auto x){
                 auto parent = x->get_transform()->get_parent();
                 if (!parent) return false;
                 return parent->get_name() == "NormalLevels";
@@ -54,7 +54,7 @@ namespace BSML {
         DEBUG("Creating DropdownListSetting");
 
         auto gameObject = Object::Instantiate(get_safePrefab(), parent, false);
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
+        auto transform = gameObject->transform.cast<RectTransform>();
         auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
         externalComponents->Add(transform);
 

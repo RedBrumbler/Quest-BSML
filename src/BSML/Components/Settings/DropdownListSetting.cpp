@@ -28,7 +28,7 @@ namespace BSML {
 
     void DropdownListSetting::Setup() {
         if (dropdown) {
-            std::function<void(HMUI::DropdownWithTableView*, int)> fun = std::bind(&DropdownListSetting::OnSelectIndex, this, std::placeholders::_1, std::placeholders::_2);
+            std::function<void(UnityW<HMUI::DropdownWithTableView>, int)> fun = std::bind(&DropdownListSetting::OnSelectIndex, this, std::placeholders::_1, std::placeholders::_2);
             auto delegate = MakeSystemAction(fun);
             dropdown->add_didSelectCellWithIdxEvent(delegate);
         }
@@ -103,7 +103,7 @@ namespace BSML {
         index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value
-            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(v, "Equals", value).value_or(false)))
+            if ((v == value) || (v && v->Equals(value)))
                 break;
             index++;
         }

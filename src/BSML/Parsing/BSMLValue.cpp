@@ -102,7 +102,7 @@ namespace BSML {
             il2cpp_functions::field_get_value(host, fieldInfo, &val);
             return val;
         } else if (getterInfo) {
-            return il2cpp_utils::RunMethod<System::Object*>(host, getterInfo).value_or(nullptr);
+            return il2cpp_utils::RunMethodOpt<System::Object*>(host, getterInfo).value_or(nullptr);
         }
         return nullptr;
     }

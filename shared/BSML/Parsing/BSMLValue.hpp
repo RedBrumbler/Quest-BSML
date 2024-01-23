@@ -34,7 +34,7 @@ namespace BSML {
                 il2cpp_functions::field_get_value(host, fieldInfo, &val);
                 return val;
             } else if (getterInfo) {
-                return il2cpp_utils::RunMethod<T>(host, getterInfo).value_or(T());
+                return il2cpp_utils::RunMethod<T>(host, getterInfo).get_result();
             }
             return T{};
         }
@@ -45,7 +45,7 @@ namespace BSML {
             if (fieldInfo) {
                 return il2cpp_utils::GetFieldValue<T>(host, fieldInfo);
             } else if (getterInfo) {
-                return il2cpp_utils::RunMethod<T>(host, getterInfo);
+                return il2cpp_utils::RunMethodOpt<T>(host, getterInfo);
             }
             return std::nullopt;
         }

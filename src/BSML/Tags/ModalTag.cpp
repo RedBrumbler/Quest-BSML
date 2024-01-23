@@ -27,7 +27,7 @@ namespace BSML {
     HMUI::ModalView* get_modalViewTemplate() {
         static SafePtrUnity<HMUI::ModalView> modalViewTemplate;
         if (!modalViewTemplate) {
-            modalViewTemplate = Resources::FindObjectsOfTypeAll<HMUI::ModalView*>().FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "DropdownTableView"; });
+            modalViewTemplate = Resources::FindObjectsOfTypeAll<HMUI::ModalView*>()->FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "DropdownTableView"; });
         }
         return modalViewTemplate.ptr();
     }
@@ -53,11 +53,11 @@ namespace BSML {
         Object::DestroyImmediate(gameObject->GetComponent<ScrollView*>());
         Object::DestroyImmediate(gameObject->GetComponent<EventSystemListener*>());
 
-        auto rectTransform = reinterpret_cast<RectTransform*>(modalView->get_transform());
+        auto rectTransform = modalView->transform.cast<RectTransform>();
         int childCount = rectTransform->get_childCount();
 
         for (int i = 0; i < childCount; i++) {
-            auto child = reinterpret_cast<RectTransform*>(rectTransform->GetChild(i));
+            auto child = rectTransform->GetChild(i).cast<RectTransform>();
             DEBUG("child name: {}", child->get_name());
 
             if (child->get_name() == "BG") {

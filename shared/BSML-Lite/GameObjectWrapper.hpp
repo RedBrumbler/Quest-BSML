@@ -4,6 +4,7 @@
 #include "beatsaber-hook/shared/utils/type-concepts.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Component.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Transform.hpp"
 
 namespace BSML::Lite {
@@ -11,6 +12,7 @@ namespace BSML::Lite {
     struct GameObjectWrapper {
         GameObjectWrapper(UnityEngine::GameObject* gameObject) noexcept : gameObject(gameObject) {}
         GameObjectWrapper(UnityEngine::Component* comp) : GameObjectWrapper(comp->get_gameObject()) {}
+        GameObjectWrapper(UnityEngine::RectTransform* transform) : GameObjectWrapper(transform->get_gameObject()) {}
         GameObjectWrapper(UnityEngine::Transform* transform) : GameObjectWrapper(transform->get_gameObject()) {}
 
         // il2cpp wrapper type

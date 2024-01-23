@@ -46,7 +46,7 @@ void SetButtonDirection(BSML::PageButton* pageButton, const StringParseHelper& v
         bool isHorizontal = false;
         int angle = 0;
         auto pageButtonDirection = stringToPageButtonDirection(value);
-        auto buttonTransform = reinterpret_cast<UnityEngine::RectTransform*>(pageButton->get_transform()->Find("Icon"));
+        auto buttonTransform = pageButton->transform->Find("Icon").cast<UnityEngine::RectTransform>();
         buttonTransform->set_anchoredPosition({0, 0});
         auto layoutElement = pageButton->GetComponent<UnityEngine::UI::LayoutElement*>();
         switch(pageButtonDirection) {

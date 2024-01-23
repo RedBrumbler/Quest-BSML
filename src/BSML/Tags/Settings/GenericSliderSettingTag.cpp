@@ -22,7 +22,7 @@ namespace BSML {
     LayoutElement* get_controllersTransformTemplate() {
         static SafePtrUnity<LayoutElement> controllersTransformTemplate;
         if (!controllersTransformTemplate)
-                controllersTransformTemplate = Resources::FindObjectsOfTypeAll<LayoutElement*>().First([](auto x){ return x->get_name() == "PositionX"; });
+                controllersTransformTemplate = Resources::FindObjectsOfTypeAll<LayoutElement*>()->First([](auto x){ return x->get_name() == "PositionX"; });
         return controllersTransformTemplate.ptr();
     }
 
@@ -32,7 +32,7 @@ namespace BSML {
         auto gameObject = baseSetting->get_gameObject();
         gameObject->set_name("BSMLSliderSetting");
 
-        auto sliderSetting = reinterpret_cast<BSML::SliderSettingBase*>(gameObject->AddComponent(get_type()));
+        auto sliderSetting = gameObject->AddComponent(get_type()).cast<BSML::SliderSettingBase>();
         auto slider = gameObject->GetComponentInChildren<HMUI::CustomFormatRangeValuesSlider*>();
         sliderSetting->slider = slider;
 
@@ -47,7 +47,7 @@ namespace BSML {
         slider->set_name("BSMLSlider");
         slider->GetComponentInChildren<TMPro::TextMeshProUGUI*>()->set_enableWordWrapping(false);
         slider->_enableDragging = true;
-        auto sliderRect = reinterpret_cast<RectTransform*>(slider->get_transform());
+        auto sliderRect = slider->transform.cast<RectTransform>();
         sliderRect->set_anchorMin({1, 0});
         sliderRect->set_anchorMax({1, 1});
         sliderRect->set_sizeDelta({52, 0});

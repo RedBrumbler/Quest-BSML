@@ -68,7 +68,7 @@ namespace BSML::Lite {
         using base64 = cppcodec::base64_rfc4648;
 
         ArrayW<uint8_t> bytes(base64::decoded_max_size(base64Str.size()));
-        base64::decode(bytes.begin(), bytes.size(), base64Str.data(), base64Str.size());
+        base64::decode(bytes->begin(), bytes.size(), base64Str.data(), base64Str.size());
         return ArrayToSprite(bytes);
     }
 

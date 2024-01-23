@@ -15,7 +15,7 @@ UnityEngine::Component* GetExternalComponent(UnityEngine::GameObject* obj, BSML:
     if (externalComponents) {
         result = externalComponents->GetByType(type);
     }
-    return result ? result : obj->GetComponent(type);
+    return result ? result : static_cast<UnityEngine::Component*>(obj->GetComponent(type));
 }
 
 namespace BSML {

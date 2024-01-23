@@ -46,7 +46,7 @@ namespace BSML {
         auto textMesh = button->GetComponentInChildren<TMPro::TextMeshProUGUI*>(true);
         textMesh->set_richText(true);
 
-        auto transform = reinterpret_cast<RectTransform*>(button->get_transform());
+        auto transform = button->transform.cast<RectTransform>();
         transform->set_anchorMin({0.5f, 0.5f});
         transform->set_anchorMax({0.5f, 0.5f});
 

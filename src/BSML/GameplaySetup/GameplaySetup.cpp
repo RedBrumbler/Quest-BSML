@@ -33,7 +33,7 @@ namespace BSML {
         DEBUG("Setup");
         auto menus = get_menus();
         if (menus.size() == 0) return;
-        gameplaySetupViewController = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplaySetupViewController*>().FirstOrDefault();
+        gameplaySetupViewController = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplaySetupViewController*>()->FirstOrDefault();
         auto vanillaItems = get_vanillaItems();
         vanillaItems->Clear();
 
@@ -46,7 +46,7 @@ namespace BSML {
             }
         }
 
-        auto textSegmentedControl = reinterpret_cast<UnityEngine::RectTransform*>(t->Find("TextSegmentedControl"));
+        auto textSegmentedControl = t->Find("TextSegmentedControl").cast<UnityEngine::RectTransform>();
         textSegmentedControl->set_sizeDelta({0, 6});
         layoutGroup = textSegmentedControl->GetComponent<UnityEngine::UI::LayoutGroup*>();
 
@@ -77,11 +77,11 @@ namespace BSML {
 
         MenuType menuType = MenuType::Custom;
         auto fc = Helpers::GetMainFlowCoordinator()->YoungestChildFlowCoordinatorOrSelf();
-        if (il2cpp_utils::try_cast<GlobalNamespace::CampaignFlowCoordinator>(fc).has_value()) {
+        if (fc.try_cast<GlobalNamespace::CampaignFlowCoordinator>().has_value()) {
             menuType = MenuType::Campaign;
-        } else if (il2cpp_utils::try_cast<GlobalNamespace::SinglePlayerLevelSelectionFlowCoordinator>(fc).has_value()) {
+        } else if (fc.try_cast<GlobalNamespace::SinglePlayerLevelSelectionFlowCoordinator>().has_value()) {
             menuType = MenuType::Solo;
-        } else if (il2cpp_utils::try_cast<GlobalNamespace::GameServerLobbyFlowCoordinator>(fc).has_value()) {
+        } else if (fc.try_cast<GlobalNamespace::GameServerLobbyFlowCoordinator>().has_value()) {
             menuType = MenuType::Online;
         }
 
@@ -179,7 +179,7 @@ namespace BSML {
 
     GameplaySetupCell* GameplaySetup::GetCell() {
         INFO("Getting Cell");
-        auto cell = reinterpret_cast<GameplaySetupCell*>(modsList->tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
+        auto cell = modsList->tableView->DequeueReusableCellForIdentifier(reuseIdentifier).cast<GameplaySetupCell>();
 
         if (!cell || !cell->m_CachedPtr) {
             cell = UnityEngine::GameObject::New_ctor("GameplaySetupCell")->AddComponent<GameplaySetupCell*>();

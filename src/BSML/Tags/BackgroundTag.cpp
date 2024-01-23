@@ -19,7 +19,7 @@ namespace BSML {
         gameObject->AddComponent<ContentSizeFitter*>();
         gameObject->AddComponent<Backgroundable*>();
 
-        auto rectTransform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
+        auto rectTransform = gameObject->transform.cast<RectTransform>();
         rectTransform->set_anchorMin({0, 0});
         rectTransform->set_anchorMax({1, 1});
         rectTransform->set_sizeDelta({0, 0});

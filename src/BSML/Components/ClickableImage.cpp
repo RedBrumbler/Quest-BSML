@@ -90,7 +90,7 @@ namespace BSML {
             _vrPointer = nullptr;
         }
 
-        _vrPointer = UnityEngine::Resources::FindObjectsOfTypeAll<VRUIControls::VRPointer*>().FirstOrDefault();
+        _vrPointer = UnityEngine::Resources::FindObjectsOfTypeAll<VRUIControls::VRPointer*>()->FirstOrDefault();
         return _vrPointer;
     }
 }

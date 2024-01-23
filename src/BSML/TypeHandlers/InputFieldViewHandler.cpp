@@ -31,7 +31,7 @@ namespace BSML {
                 // this works absolutely different than any of the other BSML input methods
                 // Do I care? no.
                 fieldView->onValueChanged->AddListener(
-                    custom_types::MakeDelegate<UnityEngine::Events::UnityAction_1<HMUI::InputFieldView*>*>(
+                    custom_types::MakeDelegate<UnityEngine::Events::UnityAction_1<UnityW<HMUI::InputFieldView>>*>(
                         std::function<void(HMUI::InputFieldView*)>(
                             [onValueChange = action->GetFunction<StringW>()](auto fieldView){
                                 onValueChange(fieldView->get_text());

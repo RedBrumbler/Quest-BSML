@@ -16,7 +16,7 @@ namespace BSML {
     GlobalNamespace::LeaderboardTableView* get_leaderboardTemplate() {
         static SafePtrUnity<GlobalNamespace::LeaderboardTableView> leaderboardTemplate;
         if (!leaderboardTemplate) {
-            leaderboardTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::LeaderboardTableView*>().First([](auto x) {
+            leaderboardTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::LeaderboardTableView*>()->First([](auto x) {
                 return x->get_name() == "LeaderboardTableView";
             });
         }

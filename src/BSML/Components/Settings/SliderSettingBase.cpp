@@ -50,11 +50,11 @@ namespace BSML {
             slider->get_image()->set_sprite(Utilities::FindSpriteCached("RoundRect10"));
             UnityEngine::Object::Destroy(incButton->get_gameObject());
             UnityEngine::Object::Destroy(decButton->get_gameObject());
-            auto transform = reinterpret_cast<UnityEngine::RectTransform*>(slider->get_transform());
+            auto transform = slider->transform.cast<UnityEngine::RectTransform>();
             transform->set_sizeDelta({38, 0});
-            auto bgRect = reinterpret_cast<UnityEngine::RectTransform*>(transform->Find("BG"));
+            auto bgRect = transform->Find("BG").cast<UnityEngine::RectTransform>();
             bgRect->set_sizeDelta({0, 6});
-            auto slidingAreaRect = reinterpret_cast<UnityEngine::RectTransform*>(transform->Find("SlidingArea"));
+            auto slidingAreaRect = transform->Find("SlidingArea").cast<UnityEngine::RectTransform>();
             slidingAreaRect->set_sizeDelta({-4, -4});
         }
     }

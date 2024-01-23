@@ -25,7 +25,7 @@ namespace BSML {
     ModSettingsFlowCoordinator* get_flow() {
         static SafePtrUnity<ModSettingsFlowCoordinator> flow;
         if (!flow) {
-            flow = UnityEngine::Resources::FindObjectsOfTypeAll<ModSettingsFlowCoordinator*>().FirstOrDefault();
+            flow = UnityEngine::Resources::FindObjectsOfTypeAll<ModSettingsFlowCoordinator*>()->FirstOrDefault();
         }
         return flow.ptr();
     }

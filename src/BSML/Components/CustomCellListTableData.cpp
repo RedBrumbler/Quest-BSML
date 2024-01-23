@@ -25,7 +25,7 @@ namespace BSML {
 
     HMUI::TableCell* CustomCellListTableData::CellForIdx(HMUI::TableView* tableView, int idx) {
         if (data->get_Count() < idx) return nullptr;
-        auto cell = reinterpret_cast<BSML::CustomCellTableCell*>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
+        auto cell = tableView->DequeueReusableCellForIdentifier(reuseIdentifier).cast<BSML::CustomCellTableCell>();
         auto cellData = data[idx];
         if (!cell) {
             cell = NewCellForData(cellData);
@@ -36,19 +36,19 @@ namespace BSML {
 
         cell->set_reuseIdentifier(reuseIdentifier);
         cell->set_interactable(clickableCells);
-        
+
         return cell;
     }
 
     BSML::CustomCellTableCell* CustomCellListTableData::NewCellForData(System::Object* data) {
         auto cellGo = GameObject::New_ctor("BSMLCustomCellTableCell");
         auto cell = cellGo->AddComponent<BSML::CustomCellTableCell*>();
-        
+
         if (clickableCells) {
             cellGo->AddComponent<HMUI::Touchable*>();
             cell->set_interactable(true);
         }
-        
+
         auto parser = parse_and_construct(bsmlString, cellGo->get_transform(), cell);
         cell->parserParams = parser->parserParams;
         cell->dataObject = data;

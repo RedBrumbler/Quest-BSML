@@ -13,7 +13,7 @@ DEFINE_TYPE(BSML, ScrollViewContent);
 
 namespace BSML {
     void ScrollViewContent::Start() {
-        UnityEngine::UI::LayoutRebuilder::ForceRebuildLayoutImmediate(reinterpret_cast<UnityEngine::RectTransform*>(get_transform()));
+        UnityEngine::UI::LayoutRebuilder::ForceRebuildLayoutImmediate(static_cast<UnityEngine::RectTransform*>(transform.convert()));
         StartCoroutine(custom_types::Helpers::CoroutineHelper::New(SetupScrollView()));
     }
 
@@ -33,8 +33,8 @@ namespace BSML {
     }
 
     custom_types::Helpers::Coroutine ScrollViewContent::SetupScrollView() {
-        UnityEngine::RectTransform* rectTransform = reinterpret_cast<UnityEngine::RectTransform*>(get_transform()->GetChild(0));
-        while (rectTransform->get_sizeDelta().y == -1) {
+        UnityEngine::RectTransform* rectTransform = static_cast<UnityEngine::RectTransform*>(transform->GetChild(0).convert());
+        while (rectTransform->sizeDelta.y == -1) {
             co_yield nullptr;
         }
 
@@ -50,7 +50,7 @@ namespace BSML {
             return;
         }
 
-        scrollView->SetContentSize(reinterpret_cast<UnityEngine::RectTransform*>(get_transform()->GetChild(0))->get_rect().get_height());
+        scrollView->SetContentSize(static_cast<UnityEngine::RectTransform*>(transform->GetChild(0).convert())->rect.height);
         scrollView->RefreshButtons();
     }
 }

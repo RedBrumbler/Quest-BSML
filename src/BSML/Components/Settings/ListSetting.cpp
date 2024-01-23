@@ -86,7 +86,7 @@ namespace BSML {
         index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value
-            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(v, "Equals", value).value_or(false)))
+            if ((v == value) || (v && v->Equals(value)))
                 break;
             index++;
         }

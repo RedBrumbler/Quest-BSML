@@ -25,11 +25,11 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLNodeParser<ListTag> listTagParser({"list"});
+    static BSMLNodeParser<ListTag> listTagParser({"list", "list2"});
     Canvas* get_listCanvasTemplate() {
         static SafePtrUnity<Canvas> listCanvasTemplate;
         if (!listCanvasTemplate) {
-            listCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
+            listCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>()->FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
         }
         return listCanvasTemplate.ptr();
     }
@@ -91,7 +91,7 @@ namespace BSML {
         viewPort->set_anchoredPosition({0, 0});
         viewPort->set_sizeDelta({0, 0});
 
-        auto tableViewRectTransform = reinterpret_cast<RectTransform*>(tableView->get_transform());
+        auto tableViewRectTransform = tableView->transform.cast<RectTransform>();
         tableViewRectTransform->set_anchorMin({0, 0});
         tableViewRectTransform->set_anchorMax({1, 1});
         tableViewRectTransform->set_anchoredPosition({0, 0});

@@ -29,7 +29,7 @@ namespace BSML {
     HMUI::TextPageScrollView* get_scrollViewTemplate() {
         static SafePtrUnity<HMUI::TextPageScrollView> scrollViewTemplate;
         if (!scrollViewTemplate) {
-            scrollViewTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>().FirstOrDefault()->_textPageScrollView;
+            scrollViewTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>()->FirstOrDefault()->_textPageScrollView;
         }
         return scrollViewTemplate.ptr();
     }
@@ -74,7 +74,7 @@ namespace BSML {
         verticalLayout->set_childControlWidth(true);
         verticalLayout->set_childAlignment(UnityEngine::TextAnchor::UpperCenter);
 
-        UnityEngine::RectTransform* rectTransform = reinterpret_cast<UnityEngine::RectTransform*>(parentObject->get_transform());
+        auto rectTransform = parentObject->transform.cast<UnityEngine::RectTransform>();
         rectTransform->set_anchorMin(UnityEngine::Vector2(0, 1));
         rectTransform->set_anchorMax(UnityEngine::Vector2(1, 1));
         rectTransform->set_sizeDelta(UnityEngine::Vector2(0, 0));
@@ -96,9 +96,9 @@ namespace BSML {
         externalComponents->components->Add(scrollView->get_transform());
         externalComponents->components->Add(gameObject->AddComponent<UnityEngine::UI::LayoutElement*>());
 
-        reinterpret_cast<UnityEngine::RectTransform*>(child->get_transform())->set_sizeDelta(UnityEngine::Vector2(0, -1));
+        child->transform.cast<UnityEngine::RectTransform>()->set_sizeDelta(UnityEngine::Vector2(0, -1));
 
-        scrollView->_contentRectTransform = reinterpret_cast<UnityEngine::RectTransform*>(parentObject->get_transform());
+        scrollView->_contentRectTransform = parentObject->transform.cast<UnityEngine::RectTransform>();
         gameObject->SetActive(true);
         return child;
     }

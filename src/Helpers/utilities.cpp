@@ -318,7 +318,7 @@ namespace BSML::Utilities {
                 return;
             }
 
-            if (data.Length() > 0) {
+            if (data.size() > 0) {
                 auto texture = LoadTextureRaw(data);
                 if (scaleOptions.shouldScale) {
                     auto scaledTexture = DownScaleTexture(texture, scaleOptions);
@@ -394,7 +394,7 @@ namespace BSML::Utilities {
     }
 
     UnityEngine::Texture2D* LoadTextureRaw(ArrayW<uint8_t> data) {
-        if (data.Length() > 0) {
+        if (data.size() > 0) {
             auto texture = Texture2D::New_ctor(0, 0, TextureFormat::RGBA32, false, false);
             if (ImageConversion::LoadImage(texture, data, false))
                 return texture;
