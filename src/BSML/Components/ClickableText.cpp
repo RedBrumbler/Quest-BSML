@@ -1,7 +1,9 @@
 #include "BSML/Components/ClickableText.hpp"
 #include "logging.hpp"
 
-#include "VRUIControls/VRPointer.hpp"
+#include "UnityEngine/Resources.hpp"
+#include "GlobalNamespace/VRController.hpp"
+#include "UnityEngine/XR/XRNode.hpp"
 
 DEFINE_TYPE(BSML, ClickableText);
 
@@ -17,7 +19,7 @@ namespace BSML {
         onExit = nullptr;
 
         buttonClickedSignal = nullptr;
-        hapticFeedbackController = nullptr;
+        hapticFeedbackManager = nullptr;
         hapticFeedbackPresetSO = nullptr;
 
         static auto base_ctor = il2cpp_functions::class_get_method_from_name(classof(HMUI::CurvedTextMeshPro*), ".ctor", 0);
@@ -40,7 +42,7 @@ namespace BSML {
         INFO("Enter");
         set_isHighlighted(true);
         if (onEnter) onEnter();
-        Vibrate(!VRUIControls::VRPointer::_get__lastControllerUsedWasRight());
+        Vibrate(vrPointer->lastSelectedVrController->node == UnityEngine::XR::XRNode::LeftHand);
     }
 
     void ClickableText::OnPointerExit(UnityEngine::EventSystems::PointerEventData* eventData) {
@@ -52,7 +54,7 @@ namespace BSML {
     void ClickableText::Vibrate(bool left)
     {
         UnityEngine::XR::XRNode node = left ? UnityEngine::XR::XRNode::LeftHand : UnityEngine::XR::XRNode::RightHand;
-        if (hapticFeedbackController && hapticFeedbackPresetSO) hapticFeedbackController->PlayHapticFeedback(node, hapticFeedbackPresetSO);
+        if (hapticFeedbackManager && hapticFeedbackPresetSO) hapticFeedbackManager->PlayHapticFeedback(node, hapticFeedbackPresetSO);
     }
 
     void ClickableText::set_highlightColor(UnityEngine::Color color) {
@@ -80,5 +82,16 @@ namespace BSML {
     void ClickableText::set_isHighlighted(bool value) {
         isHighlighted = value;
         UpdateHighlight();
+    }
+
+    VRUIControls::VRPointer* ClickableText::get_vrPointer() {
+        if (_vrPointer && _vrPointer->m_CachedPtr) {
+            return _vrPointer;
+        } else {
+            _vrPointer = nullptr;
+        }
+
+        _vrPointer = UnityEngine::Resources::FindObjectsOfTypeAll<VRUIControls::VRPointer*>()->FirstOrDefault();
+        return _vrPointer;
     }
 }

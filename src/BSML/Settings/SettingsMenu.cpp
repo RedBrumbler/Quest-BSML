@@ -8,14 +8,13 @@
 
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Vector2.hpp"
-#include "HMUI/ViewController_DidActivateDelegate.hpp"
 #include "custom-types/shared/delegate.hpp"
 
 DEFINE_TYPE(BSML, SettingsMenu);
 
 namespace BSML {
     bool SettingsMenu::get_didSetup() {
-        return viewController && viewController->m_CachedPtr.m_value || flowCoordinator && flowCoordinator->m_CachedPtr.m_value;
+        return viewController && viewController->m_CachedPtr || flowCoordinator && flowCoordinator->m_CachedPtr;
     }
 
     HMUI::ViewController* SettingsMenu::get_viewController() {
@@ -57,7 +56,7 @@ namespace BSML {
         }
 
         auto data = entry->get_data();
-        return std::string_view(reinterpret_cast<char*>(data.begin()), size_t(data.size()));
+        return std::string_view(reinterpret_cast<char*>(data->begin()), size_t(data.size()));
     }
 
     void SettingsMenu::SetupViewControllerTransform(HMUI::ViewController* viewController) {
@@ -67,7 +66,7 @@ namespace BSML {
         r->set_anchorMax({0.5f, 1});
     }
 
-    SettingsMenu* SettingsMenu::Make_new(std::string_view name, std::string_view content, Il2CppObject* host, bool enableExtraButtons) {
+    SettingsMenu* SettingsMenu::Make_new(std::string_view name, std::string_view content, System::Object* host, bool enableExtraButtons) {
         auto self = SettingsMenu::New_ctor();
 
         self->text = name;

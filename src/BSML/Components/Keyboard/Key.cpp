@@ -6,8 +6,8 @@
 #include "System/StringComparison.hpp"
 #include "UnityEngine/Events/UnityAction.hpp"
 #include "UnityEngine/UI/Image.hpp"
-#include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/Vector3.hpp"
 #include "HMUI/UIKeyboardKey.hpp"
 #include "HMUI/HoverHint.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
@@ -21,7 +21,7 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     Key* Key::Set(StringW value) {
-        if (!Il2CppString::IsNullOrEmpty(value))
+        if (!System::String::IsNullOrEmpty(value))
             this->value = value;
         return this;
     }
@@ -46,7 +46,7 @@ namespace BSML {
         auto textMesh = button->GetComponentInChildren<TMPro::TextMeshProUGUI*>(true);
         textMesh->set_richText(true);
 
-        auto transform = reinterpret_cast<RectTransform*>(button->get_transform());
+        auto transform = button->transform.cast<RectTransform>();
         transform->set_anchorMin({0.5f, 0.5f});
         transform->set_anchorMax({0.5f, 0.5f});
 
@@ -76,7 +76,7 @@ namespace BSML {
         button->get_onClick()->AddListener(delegate);
         auto hintText = button->get_gameObject()->AddComponent<HMUI::HoverHint*>();
         hintText->set_text(self->value);
-        hintText->hoverHintController = Helpers::GetHoverHintController();
+        hintText->_hoverHintController = Helpers::GetHoverHintController();
 
         return self;
     }
@@ -84,7 +84,7 @@ namespace BSML {
     void Key::OnClick() {
         // if there is no key action, or the key does not end in %CR%, then just use the value
         if (!KeyAction() && !Enter()) {
-            StringW x = kb->shift ? shifted : value;
+            auto x = kb->shift ? shifted : value;
             if (x == "") x = value;
 
             if (kb->caps) x = value->ToUpper();
@@ -93,7 +93,7 @@ namespace BSML {
         }
         kb->DrawCursor();
     }
-    
+
     bool Key::KeyAction() {
         if (!keyAction) return false;
         keyAction(this);
@@ -106,4 +106,8 @@ namespace BSML {
         kb->Enter(this);
         return true;
     }
+
+    Keyboard* Key::get_kb() { return reinterpret_cast<Keyboard*>(_kb); }
+    Keyboard const* Key::get_kb() const { return reinterpret_cast<Keyboard const*>(_kb); }
+    void Key::set_kb(Keyboard* value) { _kb = value; }
 }

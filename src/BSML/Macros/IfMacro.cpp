@@ -21,7 +21,7 @@ namespace BSML {
         auto valueId = StringParseHelper(valueItr->second);
         bool notOperator = valueId.size() > 1 && valueId[0] == '!';
         if (notOperator) {
-            valueId = std::string(valueId.substr(1));
+            valueId = StringParseHelper(valueId.substr(1));
         }
 
         INFO("Getting value '{}' from parser params", valueId);

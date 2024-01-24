@@ -8,8 +8,8 @@
 #include "Key.hpp"
 #include <functional>
 
-DECLARE_CLASS_CODEGEN(BSML, Keyboard, Il2CppObject,
-    DECLARE_INSTANCE_FIELD(ListWrapper<Key*>, keys);
+DECLARE_CLASS_CODEGEN(BSML, Keyboard, System::Object,
+    DECLARE_INSTANCE_FIELD(ListW<Key*>, keys);
     DECLARE_INSTANCE_FIELD(Key*, dummy);
 
     DECLARE_INSTANCE_FIELD(bool, enableInputField);     /* default: true;  */
@@ -35,7 +35,7 @@ DECLARE_CLASS_CODEGEN(BSML, Keyboard, Il2CppObject,
         static const std::string DVORAK;
 
         void add_text(StringW value);
-        
+
         Key* get_key(StringW index);
         void SetButtonType(std::string_view ButtonName);
         void SetValue(std::string_view keyLabel, std::string_view value);
@@ -58,5 +58,5 @@ DECLARE_CLASS_CODEGEN(BSML, Keyboard, Il2CppObject,
         Key* AddKey(StringW keyLabel, float width = 12.0f, float height = 10.0f, int color = 0xffffff);
         Key* AddKey(StringW keyLabel, StringW shifted, float width = 12.0f, float height = 10.0f);
         void EmitKey(float& spacing, float& width, StringW& label, StringW& key, bool& space, StringW& newValue, float& height, int& color);
-        bool ReadFloat(StringW& data, int& position, float& result);
+        bool ReadFloat(StringW data, int& position, float& result);
 )

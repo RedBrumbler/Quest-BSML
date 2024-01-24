@@ -6,28 +6,29 @@
 #include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "System/Action_2.hpp"
+#include "System/Object.hpp"
 
 DEFINE_TYPE(BSML, DropdownListSetting);
 
 namespace BSML {
     void DropdownListSetting::ctor() {
         genericSetting = GenericSettingWrapper::New_ctor();
-        values = List<Il2CppObject*>::New_ctor();
+        values = ListW<System::Object*>::New();
         index = 0;
         formatter = nullptr;
     }
 
     bool DropdownListSetting::get_interactable() {
-        return dropdown ? dropdown->button->get_interactable() : false;
+        return dropdown ? dropdown->_button->get_interactable() : false;
     }
 
     void DropdownListSetting::set_interactable(bool value) {
-        if (dropdown) dropdown->button->set_interactable(value);
+        if (dropdown) dropdown->_button->set_interactable(value);
     }
 
     void DropdownListSetting::Setup() {
         if (dropdown) {
-            std::function<void(HMUI::DropdownWithTableView*, int)> fun = std::bind(&DropdownListSetting::OnSelectIndex, this, std::placeholders::_1, std::placeholders::_2);
+            std::function<void(UnityW<HMUI::DropdownWithTableView>, int)> fun = std::bind(&DropdownListSetting::OnSelectIndex, this, std::placeholders::_1, std::placeholders::_2);
             auto delegate = MakeSystemAction(fun);
             dropdown->add_didSelectCellWithIdxEvent(delegate);
         }
@@ -38,7 +39,7 @@ namespace BSML {
     }
 
     void DropdownListSetting::UpdateChoices() {
-        auto texts = List<StringW>::New_ctor();
+        auto texts = ListW<StringW>::New();
         texts->EnsureCapacity(values->get_Count());
         bool formatted = formatter != nullptr;
         for (auto v : values) {
@@ -50,9 +51,9 @@ namespace BSML {
             }
         }
 
-        dropdown->SetTexts(texts->i_IReadOnlyList_1_T());
+        dropdown->SetTexts(*texts);
     }
-    
+
     void DropdownListSetting::ValidateRange() {
         if (index >= values.size())
             index = values.size() - 1;
@@ -62,12 +63,12 @@ namespace BSML {
     }
 
     void DropdownListSetting::UpdateState() {
-        if (dropdown && dropdown->text) {
+        if (dropdown && dropdown->_text) {
             auto value = get_Value();
             if (value) {
-                dropdown->text->set_text(formatter ? formatter(value) : value->ToString() );
+                dropdown->_text->set_text(formatter ? formatter(value) : value->ToString() );
             } else {
-                dropdown->text->set_text("NULL");
+                dropdown->_text->set_text("NULL");
             }
         }
     }
@@ -85,7 +86,7 @@ namespace BSML {
 
     void DropdownListSetting::ReceiveValue() {
         if (!genericSetting) return;
-        set_Value(genericSetting->GetValue<Il2CppObject*>());
+        set_Value(genericSetting->GetValue<System::Object*>());
     }
 
     void DropdownListSetting::ApplyValue() {
@@ -93,23 +94,23 @@ namespace BSML {
             genericSetting->SetValue(get_Value());
     }
 
-    Il2CppObject* DropdownListSetting::get_Value() {
+    System::Object* DropdownListSetting::get_Value() {
         ValidateRange();
         return values[index];
     }
 
-    void DropdownListSetting::set_Value(Il2CppObject* value) {
+    void DropdownListSetting::set_Value(System::Object* value) {
         index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value
-            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(v, "Equals", value).value_or(false)))
+            if ((v == value) || (v && v->Equals(value)))
                 break;
             index++;
         }
 
         if (index == values.size())
             index = values.size() - 1;
-        
+
         dropdown->SelectCellWithIdx(index);
 
         UpdateState();

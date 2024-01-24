@@ -1,7 +1,7 @@
 #include "BSML/Parsing/BSMLStringValue.hpp"
 
 namespace BSML {
-    void BSMLStringValue::SetValue(Il2CppObject* val) {
+    void BSMLStringValue::SetValue(System::Object* val) {
         if (val) {
             static auto stringKlass = classof(StringW);
             if (val->klass == stringKlass) {
@@ -12,7 +12,7 @@ namespace BSML {
         }
     }
 
-    Il2CppObject* BSMLStringValue::GetValue() {
-        return StringW(value);
+    System::Object* BSMLStringValue::GetValue() {
+        return static_cast<System::Object*>(StringW(value).convert());
     }
 }

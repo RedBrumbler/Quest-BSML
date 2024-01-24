@@ -1,6 +1,9 @@
 #include "BSML/Settings/UI/SettingsMenuListViewController.hpp"
 #include "BSML/Settings/BSMLSettings.hpp"
 
+#include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/RectTransform.hpp"
+
 #include "logging.hpp"
 #include "assets.hpp"
 #include "BSML.hpp"
@@ -20,9 +23,9 @@ namespace BSML {
         }
 
         DEBUG("Update Data: {}", fmt::ptr(list));
-        if (list && list->m_CachedPtr.m_value) {
+        if (list && list->m_CachedPtr) {
             list->data = BSMLSettings::get_instance()->get_settingsMenus();
-            if (list->tableView && list->tableView->m_CachedPtr.m_value) {
+            if (list->tableView && list->tableView->m_CachedPtr) {
                 list->tableView->ReloadData();
             }
         }

@@ -2,6 +2,7 @@
 #include "Helpers/delegates.hpp"
 
 #include "System/Action_2.hpp"
+#include "System/Object.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include <limits>
@@ -10,10 +11,10 @@ DEFINE_TYPE(BSML, ListSliderSetting);
 
 namespace BSML {
     std::map<HMUI::RangeValuesTextSlider*, BSML::ListSliderSetting*> ListSliderSetting::remappers = {};
-    
+
     void ListSliderSetting::ctor() {
         SliderSettingBase::construct();
-        values = List<Il2CppObject*>::New_ctor();
+        values = ListW<System::Object*>::New();
     }
 
     void ListSliderSetting::OnDestroy() {
@@ -23,7 +24,7 @@ namespace BSML {
     void ListSliderSetting::Setup() {
         if (slider) {
             remappers[slider] = this;
-            
+
             // steps is range(max - min) divided by increments;
             int steps = values.size();
             slider->set_minValue(0);
@@ -33,7 +34,7 @@ namespace BSML {
             ReceiveValue();
 
             auto onChangeInfo = il2cpp_functions::class_get_method_from_name(this->klass, "OnChange", 2);
-            auto delegate = MakeSystemAction<HMUI::RangeValuesTextSlider*, float>(this, onChangeInfo);
+            auto delegate = MakeSystemAction<UnityW<HMUI::RangeValuesTextSlider>, float>(this, onChangeInfo);
             slider->add_valueDidChangeEvent(delegate);
         }
     }
@@ -46,7 +47,7 @@ namespace BSML {
         }
     }
 
-    StringW ListSliderSetting::TextForValue(Il2CppObject* value) {
+    StringW ListSliderSetting::TextForValue(System::Object* value) {
         if (formatter)
             return formatter(value);
         else {
@@ -57,32 +58,32 @@ namespace BSML {
 
     void ListSliderSetting::ReceiveValue() {
         if (!genericSetting) return;
-        set_Value(genericSetting->GetValue<Il2CppObject*>());
+        set_Value(genericSetting->GetValue<System::Object*>());
     }
 
     void ListSliderSetting::ApplyValue() {
         if (!genericSetting) return;
         genericSetting->SetValue(get_Value());
     }
-    
-    Il2CppObject* ListSliderSetting::get_Value() {
+
+    System::Object* ListSliderSetting::get_Value() {
         if (values.size() > 0)
             return values[get_index()];
         return nullptr;
     }
 
-    void ListSliderSetting::set_Value(Il2CppObject* value) {
+    void ListSliderSetting::set_Value(System::Object* value) {
         int index = 0;
         for (auto& v : values) {
             // if both are the same, or v has a value and Equals the value
-            if ((v == value) || (v && il2cpp_utils::RunMethod<bool>(v, "Equals", value).value_or(false)))
+            if ((v == value) || (v && v->Equals(value)))
                 break;
             index++;
         }
 
         if (index == values.size())
             index = values.size() - 1;
-        
+
         slider->set_value(index);
     }
 

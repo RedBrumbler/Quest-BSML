@@ -7,8 +7,9 @@
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/HideFlags.hpp"
+#include "UnityEngine/Color.hpp"
 
-#include "System/Collections/Generic/Dictionary_2.hpp" 
+#include "System/Collections/Generic/Dictionary_2.hpp"
 
 DEFINE_TYPE(BSML, Backgroundable);
 
@@ -60,8 +61,8 @@ namespace BSML {
             backgroundCache.emplace(Dictionary<StringW, HMUI::ImageView*>::New_ctor());
 
         HMUI::ImageView* bgTemplate = nullptr;
-        if (!backgroundCache->TryGetValue(name, byref(bgTemplate)) || (!bgTemplate || !bgTemplate->m_CachedPtr.m_value)) {
-            if (!bgTemplate || !bgTemplate->m_CachedPtr.m_value) {
+        if (!backgroundCache->TryGetValue(name, byref(bgTemplate)) || (!bgTemplate || !bgTemplate->m_CachedPtr)) {
+            if (!bgTemplate || !bgTemplate->m_CachedPtr) {
                 backgroundCache->Remove(name);
             }
 
@@ -77,9 +78,9 @@ namespace BSML {
 		background->set_color0(bgTemplate->get_color0());
 		background->set_color1(bgTemplate->get_color1());
 		background->set_gradient(bgTemplate->get_gradient());
-		background->gradientDirection = bgTemplate->gradientDirection;
-        background->flipGradientColors = bgTemplate->flipGradientColors;
-        background->skew = bgTemplate->skew;
+		background->_gradientDirection = bgTemplate->_gradientDirection;
+        background->_flipGradientColors = bgTemplate->_flipGradientColors;
+        background->_skew = bgTemplate->_skew;
 		background->set_eventAlphaThreshold(bgTemplate->get_eventAlphaThreshold());
 		background->set_fillAmount(bgTemplate->get_fillAmount());
 		background->set_fillCenter(bgTemplate->get_fillCenter());
@@ -180,5 +181,5 @@ namespace BSML {
         }
 
         return nullptr;
-    } 
+    }
 }

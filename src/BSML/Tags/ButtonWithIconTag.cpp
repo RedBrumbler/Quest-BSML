@@ -11,6 +11,7 @@
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Resources.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/UI/LayoutGroup.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
@@ -24,14 +25,14 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ButtonWithIconTag> buttonWithIconTagParser({"button-with-icon", "icon-button"});
-    
+
     Button* get_buttonWithIconTemplate() {
         static SafePtrUnity<Button> buttonWithIconTemplate;
         if (!buttonWithIconTemplate) {
-            buttonWithIconTemplate = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
+            buttonWithIconTemplate = Resources::FindObjectsOfTypeAll<Button*>()->LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
         }
         return buttonWithIconTemplate.ptr();
-    } 
+    }
 
     UnityEngine::GameObject* ButtonWithIconTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Button with icon");
@@ -39,7 +40,7 @@ namespace BSML {
         auto button = Object::Instantiate(get_buttonWithIconTemplate(), parent, false);
         button->set_name("BSMLIconButton");
         button->set_interactable(true);
-        auto transform = reinterpret_cast<RectTransform*>(button->get_transform());
+        auto transform = button->transform.cast<RectTransform>();
         auto gameObject = button->get_gameObject();
 
         Object::Destroy(button->GetComponent<HMUI::HoverHint*>());
@@ -51,9 +52,9 @@ namespace BSML {
 
         auto contentTransform = transform->Find("Content");
         Object::Destroy(contentTransform->GetComponent<LayoutElement*>());
-        
+
         Object::Destroy(contentTransform->Find("Text")->get_gameObject());
-        
+
         auto iconImage = GameObject::New_ctor("Icon")->AddComponent<HMUI::ImageView*>();
         DEBUG("Iconimage: {}", fmt::ptr(iconImage));
         auto mat = Helpers::GetUINoGlowMat();
@@ -76,7 +77,7 @@ namespace BSML {
         buttonSizeFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
         buttonSizeFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
         externalComponents->Add(buttonSizeFitter);
-        
+
         auto stackLayoutGroup = button->GetComponentInChildren<LayoutGroup*>();
         if (stackLayoutGroup)
             externalComponents->Add(stackLayoutGroup);

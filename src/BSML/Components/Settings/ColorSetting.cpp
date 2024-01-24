@@ -2,8 +2,8 @@
 #include "Helpers/delegates.hpp"
 #include "logging.hpp"
 
-#include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
 #include "UnityEngine/Events/UnityAction.hpp"
+#include "UnityEngine/Color.hpp"
 
 DEFINE_TYPE(BSML, ColorSetting);
 

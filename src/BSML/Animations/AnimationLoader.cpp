@@ -6,16 +6,17 @@
 #include "UnityEngine/Time.hpp"
 #include "UnityEngine/WaitUntil.hpp"
 #include "UnityEngine/TextureWrapMode.hpp"
+#include "UnityEngine/TextureFormat.hpp"
 #include "UnityEngine/ImageConversion.hpp"
+#include "UnityEngine/Resources.hpp"
 #include "System/IO/File.hpp"
 
 #include "Helpers/delegates.hpp"
 
-#include "GlobalNamespace/SharedCoroutineStarter.hpp"
+#include "BSML/SharedCoroutineStarter.hpp"
 #include "System/Func_1.hpp"
 
 DEFINE_TYPE(BSML, AnimationLoader);
-
 
 namespace BSML {
     int get_atlasSizeLimit() {
@@ -32,7 +33,7 @@ namespace BSML {
     }
 
     void AnimationLoader::Process(AnimationType type, ArrayW<uint8_t> data, std::function<void(UnityEngine::Texture2D*, ArrayW<UnityEngine::Rect>, ArrayW<float>)> onProcessed, std::function<void()> onError) {
-        auto sharedStarter = GlobalNamespace::SharedCoroutineStarter::get_instance();
+        auto sharedStarter = BSML::SharedCoroutineStarter::get_instance();
         DEBUG("Starting animation decode");
         switch (type) {
             case AnimationType::GIF:
@@ -106,7 +107,7 @@ namespace BSML {
 
         // cleanup
         for (auto t : textureList) {
-            if (t && t->m_CachedPtr.m_value)
+            if (t && t->m_CachedPtr)
                 UnityEngine::Object::DestroyImmediate(t);
         }
 

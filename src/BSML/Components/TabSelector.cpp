@@ -4,24 +4,25 @@
 #include "Helpers/delegates.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Events/UnityAction.hpp"
-#include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
 
 DEFINE_TYPE(BSML, TabSelector);
 
 namespace BSML {
     void TabSelector::ctor() {
-        tabs = List<Tab*>::New_ctor();
-        visibleTabs = List<Tab*>::New_ctor();
+        tabs = ListW<Tab*>::New();
+        visibleTabs = ListW<Tab*>::New();
         pageCount = -1;
     }
 
     int TabSelector::get_page() {
         if (currentPage < 0) {
-            return currentPage = 0;
+            currentPage = 0;
+            return currentPage;
         }
         int maxPages = (visibleTabs->get_Count() - 1) / get_pageCount();
         if (currentPage > maxPages) {
-            return currentPage = maxPages;
+            currentPage = maxPages;
+            return currentPage;
         }
         return currentPage;
     }
@@ -37,7 +38,7 @@ namespace BSML {
 
     void TabSelector::Setup(const BSMLParserParams& parserParams) {
         DEBUG("TabSelector setup is ran!");
-        if (Il2CppString::IsNullOrEmpty(tabTag)) {
+        if (System::String::IsNullOrEmpty(tabTag)) {
             ERROR("Tab selector must have tab-tag!");
             return;
         }
@@ -52,7 +53,7 @@ namespace BSML {
 
         DEBUG("Got {} tabs!", tabs->get_Count());
 
-        if (!Il2CppString::IsNullOrEmpty(leftButtonTag)) {
+        if (!System::String::IsNullOrEmpty(leftButtonTag)) {
             auto& leftButtons = parserParams.GetObjectsWithTag(leftButtonTag);
             if (!leftButtons.empty()) leftButton = leftButtons[0]->GetComponent<UnityEngine::UI::Button*>();
         }
@@ -60,7 +61,7 @@ namespace BSML {
             auto delegate = MakeUnityAction(std::bind(&TabSelector::PageLeft, this));
             leftButton->get_onClick()->AddListener(delegate);
         }
-        if (!Il2CppString::IsNullOrEmpty(rightButtonTag))  {
+        if (!System::String::IsNullOrEmpty(rightButtonTag))  {
             auto& rightButtons = parserParams.GetObjectsWithTag(rightButtonTag);
             if (!rightButtons.empty()) rightButton = rightButtons[0]->GetComponent<UnityEngine::UI::Button*>();
         }
@@ -73,7 +74,7 @@ namespace BSML {
         Refresh();
 
         auto tabSelectedInfo = il2cpp_functions::class_get_method_from_name(this->klass, "TabSelected", 2);
-        auto delegate = MakeSystemAction<HMUI::SegmentedControl*, int>(this, tabSelectedInfo);
+        auto delegate = MakeSystemAction<UnityW<HMUI::SegmentedControl>, int>(this, tabSelectedInfo);
         textSegmentedControl->add_didSelectCellEvent(delegate);
         textSegmentedControl->SelectCellWithNumber(0);
         TabSelected(textSegmentedControl, 0);
@@ -88,7 +89,7 @@ namespace BSML {
         for (auto tab : tabs) {
             tab->get_gameObject()->SetActive(false);
             if (tab->get_isVisible()) {
-                if (index == visibleCount) theTab = tab; 
+                if (index == visibleCount) theTab = tab;
                 visibleCount++;
             }
         }
@@ -114,7 +115,7 @@ namespace BSML {
             SetSegmentedControlTexts(visibleTabs);
         } else {
             currentPage = get_page();
-            ListWrapper<Tab*> usableTabs = List<Tab*>::New_ctor();
+            ListW<Tab*> usableTabs = ListW<Tab*>::New();
             usableTabs->EnsureCapacity(get_pageCount());
 
             int start = get_pageCount() * currentPage;
@@ -132,14 +133,14 @@ namespace BSML {
         }
     }
 
-    void TabSelector::SetSegmentedControlTexts(ListWrapper<Tab*> tabs) {
+    void TabSelector::SetSegmentedControlTexts(ListW<Tab*> tabs) {
         // we have to use a list because Array does not implement IReadOnlyList
-        auto texts = List<StringW>::New_ctor();
+        auto texts = ListW<StringW>::New();
         texts->EnsureCapacity(tabs->get_Count());
 
         for (auto tab : tabs) {
             auto val = tab->get_tabKey();
-            if (Il2CppString::IsNullOrEmpty(val)) {
+            if (System::String::IsNullOrEmpty(val)) {
                 val = tab->get_tabName();
             }
             texts->Add(val);
@@ -147,7 +148,7 @@ namespace BSML {
             DEBUG("tab Text added: {}", val);
         }
 
-        textSegmentedControl->SetTexts(texts->i_IReadOnlyList_1_T());
+        textSegmentedControl->SetTexts(*texts);
     }
 
     void TabSelector::PageLeft() {

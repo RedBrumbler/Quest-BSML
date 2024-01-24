@@ -22,7 +22,7 @@ namespace BSML {
     Button* ButtonTag::get_buttonPrefab() const {
         static SafePtrUnity<Button> buttonPrefab;
         if (!buttonPrefab) {
-            buttonPrefab = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
+            buttonPrefab = Resources::FindObjectsOfTypeAll<Button*>()->LastOrDefault([&](auto x){ return x->get_name() == "PracticeButton"; });
         }
         return buttonPrefab.ptr();
     }
@@ -34,7 +34,7 @@ namespace BSML {
         button->set_name("BSMLButton");
         button->set_interactable(true);
 
-        auto transform = reinterpret_cast<RectTransform*>(button->get_transform());
+        auto transform = button->transform.cast<RectTransform>();
         auto gameObject = button->get_gameObject();
         gameObject->SetActive(true);
         auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
@@ -43,19 +43,19 @@ namespace BSML {
 
         auto textObject = button->get_transform()->Find("Content/Text")->get_gameObject();
         Object::Destroy(textObject->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
-        
+
         auto textMesh = textObject->GetComponent<TMPro::TextMeshProUGUI*>();
         textMesh->set_text("BSMLButton");
         textMesh->set_richText(true);
         externalComponents->Add(textMesh);
 
         Object::Destroy(transform->Find("Content")->GetComponent<LayoutElement*>());
-        
+
         auto buttonSizeFitter = gameObject->AddComponent<ContentSizeFitter*>();
         buttonSizeFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
         buttonSizeFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
         externalComponents->Add(buttonSizeFitter);
-        
+
         auto stackLayoutGroup = button->GetComponentInChildren<LayoutGroup*>();
         if (stackLayoutGroup)
             externalComponents->Add(stackLayoutGroup);

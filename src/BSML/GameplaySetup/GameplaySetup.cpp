@@ -5,9 +5,9 @@
 #include "logging.hpp"
 #include "BSML.hpp"
 
-#include "HMUI/ViewController_DidActivateDelegate.hpp"
-#include "HMUI/ViewController_DidDeactivateDelegate.hpp"
 #include "UnityEngine/Resources.hpp"
+#include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/RectTransform.hpp"
 #include "GlobalNamespace/SinglePlayerLevelSelectionFlowCoordinator.hpp"
 #include "GlobalNamespace/CampaignFlowCoordinator.hpp"
 #include "GlobalNamespace/GameServerLobbyFlowCoordinator.hpp"
@@ -25,15 +25,15 @@ namespace BSML {
         return instance.ptr();
     }
 
-    HMUI::TableView::IDataSource* GameplaySetup::i_DataSource() { 
-        return reinterpret_cast<HMUI::TableView::IDataSource*>(this); 
+    HMUI::TableView::IDataSource* GameplaySetup::i_DataSource() {
+        return reinterpret_cast<HMUI::TableView::IDataSource*>(this);
     }
 
     void GameplaySetup::Setup() {
         DEBUG("Setup");
         auto menus = get_menus();
         if (menus.size() == 0) return;
-        gameplaySetupViewController = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplaySetupViewController*>().FirstOrDefault();
+        gameplaySetupViewController = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplaySetupViewController*>()->FirstOrDefault();
         auto vanillaItems = get_vanillaItems();
         vanillaItems->Clear();
 
@@ -46,7 +46,7 @@ namespace BSML {
             }
         }
 
-        auto textSegmentedControl = reinterpret_cast<UnityEngine::RectTransform*>(t->Find("TextSegmentedControl"));
+        auto textSegmentedControl = t->Find("TextSegmentedControl").cast<UnityEngine::RectTransform>();
         textSegmentedControl->set_sizeDelta({0, 6});
         layoutGroup = textSegmentedControl->GetComponent<UnityEngine::UI::LayoutGroup*>();
 
@@ -77,11 +77,11 @@ namespace BSML {
 
         MenuType menuType = MenuType::Custom;
         auto fc = Helpers::GetMainFlowCoordinator()->YoungestChildFlowCoordinatorOrSelf();
-        if (il2cpp_utils::try_cast<GlobalNamespace::CampaignFlowCoordinator>(fc).has_value()) {
+        if (fc.try_cast<GlobalNamespace::CampaignFlowCoordinator>().has_value()) {
             menuType = MenuType::Campaign;
-        } else if (il2cpp_utils::try_cast<GlobalNamespace::SinglePlayerLevelSelectionFlowCoordinator>(fc).has_value()) {
+        } else if (fc.try_cast<GlobalNamespace::SinglePlayerLevelSelectionFlowCoordinator>().has_value()) {
             menuType = MenuType::Solo;
-        } else if (il2cpp_utils::try_cast<GlobalNamespace::GameServerLobbyFlowCoordinator>(fc).has_value()) {
+        } else if (fc.try_cast<GlobalNamespace::GameServerLobbyFlowCoordinator>().has_value()) {
             menuType = MenuType::Online;
         }
 
@@ -122,7 +122,7 @@ namespace BSML {
         listModal->HMUI::ModalView::Show(true, true, delegate);
     }
 
-    bool GameplaySetup::AddTab(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType) {
+    bool GameplaySetup::AddTab(std::string_view name, std::string_view content_key, System::Object* host, MenuType menuType) {
         auto menus = get_menus();
         auto menu = std::find_if(menus.begin(), menus.end(), [name](auto x){ return reinterpret_cast<GameplaySetupMenu*>(x)->name == name; });
         if (menu != menus.end()) {
@@ -154,7 +154,7 @@ namespace BSML {
     }
 
     void GameplaySetup::SetTabVisibility(std::string_view name, bool isVisible) {
-        if (!gameplaySetupViewController || !gameplaySetupViewController->m_CachedPtr.m_value || !gameplaySetupViewController->get_isActiveAndEnabled()) {
+        if (!gameplaySetupViewController || !gameplaySetupViewController->m_CachedPtr || !gameplaySetupViewController->get_isActiveAndEnabled()) {
             return;
         }
 
@@ -179,9 +179,9 @@ namespace BSML {
 
     GameplaySetupCell* GameplaySetup::GetCell() {
         INFO("Getting Cell");
-        auto cell = reinterpret_cast<GameplaySetupCell*>(modsList->tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
+        auto cell = modsList->tableView->DequeueReusableCellForIdentifier(reuseIdentifier).cast<GameplaySetupCell>();
 
-        if (!cell || !cell->m_CachedPtr.m_value) {
+        if (!cell || !cell->m_CachedPtr) {
             cell = UnityEngine::GameObject::New_ctor("GameplaySetupCell")->AddComponent<GameplaySetupCell*>();
             cell->set_interactable(true);
             cell->set_reuseIdentifier(reuseIdentifier);
@@ -205,16 +205,16 @@ namespace BSML {
     }
 
 
-    ListWrapper<Il2CppObject*> GameplaySetup::get_menus() {
+    ListW<System::Object*> GameplaySetup::get_menus() {
         if (!_menus) {
-            _menus = List<Il2CppObject*>::New_ctor();
+            _menus = ListW<System::Object*>::New();
         }
         return _menus;
     }
 
-    ListWrapper<UnityEngine::Transform*> GameplaySetup::get_vanillaItems() {
+    ListW<UnityEngine::Transform*> GameplaySetup::get_vanillaItems() {
         if (!_vanillaItems) {
-            _vanillaItems = List<UnityEngine::Transform*>::New_ctor();
+            _vanillaItems = ListW<UnityEngine::Transform*>::New();
         }
         return _vanillaItems;
     }
@@ -225,7 +225,7 @@ namespace BSML {
 
     void GameplaySetup::set_loaded(bool value) {
         _loaded = value;
-        if (modsList && modsList->m_CachedPtr.m_value) modsList->get_gameObject()->SetActive(value);
-        if (loading && loading->m_CachedPtr.m_value) loading->get_gameObject()->SetActive(!value);
+        if (modsList && modsList->m_CachedPtr) modsList->get_gameObject()->SetActive(value);
+        if (loading && loading->m_CachedPtr) loading->get_gameObject()->SetActive(!value);
     }
 }

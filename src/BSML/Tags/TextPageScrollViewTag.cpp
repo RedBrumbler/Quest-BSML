@@ -12,11 +12,11 @@
 
 namespace BSML {
     static BSMLNodeParser<TextPageScrollViewTag> textPageScrollViewTagParser({"text-page", "page"});
-    
+
     HMUI::TextPageScrollView* get_textPageTemplate() {
         static SafePtrUnity<HMUI::TextPageScrollView> textPageTemplate;
         if (!textPageTemplate) {
-            textPageTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>().First()->textPageScrollView;
+            textPageTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>()->First()->_textPageScrollView;
         }
         return textPageTemplate.ptr();
     }
@@ -28,9 +28,9 @@ namespace BSML {
         scrollView->set_name("BSMLTextScrollPageView");
         scrollView->set_enabled(true);
 
-        scrollView->platformHelper = Helpers::GetIVRPlatformHelper();
+        scrollView->_platformHelper = Helpers::GetIVRPlatformHelper();
 
-        TMPro::TextMeshProUGUI* textMesh = scrollView->text;
+        TMPro::TextMeshProUGUI* textMesh = scrollView->_text;
         textMesh->set_text("Default Text");
 
         textMesh->get_gameObject()->AddComponent<BSML::TextPageScrollViewRefresher*>()->scrollView = scrollView;

@@ -16,7 +16,7 @@ namespace BSML {
     GlobalNamespace::LeaderboardTableView* get_leaderboardTemplate() {
         static SafePtrUnity<GlobalNamespace::LeaderboardTableView> leaderboardTemplate;
         if (!leaderboardTemplate) {
-            leaderboardTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::LeaderboardTableView*>().First([](auto x) {
+            leaderboardTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::LeaderboardTableView*>()->First([](auto x) {
                 return x->get_name() == "LeaderboardTableView";
             });
         }
@@ -26,11 +26,11 @@ namespace BSML {
     UnityEngine::GameObject* LeaderboardTag::CreateObject(UnityEngine::Transform* parent) const {
         auto table = Object::Instantiate(get_leaderboardTemplate(), parent, false);
         table->set_name("BSMLLeaderboard");
-        table->cellPrefab->scoreText->set_enableWordWrapping(false);
-        table->GetComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
-        for (auto tableCell : table->GetComponentsInChildren<GlobalNamespace::LeaderboardTableCell*>()) 
+        table->_cellPrefab->_scoreText->set_enableWordWrapping(false);
+        table->GetComponent<VRUIControls::VRGraphicRaycaster*>()->_physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
+        for (auto tableCell : table->GetComponentsInChildren<GlobalNamespace::LeaderboardTableCell*>())
             UnityEngine::Object::Destroy(tableCell->get_gameObject());
-        
+
         auto loadingControl = table->GetComponentInChildren<GlobalNamespace::LoadingControl*>();
         if (loadingControl) loadingControl->Hide();
 

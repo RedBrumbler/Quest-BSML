@@ -7,16 +7,16 @@
 #include "System/Collections/Generic/Dictionary_2.hpp"
 
 
-MAKE_AUTO_HOOK_ORIG_MATCH(SegmentedControl_HandleCellSelectionDidChange, &HMUI::SegmentedControl::HandleCellSelectionDidChange, void, HMUI::SegmentedControl* self, HMUI::SelectableCell* selectableCell, HMUI::SelectableCell::TransitionType transitionType, Il2CppObject* changeOwner) {
+MAKE_AUTO_HOOK_ORIG_MATCH(SegmentedControl_HandleCellSelectionDidChange, &HMUI::SegmentedControl::HandleCellSelectionDidChange, void, HMUI::SegmentedControl* self, HMUI::SelectableCell* selectableCell, HMUI::SelectableCell::TransitionType transitionType, System::Object* changeOwner) {
     if (self->selectedCellNumber == -1) {
         auto segmentedCell = reinterpret_cast<HMUI::SegmentedControlCell*>(selectableCell);
-        self->selectedCellNumber = segmentedCell->cellNumber;
+        self->_selectedCellNumber = segmentedCell->cellNumber;
         if (self->didSelectCellEvent) {
             self->didSelectCellEvent->Invoke(self, segmentedCell->cellNumber);
         }
 
         System::Action_1<int>* value = nullptr;
-        if (self->callbacks->TryGetValue(segmentedCell->cellNumber, byref(value))) {
+        if (self->_callbacks->TryGetValue(segmentedCell->cellNumber, byref(value))) {
             if (value) value->Invoke(segmentedCell->cellNumber);
         }
 

@@ -6,6 +6,7 @@
 #include "UnityEngine/RectTransform.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/Color.hpp"
 
 using namespace UnityEngine;
 
@@ -27,7 +28,7 @@ namespace BSML {
         auto rectTransform = textMesh->get_rectTransform();
         rectTransform->set_anchorMin({0.5f, 0.5f});
         rectTransform->set_anchorMax({0.5f, 0.5f});
-        
+
         return gameObject;
     }
 }

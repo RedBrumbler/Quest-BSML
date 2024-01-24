@@ -3,9 +3,9 @@
 extern void collect_minfos(Il2CppClass* klass, std::vector<const MethodInfo*>& minfos);
 
 namespace BSML {
-    BSMLAction::BSMLAction(Il2CppObject* host, const MethodInfo* methodInfo) : host(host), methodInfo(methodInfo) {}
+    BSMLAction::BSMLAction(System::Object* host, const MethodInfo* methodInfo) : host(host), methodInfo(methodInfo) {}
 
-    BSMLAction* BSMLAction::MakeAction(Il2CppObject* host, std::string methodName, int argc) {
+    BSMLAction* BSMLAction::MakeAction(System::Object* host, std::string methodName, int argc) {
         const MethodInfo* minfo = nullptr;
         auto klass = host->klass;
         while (klass && !minfo) {
@@ -16,7 +16,7 @@ namespace BSML {
         return new BSMLAction(host, minfo);
     }
 
-    std::map<std::string, BSMLAction*> BSMLAction::MakeActions(Il2CppObject* host) {
+    std::map<std::string, BSMLAction*> BSMLAction::MakeActions(System::Object* host) {
         std::vector<const MethodInfo*> minfos;
         collect_minfos(host->klass, minfos);
 

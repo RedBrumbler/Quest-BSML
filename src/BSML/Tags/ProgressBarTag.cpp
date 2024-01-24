@@ -2,6 +2,8 @@
 #include "BSML/Components/ProgressBar.hpp"
 #include "BSML/Components/ExternalComponents.hpp"
 
+#include "UnityEngine/Vector3.hpp"
+
 namespace BSML {
     BSMLNodeParser<ProgressBarTag> progressBarTagParser({"progress-bar"});
 

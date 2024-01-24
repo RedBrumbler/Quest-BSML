@@ -11,7 +11,7 @@ namespace BSML {
     }
     
     void MenuButtonsViewController::RefreshView() {
-        if (!root || !root->m_CachedPtr.m_value) {
+        if (!root || !root->m_CachedPtr) {
             return;
         }
 

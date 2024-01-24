@@ -11,7 +11,6 @@
 #include "UnityEngine/Object.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/Toggle.hpp"
-#include "UnityEngine/UI/Toggle_ToggleEvent.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
 #include "GlobalNamespace/BoolSettingsController.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
@@ -25,7 +24,7 @@ namespace BSML {
     GameObject* get_toggleTemplate() {
         static SafePtrUnity<GameObject> toggleTemplate;
         if (!toggleTemplate) {
-            auto foundToggle = Resources::FindObjectsOfTypeAll<Toggle*>().FirstOrDefault([](auto x){
+            auto foundToggle = Resources::FindObjectsOfTypeAll<Toggle*>()->FirstOrDefault([](auto x){
                 if (!x) return false;
                 auto parent = x->get_transform()->get_parent();
                 if (!parent) return false;
@@ -41,8 +40,8 @@ namespace BSML {
 
         auto go = Object::Instantiate(get_toggleTemplate(), parent, false);
         go->SetActive(false);
-        auto transform = reinterpret_cast<UnityEngine::RectTransform*>(go->get_transform());
-        
+        auto transform = go->transform.cast<UnityEngine::RectTransform>();
+
         auto nameText = transform->Find("NameText")->get_gameObject();
         auto switchView = transform->Find("SwitchView")->get_gameObject();
         Object::Destroy(go->GetComponent<GlobalNamespace::BoolSettingsController*>());
@@ -56,7 +55,7 @@ namespace BSML {
         toggleSetting->toggle->onValueChanged = UnityEngine::UI::Toggle::ToggleEvent::New_ctor();
         toggleSetting->toggle->set_interactable(true);
         toggleSetting->toggle->set_isOn(false);
-        
+
         toggleSetting->text = nameText->GetComponent<TMPro::TextMeshProUGUI*>();
         toggleSetting->text->set_text("BSML Toggle");
         toggleSetting->text->set_richText(true);

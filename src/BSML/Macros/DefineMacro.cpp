@@ -37,7 +37,7 @@ namespace BSML {
             auto newValue = new BSMLStringValue();
             newValue->host = parserParams.get_host();
             newValue->name = name;
-            newValue->SetValue(static_cast<Il2CppObject*>(StringW(value)));
+            newValue->SetValue(static_cast<System::Object*>(StringW(value).convert()));
             parserParams.AddValue(name, newValue);
         }
     }

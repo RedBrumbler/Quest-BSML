@@ -15,7 +15,7 @@ UnityEngine::Component* GetExternalComponent(UnityEngine::GameObject* obj, BSML:
     if (externalComponents) {
         result = externalComponents->GetByType(type);
     }
-    return result ? result : obj->GetComponent(type);
+    return result ? result : static_cast<UnityEngine::Component*>(obj->GetComponent(type));
 }
 
 namespace BSML {
@@ -39,7 +39,7 @@ namespace BSML {
             auto component = GetExternalComponent(currentObject, externalComponents, type);
             if (component)
             {
-                INFO("Found component {}", type->get_FullName());
+                INFO("Found component {}", type->FullNameOrDefault);
                 auto componentTypeWithData = new ComponentTypeWithData();
                 componentTypeWithData->typeHandler = typeHandler;
                 componentTypeWithData->component = component;
@@ -59,12 +59,12 @@ namespace BSML {
             // set the host field if we can
             auto fieldInfo = il2cpp_functions::class_get_field_from_name(parserParams.host->klass, id.c_str());
             if (fieldInfo) {
-                auto fieldSystemType = il2cpp_utils::GetSystemType(il2cpp_functions::field_get_type(fieldInfo));
+                auto fieldSystemType = reinterpret_cast<System::Type*>(il2cpp_utils::GetSystemType(il2cpp_functions::field_get_type(fieldInfo)));
                 static auto gameObjectSystemType = csTypeOf(UnityEngine::GameObject*);
                 if (gameObjectSystemType == fieldSystemType) {
                     // if the field is of type GameObject, set the field to the current object value
                     SetHostField(parserParams.host, currentObject);
-                } else { 
+                } else {
                     // if the field is not a GameObject, try to find the type of the field with the GetExternalComponent method, and set that on the field
                     auto component = GetExternalComponent(currentObject, externalComponents, fieldSystemType);
                     if (component) {
@@ -94,7 +94,7 @@ namespace BSML {
         return parent->get_gameObject();
     }
 
-    void BSMLTag::SetHostField(Il2CppObject* host, Il2CppObject* value) const {
+    void BSMLTag::SetHostField(System::Object* host, System::Object* value) const {
         if (!host || id.empty()) return;
 
         // get the field info with il2cpp reflection

@@ -57,18 +57,18 @@ const MethodInfo* minfo_from_name_in_parents(Il2CppClass* klass, const char* nam
     if (minfo) return minfo;
     return il2cpp_functions::class_get_method_from_name(klass->parent, name, argc);
 }
-const MethodInfo* StringParseHelper::asMethodInfo(Il2CppObject* host, int argCount) const {
+const MethodInfo* StringParseHelper::asMethodInfo(System::Object* host, int argCount) const {
     return minfo_from_name_in_parents(host->klass, data(), argCount);
 }
-const MethodInfo* StringParseHelper::asSetter(Il2CppObject* host) const {
+const MethodInfo* StringParseHelper::asSetter(System::Object* host) const {
     auto name = "set_" + this->operator std::string();
     return il2cpp_functions::class_get_method_from_name(host->klass, name.c_str(), 1);
 }
-const MethodInfo* StringParseHelper::asGetter(Il2CppObject* host) const {
+const MethodInfo* StringParseHelper::asGetter(System::Object* host) const {
     auto name = "get_" + this->operator std::string();
     return il2cpp_functions::class_get_method_from_name(host->klass, name.c_str(), 0);
 }
-FieldInfo* StringParseHelper::asFieldInfo(Il2CppObject* host) const {
+FieldInfo* StringParseHelper::asFieldInfo(System::Object* host) const {
     return il2cpp_functions::class_get_field_from_name(host->klass, data());
 }
 StringParseHelper::operator StringW() const {
@@ -123,7 +123,7 @@ StringParseHelper::operator UnityEngine::Color32() const {
     auto result = tryParseColor32();
     if (!result.has_value()) {
         ERROR("Could not parse color from input '{}'", *this);
-        return {255, 255, 255, 255};
+        return {0, 255, 255, 255, 255};
     }
     return result.value();
 }

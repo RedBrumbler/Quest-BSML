@@ -171,7 +171,7 @@ namespace BSML::Utilities {
         /// @brief method that gets a blank sprite
         /// @return black texture to sprite
         UnityEngine::Sprite* GetBlankSprite();
-        
+
         /// @brief method that gets a white pixel sprite
         /// @return white pixel to sprite
         UnityEngine::Sprite* GetWhitePixel();

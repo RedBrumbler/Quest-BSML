@@ -7,16 +7,19 @@
 #include "HMUI/TextPageScrollView.hpp"
 #include "HMUI/VerticalScrollIndicator.hpp"
 #include "UnityEngine/Resources.hpp"
+#include "UnityEngine/Transform.hpp"
+#include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 
 using namespace UnityEngine;
 
 HMUI::TableView::TableType stringToTableType(const std::string& str);
 
-namespace BSML {    
+namespace BSML {
     static CustomListTableDataHandler customListTableDataHandler{};
     HMUI::TextPageScrollView* get_textPageTemplate();
-    
+
     CustomListTableDataHandler::Base::PropMap CustomListTableDataHandler::get_props() const {
         return {
             {"selectCell", {"select-cell"}},
@@ -38,8 +41,8 @@ namespace BSML {
     CustomListTableDataHandler::Base::SetterMap CustomListTableDataHandler::get_setters() const {
         return {
             {"expandCell",      [](auto component, auto value){ component->expandCell = value; }},
-            {"alignCenter",     [](auto component, auto value){ component->tableView->alignToCenter = value; }},
-            {"stickScrolling",  [](auto component, auto value){ if (static_cast<bool>(value)) component->tableView->scrollView->platformHelper = Helpers::GetIVRPlatformHelper(); }}
+            {"alignCenter",     [](auto component, auto value){ component->tableView->_alignToCenter = value; }},
+            {"stickScrolling",  [](auto component, auto value){ if (static_cast<bool>(value)) component->tableView->_scrollView->_platformHelper = Helpers::GetIVRPlatformHelper(); }}
         };
     }
 
@@ -54,7 +57,7 @@ namespace BSML {
         auto selectCellItr = data.find("selectCell");
         if (selectCellItr != data.end() && !selectCellItr->second.empty()) {
             auto action = parserParams.TryGetAction(selectCellItr->second);
-            if (action) tableView->add_didSelectCellWithIdxEvent(action->GetSystemAction<HMUI::TableView *, int>());
+            if (action) tableView->add_didSelectCellWithIdxEvent(action->GetSystemAction<UnityW<HMUI::TableView>, int>());
             else ERROR("Action '{}' could not be found", selectCellItr->second);
         }
 
@@ -62,8 +65,8 @@ namespace BSML {
         auto listDirectionItr = data.find("listDirection");
         if (listDirectionItr != data.end() && !listDirectionItr->second.empty()) {
             auto arg = StringParseHelper(listDirectionItr->second);
-            tableView->tableType = stringToTableType(arg);
-            scrollView->scrollViewDirection = tableView->get_tableType() == HMUI::TableView::TableType::Vertical ? HMUI::ScrollView::ScrollViewDirection::Vertical : HMUI::ScrollView::ScrollViewDirection::Horizontal;
+            tableView->_tableType = stringToTableType(arg);
+            scrollView->_scrollViewDirection = tableView->get_tableType() == HMUI::TableView::TableType::Vertical ? HMUI::ScrollView::ScrollViewDirection::Vertical : HMUI::ScrollView::ScrollViewDirection::Horizontal;
             verticalList = tableView->get_tableType() == HMUI::TableView::TableType::Vertical;
         }
 
@@ -84,15 +87,15 @@ namespace BSML {
             if (static_cast<bool>(arg)) {
                 auto textScrollView = Object::Instantiate(get_textPageTemplate(), tableData->get_transform(), false);
 
-                auto pageUpButton = textScrollView->pageUpButton;
-                auto pageDownButton = textScrollView->pageDownButton;
+                auto pageUpButton = textScrollView->_pageUpButton;
+                auto pageDownButton = textScrollView->_pageDownButton;
 
-                auto scrollIndicator = textScrollView->verticalScrollIndicator;
-                auto scrollBar = reinterpret_cast<RectTransform*>(scrollIndicator->get_transform()->get_parent());
+                auto scrollIndicator = textScrollView->_verticalScrollIndicator;
+                auto scrollBar = scrollIndicator->transform->parent.cast<RectTransform>();
 
-                scrollView->pageUpButton = pageUpButton;
-                scrollView->pageDownButton = pageDownButton;
-                scrollView->verticalScrollIndicator = scrollIndicator;
+                scrollView->_pageUpButton = pageUpButton;
+                scrollView->_pageDownButton = pageDownButton;
+                scrollView->_verticalScrollIndicator = scrollIndicator;
                 scrollBar->SetParent(tableData->get_transform());
 
                 Object::Destroy(textScrollView->get_gameObject());
@@ -121,7 +124,7 @@ namespace BSML {
         }
 
         INFO("set sizeDelta");
-        auto transform = reinterpret_cast<RectTransform*>(tableData->get_transform());
+        auto transform = tableData->transform.cast<RectTransform>();
         switch(tableView->get_tableType()) {
             case HMUI::TableView::TableType::Vertical: {
                 auto listWidthItr = data.find("listWidth");

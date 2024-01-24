@@ -5,6 +5,7 @@
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Resources.hpp"
+#include "UnityEngine/Vector3.hpp"
 #include "UnityEngine/UI/Image.hpp"
 #include "UnityEngine/UI/ScrollRect.hpp"
 #include "HMUI/TableView.hpp"
@@ -19,12 +20,16 @@ using namespace UnityEngine;
 using namespace UnityEngine::UI;
 using namespace VRUIControls;
 
+static inline UnityEngine::Vector3 operator*(UnityEngine::Vector3 vec, float v) {
+    return { vec.x * v, vec.y * v, vec.z * v };
+}
+
 namespace BSML {
     static BSMLNodeParser<ModalKeyboardTag> modalKeyboardTagParser({"modal-keyboard"});
     UnityEngine::GameObject* ModalKeyboardTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Modal Keyboard");
         auto gameObject = ModalTag::CreateObject(parent);
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
+        auto transform = gameObject->transform.cast<RectTransform>();
         gameObject->set_name("BSMLModalKeyboard");
         transform->set_sizeDelta({135, 75});
 

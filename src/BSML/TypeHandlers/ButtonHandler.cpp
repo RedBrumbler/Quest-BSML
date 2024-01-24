@@ -3,7 +3,6 @@
 #include "logging.hpp"
 
 #include "UnityEngine/Events/UnityAction.hpp"
-#include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
 
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 

@@ -4,6 +4,7 @@
 
 #include "TMPro/TMP_TextInfo.hpp"
 #include "TMPro/TMP_VertexDataUpdateFlags.hpp"
+#include "TMPro/TMP_MeshInfo.hpp"
 #include "UnityEngine/Mesh.hpp"
 #include "UnityEngine/Time.hpp"
 
@@ -11,6 +12,7 @@ DEFINE_TYPE(BSML, TextGradientUpdater);
 
 UnityEngine::Color32 operator+(UnityEngine::Color32 lhs, UnityEngine::Color32 rhs) {
     return {
+        0,
         static_cast<uint8_t>(std::clamp(lhs.r + rhs.r, 0, 255)),
         static_cast<uint8_t>(std::clamp(lhs.g + rhs.g, 0, 255)),
         static_cast<uint8_t>(std::clamp(lhs.b + rhs.b, 0, 255)),
@@ -19,6 +21,7 @@ UnityEngine::Color32 operator+(UnityEngine::Color32 lhs, UnityEngine::Color32 rh
 }
 UnityEngine::Color32 operator*(UnityEngine::Color32 lhs, float rhs) {
     return {
+        0,
         static_cast<uint8_t>(std::clamp((int)(lhs.r * rhs), 0, 255)),
         static_cast<uint8_t>(std::clamp((int)(lhs.g * rhs), 0, 255)),
         static_cast<uint8_t>(std::clamp((int)(lhs.b * rhs), 0, 255)),
@@ -56,7 +59,7 @@ namespace BSML {
     }
 
     void TextGradientUpdater::LateUpdate() {
-        if (text && text->m_CachedPtr.m_value && gradient) {
+        if (text && text->m_CachedPtr && gradient) {
             // TODO: check if it's possible to implement something where the colors only get set once if scrollSpeed == 0
             auto textInfo = text->get_textInfo();
             auto characterCount = textInfo->characterCount;
@@ -66,11 +69,11 @@ namespace BSML {
                 if (scrollRepeat == 0) {
                     auto col = gradient->Sample(currentPos);
                     for (int i = 0; i < materialCount; i++) {
-                        for (auto& c : textInfo->meshInfo[i].colors32) c = col;
+                        for (auto& c : textInfo->meshInfo[i]->colors32) c = col;
                     }
                 } else {
                     for (int i = 0; i < materialCount; i++) {
-                        auto& colors = textInfo->meshInfo[i].colors32;
+                        auto colors = textInfo->meshInfo[i]->colors32;
                         auto size = colors.size();
                         if (fixedStep) {
                             for (int j = 0; j < size; j++) {
@@ -90,14 +93,14 @@ namespace BSML {
             }
         }
     }
-    
+
     UnityEngine::Color32 SimpleTwoColorGradient::Sample(float t) const {
         return t * end + (1 - t) * start;
     }
 
     UnityEngine::Color32 SimpleColorGradient::Sample(float t) const {
-        if (colors.empty()) return {255, 255, 255, 255};
-        if (colors.size() == 1) return colors.at(0); 
+        if (colors.empty()) return {0, 255, 255, 255, 255};
+        if (colors.size() == 1) return colors.at(0);
         t = std::fmod(t, 1.0f);
 
         float i_unfloored = t * (colors.size() - 1);

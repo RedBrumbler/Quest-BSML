@@ -10,7 +10,7 @@ namespace BSML {
     }
     ImageViewHandler::Base::SetterMap ImageViewHandler::get_setters() const {
         return {
-            {"skew", [](auto component, auto value){ component->skew = value; }}
+            {"skew", [](auto component, auto value){ component->_skew = value; }}
         };
     }
 }

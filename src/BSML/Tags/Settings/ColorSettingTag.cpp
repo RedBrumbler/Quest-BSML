@@ -13,7 +13,7 @@
 #include "UnityEngine/Sprite.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/Toggle.hpp"
-#include "UnityEngine/UI/Toggle_ToggleEvent.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
 #include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
@@ -25,11 +25,11 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ColorSettingTag> colorSettingTagParser({"color-setting"});
-    
+
     GlobalNamespace::FormattedFloatListSettingsValueController* get_baseSettings() {
         static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsValueController> baseSettings;
         if (!baseSettings) {
-            baseSettings = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>().FirstOrDefault([](auto x){ return x->get_name() == "VRRenderingScale"; });
+            baseSettings = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>()->FirstOrDefault([](auto x){ return x->get_name() == "VRRenderingScale"; });
         }
         return baseSettings.ptr();
     }
@@ -37,7 +37,7 @@ namespace BSML {
     Image* get_colorImage() {
         static SafePtrUnity<Image> colorImage;
         if (!colorImage)
-            colorImage = Resources::FindObjectsOfTypeAll<Image*>().FirstOrDefault([](auto x) {
+            colorImage = Resources::FindObjectsOfTypeAll<Image*>()->FirstOrDefault([](auto x) {
                 if (x->get_name() != "ColorImage") return false;
                 auto sprite = x->get_sprite();
                 if (!sprite) return false;
@@ -61,15 +61,15 @@ namespace BSML {
         externalComponents->Add(colorSetting);
 
         auto valuePick = gameObject->get_transform()->Find("ValuePicker")->get_gameObject();
-        reinterpret_cast<RectTransform*>(valuePick->get_transform())->set_sizeDelta({13, 0});
+        valuePick->transform.cast<RectTransform>()->set_sizeDelta({13, 0});
 
         auto buttons = valuePick->GetComponentsInChildren<Button*>();
-        auto decButton = buttons.FirstOrDefault();
+        auto decButton = buttons->FirstOrDefault();
         decButton->set_enabled(false);
         decButton->set_interactable(true);
         Object::Destroy(decButton->get_transform()->Find("Icon")->get_gameObject());
-        Object::Destroy(valuePick->GetComponentsInChildren<TMPro::TextMeshProUGUI*>().FirstOrDefault()->get_gameObject());
-        colorSetting->editButton = buttons.LastOrDefault();
+        Object::Destroy(valuePick->GetComponentsInChildren<TMPro::TextMeshProUGUI*>()->FirstOrDefault()->get_gameObject());
+        colorSetting->editButton = buttons->LastOrDefault();
 
         auto nameText = gameObject->get_transform()->Find("NameText")->get_gameObject();
         Object::Destroy(nameText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
@@ -77,14 +77,14 @@ namespace BSML {
         auto text = nameText->GetComponent<TMPro::TextMeshProUGUI*>();
         text->set_text("BSMLColorSetting");
         externalComponents->Add(text);
-        
+
         auto layoutElement = gameObject->GetComponent<LayoutElement*>();
         layoutElement->set_preferredWidth(90.0f);
         externalComponents->Add(layoutElement);
 
         colorSetting->colorImage = Object::Instantiate(get_colorImage(), valuePick->get_transform(), false);
         colorSetting->colorImage->set_name("BSMLCurrentColor");
-        auto colorImageTransform = reinterpret_cast<RectTransform*>(colorSetting->colorImage->get_transform());
+        auto colorImageTransform = colorSetting->colorImage->transform.cast<RectTransform>();
         colorImageTransform->set_anchoredPosition({0, 0});
         colorImageTransform->set_sizeDelta({5, 5});
         colorImageTransform->set_anchorMin({0.2f, 0.5f});
@@ -97,7 +97,7 @@ namespace BSML {
         icon->get_rectTransform()->set_sizeDelta({4, 4});
         colorSetting->editButton->set_interactable(true);
 
-        reinterpret_cast<RectTransform*>(colorSetting->editButton->get_transform())->set_anchorMin({0, 0});
+        colorSetting->editButton->transform.cast<RectTransform>()->set_anchorMin({0, 0});
 
         colorSetting->modalColorPicker = Base::CreateObject(gameObject->get_transform())->GetComponent<ModalColorPicker*>();
         externalComponents->Add(colorSetting->modalColorPicker);

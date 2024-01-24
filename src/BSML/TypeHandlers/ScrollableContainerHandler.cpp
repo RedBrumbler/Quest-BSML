@@ -54,24 +54,24 @@ namespace BSML {
         if (idItr != data.end() && !idItr->second.empty()) {
             auto pageUpButtons = parserParams.GetObjectsWithTag("PageUpFor:" + idItr->second);
             for (auto pageUp : pageUpButtons) {
-                scrollView->pageUpButton = pageUp->GetComponent<UnityEngine::UI::Button*>();
-                if (scrollView->pageUpButton) break;
+                scrollView->_pageUpButton = pageUp->GetComponent<UnityEngine::UI::Button*>();
+                if (scrollView->_pageUpButton) break;
             }
 
             auto pageDownButtons = parserParams.GetObjectsWithTag("PageDownFor:" + idItr->second);
             for (auto pageDown : pageDownButtons) {
-                scrollView->pageDownButton = pageDown->GetComponent<UnityEngine::UI::Button*>();
-                if (scrollView->pageDownButton) break;
+                scrollView->_pageDownButton = pageDown->GetComponent<UnityEngine::UI::Button*>();
+                if (scrollView->_pageDownButton) break;
             }
 
             auto scrollIndicators = parserParams.GetObjectsWithTag("IndicatorFor:" + idItr->second);
             for (auto scrollIndicator : scrollIndicators) {
-                scrollView->verticalScrollIndicator = scrollIndicator->GetComponent<HMUI::VerticalScrollIndicator*>();
-                if (scrollView->verticalScrollIndicator) break;
+                scrollView->_verticalScrollIndicator = scrollIndicator->GetComponent<HMUI::VerticalScrollIndicator*>();
+                if (scrollView->_verticalScrollIndicator) break;
             }
-            INFO("upButton: {}", fmt::ptr(scrollView->pageUpButton));
-            INFO("downButton: {}", fmt::ptr(scrollView->pageDownButton));
-            INFO("scrollIndicator: {}", fmt::ptr(scrollView->verticalScrollIndicator));
+            INFO("upButton: {}", fmt::ptr(scrollView->_pageUpButton.unsafePtr()));
+            INFO("downButton: {}", fmt::ptr(scrollView->_pageDownButton.unsafePtr()));
+            INFO("scrollIndicator: {}", fmt::ptr(scrollView->_verticalScrollIndicator.unsafePtr()));
         }
 
         scrollView->RefreshContent();

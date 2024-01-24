@@ -17,7 +17,7 @@ namespace BSML {
         return BSMLParser::parse(str);
     }
 
-    std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, Il2CppObject* host) {
+    std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, System::Object* host) {
         Init();
         return BSMLParser::parse_and_construct(str, parent, host);
     }
@@ -41,7 +41,7 @@ namespace BSML {
             return MenuButtons::get_instance()->UnRegisterbutton(button);
         }
 
-        bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons) {
+        bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, System::Object* host, bool enableExtraButtons) {
             Init();
             return BSMLSettings::get_instance()->TryAddSettingsMenu(name, content_key, host, enableExtraButtons);
         }
@@ -58,12 +58,12 @@ namespace BSML {
             return BSMLSettings::get_instance()->TryAddSettingsMenu(viewControllerDidActivate, name, enableExtraButtons);
         }
 
-        bool UnRegisterSettingsMenu(Il2CppObject* host) {
+        bool UnRegisterSettingsMenu(System::Object* host) {
             Init();
             return BSMLSettings::get_instance()->RemoveSettingsMenu(host);
         }
 
-        bool RegisterGameplaySetupTab(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType) {
+        bool RegisterGameplaySetupTab(std::string_view name, std::string_view content_key, System::Object* host, MenuType menuType) {
             Init();
             return BSML::GameplaySetup::get_instance()->AddTab(name, content_key, host, menuType);
         }

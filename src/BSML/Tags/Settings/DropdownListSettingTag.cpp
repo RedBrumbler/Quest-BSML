@@ -9,12 +9,13 @@
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/Object.hpp"
+#include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "HMUI/SimpleTextDropdown.hpp"
 #include "HMUI/ScrollView.hpp"
 #include "HMUI/ModalView.hpp"
 #include "HMUI/TableView.hpp"
-#include "HMUI/TableView_CellsGroup.hpp"
 #include "HMUI/TableCell.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
@@ -25,11 +26,11 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<DropdownListSettingTag> dropdownListSettingTagParser({"dropdown-list-setting"});
-    
+
     GameObject* get_dropdownTemplate() {
         static SafePtrUnity<GameObject> dropdownTemplate;
         if (!dropdownTemplate) {
-            dropdownTemplate = Resources::FindObjectsOfTypeAll<HMUI::SimpleTextDropdown*>().FirstOrDefault([](auto x){ 
+            dropdownTemplate = Resources::FindObjectsOfTypeAll<HMUI::SimpleTextDropdown*>()->FirstOrDefault([](auto x){
                 auto parent = x->get_transform()->get_parent();
                 if (!parent) return false;
                 return parent->get_name() == "NormalLevels";
@@ -53,7 +54,7 @@ namespace BSML {
         DEBUG("Creating DropdownListSetting");
 
         auto gameObject = Object::Instantiate(get_safePrefab(), parent, false);
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
+        auto transform = gameObject->transform.cast<RectTransform>();
         auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
         externalComponents->Add(transform);
 
@@ -61,11 +62,11 @@ namespace BSML {
         auto dropdown = gameObject->GetComponentInChildren<HMUI::SimpleTextDropdown*>(true);
         dropdown->get_gameObject()->SetActive(false);
         gameObject->SetActive(false);
-        
+
         dropdown->set_name("Dropdown");
-        dropdown->get_gameObject()->GetComponentInChildren<VRUIControls::VRGraphicRaycaster*>(true)->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
-        dropdown->get_gameObject()->GetComponentInChildren<HMUI::ModalView*>(true)->container = Helpers::GetDiContainer();
-        dropdown->get_gameObject()->GetComponentInChildren<HMUI::ScrollView*>(true)->platformHelper = Helpers::GetIVRPlatformHelper();
+        dropdown->get_gameObject()->GetComponentInChildren<VRUIControls::VRGraphicRaycaster*>(true)->_physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
+        dropdown->get_gameObject()->GetComponentInChildren<HMUI::ModalView*>(true)->_container = Helpers::GetDiContainer();
+        dropdown->get_gameObject()->GetComponentInChildren<HMUI::ScrollView*>(true)->_platformHelper = Helpers::GetIVRPlatformHelper();
 
         auto labelObject = transform->Find("Label")->get_gameObject();
         Object::Destroy(labelObject->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
@@ -82,12 +83,12 @@ namespace BSML {
         auto dropdownListSetting = dropdown->get_gameObject()->AddComponent<BSML::DropdownListSetting*>();
         dropdownListSetting->dropdown = dropdown;
         externalComponents->Add(dropdownListSetting);
-        
+
         dropdown->get_gameObject()->SetActive(true);
         gameObject->SetActive(true);
 
-        dropdown->tableView->preallocatedCells = Array<HMUI::TableView::CellsGroup*>::NewLength(0);
-        dropdown->tableView->visibleCells->Clear();
+        dropdown->_tableView->_preallocatedCells = Array<HMUI::TableView::CellsGroup*>::NewLength(0);
+        dropdown->_tableView->_visibleCells->Clear();
 
         auto cont = dropdown->get_transform()->Find("DropdownTableView/Viewport/Content");
         int childCount = cont ? cont->get_childCount() : 0;

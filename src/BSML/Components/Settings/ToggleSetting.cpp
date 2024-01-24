@@ -2,7 +2,6 @@
 #include "Helpers/delegates.hpp"
 
 #include "UnityEngine/Events/UnityAction_1.hpp"
-#include "UnityEngine/UI/Toggle_ToggleEvent.hpp"
 
 DEFINE_TYPE(BSML, ToggleSetting);
 
@@ -42,24 +41,24 @@ namespace BSML {
     bool ToggleSetting::get_Value() {
         return currentValue;
     }
-    
+
     void ToggleSetting::set_Value(bool value) {
         currentValue = value;
         if (toggle) toggle->set_isOn(value);
     }
-    
+
     StringW ToggleSetting::get_text() {
         return text ? text->get_text() : "";
     }
-    
+
     void ToggleSetting::set_text(StringW value) {
         if (text) text->set_text(value);
     }
-    
+
     bool ToggleSetting::get_interactable() {
         return toggle && toggle->get_interactable();
     }
-    
+
     void ToggleSetting::set_interactable(bool value) {
         if (toggle) toggle->set_interactable(value);
     }

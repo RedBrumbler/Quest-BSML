@@ -6,10 +6,10 @@
 #include "../MenuSource.hpp"
 #include <string>
 
-DECLARE_CLASS_CODEGEN(BSML, GameplaySetupMenu, Il2CppObject,
+DECLARE_CLASS_CODEGEN(BSML, GameplaySetupMenu, System::Object,
     DECLARE_INSTANCE_FIELD(StringW, name);
     DECLARE_INSTANCE_FIELD(StringW, content_key);
-    DECLARE_INSTANCE_FIELD(Il2CppObject*, host);
+    DECLARE_INSTANCE_FIELD(System::Object*, host);
     DECLARE_INSTANCE_FIELD(MenuType, menuType);
     DECLARE_INSTANCE_FIELD(Tab*, tab);
     DECLARE_INSTANCE_FIELD(MenuSource, menuSource);
@@ -23,7 +23,7 @@ DECLARE_CLASS_CODEGEN(BSML, GameplaySetupMenu, Il2CppObject,
     DECLARE_INSTANCE_METHOD(void, SetVisible, bool isVisible);
 
     public:
-        static GameplaySetupMenu* Make_new(std::string_view name, std::string_view content_key, Il2CppObject* host, BSML::MenuType menuType = BSML::MenuType::All);
+        static GameplaySetupMenu* Make_new(std::string_view name, std::string_view content_key, System::Object* host, BSML::MenuType menuType = BSML::MenuType::All);
         static GameplaySetupMenu* Make_new(System::Type* csType, std::string_view name, BSML::MenuType menuType = BSML::MenuType::All);
         static GameplaySetupMenu* Make_new(std::function<void(UnityEngine::GameObject*, bool)> didActivate, std::string_view name, BSML::MenuType menuType = BSML::MenuType::All);
 

@@ -1,6 +1,16 @@
 #include "BSML/Components/ModalColorPicker.hpp"
+#include "UnityEngine/Color.hpp"
 
 DEFINE_TYPE(BSML, ModalColorPicker);
+
+static bool operator==(UnityEngine::Color a, UnityEngine::Color b) {
+    return !(
+        a.r != b.r ||
+        a.g != b.g ||
+        a.b != b.b ||
+        a.a != b.a
+    );
+}
 
 namespace BSML {
     void ModalColorPicker::ctor() {

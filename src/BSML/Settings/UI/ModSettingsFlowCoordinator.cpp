@@ -8,8 +8,6 @@
 #include "Helpers/getters.hpp"
 
 #include "GlobalNamespace/MenuTransitionsHelper.hpp"
-#include "HMUI/ViewController_AnimationType.hpp"
-#include "HMUI/ViewController_AnimationDirection.hpp"
 
 DEFINE_TYPE(BSML, ModSettingsFlowCoordinator);
 
@@ -42,7 +40,7 @@ namespace BSML {
 
     void ModSettingsFlowCoordinator::ShowInitial() {
         DEBUG("Showing Initial");
-        if (activeController && activeController->m_CachedPtr.m_value) {
+        if (activeController && activeController->m_CachedPtr) {
             return;
         }
 
@@ -61,7 +59,7 @@ namespace BSML {
                 menu->parserParams->AddEvent("back", std::bind(&ModSettingsFlowCoordinator::Back, this));
         }
 
-        if (bottomButtons && bottomButtons->m_CachedPtr.m_value) {
+        if (bottomButtons && bottomButtons->m_CachedPtr) {
             auto btns = bottomButtons->GetComponentsInChildren<UnityEngine::UI::Button*>();
             for (auto btn : btns) {
                 btn->set_interactable(menu->enableExtraButtons);
@@ -85,12 +83,12 @@ namespace BSML {
                 submenuStack->Clear();
         }
 
-        bool wasActive = activeController && activeController->m_CachedPtr.m_value;
+        bool wasActive = activeController && activeController->m_CachedPtr;
         if (wasActive)
             PopViewControllerFromNavigationController(navigationController, nullptr, true);
         auto delegate = MakeSystemAction([&isPresenting = this->isPresenting, bottomButtons = this->bottomButtons, navigationController = this->navigationController]{
             isPresenting = false;
-            if (bottomButtons && bottomButtons->m_CachedPtr.m_value) {
+            if (bottomButtons && bottomButtons->m_CachedPtr) {
                 bottomButtons->SetAsLastSibling();
             }
         });
@@ -106,7 +104,7 @@ namespace BSML {
 
     void ModSettingsFlowCoordinator::Cancel() {
         if (isPresenting || isAnimating) return;
-        parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Vertical, nullptr, false);
+        _parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Vertical, nullptr, false);
         EmitEventToAll("cancel");
     }
 

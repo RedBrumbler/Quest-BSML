@@ -2,14 +2,18 @@
 #include "BSMLDataCache_internal.hpp"
 #include "logging.hpp"
 
-#include "GlobalNamespace/SharedCoroutineStarter.hpp"
+#include "BSML/SharedCoroutineStarter.hpp"
 #include "System/Collections/Generic/Dictionary_2.hpp"
 #include "UnityEngine/ImageConversion.hpp"
 #include "UnityEngine/Rect.hpp"
+#include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/Vector4.hpp"
+#include "UnityEngine/Color.hpp"
 #include "UnityEngine/SpriteMeshType.hpp"
 #include "UnityEngine/Sprite.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Texture.hpp"
+#include "UnityEngine/TextureFormat.hpp"
 #include "UnityEngine/FilterMode.hpp"
 #include "UnityEngine/Texture2D.hpp"
 #include "UnityEngine/Graphics.hpp"
@@ -36,7 +40,7 @@
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-functions.hpp"
 
-#define coro(coroutine) GlobalNamespace::SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(coroutine))
+#define coro(coroutine) BSML::SharedCoroutineStarter::get_instance()->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(coroutine))
 
 using namespace UnityEngine;
 using namespace UnityEngine::Networking;
@@ -53,12 +57,12 @@ namespace BSML::Utilities {
 
         UnityEngine::Sprite* sprite = nullptr;
 
-        if (spriteCache->TryGetValue(name, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value)
+        if (spriteCache->TryGetValue(name, byref(sprite)) && sprite && sprite->m_CachedPtr)
             return sprite;
 
         for (auto x : Resources::FindObjectsOfTypeAll<Sprite*>())
         {
-            if (x->get_name()->get_Length() == 0)
+            if (x->name->Length == 0)
                 continue;
             UnityEngine::Sprite* a = nullptr;
             if(!spriteCache->TryGetValue(x->get_name(), byref(a)) || !a)
@@ -78,12 +82,12 @@ namespace BSML::Utilities {
 
         UnityEngine::Texture* texture = nullptr;
 
-        if (textureCache->TryGetValue(name, byref(texture)) && texture && texture->m_CachedPtr.m_value)
+        if (textureCache->TryGetValue(name, byref(texture)) && texture && texture->m_CachedPtr)
             return texture;
 
         for (auto x : Resources::FindObjectsOfTypeAll<Texture*>())
         {
-            if (x->get_name()->get_Length() == 0)
+            if (x->name->Length == 0)
                 continue;
             UnityEngine::Texture* a = nullptr;
             if(!textureCache->TryGetValue(x->get_name(), byref(a)) || !a)
@@ -119,6 +123,7 @@ namespace BSML::Utilities {
         auto color = CSSColorParser::parse(val, valid);
         if (!valid) return std::nullopt;
         return UnityEngine::Color32{
+            0,
             color.r,
             color.g,
             color.b,
@@ -127,7 +132,7 @@ namespace BSML::Utilities {
     }
 
     UnityEngine::Color32 ParseHTMLColor32(std::string_view str) {
-        return ParseHTMLColor32Opt(str).value_or(UnityEngine::Color32{255, 255, 255, 255});
+        return ParseHTMLColor32Opt(str).value_or(UnityEngine::Color32{0, 255, 255, 255, 255});
     }
 
     Texture2D* DownScaleTexture(Texture2D* tex, const ScaleOptions& options) {
@@ -179,8 +184,8 @@ namespace BSML::Utilities {
         auto www = UnityWebRequest::Get(uri);
         auto req = www->SendWebRequest();
         while (!req->get_isDone()) co_yield nullptr;
-
-        onFinished((www->get_isNetworkError() || www->get_isHttpError()) ? nullptr : www->get_downloadHandler()->GetData());
+        auto error = www->GetError();
+        onFinished((error == UnityEngine::Networking::UnityWebRequest::UnityWebRequestError::OK) ? www->get_downloadHandler()->GetData() : nullptr);
 
         co_return;
     }
@@ -247,7 +252,7 @@ namespace BSML::Utilities {
         UnityEngine::Sprite* img = nullptr;
         if (cache->TryGetValue(path, byref(img))) {
             cache->Remove(path);
-            if (img && img->m_CachedPtr.m_value) UnityEngine::Object::DestroyImmediate(img);
+            if (img && img->m_CachedPtr) UnityEngine::Object::DestroyImmediate(img);
             return true;
         }
         return false;
@@ -264,14 +269,14 @@ namespace BSML::Utilities {
 
         // check if we already have it, union because easier
         union {
-            Il2CppObject* data = nullptr;
+            System::Object* data = nullptr;
             AnimationControllerData* animationControllerData;
         };
         if (animationController->registeredAnimations->TryGetValue(path, byref(data))) {
             stateUpdater->set_controllerData(animationControllerData);
             if (onFinished) onFinished();
         } else {
-            bool isGif = path->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase) || (uri.first && uri.second->get_LocalPath()->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase));
+            bool isGif = path->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase) || (uri.first && StringW(uri.second->get_LocalPath())->EndsWith("gif", System::StringComparison::OrdinalIgnoreCase));
             auto animType = isGif ? AnimationLoader::AnimationType::GIF : AnimationLoader::AnimationType::APNG;
 
             auto errorType = uri.first ? ImageLoadError::NetworkError : ImageLoadError::GetDataError;
@@ -313,7 +318,7 @@ namespace BSML::Utilities {
                 return;
             }
 
-            if (data.Length() > 0) {
+            if (data.size() > 0) {
                 auto texture = LoadTextureRaw(data);
                 if (scaleOptions.shouldScale) {
                     auto scaledTexture = DownScaleTexture(texture, scaleOptions);
@@ -365,7 +370,7 @@ namespace BSML::Utilities {
         }
 
         UnityEngine::Sprite* sprite = nullptr;
-        if (get_bsmlSetImageCache()->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value) {
+        if (get_bsmlSetImageCache()->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr) {
             // we got a sprite, use it
             image->set_sprite(sprite);
             if (onFinished) onFinished();
@@ -389,7 +394,7 @@ namespace BSML::Utilities {
     }
 
     UnityEngine::Texture2D* LoadTextureRaw(ArrayW<uint8_t> data) {
-        if (data.Length() > 0) {
+        if (data.size() > 0) {
             auto texture = Texture2D::New_ctor(0, 0, TextureFormat::RGBA32, false, false);
             if (ImageConversion::LoadImage(texture, data, false))
                 return texture;
@@ -418,7 +423,7 @@ namespace BSML::Utilities {
         return false;
     }
 
-    Il2CppObject* CopyFieldsAndProperties(UnityEngine::Component* comp, UnityEngine::Component* other, Il2CppClass* klass) {
+    System::Object* CopyFieldsAndProperties(UnityEngine::Component* comp, UnityEngine::Component* other, Il2CppClass* klass) {
         if (!klass) return comp;
         if (!CheckIfClassIsParentClass(comp->klass, klass) && !CheckIfClassIsParentClass(other->klass, klass)) {
             return nullptr;
@@ -438,14 +443,14 @@ namespace BSML::Utilities {
                 auto value = il2cpp_functions::runtime_invoke(getter, other, args.data(), &exp);
                 if (exp) {
                     // handle an exception
-                    ERROR("Exception: {}", exp->message);
+                    ERROR("Exception: {}", StringW(exp->message));
                     continue;
                 }
                 args[0] = value;
                 il2cpp_functions::runtime_invoke(setter, comp, args.data(), &exp);
                 if (exp) {
                     // handle an exception
-                    ERROR("Exception: {}", exp->message);
+                    ERROR("Exception: {}", StringW(exp->message));
                     continue;
                 }
             }

@@ -1,6 +1,7 @@
 #include "BSML/TypeHandlers/PageButtonHandler.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/Quaternion.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 
 enum class PageButtonDirection {
@@ -45,7 +46,7 @@ void SetButtonDirection(BSML::PageButton* pageButton, const StringParseHelper& v
         bool isHorizontal = false;
         int angle = 0;
         auto pageButtonDirection = stringToPageButtonDirection(value);
-        auto buttonTransform = reinterpret_cast<UnityEngine::RectTransform*>(pageButton->get_transform()->Find("Icon"));
+        auto buttonTransform = pageButton->transform->Find("Icon").cast<UnityEngine::RectTransform>();
         buttonTransform->set_anchoredPosition({0, 0});
         auto layoutElement = pageButton->GetComponent<UnityEngine::UI::LayoutElement*>();
         switch(pageButtonDirection) {

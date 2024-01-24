@@ -4,7 +4,7 @@
 #include "BSML/Components/CustomCellTableCell.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, CustomListObject, Il2CppObject,
+DECLARE_CLASS_CODEGEN(BSML, CustomListObject, System::Object,
     DECLARE_INSTANCE_FIELD(CustomCellTableCell*, cell);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, cellText);
 

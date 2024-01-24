@@ -23,20 +23,20 @@ namespace BSML {
         auto dataItr = data.find("data");
         if (dataItr != data.end() && !dataItr->second.empty()) {
             auto val = parserParams.TryGetValue(dataItr->second);
-            ListWrapper<StringW> texts = List<StringW>::New_ctor();
-            static auto dataKlass = classof(List<Il2CppObject*>*);
+            auto texts = ListW<StringW>::New();
+            static auto dataKlass = classof(List<System::Object*>*);
             static auto stringDataKlass = classof(List<Il2CppString*>*);
 
-            List<Il2CppObject*>* data = val ? val->GetValue<List<Il2CppObject*>*>() : nullptr;
+            List<System::Object*>* data = val ? val->GetValue<List<System::Object*>*>() : nullptr;
 
             if (data) {
                 if (il2cpp_functions::class_is_assignable_from(data->klass, stringDataKlass)) {
                     // it's already a list of strings :)
-                    ListWrapper<StringW> strings = reinterpret_cast<List<StringW>*>(data);
+                    ListW<StringW> strings = reinterpret_cast<List<StringW>*>(data);
                     for (auto str : strings) texts->Add(str);
                 } else if (il2cpp_functions::class_is_assignable_from(data->klass, dataKlass)) {
                     // it's a list of objects, use ToString
-                    ListWrapper<Il2CppObject*> objects = data;
+                    ListW<System::Object*> objects = data;
                     for (auto obj : objects) texts->Add(obj ? obj->ToString() : StringW(""));
                 }
             } else if (data && !il2cpp_functions::class_is_assignable_from(data->klass, dataKlass)) {
@@ -46,7 +46,7 @@ namespace BSML {
             }
 
             if (texts->get_Count() > 0) {
-                textControl->SetTexts(texts->i_IReadOnlyList_1_T());
+                textControl->SetTexts(*reinterpret_cast<System::Collections::Generic::List_1<StringW>*>(texts.convert()));
             } else {
                 ERROR("TextSegmentedControl needs to have at least 1 value!");
                 ERROR("This means BSML could not find field '{0}' or method 'get_{0}'", dataItr->second);
@@ -56,7 +56,7 @@ namespace BSML {
         auto selectCellItr = data.find("selectCell");
         if (selectCellItr != data.end() && !selectCellItr->second.empty()) {
             auto action = parserParams.TryGetAction(selectCellItr->second);
-            if (action) textControl->add_didSelectCellEvent(action->GetSystemAction<HMUI::SegmentedControl*, int>());
+            if (action) textControl->add_didSelectCellEvent(action->GetSystemAction<UnityW<HMUI::SegmentedControl>, int>());
             else ERROR("Action '{}' could not be found", selectCellItr->second);
         }
 

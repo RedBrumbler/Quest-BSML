@@ -4,6 +4,8 @@
 #include "Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/Vector3.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 using namespace UnityEngine;
@@ -14,7 +16,7 @@ namespace BSML {
     HMUI::InputFieldView* TextFieldTag::get_fieldViewPrefab() const {
         static SafePtrUnity<HMUI::InputFieldView> fieldViewPrefab;
         if (!fieldViewPrefab) {
-            fieldViewPrefab = Resources::FindObjectsOfTypeAll<HMUI::InputFieldView*>().FirstOrDefault([](auto x){ return x->get_name() == "GuestNameInputField"; });
+            fieldViewPrefab = Resources::FindObjectsOfTypeAll<HMUI::InputFieldView*>()->FirstOrDefault([](auto x){ return x->get_name() == "GuestNameInputField"; });
         }
         return fieldViewPrefab.ptr();
     }
@@ -26,18 +28,18 @@ namespace BSML {
         auto layoutElement = go->AddComponent<UI::LayoutElement*>();
         layoutElement->set_preferredWidth(90.0f);
         layoutElement->set_preferredHeight(8.0f);
-        auto transform = reinterpret_cast<RectTransform*>(go->get_transform());
+        auto transform = go->transform.cast<RectTransform>();
         transform->set_anchoredPosition({0, 0});
 
         auto fieldView = go->GetComponent<HMUI::InputFieldView*>();
-        fieldView->useGlobalKeyboard = true;
-        fieldView->textLengthLimit = 128;
-        fieldView->keyboardPositionOffset =  Vector3(1337.0f, 1337.0f, 1337.0f);
+        fieldView->_useGlobalKeyboard = true;
+        fieldView->_textLengthLimit = 128;
+        fieldView->_keyboardPositionOffset =  Vector3(1337.0f, 1337.0f, 1337.0f);
 
         fieldView->Awake();
 
-        Object::Destroy(fieldView->placeholderText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
-        auto text = fieldView->placeholderText->GetComponent<TMPro::TextMeshProUGUI*>();
+        Object::Destroy(fieldView->_placeholderText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        auto text = fieldView->_placeholderText->GetComponent<TMPro::TextMeshProUGUI*>();
         auto externalComponents = go->AddComponent<ExternalComponents*>();
         externalComponents->Add(text);
         return go;

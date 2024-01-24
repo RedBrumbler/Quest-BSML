@@ -13,12 +13,12 @@ using namespace UnityEngine;
 
 namespace BSML {
     static BSMLNodeParser<VerticalIconSegmentedControlTag> vericalIconSegmentedControlTag({"vertical-icon-segments"});
-    
+
     HMUI::IconSegmentedControl* get_verticalIconSegmentedControlTemplate() {
         static SafePtrUnity<HMUI::IconSegmentedControl> verticalIconSegmentedControlTemplate;
         if (!verticalIconSegmentedControlTemplate) {
-            auto vc = Resources::FindObjectsOfTypeAll<GlobalNamespace::PlatformLeaderboardViewController*>().FirstOrDefault();
-            verticalIconSegmentedControlTemplate = vc->scopeSegmentedControl;
+            auto vc = Resources::FindObjectsOfTypeAll<GlobalNamespace::PlatformLeaderboardViewController*>()->FirstOrDefault();
+            verticalIconSegmentedControlTemplate = vc->_scopeSegmentedControl;
         }
         return verticalIconSegmentedControlTemplate.ptr();
     }
@@ -31,9 +31,9 @@ namespace BSML {
 
         auto gameObject = verticalIconSegmentedControl->get_gameObject();
         gameObject->set_name("BSMLVerticalIconSegmentedControl");
-        verticalIconSegmentedControl->container = verticalIconSegmentedControlTemplate->container;
-        
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
+        verticalIconSegmentedControl->_container = verticalIconSegmentedControlTemplate->_container;
+
+        auto transform = gameObject->transform.cast<RectTransform>();
         transform->set_anchorMin({0.5f, 0.5f});
         transform->set_anchorMax({0.5f, 0.5f});
         transform->set_anchoredPosition({0, 0});

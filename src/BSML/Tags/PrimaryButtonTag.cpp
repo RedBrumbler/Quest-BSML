@@ -10,7 +10,7 @@ namespace BSML {
     Button* PrimaryButtonTag::get_buttonPrefab() const {
         static SafePtrUnity<Button> playButtonPrefab;
         if (!playButtonPrefab) {
-            playButtonPrefab = Resources::FindObjectsOfTypeAll<Button*>().LastOrDefault([&](auto x){ return x->get_name() == "PlayButton"; });
+            playButtonPrefab = Resources::FindObjectsOfTypeAll<Button*>()->LastOrDefault([&](auto x){ return x->get_name() == "PlayButton"; });
         }
         return playButtonPrefab.ptr();
     }

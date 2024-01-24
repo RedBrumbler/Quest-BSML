@@ -11,7 +11,7 @@
 
 DECLARE_CLASS_CODEGEN(BSML, ModalColorPicker, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
-    DECLARE_INSTANCE_FIELD(Il2CppObject*, host);
+    DECLARE_INSTANCE_FIELD(System::Object*, host);
     DECLARE_INSTANCE_FIELD(BSML::ModalView*, modalView);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::RGBPanelController*, rgbPanel);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::HSVPanelController*, hsvPanel);

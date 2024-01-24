@@ -23,7 +23,7 @@ namespace BSML {
     GlobalNamespace::FormattedFloatListSettingsValueController* get_stringValueControllerTemplate() {
         static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsValueController> stringValueControllerTemplate;
         if (!stringValueControllerTemplate) {
-            stringValueControllerTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>().FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "VRRenderingScale"; });
+            stringValueControllerTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>()->FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "VRRenderingScale"; });
         }
         return stringValueControllerTemplate.ptr();
     }
@@ -32,7 +32,7 @@ namespace BSML {
         DEBUG("Creating StringSetting");
         auto baseSetting = Object::Instantiate(get_stringValueControllerTemplate(), parent, false);
         baseSetting->set_name("BSMLStringSetting");
-        
+
         auto gameObject = baseSetting->get_gameObject();
         gameObject->SetActive(false);
         Object::Destroy(baseSetting);
@@ -42,15 +42,15 @@ namespace BSML {
         Object::Destroy(valuePick->GetComponent<GlobalNamespace::StepValuePicker*>());
 
         auto buttons = valuePick->GetComponentsInChildren<Button*>();
-        auto decButton = buttons.FirstOrDefault();
+        auto decButton = buttons->FirstOrDefault();
         decButton->set_enabled(false);
         decButton->set_interactable(true);
         Object::Destroy(decButton->get_transform()->Find("Icon")->get_gameObject());
-        stringSetting->text = valuePick->GetComponentsInChildren<TMPro::TextMeshProUGUI*>().FirstOrDefault();
+        stringSetting->text = valuePick->GetComponentsInChildren<TMPro::TextMeshProUGUI*>()->FirstOrDefault();
         stringSetting->text->set_richText(true);
         stringSetting->text->set_text("");
-        stringSetting->editButton = buttons.LastOrDefault();
-        stringSetting->boundingBox = reinterpret_cast<RectTransform*>(valuePick);
+        stringSetting->editButton = buttons->LastOrDefault();
+        stringSetting->boundingBox = valuePick.cast<RectTransform>();
 
         auto nameText = gameObject->get_transform()->Find("NameText")->get_gameObject();
         Object::Destroy(nameText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
@@ -62,7 +62,7 @@ namespace BSML {
         layoutElement->set_preferredWidth(90.0f);
         stringSetting->text->set_alignment(TMPro::TextAlignmentOptions::MidlineRight);
         stringSetting->text->set_enableWordWrapping(false);
-        auto textTransform = reinterpret_cast<RectTransform*>(stringSetting->text->get_transform());
+        auto textTransform = stringSetting->text->transform.cast<RectTransform>();
         textTransform->set_anchorMin({0, 0});
         textTransform->set_anchorMax({1, 1});
         textTransform->set_anchoredPosition({-6, 0});
@@ -72,7 +72,7 @@ namespace BSML {
         icon->set_sprite(Utilities::FindSpriteCached("EditIcon"));
         icon->get_rectTransform()->set_sizeDelta({4, 4});
         stringSetting->editButton->set_interactable(true);
-        reinterpret_cast<RectTransform*>(stringSetting->editButton->get_transform())->set_anchorMin({0, 0});
+        stringSetting->editButton->transform.cast<RectTransform>()->set_anchorMin({0, 0});
 
         auto baseObject = Base::CreateObject(gameObject->get_transform());
         auto externalComponents = gameObject->AddComponent<ExternalComponents*>();

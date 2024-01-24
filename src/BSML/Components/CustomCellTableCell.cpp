@@ -4,11 +4,11 @@ DEFINE_TYPE(BSML, CustomCellTableCell);
 
 namespace BSML {
     void CustomCellTableCell::ctor() {
-        selectedTags = List<UnityEngine::GameObject*>::New_ctor();
-        hoveredTags = List<UnityEngine::GameObject*>::New_ctor();
-        neitherTags = List<UnityEngine::GameObject*>::New_ctor();
+        selectedTags = ListW<UnityEngine::GameObject*>::New();
+        hoveredTags = ListW<UnityEngine::GameObject*>::New();
+        neitherTags = ListW<UnityEngine::GameObject*>::New();
     }
-    
+
     void CustomCellTableCell::Reused() {
         if (dataObject) il2cpp_utils::RunMethod(dataObject, "Reused", this);
     }
@@ -38,7 +38,7 @@ namespace BSML {
         auto selected = parserParams.GetObjectsWithTag("selected");
         auto hovered = parserParams.GetObjectsWithTag("hovered");
         auto neither = parserParams.GetObjectsWithTag("un-selected-un-hovered");
-        
+
         selectedTags->EnsureCapacity(selected.size());
         for (auto go : selected) selectedTags->Add(go);
         hoveredTags->EnsureCapacity(hovered.size());

@@ -9,11 +9,12 @@
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "HMUI/ImageView.hpp"
 
 #include "GlobalNamespace/Signal.hpp"
 #include "GlobalNamespace/MenuShockwave.hpp"
-#include "GlobalNamespace/HapticFeedbackController.hpp"
+#include "GlobalNamespace/HapticFeedbackManager.hpp"
 #include "Libraries/HM/HMLib/VR/HapticPresetSO.hpp"
 
 using namespace UnityEngine;
@@ -21,12 +22,12 @@ using HapticPresetSO = Libraries::HM::HMLib::VR::HapticPresetSO;
 
 namespace BSML {
     static BSMLNodeParser<ClickableImageTag> imageTagParser({"clickable-image", "clickable-img"});
-    
+
     GlobalNamespace::Signal* get_imageClickedSignal() {
         static SafePtrUnity<GlobalNamespace::Signal> imageClickedSignal;
         if (!imageClickedSignal) {
-            auto menuShockWave = Resources::FindObjectsOfTypeAll<GlobalNamespace::MenuShockwave*>().FirstOrDefault();
-            imageClickedSignal = menuShockWave ? menuShockWave->buttonClickEvents.LastOrDefault() : nullptr;
+            auto menuShockWave = Resources::FindObjectsOfTypeAll<GlobalNamespace::MenuShockwave*>()->FirstOrDefault();
+            imageClickedSignal = menuShockWave ? menuShockWave->_buttonClickEvents->LastOrDefault() : nullptr;
         }
         return imageClickedSignal.ptr();
     }
@@ -35,20 +36,20 @@ namespace BSML {
         static SafePtrUnity<HapticPresetSO> imageHapticPreset;
         if (!imageHapticPreset) {
             imageHapticPreset = UnityEngine::ScriptableObject::CreateInstance<HapticPresetSO*>();
-            imageHapticPreset->duration = 0.02f;
-            imageHapticPreset->strength = 1.0f;
-            imageHapticPreset->frequency = 0.2f;
+            imageHapticPreset->_duration = 0.02f;
+            imageHapticPreset->_strength = 1.0f;
+            imageHapticPreset->_frequency = 0.2f;
             Object::DontDestroyOnLoad(imageHapticPreset.ptr());
         }
         return imageHapticPreset.ptr();
     }
 
-    GlobalNamespace::HapticFeedbackController* get_imageHapticFeedbackController() {
-        static SafePtrUnity<GlobalNamespace::HapticFeedbackController> imageHapticFeedbackController;
-        if (!imageHapticFeedbackController) {
-            imageHapticFeedbackController = UnityEngine::Object::FindObjectOfType<GlobalNamespace::HapticFeedbackController*>();
+    GlobalNamespace::HapticFeedbackManager* get_imageHapticFeedbackManager() {
+        static SafePtrUnity<GlobalNamespace::HapticFeedbackManager> imageHapticFeedbackManager;
+        if (!imageHapticFeedbackManager) {
+            imageHapticFeedbackManager = UnityEngine::Object::FindObjectOfType<GlobalNamespace::HapticFeedbackManager*>();
         }
-        return imageHapticFeedbackController.ptr();
+        return imageHapticFeedbackManager.ptr();
     }
 
     UnityEngine::GameObject* ClickableImageTag::CreateObject(UnityEngine::Transform* parent) const {
@@ -64,7 +65,7 @@ namespace BSML {
 
         image->buttonClickedSignal = get_imageClickedSignal();
         image->hapticFeedbackPresetSO = get_imageHapticPreset();
-        image->hapticFeedbackController = get_imageHapticFeedbackController();
+        image->hapticFeedbackManager = get_imageHapticFeedbackManager();
 
         gameObject->AddComponent<UI::LayoutElement*>();
         return gameObject;

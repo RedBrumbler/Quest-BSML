@@ -14,22 +14,22 @@
 #include "UnityEngine/Canvas.hpp"
 #include "UnityEngine/RenderMode.hpp"
 #include "UnityEngine/AdditionalCanvasShaderChannels.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "HMUI/EventSystemListener.hpp"
 #include "HMUI/ScrollView.hpp"
 #include "HMUI/TableView.hpp"
 #include "HMUI/Touchable.hpp"
-#include "HMUI/TableView_CellsGroup.hpp"
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    static BSMLNodeParser<ListTag> listTagParser({"list"});
+    static BSMLNodeParser<ListTag> listTagParser({"list", "list2"});
     Canvas* get_listCanvasTemplate() {
         static SafePtrUnity<Canvas> listCanvasTemplate;
         if (!listCanvasTemplate) {
-            listCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>().FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
+            listCanvasTemplate = Resources::FindObjectsOfTypeAll<Canvas*>()->FirstOrDefault([](auto x){ return x->get_name() == "DropdownTableView"; });
         }
         return listCanvasTemplate.ptr();
     }
@@ -61,7 +61,7 @@ namespace BSML {
         canvas->set_sortingOrder(listCanvasTemplate->get_sortingOrder());
         canvas->set_worldCamera(listCanvasTemplate->get_worldCamera());
 
-        gameObject->AddComponent<VRUIControls::VRGraphicRaycaster*>()->physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
+        gameObject->AddComponent<VRUIControls::VRGraphicRaycaster*>()->_physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
         gameObject->AddComponent<HMUI::Touchable*>();
         gameObject->AddComponent<HMUI::EventSystemListener*>();
 
@@ -71,9 +71,9 @@ namespace BSML {
         auto tableData = container->get_gameObject()->AddComponent<CustomListTableData*>();
         tableData->tableView = tableView;
 
-        tableView->preallocatedCells = ArrayW<HMUI::TableView::CellsGroup*>(il2cpp_array_size_t(0));
-        tableView->isInitialized = false;
-        tableView->scrollView = scrollView;
+        tableView->_preallocatedCells = ArrayW<HMUI::TableView::CellsGroup*>(il2cpp_array_size_t(0));
+        tableView->_isInitialized = false;
+        tableView->_scrollView = scrollView;
 
         auto viewPort = GameObject::New_ctor("ViewPort")->AddComponent<RectTransform*>();
         viewPort->SetParent(gameObject->get_transform(), false);
@@ -83,15 +83,15 @@ namespace BSML {
         auto content = GameObject::New_ctor("Content")->AddComponent<RectTransform*>();
         content->SetParent(viewPort, false);
 
-        scrollView->contentRectTransform = content;
-        scrollView->viewport = viewPort;
+        scrollView->_contentRectTransform = content;
+        scrollView->_viewport = viewPort;
 
         viewPort->set_anchorMin({0, 0});
         viewPort->set_anchorMax({1, 1});
         viewPort->set_anchoredPosition({0, 0});
         viewPort->set_sizeDelta({0, 0});
 
-        auto tableViewRectTransform = reinterpret_cast<RectTransform*>(tableView->get_transform());
+        auto tableViewRectTransform = tableView->transform.cast<RectTransform>();
         tableViewRectTransform->set_anchorMin({0, 0});
         tableViewRectTransform->set_anchorMax({1, 1});
         tableViewRectTransform->set_anchoredPosition({0, 0});

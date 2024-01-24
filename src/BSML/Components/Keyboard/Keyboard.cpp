@@ -4,10 +4,12 @@
 #include "Helpers/extension.hpp"
 
 #include "System/Single.hpp"
+#include "System/Int32.hpp"
 
 #include "UnityEngine/UI/Image.hpp"
 #include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/Resources.hpp"
+#include "System/Globalization/NumberStyles.hpp"
 
 DEFINE_TYPE(BSML, Keyboard);
 
@@ -23,7 +25,7 @@ namespace BSML {
 [SHIFT]/25 (zZ) (xX) (cC) (vV) (bB) (nN) (mM) (,<) (.>) (/?)  \n\
 /23 (!!) (@@) [SPACE]/40' ' (##) (__)";
 
-        const std::string Keyboard::FKEYROW = 
+        const std::string Keyboard::FKEYROW =
 "\n\
 [Esc] /2 [F1] [F2] [F3] [F4] /2 [F5] [F6] [F7] [F8] /2 [F9] [F10] [F11] [F12]\n\
 ";
@@ -42,9 +44,9 @@ namespace BSML {
 [CAPS]/20 (aA) (oO) (eE) (uU) (iI) (dD) (hH) (tT) (nN) (sS) (-_) [ENTER]/20\n\
 [SHIFT] (;:) (qQ) (jJ) (kK) (xX) (bB) (mM) (wW) (vV) (zZ) [CLEAR]/28\n\
 /23 (!!) (@@) [SPACE]/40 (##) (__)";
-        
+
         void Keyboard::ctor() {
-            keys = List<Key*>::New_ctor();
+            keys = ListW<Key*>::New();
             dummy = Key::New_ctor();
             enableInputField = true;
             shift = false;
@@ -59,10 +61,10 @@ namespace BSML {
             if (keyboardText)
                 keyboardText->set_text(keyboardText->get_text() + value);
         }
-        
+
         Key* Keyboard::get_key(StringW index) {
             for(auto& key : keys) {
-                if (key->name == index) return key;
+                if (StringW(key->name) == index) return key;
             }
 
             return dummy;
@@ -71,9 +73,9 @@ namespace BSML {
         void Keyboard::SetButtonType(std::string_view buttonName) {
             auto allButtons = Resources::FindObjectsOfTypeAll<Button*>();
             Button* q;
-            baseButton = allButtons.First([&](auto x){ 
+            baseButton = allButtons->First([&](auto x){
                 if (x->get_name() == "Q") q = x;
-                return x->get_name() == buttonName; 
+                return x->get_name() == buttonName;
             });
 
             if (!baseButton) {
@@ -172,7 +174,7 @@ namespace BSML {
                             }
 
                             if (space) {
-                                if (!Il2CppString::IsNullOrEmpty(label) || !Il2CppString::IsNullOrEmpty(key))
+                                if (!System::String::IsNullOrEmpty(label) || !System::String::IsNullOrEmpty(key))
                                     EmitKey(spacing, width, label, key, space, newValue, height, color);
                                 spacing = number;
                             } else {
@@ -208,7 +210,7 @@ namespace BSML {
             SetAction("<--", std::bind(&Keyboard::Backspace, this, std::placeholders::_1));
             SetAction("SHIFT", std::bind(&Keyboard::Shift, this, std::placeholders::_1));
             SetAction("CAPS", std::bind(&Keyboard::Caps, this, std::placeholders::_1));
-            
+
             return this;
         }
 
@@ -249,7 +251,7 @@ namespace BSML {
             auto& keys = key->kb->keys;
             for(auto k : keys) {
                 auto x = isShift ? k->shifted : k->value;
-                if (!Il2CppString::IsNullOrWhiteSpace(k->shifted)) {
+                if (!System::String::IsNullOrWhiteSpace(k->shifted)) {
                     Helpers::SetButtonText(k->button, x);
                 }
             }
@@ -267,7 +269,7 @@ namespace BSML {
             auto v = keyboardText->GetPreferredValues(keyboardText->get_text() + "I");
             v.y = 15.0f;
             v.x = v.x / 2 + 30.0f - 0.5f;
-            reinterpret_cast<RectTransform*>(keyboardCursor->get_transform())->set_anchoredPosition(v); 
+            keyboardCursor->transform.cast<RectTransform>()->set_anchoredPosition(v);
         }
 
         Keyboard* Keyboard::construct(UnityEngine::RectTransform* container, std::string_view defaultKeyboard, bool enableInputField, float x, float y) {
@@ -308,7 +310,7 @@ namespace BSML {
 
         Key* Keyboard::AddKey(StringW keyLabel, float width, float height, int color) {
             Vector2 position = currentPosition;
-            
+
             Color co;
             co.r = (float)(color & 0xff) / 255.0f;
             co.g = (float)((color << 8) & 0xff) / 255.0f;
@@ -331,15 +333,15 @@ namespace BSML {
         void Keyboard::EmitKey(float& spacing, float& width, StringW& label, StringW& key, bool& space, StringW& newValue, float& height, int& color) {
             currentPosition.x += spacing;
 
-            if (!Il2CppString::IsNullOrEmpty(label))
+            if (!System::String::IsNullOrEmpty(label))
                 AddKey(label, width, height, color)->Set(newValue);
-            else if (!Il2CppString::IsNullOrEmpty(key)) {
+            else if (!System::String::IsNullOrEmpty(key)) {
                 auto first = std::u16string_view{&key[0], 1};
                 auto second = std::u16string_view{&key[1], 1};
 
                 AddKey(first, second)->Set(newValue);
             }
-            
+
             spacing = 0;
             width = buttonWidth;
             height = 10.0f;
@@ -352,7 +354,7 @@ namespace BSML {
             return;
         }
 
-        bool Keyboard::ReadFloat(StringW& data, int& position, float& result) {
+        bool Keyboard::ReadFloat(StringW data, int& position, float& result) {
             if (position >= data->get_Length())
                 return false;
 
@@ -365,7 +367,7 @@ namespace BSML {
 
                 position++;
             }
-            
+
             if (System::Single::TryParse(data->Substring(start, position - start), byref(result)))
                 return true;
 

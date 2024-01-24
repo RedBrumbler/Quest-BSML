@@ -3,6 +3,7 @@
 
 #include "BSML/Components/Backgroundable.hpp"
 #include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
@@ -29,7 +30,7 @@ namespace BSML {
         gameObject->AddComponent<ContentSizeFitter*>()->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
         // I saw that this one was not there on pc, but I want people to be able to use it anyways, it doesn't do anything unless you tell it to anyways
         gameObject->AddComponent<Backgroundable*>();
-        
+
         auto rectTransform = vertical->get_rectTransform();
         rectTransform->set_anchoredPosition({0, 3});
         rectTransform->set_anchorMin({0.5f, 0.5f});

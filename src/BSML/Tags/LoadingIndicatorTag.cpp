@@ -14,7 +14,7 @@ namespace BSML {
     UnityEngine::GameObject* get_loadingTemplate() {
         static SafePtrUnity<UnityEngine::GameObject> loadingTemplate;
         if (!loadingTemplate) {
-            loadingTemplate = Resources::FindObjectsOfTypeAll<HMUI::ImageView*>().FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "LoadingIndicator"; })->get_gameObject();
+            loadingTemplate = Resources::FindObjectsOfTypeAll<HMUI::ImageView*>()->FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "LoadingIndicator"; })->get_gameObject();
         }
         return loadingTemplate.ptr();
     }
@@ -27,4 +27,3 @@ namespace BSML {
         return gameObject;
     }
 }
-

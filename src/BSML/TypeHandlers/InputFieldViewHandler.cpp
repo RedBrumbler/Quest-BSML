@@ -1,6 +1,5 @@
 #include "BSML/TypeHandlers/InputFieldViewHandler.hpp"
 
-#include "HMUI/InputFieldView_InputFieldChanged.hpp"
 #include "UnityEngine/Events/UnityAction_1.hpp"
 
 namespace BSML {
@@ -15,7 +14,7 @@ namespace BSML {
 
     InputFieldViewHandler::Base::SetterMap InputFieldViewHandler::get_setters() const {
         return {
-            {"textLengthLimit", [](auto component, auto value){ component->textLengthLimit = value; }}
+            {"textLengthLimit", [](auto component, auto value){ component->_textLengthLimit = value; }}
         };
     }
 
@@ -32,7 +31,7 @@ namespace BSML {
                 // this works absolutely different than any of the other BSML input methods
                 // Do I care? no.
                 fieldView->onValueChanged->AddListener(
-                    custom_types::MakeDelegate<UnityEngine::Events::UnityAction_1<HMUI::InputFieldView*>*>(
+                    custom_types::MakeDelegate<UnityEngine::Events::UnityAction_1<UnityW<HMUI::InputFieldView>>*>(
                         std::function<void(HMUI::InputFieldView*)>(
                             [onValueChange = action->GetFunction<StringW>()](auto fieldView){
                                 onValueChange(fieldView->get_text());

@@ -35,4 +35,7 @@ namespace BSML {
         if (selector) selector->Refresh();
     }
 
+    TabSelector* Tab::get_selector() { return reinterpret_cast<TabSelector*>(_selector); }
+    TabSelector const* Tab::get_selector() const { return reinterpret_cast<TabSelector const*>(_selector); }
+    void Tab::set_selector(TabSelector* value) { _selector = value; }
 }

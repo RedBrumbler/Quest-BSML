@@ -16,11 +16,11 @@ DEFINE_TYPE(BSML, FloatingScreenMoverPointer);
 struct ExtendedRaycastHit : UnityEngine::RaycastHit {
     UnityEngine::Transform* get_transform() {
         auto rb = get_rigidbody();
-        if (rb && rb->m_CachedPtr.m_value) {
+        if (rb && rb->m_CachedPtr) {
             return rb->get_transform();
         } else {
             auto col = get_collider();
-            if (col && col->m_CachedPtr.m_value) {
+            if (col && col->m_CachedPtr) {
                 return col->get_transform();
             } else {
                 return nullptr;
@@ -30,7 +30,7 @@ struct ExtendedRaycastHit : UnityEngine::RaycastHit {
 
     UnityEngine::Rigidbody* get_rigidbody() {
         auto col = get_collider();
-        return (col && col->m_CachedPtr.m_value) ? col->get_attachedRigidbody() : nullptr;
+        return (col && col->m_CachedPtr) ? col->get_attachedRigidbody() : nullptr;
     }
 };
 
@@ -38,6 +38,10 @@ static_assert(sizeof(UnityEngine::RaycastHit) == sizeof(ExtendedRaycastHit));
 
 inline UnityEngine::Vector3 Vector3Lerp(const UnityEngine::Vector3& a, const UnityEngine::Vector3& b, float t) {
     return {std::lerp(a.x, b.x, t), std::lerp(a.y, b.y, t), std::lerp(a.z, b.z, t)};
+}
+
+static inline UnityEngine::Quaternion operator*(UnityEngine::Quaternion a, UnityEngine::Quaternion b) {
+    return UnityEngine::Quaternion::op_Multiply(a, b);
 }
 
 namespace BSML {
@@ -56,10 +60,10 @@ namespace BSML {
 
     void FloatingScreenMoverPointer::Update() {
         auto pointer = _vrPointer;
-        if (pointer && pointer->m_CachedPtr.m_value && pointer->vrController && pointer->vrController->m_CachedPtr.m_value) {
-            auto vrController = pointer->vrController;
+        auto vrController = pointer && pointer->m_CachedPtr ? pointer->lastSelectedVrController : nullptr;
+        if (vrController && vrController->m_CachedPtr) {
             if (vrController->get_triggerValue() > 0.9f) {
-                if (_grabbingController && _grabbingController->m_CachedPtr.m_value) return;
+                if (_grabbingController && _grabbingController->m_CachedPtr) return;
                 ExtendedRaycastHit hit;
                 if (UnityEngine::Physics::Raycast(vrController->get_position(), vrController->get_forward(), ByRef<UnityEngine::RaycastHit>(&hit), MaxLaserDistance)) {
                     auto t = hit.get_transform();
@@ -76,7 +80,7 @@ namespace BSML {
         // - no grabbing controller, or
         // - controller pressed
         // early return
-        if (!(_grabbingController && _grabbingController->m_CachedPtr.m_value) || _grabbingController->get_triggerValue() > 0.9f) return;
+        if (!(_grabbingController && _grabbingController->m_CachedPtr) || _grabbingController->get_triggerValue() > 0.9f) return;
 
         _grabbingController = nullptr;
         _floatingScreen->OnHandleReleased(pointer);
@@ -92,7 +96,8 @@ namespace BSML {
 
     void FloatingScreenMoverPointer::LateUpdate() {
         if (_grabbingController) {
-            float diff = _grabbingController->get_verticalAxisValue() * UnityEngine::Time::get_unscaledDeltaTime();
+            // TODO: check whether get vertical axis is the same as thumbstick.y
+            float diff = _grabbingController->thumbstick.y * UnityEngine::Time::get_unscaledDeltaTime();
             if (_grabPos.get_magnitude() > MinScrollDistance) {
                 _grabPos.z -= diff;
             } else {

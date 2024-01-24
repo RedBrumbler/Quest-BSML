@@ -2,6 +2,7 @@
 #include "logging.hpp"
 
 #include "UnityEngine/GameObject.hpp"
+#include "System/Collections/Generic/KeyValuePair_2.hpp"
 #include <chrono>
 
 DEFINE_TYPE(BSML, AnimationController);
@@ -43,7 +44,7 @@ namespace BSML {
 
     bool AnimationController::TryGetAnimationControllerData(StringW key, AnimationControllerData*& out) {
         union {
-            Il2CppObject* data = nullptr;
+            System::Object* data = nullptr;
             AnimationControllerData* animationData;
         };
 

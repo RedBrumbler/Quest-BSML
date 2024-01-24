@@ -111,5 +111,5 @@ namespace BSML {
         }
     }
 
-    Il2CppObject* BSMLParserParams::get_host() { return host; }
+    System::Object* BSMLParserParams::get_host() { return host; }
 }

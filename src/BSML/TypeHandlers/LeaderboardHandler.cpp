@@ -11,7 +11,7 @@ namespace BSML {
 
     LeaderboardHandler::Base::SetterMap LeaderboardHandler::get_setters() const {
         return {
-            {"cellSize", [](auto component, auto value){ component->rowHeight = value; }}
+            {"cellSize", [](auto component, auto value){ component->_rowHeight = value; }}
         };
     }
 }

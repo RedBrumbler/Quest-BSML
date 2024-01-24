@@ -1,10 +1,11 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
+#include "System/Object.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
-    DECLARE_INSTANCE_FIELD(Il2CppObject*, host);
-    DECLARE_INSTANCE_FIELD(Il2CppObject*, onChangeHost);
+DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, System::Object,
+    DECLARE_INSTANCE_FIELD(System::Object*, host);
+    DECLARE_INSTANCE_FIELD(System::Object*, onChangeHost);
     DECLARE_INSTANCE_FIELD(bool, applyOnChange); /* default: true */
     DECLARE_CTOR(ctor);
 
@@ -13,9 +14,9 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
         const MethodInfo* setterInfo;
         const MethodInfo* getterInfo;
         const MethodInfo* onChangeInfo;
-        
-        Il2CppObject* get_onChangeHost();
-        Il2CppObject* get_host();
+
+        System::Object* get_onChangeHost();
+        System::Object* get_host();
 
         template<typename T>
         void SetValue(T value) {
@@ -58,7 +59,7 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
         template<typename T>
         requires(std::is_default_constructible_v<T>)
         T GetProperty()  {
-            return getterInfo ? il2cpp_utils::RunMethod<T>(get_host(), getterInfo).value_or(T{}) : T{};
+            return getterInfo ? il2cpp_utils::RunMethodOpt<T>(get_host(), getterInfo).value_or(T{}) : T{};
         }
 
         template<typename T>
@@ -79,7 +80,7 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, Il2CppObject,
 
         template<typename T>
         std::optional<T> GetPropertyOpt()  {
-            return getterInfo ? il2cpp_utils::RunMethod<T>(get_host(), getterInfo) : std::nullopt;
+            return getterInfo ? il2cpp_utils::RunMethodOpt<T>(get_host(), getterInfo) : std::nullopt;
         }
 
         void OnChange() {

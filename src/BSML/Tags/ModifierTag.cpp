@@ -18,11 +18,11 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<ModifierTag> modifierTagParser({"modifier", "modifier-toggle"});
-    
+
     GlobalNamespace::GameplayModifierToggle* get_gameplayModifierToggleTemplate() {
         static SafePtrUnity<GlobalNamespace::GameplayModifierToggle> gameplayModifierToggleTemplate;
         if (!gameplayModifierToggleTemplate)
-            gameplayModifierToggleTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayModifierToggle*>().FirstOrDefault();
+            gameplayModifierToggleTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::GameplayModifierToggle*>()->FirstOrDefault();
         return gameplayModifierToggleTemplate.ptr();
     }
 
@@ -35,7 +35,7 @@ namespace BSML {
 
         auto gameObject = baseModifier->get_gameObject();
         gameObject->SetActive(false);
-        auto transform = reinterpret_cast<RectTransform*>(gameObject->get_transform());
+        auto transform = gameObject->transform.cast<RectTransform>();
         Object::Destroy(baseModifier);
         Object::Destroy(gameObject->GetComponent<HMUI::HoverTextSetter*>());
         Object::Destroy(transform->Find("Multiplier")->get_gameObject());
@@ -49,7 +49,7 @@ namespace BSML {
         auto toggleSetting = gameObject->AddComponent<ToggleSetting*>();
         toggleSetting->toggle = gameObject->GetComponent<Toggle*>();
         toggleSetting->text = text;
-        
+
         gameObject->SetActive(true);
         return gameObject;
     }

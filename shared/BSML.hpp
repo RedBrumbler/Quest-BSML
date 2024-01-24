@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "UnityEngine/Transform.hpp"
 #include "HMUI/ViewController.hpp"
 #include "HMUI/FlowCoordinator.hpp"
@@ -7,6 +8,9 @@
 #include "BSML/MenuButtons/MenuButton.hpp"
 #include "BSML/GameplaySetup/MenuType.hpp"
 #include "BSML/MenuSource.hpp"
+
+// include direct creation methods
+#include "BSML-Lite.hpp"
 
 #include <memory>
 #include <string>
@@ -25,7 +29,7 @@ namespace BSML {
     /// @param parent what to parent to
     /// @param host the host object, this would contain the various fields and properties your bsml expects to be able to access
     /// @return parserparams result
-    std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, Il2CppObject* host = nullptr);
+    std::shared_ptr<BSMLParser> parse_and_construct(std::string_view str, UnityEngine::Transform* parent, System::Object* host = nullptr);
 
     namespace Register {
         /* Menu buttons are the buttons on the left in the main menu */
@@ -53,7 +57,7 @@ namespace BSML {
         /// @param host the host object, used as host for your BSML content
         /// @param enableExtraButtons whether to enable the extra ok / cancel buttons
         /// @return true if successful, false if failed
-        bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, Il2CppObject* host, bool enableExtraButtons = false);
+        bool RegisterSettingsMenu(std::string_view name, std::string_view content_key, System::Object* host, bool enableExtraButtons = false);
 
         /// @brief register a menu for the settings menu
         /// @param csType the type of your view controller, keep in mind this should inherit HMUI::ViewController*
@@ -95,7 +99,7 @@ namespace BSML {
         /// @brief remove a menu from the settings menu
         /// @param host the host object used when registering your menu
         /// @return true if successful, false if failed
-        bool UnRegisterSettingsMenu(Il2CppObject* host);
+        bool UnRegisterSettingsMenu(System::Object* host);
 
         /* The gameplay tabs are where the song selection menu is */
         /// @brief register a tab for the gameplay setup menu
@@ -104,7 +108,7 @@ namespace BSML {
         /// @param host the host object, used as host for your BSML content
         /// @param menuType where your tab should be displayed. Default is All
         /// @return true if successful, false if failed
-        bool RegisterGameplaySetupTab(std::string_view name, std::string_view content_key, Il2CppObject* host, MenuType menuType = MenuType::All);
+        bool RegisterGameplaySetupTab(std::string_view name, std::string_view content_key, System::Object* host, MenuType menuType = MenuType::All);
 
         /// @brief register a tab for the gameplay setup menu
         /// @param csType C# type of your component you want to register, should inherit MonoBehaviour!

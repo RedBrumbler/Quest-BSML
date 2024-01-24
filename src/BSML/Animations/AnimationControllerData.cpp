@@ -5,6 +5,9 @@
 
 #include "UnityEngine/SpriteMeshType.hpp"
 #include "UnityEngine/Texture2D.hpp"
+#include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/Vector4.hpp"
+#include "System/Object.hpp"
 #include <chrono>
 
 DEFINE_TYPE(BSML, AnimationControllerData);
@@ -26,13 +29,14 @@ namespace BSML {
         int texHeight = tex->get_height();
 
         for (int i = 0; i < uvs.size(); i++) {
+            UnityEngine::Rect& uv = uvs[i];
             self->sprites[i] = UnityEngine::Sprite::Create(
-                tex, 
+                tex,
                 UnityEngine::Rect(
-                    uvs[i].m_XMin * texWidth, 
-                    uvs[i].m_YMin * texHeight,
-                    uvs[i].m_Width * texWidth,
-                    uvs[i].m_Height * texHeight
+                    uv.m_XMin * texWidth,
+                    uv.m_YMin * texHeight,
+                    uv.m_Width * texWidth,
+                    uv.m_Height * texHeight
                 ),
                 {0, 0},
                 100.0f,
@@ -59,7 +63,7 @@ namespace BSML {
     }
 
     void AnimationControllerData::dtor() {
-        if (sprite && sprite->m_CachedPtr.m_value) {
+        if (sprite && sprite->m_CachedPtr) {
             UnityEngine::Object::DestroyImmediate(sprite->get_texture());
             UnityEngine::Object::DestroyImmediate(sprite);
         }
@@ -67,11 +71,11 @@ namespace BSML {
         Finalize();
     }
 
-    ListWrapper<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {
-        if (!activeImages) {
-            activeImages = List<UnityEngine::UI::Image*>::New_ctor();
+    ListW<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {
+        if (!_activeImages) {
+            _activeImages = ListW<UnityEngine::UI::Image*>::New();
         }
-        return activeImages;
+        return _activeImages;
     }
 
     bool AnimationControllerData::get_isPlaying() {
@@ -83,7 +87,7 @@ namespace BSML {
     }
 
     void AnimationControllerData::CheckFrame(unsigned long long now) {
-        if (get_activeImages().size() == 0) return;
+        if (activeImages.size() == 0) return;
 
         auto diffMs = (now - lastSwitch);
         if (diffMs < delays[uvIndex]) return;
@@ -96,7 +100,7 @@ namespace BSML {
             if (uvIndex >= uvs.size()) uvIndex = 0;
         } while (!isDelayConsistent && delays[uvIndex] == 0);
 
-        for (auto image : get_activeImages()) {
+        for (auto image : activeImages) {
             image->set_sprite(sprites[uvIndex]);
         }
     }

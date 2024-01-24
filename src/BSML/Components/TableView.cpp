@@ -1,6 +1,7 @@
 #include "BSML/Components/TableView.hpp"
 
 #include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/RectTransform.hpp"
 
 DEFINE_TYPE(BSML, TableView);
 
@@ -9,7 +10,7 @@ void BSML::TableView::ReloadData() {
         contentTransform->set_anchorMin({0, 0});
         contentTransform->set_anchorMax({0, 1});
     }
-    
+
     static auto methodInfo = il2cpp_functions::class_get_method_from_name(classof(HMUI::TableView*), "ReloadData", 0);
     if (methodInfo) il2cpp_utils::RunMethod(this, methodInfo);
 }
