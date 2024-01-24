@@ -1,5 +1,6 @@
 {
   "config": {
+    "version": "0.1.0",
     "sharedDir": "shared",
     "dependenciesDir": "extern",
     "info": {
@@ -10,6 +11,27 @@
       "additionalData": {
         "overrideSoName": "libbsml.so",
         "cmake": true
+      }
+    },
+    "workspace": {
+      "scripts": {
+        "build": [
+          "pwsh ./scripts/build.ps1"
+        ],
+        "clean": [
+          "pwsh ./scripts/build.ps1 -clean"
+        ],
+        "copy": [
+          "pwsh ./scripts/copy.ps1"
+        ],
+        "log": [
+          "pwsh ./scripts/log.ps1"
+        ],
+        "qmod": [
+          "pwsh ./scripts/build.ps1 -clean",
+          "qpm qmod build --isLibrary true",
+          "pwsh ./scripts/createqmod.ps1 BSML -clean"
+        ]
       }
     },
     "dependencies": [
@@ -67,28 +89,7 @@
           "private": true
         }
       }
-    ],
-    "workspace": {
-      "scripts": {
-        "clean": [
-          "pwsh ./scripts/build.ps1 -clean"
-        ],
-        "qmod": [
-          "pwsh ./scripts/build.ps1 -clean",
-          "qpm qmod build --isLibrary true",
-          "pwsh ./scripts/createqmod.ps1 BSML -clean"
-        ],
-        "build": [
-          "pwsh ./scripts/build.ps1"
-        ],
-        "copy": [
-          "pwsh ./scripts/copy.ps1"
-        ],
-        "log": [
-          "pwsh ./scripts/log.ps1"
-        ]
-      }
-    }
+    ]
   },
   "restoredDependencies": [
     {
@@ -136,13 +137,13 @@
     {
       "dependency": {
         "id": "custom-types",
-        "versionRange": "=0.16.6",
+        "versionRange": "=0.16.8",
         "additionalData": {
-          "soLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.6/libcustom-types.so",
-          "debugSoLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.6/debug_libcustom-types.so",
+          "soLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.8/libcustom-types.so",
+          "debugSoLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.8/debug_libcustom-types.so",
           "overrideSoName": "libcustom-types.so",
-          "modLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.6/CustomTypes.qmod",
-          "branchName": "version/v0_16_6",
+          "modLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.8/CustomTypes.qmod",
+          "branchName": "version/v0_16_8",
           "compileOptions": {
             "cppFlags": [
               "-Wno-invalid-offsetof"
@@ -151,7 +152,7 @@
           "cmake": true
         }
       },
-      "version": "0.16.6"
+      "version": "0.16.8"
     },
     {
       "dependency": {
