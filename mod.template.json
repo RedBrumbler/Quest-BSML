@@ -10,7 +10,9 @@
     "coverImage": "cover.png",
     "description": "Library that parses BeatSaber Markup Language to create UI elements",
     "dependencies": [],
-    "modFiles": [],
+    "modFiles": [
+        "${binary}"
+    ],
     "lateModFiles": [],
     "libraryFiles": [],
     "fileCopies": []
