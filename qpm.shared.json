@@ -72,7 +72,7 @@
       },
       {
         "id": "tinyxml2",
-        "versionRange": "^9.0.5",
+        "versionRange": "^9.0.7",
         "additionalData": {}
       },
       {
@@ -137,13 +137,13 @@
     {
       "dependency": {
         "id": "custom-types",
-        "versionRange": "=0.16.11",
+        "versionRange": "=0.16.13",
         "additionalData": {
-          "soLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.11/libcustom-types.so",
-          "debugSoLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.11/debug_libcustom-types.so",
+          "soLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.13/libcustom-types.so",
+          "debugSoLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.13/debug_libcustom-types.so",
           "overrideSoName": "libcustom-types.so",
-          "modLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.11/CustomTypes.qmod",
-          "branchName": "version/v0_16_11",
+          "modLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.13/CustomTypes.qmod",
+          "branchName": "version/v0_16_13",
           "compileOptions": {
             "cppFlags": [
               "-Wno-invalid-offsetof"
@@ -152,7 +152,7 @@
           "cmake": true
         }
       },
-      "version": "0.16.11"
+      "version": "0.16.13"
     },
     {
       "dependency": {
@@ -194,15 +194,15 @@
     {
       "dependency": {
         "id": "beatsaber-hook",
-        "versionRange": "=5.0.5",
+        "versionRange": "=5.0.7",
         "additionalData": {
-          "soLink": "https://github.com/QuestPackageManager/beatsaber-hook/releases/download/v5.0.5/libbeatsaber-hook_5_0_5.so",
-          "debugSoLink": "https://github.com/QuestPackageManager/beatsaber-hook/releases/download/v5.0.5/debug_libbeatsaber-hook_5_0_5.so",
-          "branchName": "version/v5_0_5",
+          "soLink": "https://github.com/QuestPackageManager/beatsaber-hook/releases/download/v5.0.7/libbeatsaber-hook_5_0_7.so",
+          "debugSoLink": "https://github.com/QuestPackageManager/beatsaber-hook/releases/download/v5.0.7/debug_libbeatsaber-hook_5_0_7.so",
+          "branchName": "version/v5_0_7",
           "cmake": true
         }
       },
-      "version": "5.0.5"
+      "version": "5.0.7"
     },
     {
       "dependency": {
@@ -236,17 +236,17 @@
     {
       "dependency": {
         "id": "tinyxml2",
-        "versionRange": "=9.0.6",
+        "versionRange": "=9.0.7",
         "additionalData": {
-          "soLink": "https://github.com/MillzyDev/NDK-tinyxml2/releases/download/v9.0.6/libtinyxml2.so",
-          "debugSoLink": "https://github.com/MillzyDev/NDK-tinyxml2/releases/download/v9.0.6/debug_libtinyxml2.so",
+          "soLink": "https://github.com/MillzyDev/NDK-tinyxml2/releases/download/v9.0.7/libtinyxml2.so",
+          "debugSoLink": "https://github.com/MillzyDev/NDK-tinyxml2/releases/download/v9.0.7/debug_libtinyxml2.so",
           "overrideSoName": "libtinyxml2.so",
-          "modLink": "https://github.com/MillzyDev/NDK-tinyxml2/releases/download/v9.0.6/.qmod",
-          "branchName": "version/v9_0_6",
+          "modLink": "https://github.com/MillzyDev/NDK-tinyxml2/releases/download/v9.0.7/tinyxml2.qmod",
+          "branchName": "version/v9_0_7",
           "cmake": true
         }
       },
-      "version": "9.0.6"
+      "version": "9.0.7"
     }
   ]
 }
