@@ -125,7 +125,7 @@ namespace BSML::Lite {
         return sliderSetting;
     }
 
-    BSML::DropdownListSetting* CreateDropdown(const TransformWrapper& parent, StringW label, StringW currentValue, std::span<std::string> values, std::function<void(StringW)> onValueChange) {
+    BSML::DropdownListSetting* CreateDropdown(const TransformWrapper& parent, StringW label, StringW currentValue, std::span<std::string_view> values, std::function<void(StringW)> onValueChange) {
         auto go = BSML::DropdownListSettingTag{}.CreateObject(parent);
         auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
         auto dropdownSetting = externalComponents->Get<BSML::DropdownListSetting*>();
