@@ -127,8 +127,8 @@ namespace BSML::Lite {
 
     BSML::DropdownListSetting* CreateDropdown(const TransformWrapper& parent, StringW label, StringW currentValue, std::span<std::string> values, std::function<void(StringW)> onValueChange) {
         auto go = BSML::DropdownListSettingTag{}.CreateObject(parent);
-        auto dropdownSetting = go->GetComponent<BSML::DropdownListSetting*>();
         auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
+        auto dropdownSetting = externalComponents->Get<BSML::DropdownListSetting*>();
 
         auto valuesList = ListW<System::Object*>::New();
         valuesList->EnsureCapacity(values.size());
