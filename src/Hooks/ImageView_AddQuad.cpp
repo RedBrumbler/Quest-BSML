@@ -18,7 +18,16 @@ MAKE_AUTO_HOOK_ORIG_MATCH(ImageView_AddQuad, static_cast<void (*)(UnityEngine::U
     auto uv = UnityEngine::Vector2(lastCurvedUIRadius, 0.0f);
 
     for (int i = 0; i < 4; i++) {
-        vertexHelper->AddVert(quadPositions[i], color, {quadUVs[i]->x, quadUVs[i]->y, 0, 0}, {0, 0, 0, 0}, {uv.x, uv.y, 0, 0}, {0, 0, 0, 0}, {0, 0, 0}, {0, 0, 0, 0});
+        vertexHelper->AddVert(
+            quadPositions[i],
+            color,
+            {quadUVs[i].x, quadUVs[i].y, 0, 0},
+            {0, 0, 0, 0},
+            {uv.x, uv.y, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0},
+            {0, 0, 0, 0}
+        );
     }
     vertexHelper->AddTriangle(currentVertCount, currentVertCount + 1, currentVertCount + 2);
     vertexHelper->AddTriangle(currentVertCount + 2, currentVertCount + 3, currentVertCount);

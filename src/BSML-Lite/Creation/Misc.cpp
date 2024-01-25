@@ -29,7 +29,7 @@ namespace BSML::Lite {
         return BSML::ProgressBar::CreateProgressBar(position, scale, rotation, headerText, subText1, subText2);
     }
 
-    HMUI::TextSegmentedControl* CreateTextSegmentedControl(const TransformWrapper& parent, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::initializer_list<std::string_view> values, std::function<void(int)> onCellWithIdxClicked) {
+    HMUI::TextSegmentedControl* CreateTextSegmentedControl(const TransformWrapper& parent, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::span<std::string_view> values, std::function<void(int)> onCellWithIdxClicked) {
         auto go = BSML::TextSegmentedControlTag{}.CreateObject(parent);
         auto textSegmentedControl = go->GetComponent<HMUI::TextSegmentedControl*>();
 

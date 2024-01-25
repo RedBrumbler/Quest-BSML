@@ -10,10 +10,22 @@
 namespace BSML::Lite {
     /// @brief A wrapper for transforms, components and gameobjects to automatically be converted into a transform
     struct TransformWrapper {
-        TransformWrapper(UnityEngine::RectTransform* transform) noexcept : transform(transform) {}
-        TransformWrapper(UnityEngine::Transform* transform) noexcept : transform(transform) {}
+        constexpr TransformWrapper(UnityEngine::RectTransform* transform) noexcept : transform(transform) {}
+        constexpr TransformWrapper(UnityEngine::Transform* transform) noexcept : transform(transform) {}
         TransformWrapper(UnityEngine::Component* comp) : TransformWrapper(comp->get_transform()) {}
         TransformWrapper(UnityEngine::GameObject* go) : TransformWrapper(go->get_transform()) {}
+
+        template<typename T>
+        requires(std::is_convertible_v<T, UnityEngine::GameObject>)
+        TransformWrapper(UnityW<T> go) : TransformWrapper(go->transform) {}
+
+        template<typename T>
+        requires(std::is_convertible_v<T, UnityEngine::Component>)
+        TransformWrapper(UnityW<T> component) : TransformWrapper(component->transform) {}
+
+        template<typename T>
+        requires(std::is_convertible_v<T, UnityEngine::Transform>)
+        TransformWrapper(UnityW<T> transform) : TransformWrapper(transform.ptr()) {}
 
         // il2cpp wrapper type
         explicit TransformWrapper(void* i) : transform(static_cast<UnityEngine::Transform*>(i)) {}

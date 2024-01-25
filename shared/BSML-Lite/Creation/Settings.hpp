@@ -208,7 +208,7 @@ namespace BSML::Lite {
     /// @param values the possible string values that can be displayed
     /// @param onValueChange callback ran when the value changes
     /// @return the created dropdown
-    BSML::DropdownListSetting* CreateDropdown(const TransformWrapper& parent, StringW label, StringW currentValue, std::initializer_list<std::string> values, std::function<void(StringW)> onValueChange = nullptr);
+    BSML::DropdownListSetting* CreateDropdown(const TransformWrapper& parent, StringW label, StringW currentValue, std::span<std::string> values, std::function<void(StringW)> onValueChange = nullptr);
 
     /// @brief creates a color picker
     /// @param parent what to parent it to
