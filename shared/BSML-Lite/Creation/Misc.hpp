@@ -71,8 +71,10 @@ namespace BSML::Lite {
     /// @param values list of text values to give to the controller
     /// @param onCellWithIdxClicked callback called when a cell is clicked
     /// @return the created text segmented control
+    template<typename T>
+    requires(std::is_constructible_v<std::span<std::string_view>, T>)
     static inline HMUI::TextSegmentedControl* CreateTextSegmentedControl(const TransformWrapper& parent, UnityEngine::Vector2 sizeDelta, std::span<std::string_view> values, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return CreateTextSegmentedControl(parent, {}, sizeDelta, values, onCellWithIdxClicked);
+        return CreateTextSegmentedControl(parent, {}, sizeDelta, std::span<std::string_view>(values), onCellWithIdxClicked);
     }
 
     /// @brief creates a text segmented control like the one on the gameplay setup view controller
@@ -80,8 +82,10 @@ namespace BSML::Lite {
     /// @param values list of text values to give to the controller
     /// @param onCellWithIdxClicked callback called when a cell is clicked
     /// @return the created text segmented control
-    static inline HMUI::TextSegmentedControl* CreateTextSegmentedControl(const TransformWrapper& parent, std::span<std::string_view> values, std::function<void(int)> onCellWithIdxClicked) {
-        return CreateTextSegmentedControl(parent, {}, {}, values, onCellWithIdxClicked);
+    template<typename T>
+    requires(std::is_constructible_v<std::span<std::string_view>, T>)
+    static inline HMUI::TextSegmentedControl* CreateTextSegmentedControl(const TransformWrapper& parent, T values, std::function<void(int)> onCellWithIdxClicked) {
+        return CreateTextSegmentedControl(parent, {}, {}, std::span<std::string_view>(values), onCellWithIdxClicked);
     }
 
     /// @brief creates a text segmented control like the one on the gameplay setup view controller

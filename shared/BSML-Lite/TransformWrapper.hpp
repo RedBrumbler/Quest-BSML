@@ -8,24 +8,22 @@
 #include "UnityEngine/GameObject.hpp"
 
 namespace BSML::Lite {
+    template<typename T>
+    concept has_transform = !std::is_convertible_v<T, UnityEngine::Transform*> && requires(T t) {
+        { t->get_transform() } -> std::convertible_to<UnityEngine::Transform*>;
+    };
+
     /// @brief A wrapper for transforms, components and gameobjects to automatically be converted into a transform
     struct TransformWrapper {
         constexpr TransformWrapper(UnityEngine::RectTransform* transform) noexcept : transform(transform) {}
         constexpr TransformWrapper(UnityEngine::Transform* transform) noexcept : transform(transform) {}
-        TransformWrapper(UnityEngine::Component* comp) : TransformWrapper(comp->get_transform()) {}
-        TransformWrapper(UnityEngine::GameObject* go) : TransformWrapper(go->get_transform()) {}
 
         template<typename T>
-        requires(std::is_convertible_v<T, UnityEngine::GameObject>)
-        TransformWrapper(UnityW<T> go) : TransformWrapper(go->transform) {}
+        requires(std::is_convertible_v<T, UnityEngine::Transform*>)
+        TransformWrapper(T t) : TransformWrapper(static_cast<UnityEngine::Transform*>(t)) {}
 
-        template<typename T>
-        requires(std::is_convertible_v<T, UnityEngine::Component>)
-        TransformWrapper(UnityW<T> component) : TransformWrapper(component->transform) {}
-
-        template<typename T>
-        requires(std::is_convertible_v<T, UnityEngine::Transform>)
-        TransformWrapper(UnityW<T> transform) : TransformWrapper(transform.ptr()) {}
+        template<has_transform T>
+        TransformWrapper(T t) : TransformWrapper(t->get_transform()) {}
 
         // il2cpp wrapper type
         explicit TransformWrapper(void* i) : transform(static_cast<UnityEngine::Transform*>(i)) {}

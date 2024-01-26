@@ -201,14 +201,27 @@ namespace BSML::Lite {
         return CreateSliderSetting(parent, label, increment, currentValue, minValue, maxValue, 1.0f, {}, onValueChange);
     }
 
-    /// @brief creates a dropwdown menu to select from a set of pre-known strings (like an enum)
+    /// @brief creates a dropdown menu to select from a set of pre-known strings (like an enum)
     /// @param parent what to parent it to
     /// @param label label of the setting
     /// @param currentValue what to display as currently selected
     /// @param values the possible string values that can be displayed
     /// @param onValueChange callback ran when the value changes
     /// @return the created dropdown
-    BSML::DropdownListSetting* CreateDropdown(const TransformWrapper& parent, StringW label, StringW currentValue, std::span<std::string> values, std::function<void(StringW)> onValueChange = nullptr);
+    BSML::DropdownListSetting* CreateDropdown(const TransformWrapper& parent, StringW label, StringW currentValue, std::span<std::string_view> values, std::function<void(StringW)> onValueChange = nullptr);
+
+    /// @brief creates a dropdown menu to select from a set of pre-known strings (like an enum)
+    /// @param parent what to parent it to
+    /// @param label label of the setting
+    /// @param currentValue what to display as currently selected
+    /// @param values the possible string values that can be displayed
+    /// @param onValueChange callback ran when the value changes
+    /// @return the created dropdown
+    template<typename T>
+    requires(std::is_constructible_v<std::span<std::string_view>, T> && !std::is_same_v<std::span<std::string_view>, T>)
+    BSML::DropdownListSetting* CreateDropdown(const TransformWrapper& parent, StringW label, StringW currentValue, T values, std::function<void(StringW)> onValueChange = nullptr) {
+        CreateDropdown(parent, label, currentValue, std::span<std::string_view>(values), onValueChange);
+    }
 
     /// @brief creates a color picker
     /// @param parent what to parent it to

@@ -61,6 +61,7 @@ namespace BSML::Lite {
         }
 
         auto rect = go->transform.cast<UnityEngine::RectTransform>();
+        rect->set_anchoredPosition(anchoredPosition);
         if (onClick) {
             toggle->onValueChanged = UnityEngine::UI::Toggle::ToggleEvent::New_ctor();
             toggle->onValueChanged->AddListener(
@@ -81,6 +82,9 @@ namespace BSML::Lite {
         incrementSetting->digits = decimals;
         incrementSetting->isInt = std::abs(increment - 1.0f) < 0.00001f;
         incrementSetting->increments = increment;
+
+        auto rect = go->transform.cast<UnityEngine::RectTransform>();
+        rect->set_anchoredPosition(anchoredPosition);
 
         if (hasMin) incrementSetting->minValue = minValue;
         if (hasMax) incrementSetting->maxValue = maxValue;
@@ -108,6 +112,9 @@ namespace BSML::Lite {
         sliderSetting->isInt = std::abs(increment - 1.0f) < 0.00001f;
         sliderSetting->increments = increment;
 
+        auto rect = go->transform.cast<UnityEngine::RectTransform>();
+        rect->set_anchoredPosition(anchoredPosition);
+
         sliderSetting->slider->set_minValue(minValue);
         sliderSetting->slider->set_maxValue(maxValue);
         auto text = externalComponents->Get<TMPro::TextMeshProUGUI*>();
@@ -125,10 +132,10 @@ namespace BSML::Lite {
         return sliderSetting;
     }
 
-    BSML::DropdownListSetting* CreateDropdown(const TransformWrapper& parent, StringW label, StringW currentValue, std::span<std::string> values, std::function<void(StringW)> onValueChange) {
+    BSML::DropdownListSetting* CreateDropdown(const TransformWrapper& parent, StringW label, StringW currentValue, std::span<std::string_view> values, std::function<void(StringW)> onValueChange) {
         auto go = BSML::DropdownListSettingTag{}.CreateObject(parent);
-        auto dropdownSetting = go->GetComponent<BSML::DropdownListSetting*>();
         auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
+        auto dropdownSetting = externalComponents->Get<BSML::DropdownListSetting*>();
 
         auto valuesList = ListW<System::Object*>::New();
         valuesList->EnsureCapacity(values.size());
@@ -196,6 +203,7 @@ namespace BSML::Lite {
         text->set_text(label);
 
         auto rect = go->transform.cast<UnityEngine::RectTransform>();
+        rect->set_anchoredPosition(anchoredPosition);
         if (onToggle) {
             toggle->toggle->onValueChanged = UnityEngine::UI::Toggle::ToggleEvent::New_ctor();
             toggle->toggle->onValueChanged->AddListener(
