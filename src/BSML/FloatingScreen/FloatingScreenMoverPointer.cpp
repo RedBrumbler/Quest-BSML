@@ -65,12 +65,12 @@ namespace BSML {
             if (vrController->get_triggerValue() > 0.9f) {
                 if (_grabbingController && _grabbingController->m_CachedPtr) return;
                 ExtendedRaycastHit hit;
-                if (UnityEngine::Physics::Raycast(vrController->get_position(), vrController->get_forward(), ByRef<UnityEngine::RaycastHit>(&hit), MaxLaserDistance)) {
+                if (UnityEngine::Physics::Raycast(vrController->_viewAnchorTransform->get_position(), vrController->_viewAnchorTransform->get_forward(), ByRef<UnityEngine::RaycastHit>(&hit), MaxLaserDistance)) {
                     auto t = hit.get_transform();
                     if (!_screenHandle || t != _screenHandle) return;
                     _grabbingController = vrController;
-                    _grabPos = vrController->get_transform()->InverseTransformPoint(_floatingScreen->get_transform()->get_position());
-                    _grabRot = UnityEngine::Quaternion::Inverse(vrController->get_transform()->get_rotation()) * _floatingScreen->get_transform()->get_rotation();
+                    _grabPos = vrController->_viewAnchorTransform->InverseTransformPoint(_floatingScreen->get_transform()->get_position());
+                    _grabRot = UnityEngine::Quaternion::Inverse(vrController->_viewAnchorTransform->get_rotation()) * _floatingScreen->get_transform()->get_rotation();
                     _floatingScreen->OnHandleGrab(pointer);
                 }
             }
@@ -84,7 +84,6 @@ namespace BSML {
 
         _grabbingController = nullptr;
         _floatingScreen->OnHandleReleased(pointer);
-
     }
 
     void FloatingScreenMoverPointer::OnDestroy() {
@@ -96,15 +95,14 @@ namespace BSML {
 
     void FloatingScreenMoverPointer::LateUpdate() {
         if (_grabbingController) {
-            // TODO: check whether get vertical axis is the same as thumbstick.y
-            float diff = _grabbingController->thumbstick.y * UnityEngine::Time::get_unscaledDeltaTime();
+            float diff = -_grabbingController->thumbstick.y * UnityEngine::Time::get_unscaledDeltaTime();
             if (_grabPos.get_magnitude() > MinScrollDistance) {
                 _grabPos.z -= diff;
             } else {
                 _grabPos.z -= std::clamp(diff, std::numeric_limits<float>::min(), 0.0f);
             }
-            _realPos = _grabbingController->get_transform()->TransformPoint(_grabPos);
-            _realRot = _grabbingController->get_transform()->get_rotation() * _grabRot;
+            _realPos = _grabbingController->_viewAnchorTransform->get_transform()->TransformPoint(_grabPos);
+            _realRot = _grabbingController->_viewAnchorTransform->get_transform()->get_rotation() * _grabRot;
         } else return;
 
         _floatingScreen->get_transform()->set_position(Vector3Lerp(_floatingScreen->get_transform()->get_position(), _realPos, 10 * UnityEngine::Time::get_unscaledDeltaTime()));
