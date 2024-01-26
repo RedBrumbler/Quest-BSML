@@ -75,7 +75,7 @@ namespace BSML {
     }
 
     GlobalNamespace::LevelListTableCell* CustomListTableData::GetTableCell() {
-        auto tableCell = tableView->DequeueReusableCellForIdentifier(reuseIdentifier).cast<GlobalNamespace::LevelListTableCell>();
+        auto tableCell = tableView->DequeueReusableCellForIdentifier(reuseIdentifier).try_cast<GlobalNamespace::LevelListTableCell>().value_or(nullptr);
 
         if (!tableCell) {
             if (!levelListTableCell || !levelListTableCell->m_CachedPtr) {
@@ -91,7 +91,7 @@ namespace BSML {
     }
 
     GlobalNamespace::SimpleTextTableCell* CustomListTableData::GetSimpleTextTableCell() {
-        auto tableCell = tableView->DequeueReusableCellForIdentifier(reuseIdentifier).cast<GlobalNamespace::SimpleTextTableCell>();
+        auto tableCell = tableView->DequeueReusableCellForIdentifier(reuseIdentifier).try_cast<GlobalNamespace::SimpleTextTableCell>().value_or(nullptr);
 
         if (!tableCell) {
             if (!simpleTextTableCell || !simpleTextTableCell->m_CachedPtr) {
@@ -106,7 +106,7 @@ namespace BSML {
     }
 
     BSML::BoxTableCell* CustomListTableData::GetBoxTableCell() {
-        auto tableCell = tableView->DequeueReusableCellForIdentifier(reuseIdentifier).cast<BSML::BoxTableCell>();
+        auto tableCell = tableView->DequeueReusableCellForIdentifier(reuseIdentifier).try_cast<BSML::BoxTableCell>().value_or(nullptr);
 
         if (!tableCell) {
             if (!levelPackCell || !levelPackCell->m_CachedPtr) {

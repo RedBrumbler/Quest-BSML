@@ -52,7 +52,7 @@
       },
       {
         "id": "custom-types",
-        "versionRange": "^0.16.6",
+        "versionRange": "^0.16.14",
         "additionalData": {}
       },
       {
@@ -137,13 +137,13 @@
     {
       "dependency": {
         "id": "custom-types",
-        "versionRange": "=0.16.13",
+        "versionRange": "=0.16.14",
         "additionalData": {
-          "soLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.13/libcustom-types.so",
-          "debugSoLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.13/debug_libcustom-types.so",
+          "soLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.14/libcustom-types.so",
+          "debugSoLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.14/debug_libcustom-types.so",
           "overrideSoName": "libcustom-types.so",
-          "modLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.13/CustomTypes.qmod",
-          "branchName": "version/v0_16_13",
+          "modLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.16.14/CustomTypes.qmod",
+          "branchName": "version/v0_16_14",
           "compileOptions": {
             "cppFlags": [
               "-Wno-invalid-offsetof"
@@ -152,7 +152,7 @@
           "cmake": true
         }
       },
-      "version": "0.16.13"
+      "version": "0.16.14"
     },
     {
       "dependency": {
