@@ -25,7 +25,7 @@ namespace BSML {
 
     HMUI::TableCell* CustomCellListTableData::CellForIdx(HMUI::TableView* tableView, int idx) {
         if (data->get_Count() < idx) return nullptr;
-        auto cell = tableView->DequeueReusableCellForIdentifier(reuseIdentifier).cast<BSML::CustomCellTableCell>();
+        auto cell = tableView->DequeueReusableCellForIdentifier(reuseIdentifier).try_cast<BSML::CustomCellTableCell>().value_or(nullptr);
         auto cellData = data[idx];
         if (!cell) {
             cell = NewCellForData(cellData);

@@ -179,7 +179,7 @@ namespace BSML {
 
     GameplaySetupCell* GameplaySetup::GetCell() {
         INFO("Getting Cell");
-        auto cell = modsList->tableView->DequeueReusableCellForIdentifier(reuseIdentifier).cast<GameplaySetupCell>();
+        auto cell = modsList->tableView->DequeueReusableCellForIdentifier(reuseIdentifier).try_cast<GameplaySetupCell>().value_or(nullptr);
 
         if (!cell || !cell->m_CachedPtr) {
             cell = UnityEngine::GameObject::New_ctor("GameplaySetupCell")->AddComponent<GameplaySetupCell*>();
