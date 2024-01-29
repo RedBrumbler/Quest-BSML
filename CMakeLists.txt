@@ -18,6 +18,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+# stop symbol leaking
+add_link_options(-Wl,--exclude-libs,ALL)
 # compile options used
 add_compile_options(-frtti -fPIE -fPIC -fexceptions -fdeclspec)
 
