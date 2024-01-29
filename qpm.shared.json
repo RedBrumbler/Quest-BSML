@@ -105,17 +105,22 @@
     {
       "dependency": {
         "id": "paper",
-        "versionRange": "=3.3.1",
+        "versionRange": "=3.6.0",
         "additionalData": {
-          "soLink": "https://github.com/Fernthedev/paperlog/releases/download/v3.3.1/libpaperlog.so",
-          "debugSoLink": "https://github.com/Fernthedev/paperlog/releases/download/v3.3.1/debug_libpaperlog.so",
+          "soLink": "https://github.com/Fernthedev/paperlog/releases/download/v3.6.0/libpaperlog.so",
+          "debugSoLink": "https://github.com/Fernthedev/paperlog/releases/download/v3.6.0/debug_libpaperlog.so",
           "overrideSoName": "libpaperlog.so",
-          "modLink": "https://github.com/Fernthedev/paperlog/releases/download/v3.3.1/paperlog.qmod",
-          "branchName": "version/v3_3_1",
+          "modLink": "https://github.com/Fernthedev/paperlog/releases/download/v3.6.0/paperlog.qmod",
+          "branchName": "version/v3_6_0",
+          "compileOptions": {
+            "systemIncludes": [
+              "shared/utfcpp"
+            ]
+          },
           "cmake": false
         }
       },
-      "version": "3.3.1"
+      "version": "3.6.0"
     },
     {
       "dependency": {
