@@ -148,7 +148,7 @@ namespace BSML::Lite {
         auto itr = std::find_if(values.begin(), values.end(), [currentValue](const auto& x){ return x == currentValue; });
         int idx = 0;
         if (itr != values.end()) {
-            auto idx = itr - values.begin();
+            idx = itr - values.begin();
         }
 
         dropdownSetting->index = idx;
