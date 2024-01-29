@@ -104,6 +104,10 @@ namespace BSML::Lite {
     }
 
     BSML::SliderSetting* CreateSliderSetting(const TransformWrapper& parent, StringW label, float increment, float currentValue, float minValue, float maxValue, float applyValueTime, UnityEngine::Vector2 anchoredPosition, std::function<void(float)> onValueChange) {
+        return CreateSliderSetting(parent, label, increment, currentValue, minValue, maxValue, applyValueTime, false, anchoredPosition, onValueChange);
+    }
+
+    BSML::SliderSetting* CreateSliderSetting(const TransformWrapper& parent, StringW label, float increment, float currentValue, float minValue, float maxValue, float applyValueTime, bool showButtons, UnityEngine::Vector2 anchoredPosition, std::function<void(float)> onValueChange) {
         auto go = BSML::SliderSettingTag{}.CreateObject(parent);
         auto sliderSetting = go->GetComponent<BSML::SliderSetting*>();
         auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
@@ -120,6 +124,7 @@ namespace BSML::Lite {
         auto text = externalComponents->Get<TMPro::TextMeshProUGUI*>();
         text->set_text(label);
 
+        sliderSetting->showButtons = showButtons;
         sliderSetting->BaseSetup();
         sliderSetting->Setup();
 
