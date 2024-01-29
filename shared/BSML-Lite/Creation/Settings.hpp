@@ -32,7 +32,7 @@ namespace BSML::Lite {
     /// @param onValueChange callback ran when the value changes
     /// @return the created string setting
     static inline HMUI::InputFieldView* CreateStringSetting(const TransformWrapper& parent, StringW settingsName, StringW currentValue, UnityEngine::Vector2 anchoredPosition, std::function<void(StringW)> onValueChange = nullptr) {
-        return CreateStringSetting(parent, settingsName, currentValue, anchoredPosition, {1337, 1337, 1337}, onValueChange);
+        return CreateStringSetting(parent, settingsName, currentValue, anchoredPosition, {0, 0, 0}, onValueChange);
     }
 
     /// @brief creates a string setting allowing users to input a string with a keyboard
@@ -42,7 +42,7 @@ namespace BSML::Lite {
     /// @param onValueChange callback ran when the value changes
     /// @return the created string setting
     static inline HMUI::InputFieldView* CreateStringSetting(const TransformWrapper& parent, StringW settingsName, StringW currentValue, std::function<void(StringW)> onValueChange = nullptr) {
-        return CreateStringSetting(parent, settingsName, currentValue, {}, {1337, 1337, 1337}, onValueChange);
+        return CreateStringSetting(parent, settingsName, currentValue, {}, {0, 0, 0}, onValueChange);
     }
 
     /// @brief Creates a toggle that looks like the modifier buttons seen in the gameplay setup menu
