@@ -26,12 +26,15 @@ namespace BSML {
         }
         return tabSelectorTagTemplate.ptr();
     }
+
     UnityEngine::GameObject* TabSelectorTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating TabSelector");
-        auto textSegmentedControl = Object::Instantiate(get_tabSelectorTagTemplate(), parent, false);
-        textSegmentedControl->dataSource = nullptr;
 
+        auto template = get_tabSelectorTagTemplate();
+        auto diContainer = template->_container;
+        auto textSegmentedControl = diContainer->InstantiatePrefabForComponent<HMUI::TextSegmentedControl*>(template, parent);
         auto gameObject = textSegmentedControl->get_gameObject();
+
         gameObject->set_name("BSMLTabSelector");
         textSegmentedControl->_container = get_tabSelectorTagTemplate()->_container;
 
