@@ -8,7 +8,7 @@
 #include "TMPro/TMP_Text.hpp"
 
 // type borrowed from https://github.com/darknight1050/QuestUI
-DECLARE_CLASS_CODEGEN_EXPORT(BSML, ProgressBar, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, ProgressBar, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_METHOD(void, OnDisable);
     DECLARE_INSTANCE_METHOD(void, Awake);
     DECLARE_INSTANCE_METHOD(void, Update);

@@ -15,7 +15,7 @@
 
 #include "beatsaber-hook/shared/utils/typedefs-wrappers.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES_EXPORT(BSML, ClickableText, HMUI::CurvedTextMeshPro, std::vector<Il2CppClass*>({classof(UnityEngine::EventSystems::IPointerClickHandler*), classof(UnityEngine::EventSystems::IPointerEnterHandler*), classof(UnityEngine::EventSystems::IPointerExitHandler*), classof(UnityEngine::EventSystems::IEventSystemHandler*)}),
+DECLARE_CLASS_CODEGEN_INTERFACES(BSML, ClickableText, HMUI::CurvedTextMeshPro, std::vector<Il2CppClass*>({classof(UnityEngine::EventSystems::IPointerClickHandler*), classof(UnityEngine::EventSystems::IPointerEnterHandler*), classof(UnityEngine::EventSystems::IPointerExitHandler*), classof(UnityEngine::EventSystems::IEventSystemHandler*)}),
     DECLARE_INSTANCE_METHOD(void, set_highlightColor, UnityEngine::Color color);
     DECLARE_INSTANCE_METHOD(UnityEngine::Color, get_highlightColor);
     DECLARE_INSTANCE_METHOD(void, set_defaultColor, UnityEngine::Color color);

@@ -8,7 +8,7 @@
 #include "HMUI/SelectableCell.hpp"
 #include "GlobalNamespace/AnnotatedBeatmapLevelCollectionCell.hpp"
 
-DECLARE_CLASS_CODEGEN_EXPORT(BSML, BoxTableCell, HMUI::TableCell,
+DECLARE_CLASS_CODEGEN(BSML, BoxTableCell, HMUI::TableCell,
     DECLARE_INSTANCE_FIELD(HMUI::ImageView*, coverImage);
     DECLARE_INSTANCE_FIELD(HMUI::ImageView*, selectionImage);
     DECLARE_INSTANCE_FIELD(UnityEngine::Color, selectedColor0);

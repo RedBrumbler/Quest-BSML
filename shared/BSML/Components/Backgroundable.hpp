@@ -4,7 +4,7 @@
 #include "UnityEngine/MonoBehaviour.hpp"
 #include "HMUI/ImageView.hpp"
 
-DECLARE_CLASS_CODEGEN_EXPORT(BSML, Backgroundable, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, Backgroundable, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(HMUI::ImageView*, background);
     
     DECLARE_INSTANCE_METHOD(void, ApplyBackground, StringW name);

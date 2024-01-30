@@ -10,7 +10,7 @@ namespace BSML {
     class AnimationStateUpdater;
 }
 
-DECLARE_CLASS_CODEGEN_EXPORT(BSML, AnimationControllerData, System::Object,
+DECLARE_CLASS_CODEGEN(BSML, AnimationControllerData, System::Object,
     DECLARE_INSTANCE_FIELD(UnityEngine::Sprite*, sprite);
     DECLARE_INSTANCE_FIELD(int, uvIndex);
     DECLARE_INSTANCE_FIELD(ArrayW<UnityEngine::Rect>, uvs);

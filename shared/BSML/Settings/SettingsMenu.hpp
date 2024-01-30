@@ -7,7 +7,7 @@
 #include "../Parsing/BSMLParserParams.hpp"
 #include "../MenuSource.hpp"
 
-DECLARE_CLASS_CUSTOM_EXPORT(BSML, SettingsMenu, CustomCellInfo,
+DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo,
     public:
         DECLARE_INSTANCE_FIELD(StringW, name);
         DECLARE_INSTANCE_FIELD(StringW, content_key);

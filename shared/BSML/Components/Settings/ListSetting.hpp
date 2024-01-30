@@ -3,7 +3,7 @@
 #include "custom-types/shared/macros.hpp"
 #include "IncDecSetting.hpp"
 
-DECLARE_CLASS_CUSTOM_EXPORT(BSML, ListSetting, BSML::IncDecSetting,
+DECLARE_CLASS_CUSTOM(BSML, ListSetting, BSML::IncDecSetting,
     DECLARE_INSTANCE_METHOD(void, Setup);
     DECLARE_INSTANCE_METHOD(void, IncButtonPressed);
     DECLARE_INSTANCE_METHOD(void, DecButtonPressed);

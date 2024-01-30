@@ -8,7 +8,7 @@
 #include "Tab.hpp"
 #include "../Parsing/BSMLParserParams.hpp"
 
-DECLARE_CLASS_CODEGEN_EXPORT(BSML, TabSelector, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, TabSelector, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(HMUI::TextSegmentedControl*, textSegmentedControl);
     DECLARE_INSTANCE_FIELD(StringW, tabTag);
     DECLARE_INSTANCE_FIELD(StringW, leftButtonTag);

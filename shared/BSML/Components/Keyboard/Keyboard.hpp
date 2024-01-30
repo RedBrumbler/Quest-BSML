@@ -8,7 +8,7 @@
 #include "Key.hpp"
 #include <functional>
 
-DECLARE_CLASS_CODEGEN_EXPORT(BSML, Keyboard, System::Object,
+DECLARE_CLASS_CODEGEN(BSML, Keyboard, System::Object,
     DECLARE_INSTANCE_FIELD(ListW<Key*>, keys);
     DECLARE_INSTANCE_FIELD(Key*, dummy);
 

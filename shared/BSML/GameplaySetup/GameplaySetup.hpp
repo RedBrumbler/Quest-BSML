@@ -11,7 +11,7 @@
 #include "GameplaySetupCell.hpp"
 #include "MenuType.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES_EXPORT(BSML, GameplaySetup, System::Object, classof(HMUI::TableView::IDataSource*),
+DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, System::Object, classof(HMUI::TableView::IDataSource*),
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::LayoutGroup*, layoutGroup);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::GameplaySetupViewController*, gameplaySetupViewController);
     DECLARE_INSTANCE_FIELD(bool, listParsed);

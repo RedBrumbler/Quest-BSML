@@ -4,7 +4,7 @@
 #include "SliderSettingBase.hpp"
 #include <map>
 
-DECLARE_CLASS_CUSTOM_EXPORT(BSML, ListSliderSetting, BSML::SliderSettingBase,
+DECLARE_CLASS_CUSTOM(BSML, ListSliderSetting, BSML::SliderSettingBase,
     DECLARE_INSTANCE_METHOD(void, Setup);
     DECLARE_INSTANCE_METHOD(void, OnDestroy);
     DECLARE_INSTANCE_METHOD(void, ReceiveValue);

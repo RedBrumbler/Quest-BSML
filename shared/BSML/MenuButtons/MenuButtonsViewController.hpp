@@ -4,7 +4,7 @@
 #include "HMUI/ViewController.hpp"
 #include "UnityEngine/Transform.hpp"
 
-DECLARE_CLASS_CODEGEN_EXPORT(BSML, MenuButtonsViewController, HMUI::ViewController,
+DECLARE_CLASS_CODEGEN(BSML, MenuButtonsViewController, HMUI::ViewController,
     DECLARE_INSTANCE_FIELD(ListW<System::Object*>, buttons);
     DECLARE_INSTANCE_FIELD(UnityEngine::Transform*, root);
     DECLARE_INSTANCE_METHOD(bool, get_anyButtons);

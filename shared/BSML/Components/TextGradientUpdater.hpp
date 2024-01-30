@@ -38,7 +38,7 @@ namespace BSML {
     };
 }
 
-DECLARE_CLASS_CODEGEN_EXPORT(BSML, TextGradientUpdater, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, TextGradientUpdater, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(TMPro::TMP_Text*, text);
     DECLARE_INSTANCE_FIELD(float, scrollSpeed);
     DECLARE_INSTANCE_FIELD(float, scrollRepeat);

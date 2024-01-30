@@ -13,7 +13,7 @@ namespace BSML {
     class FloatingScreen;
 }
 
-DECLARE_CLASS_CODEGEN_EXPORT(BSML, FloatingScreenMoverPointer, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, FloatingScreenMoverPointer, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(VRUIControls::VRPointer*, _vrPointer);
     DECLARE_INSTANCE_FIELD(UnityEngine::Transform*, _screenHandle);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::VRController*, _grabbingController);
