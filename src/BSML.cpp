@@ -6,10 +6,16 @@
 #include "BSML/FlowCoordinators/MainMenuHolderFlowCoordinator.hpp"
 
 extern "C" void load();
+extern "C" void late_load();
 
 namespace BSML {
     void Init() {
         load();
+    }
+
+    void LateInit() {
+        load();
+        late_load();
     }
 
     std::shared_ptr<BSMLParser> parse(std::string_view str) {

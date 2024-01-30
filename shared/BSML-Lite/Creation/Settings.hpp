@@ -32,7 +32,7 @@ namespace BSML::Lite {
     /// @param onValueChange callback ran when the value changes
     /// @return the created string setting
     static inline HMUI::InputFieldView* CreateStringSetting(const TransformWrapper& parent, StringW settingsName, StringW currentValue, UnityEngine::Vector2 anchoredPosition, std::function<void(StringW)> onValueChange = nullptr) {
-        return CreateStringSetting(parent, settingsName, currentValue, anchoredPosition, {1337, 1337, 1337}, onValueChange);
+        return CreateStringSetting(parent, settingsName, currentValue, anchoredPosition, {0, 0, 0}, onValueChange);
     }
 
     /// @brief creates a string setting allowing users to input a string with a keyboard
@@ -42,7 +42,7 @@ namespace BSML::Lite {
     /// @param onValueChange callback ran when the value changes
     /// @return the created string setting
     static inline HMUI::InputFieldView* CreateStringSetting(const TransformWrapper& parent, StringW settingsName, StringW currentValue, std::function<void(StringW)> onValueChange = nullptr) {
-        return CreateStringSetting(parent, settingsName, currentValue, {}, {1337, 1337, 1337}, onValueChange);
+        return CreateStringSetting(parent, settingsName, currentValue, {}, {0, 0, 0}, onValueChange);
     }
 
     /// @brief Creates a toggle that looks like the modifier buttons seen in the gameplay setup menu
@@ -161,6 +161,20 @@ namespace BSML::Lite {
     /// @param onValueChange callback called after the user has not interacted with the slider for applyValueTime
     /// @return the created slider
     BSML::SliderSetting* CreateSliderSetting(const TransformWrapper& parent, StringW label, float increment, float currentValue, float minValue, float maxValue, float applyValueTime, UnityEngine::Vector2 anchoredPosition, std::function<void(float)> onValueChange = nullptr);
+
+    /// @brief Creates a slider setting
+    /// @param parent what to parent it to
+    /// @param text the text displayed in front to let the user know what they are editing
+    /// @param increment the increment each "tick" should do
+    /// @param currentValue the initial value it should be
+    /// @param minValue the minimum value for the slider
+    /// @param maxValue the maximum value for the slider
+    /// @param applyValueTime the amount of seconds to wait after the user stopped interacting to call the callback
+    /// @param showButtons whether to show the buttons
+    /// @param anchoredPosition the position
+    /// @param onValueChange callback called after the user has not interacted with the slider for applyValueTime
+    /// @return the created slider
+    BSML::SliderSetting* CreateSliderSetting(const TransformWrapper& parent, StringW label, float increment, float currentValue, float minValue, float maxValue, float applyValueTime, bool showButtons, UnityEngine::Vector2 anchoredPosition, std::function<void(float)> onValueChange = nullptr);
 
     /// @brief Creates a slider setting
     /// @param parent what to parent it to

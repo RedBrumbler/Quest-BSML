@@ -9,6 +9,7 @@
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 #include "HMUI/TextSegmentedControl.hpp"
 #include "HMUI/ScrollView.hpp"
+#include "TMPro/TextMeshProUGUI.hpp"
 
 using namespace TMPro;
 using namespace HMUI;
@@ -20,6 +21,30 @@ using namespace GlobalNamespace;
 #define CacheNotFoundWarningLog(type) WARNING("Can't find '{}'! (This shouldn't happen and can cause unexpected behaviour)", #type)
 
 namespace BSML::Helpers {
+    SafePtr<UnityEngine::UI::Button> soloButton;
+    bool TryGetSoloButton(UnityEngine::UI::Button*& button) {
+        if(!soloButton) {
+            auto container = GetDiContainer();
+            soloButton = container->Resolve<MainMenuViewController*>()->_soloButton;
+        }
+        if(!soloButton)
+            CacheNotFoundWarningLog(PhysicsRaycasterWithCache);
+
+        button = soloButton.ptr();
+        return button != nullptr;
+    }
+
+    bool TryGetUITextTemplate(TMPro::TextMeshProUGUI*& textMesh) {
+        UnityEngine::UI::Button* soloButton;
+        if (!TryGetSoloButton(soloButton)) {
+            textMesh = nullptr;
+            return false;
+        }
+
+        textMesh = soloButton->transform->Find("Text")->GetComponent<TMPro::TextMeshProUGUI*>();
+        return textMesh;
+    }
+
     SafePtr<PhysicsRaycasterWithCache> physicsRaycaster;
     PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache()
     {
@@ -62,8 +87,11 @@ namespace BSML::Helpers {
 
     SafePtrUnity<TMP_FontAsset> mainTextFont;
     TMP_FontAsset* GetMainTextFont() {
-        if (!mainTextFont)
-            mainTextFont = Resources::FindObjectsOfTypeAll<TMP_FontAsset*>()->FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF"; });
+        TMPro::TextMeshProUGUI* textMesh;
+        if (!mainTextFont && TryGetUITextTemplate(textMesh)) {
+            mainTextFont = textMesh->font;
+            mainTextFont->boldSpacing = 2.2f;
+        }
         if(!mainTextFont)
             CacheNotFoundWarningLog(TMP_FontAsset);
         return mainTextFont.ptr();
@@ -71,8 +99,10 @@ namespace BSML::Helpers {
 
     SafePtrUnity<Material> mainUIFontMaterial;
     Material* GetMainUIFontMaterial() {
-        if (!mainUIFontMaterial)
-            mainUIFontMaterial = Resources::FindObjectsOfTypeAll<Material*>()->FirstOrDefault([](auto x){ return x->get_name() == "Teko-Medium SDF Curved Softer"; });
+        TMPro::TextMeshProUGUI* textMesh;
+        if (!mainUIFontMaterial && TryGetUITextTemplate(textMesh)) {
+            mainUIFontMaterial = textMesh->fontSharedMaterial;
+        }
         if(!mainUIFontMaterial)
             CacheNotFoundWarningLog(Material);
         return mainUIFontMaterial.ptr();

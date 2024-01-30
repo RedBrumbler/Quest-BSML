@@ -17,8 +17,11 @@
 #include <functional>
 
 namespace BSML {
-    /// @brief Intialize BSML for it's hooks
+    /// @brief Intialize BSML for its hooks
     void Init();
+
+    /// @brief Intialize BSML late init stuff
+    void LateInit();
 
     /// @brief parse a string containing a BSML doc
     /// @return BSMLNode pointer to parsed hierarchy

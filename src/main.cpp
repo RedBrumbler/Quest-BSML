@@ -36,6 +36,7 @@ extern "C" void setup(CModInfo* info) {
 }
 
 static bool isLoaded = false;
+static bool isLateLoaded = false;
 
 extern "C" void load() {
     if (isLoaded) return;
@@ -54,6 +55,8 @@ static constexpr inline UnityEngine::HideFlags operator |(UnityEngine::HideFlags
 }
 
 extern "C" void late_load() {
+    if (isLateLoaded) return;
+    isLateLoaded = true;
     // late load is on main thread and really early, great time to setup these singletons
     auto mts = UnityEngine::GameObject::New_ctor("BSMLMainThreadScheduler");
     UnityEngine::Object::DontDestroyOnLoad(mts);
