@@ -4,7 +4,7 @@
 #include "HMUI/CustomFormatRangeValuesSlider.hpp"
 #include <map>
 
-DECLARE_CLASS_CUSTOM(BSML, SliderSetting, BSML::SliderSettingBase,
+DECLARE_CLASS_CUSTOM_EXPORT(BSML, SliderSetting, BSML::SliderSettingBase,
     DECLARE_INSTANCE_FIELD(bool, isInt);        /* default: false;                                      */
     DECLARE_INSTANCE_FIELD(float, increments);  /* default: 1;                                          */
     DECLARE_INSTANCE_FIELD(float, lastValue);   /* default: -std::numeric_limits<float>::infinity();    */

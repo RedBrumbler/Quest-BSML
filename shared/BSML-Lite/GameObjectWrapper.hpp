@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../_config.h"
 #include "beatsaber-hook/shared/utils/typedefs.h"
 #include "beatsaber-hook/shared/utils/type-concepts.hpp"
 #include "UnityEngine/GameObject.hpp"
@@ -14,7 +15,7 @@ namespace BSML::Lite {
     };
 
     /// @brief A wrapper for transforms, components and gameobjects to automatically be converted into a gameObject
-    struct GameObjectWrapper {
+    struct BSML_EXPORT GameObjectWrapper {
         constexpr GameObjectWrapper(UnityEngine::GameObject* gameObject) noexcept : gameObject(gameObject) {}
 
         template<has_gameObject T>

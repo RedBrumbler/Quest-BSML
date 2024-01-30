@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../../_config.h"
 #include "../TypeHandler.hpp"
 #include "../../Components/Settings/DropdownListSetting.hpp"
 
 namespace BSML {
-    class DropdownListSettingHandler : public TypeHandler<BSML::DropdownListSetting*> {
+    class BSML_EXPORT DropdownListSettingHandler : public TypeHandler<BSML::DropdownListSetting*> {
         public:
             using Base = TypeHandler<BSML::DropdownListSetting*>;
             DropdownListSettingHandler() : Base() {}

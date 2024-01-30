@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../_config.h"
 #include "../TransformWrapper.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "TMPro/TextRenderFlags.hpp"
@@ -16,7 +17,7 @@ namespace BSML::Lite {
     /// @param anchoredPosition position of the anchor relative to the parent
     /// @param sizeDelta how much smaller this thing is relative to the parent
     /// @return The created text
-    HMUI::CurvedTextMeshPro* CreateText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, float fontSize, UnityEngine::Vector2 anchoredPosition = {}, UnityEngine::Vector2 sizeDelta = {});
+    BSML_EXPORT HMUI::CurvedTextMeshPro* CreateText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, float fontSize, UnityEngine::Vector2 anchoredPosition = {}, UnityEngine::Vector2 sizeDelta = {});
 
     /// @brief Creates text which is parented to the passed parent
     /// @param parent parent transform to parent text to
@@ -59,7 +60,7 @@ namespace BSML::Lite {
     /// @param sizeDelta how much smaller this thing is relative to the parent
     /// @param onClick what gets ran when it is clicked
     /// @return The created text
-    BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, float fontSize, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::function<void()> onClick = nullptr);
+    BSML_EXPORT BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, float fontSize, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::function<void()> onClick = nullptr);
 
     /// @brief Creates Clickable text which is parented to the passed parent
     /// @param parent parent transform to parent text to

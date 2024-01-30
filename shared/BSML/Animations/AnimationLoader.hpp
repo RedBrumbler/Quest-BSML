@@ -8,7 +8,7 @@
 #include "custom-types/shared/coroutine.hpp"
 
 
-DECLARE_CLASS_CODEGEN(BSML, AnimationLoader, System::Object,
+DECLARE_CLASS_CODEGEN_EXPORT(BSML, AnimationLoader, System::Object,
     public:
         enum class AnimationType {
             GIF,

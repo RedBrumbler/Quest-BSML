@@ -1,12 +1,13 @@
 #pragma once
 
+#include "./_config.h"
 #include <string>
 #include "beatsaber-hook/shared/utils/typedefs.h"
 #include "UnityEngine/Color.hpp"
 #include "UnityEngine/Color32.hpp"
 
 
-struct StringParseHelper : std::string_view {
+struct BSML_EXPORT StringParseHelper : std::string_view {
     // pass the normal constructors through to the base, these are the only ones we need
     StringParseHelper(const std::string_view& str) : std::string_view(str) {}
     StringParseHelper(const char* str) : std::string_view(str) {}
@@ -47,27 +48,27 @@ struct StringParseHelper : std::string_view {
 
     /* -- parsing methods -- */
     /// @brief try to parse a bool
-    /// @return optional containing bool value, or nullopt if invalid bool string 
+    /// @return optional containing bool value, or nullopt if invalid bool string
     std::optional<bool> tryParseBool() const;
 
     /// @brief try to parse an int
-    /// @return optional containing int value, or nullopt if invalid int string 
+    /// @return optional containing int value, or nullopt if invalid int string
     std::optional<int> tryParseInt() const;
 
     /// @brief try to parse a float
-    /// @return optional containing float value, or nullopt if invalid float string 
+    /// @return optional containing float value, or nullopt if invalid float string
     std::optional<float> tryParseFloat() const;
 
     /// @brief try to parse a double
-    /// @return optional containing double value, or nullopt if invalid double string 
+    /// @return optional containing double value, or nullopt if invalid double string
     std::optional<double> tryParseDouble() const;
 
     /// @brief try to parse a color
-    /// @return optional containing color value, or nullopt if invalid color string 
+    /// @return optional containing color value, or nullopt if invalid color string
     std::optional<UnityEngine::Color> tryParseColor() const;
 
     /// @brief try to parse a color32
-    /// @return optional containing color32 value, or nullopt if invalid color string 
+    /// @return optional containing color32 value, or nullopt if invalid color string
     std::optional<UnityEngine::Color32> tryParseColor32() const;
 
     /* -- reflection methods -- */
@@ -76,7 +77,7 @@ struct StringParseHelper : std::string_view {
     /// @param argCount amount of args for the expected method
     /// @return method info for the method this string view would point to on host klass, nullptr if not found or wrong argCount
     const MethodInfo* asMethodInfo(System::Object* host, int argCount = 0) const;
-    
+
     /// @brief use the string for a setter lookup in host->klass
     /// @param host the object in which' klass to look for a method
     /// @return method info for the setter this string view would point to on host klass, nullptr if not found

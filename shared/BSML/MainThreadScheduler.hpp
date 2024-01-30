@@ -5,7 +5,7 @@
 #include "UnityEngine/MonoBehaviour.hpp"
 #include <queue>
 
-DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN_EXPORT(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
     private:
         static std::queue<std::function<void()>> scheduledMethods;
         static std::mutex scheduledMethodsMutex;

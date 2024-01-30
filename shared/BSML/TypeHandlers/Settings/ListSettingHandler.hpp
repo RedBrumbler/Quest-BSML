@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../../_config.h"
 #include "../TypeHandler.hpp"
 #include "../../Components/Settings/ListSetting.hpp"
 
 namespace BSML {
-    class ListSettingHandler : public TypeHandler<BSML::ListSetting*> {
+    class BSML_EXPORT ListSettingHandler : public TypeHandler<BSML::ListSetting*> {
         public:
             using Base = TypeHandler<BSML::ListSetting*>;
             ListSettingHandler() : Base() {}

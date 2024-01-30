@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "../Components/PageButton.hpp"
 
 namespace BSML {
-    class PageButtonHandler : public TypeHandler<BSML::PageButton*> {
+    class BSML_EXPORT PageButtonHandler : public TypeHandler<BSML::PageButton*> {
         public:
             using Base = TypeHandler<BSML::PageButton*>;
             PageButtonHandler() : Base() {}

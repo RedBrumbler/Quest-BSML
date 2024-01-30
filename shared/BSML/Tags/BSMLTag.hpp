@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../_config.h"
 #include <vector>
 #include "tinyxml2/shared/tinyxml2.h"
 #include "beatsaber-hook/shared/utils/typedefs.h"
@@ -14,7 +15,7 @@ namespace BSML {
     class BSMLNodeParserBase;
     class BSMLDocParser;
 
-    class BSMLTag : public BSMLNode {
+    class BSML_EXPORT BSMLTag : public BSMLNode {
         public:
             BSMLTag();
 

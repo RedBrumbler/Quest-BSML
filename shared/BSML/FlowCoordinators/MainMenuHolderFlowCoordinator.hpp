@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../_config.h"
 #include "custom-types/shared/macros.hpp"
 #include "custom-types/shared/coroutine.hpp"
 #include "HMUI/FlowCoordinator.hpp"
@@ -12,7 +13,7 @@ namespace BSML {
         void AddMainMenuRegistration(MainMenuRegistration* reg);
     }
 
-    class MainMenuRegistration {
+    class BSML_EXPORT MainMenuRegistration {
         public:
             MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const System::Type* csType, const MenuSource registrationType);
             MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const std::function<void(HMUI::ViewController*, bool, bool, bool)> setupFunc);
@@ -45,7 +46,7 @@ namespace BSML {
     };
 }
 
-DECLARE_CLASS_CODEGEN(BSML, MainMenuHolderFlowCoordinator, HMUI::FlowCoordinator,
+DECLARE_CLASS_CODEGEN_EXPORT(BSML, MainMenuHolderFlowCoordinator, HMUI::FlowCoordinator,
     DECLARE_INSTANCE_FIELD(HMUI::ViewController*, placeholder);
     DECLARE_OVERRIDE_METHOD_MATCH(void, DidActivate, &HMUI::FlowCoordinator::DidActivate, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
     DECLARE_OVERRIDE_METHOD_MATCH(void, BackButtonWasPressed, &HMUI::FlowCoordinator::BackButtonWasPressed, HMUI::ViewController* topViewController);

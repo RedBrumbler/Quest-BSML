@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "../Components/Backgroundable.hpp"
 
 namespace BSML {
-    class BackgroundableHandler : public TypeHandler<Backgroundable*> {
+    class BSML_EXPORT BackgroundableHandler : public TypeHandler<Backgroundable*> {
         public:
             using Base = TypeHandler<Backgroundable*>;
             BackgroundableHandler() : Base() {}

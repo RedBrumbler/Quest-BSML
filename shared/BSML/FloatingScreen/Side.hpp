@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 
 namespace BSML {
-    enum class Side {
+    enum class BSML_EXPORT Side {
         Left,
         Right,
         Bottom,

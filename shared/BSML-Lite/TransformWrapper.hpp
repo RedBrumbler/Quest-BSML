@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../_config.h"
 #include "beatsaber-hook/shared/utils/typedefs.h"
 #include "beatsaber-hook/shared/utils/type-concepts.hpp"
 #include "UnityEngine/RectTransform.hpp"
@@ -14,7 +15,7 @@ namespace BSML::Lite {
     };
 
     /// @brief A wrapper for transforms, components and gameobjects to automatically be converted into a transform
-    struct TransformWrapper {
+    struct BSML_EXPORT TransformWrapper {
         constexpr TransformWrapper(UnityEngine::RectTransform* transform) noexcept : transform(transform) {}
         constexpr TransformWrapper(UnityEngine::Transform* transform) noexcept : transform(transform) {}
 

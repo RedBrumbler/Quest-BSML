@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "../Components/TabSelector.hpp"
 
 namespace BSML {
-    class TabSelectorHandler : public TypeHandler<BSML::TabSelector*> {
+    class BSML_EXPORT TabSelectorHandler : public TypeHandler<BSML::TabSelector*> {
         public:
             using Base = TypeHandler<BSML::TabSelector*>;
             TabSelectorHandler() : Base() {}

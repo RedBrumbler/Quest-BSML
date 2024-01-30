@@ -21,7 +21,7 @@ set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # stop symbol leaking
 add_link_options(-Wl,--exclude-libs,ALL)
 # compile options used
-add_compile_options(-frtti -fPIE -fPIC -fexceptions -fdeclspec)
+add_compile_options(-frtti -fPIE -fPIC -fexceptions -fdeclspec -fvisibility=hidden)
 
 # get git info
 execute_process(COMMAND git config user.name OUTPUT_VARIABLE GIT_USER)

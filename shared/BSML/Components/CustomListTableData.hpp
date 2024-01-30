@@ -16,7 +16,7 @@ namespace GlobalNamespace {
     using LevelPackCell = AnnotatedBeatmapLevelCollectionCell;
 }
 
-DECLARE_CLASS_CODEGEN(BSML, CustomCellInfo, System::Object,
+DECLARE_CLASS_CODEGEN_EXPORT(BSML, CustomCellInfo, System::Object,
         DECLARE_INSTANCE_FIELD(StringW, text);
         DECLARE_INSTANCE_FIELD(StringW, subText);
         DECLARE_INSTANCE_FIELD(UnityEngine::Sprite*, icon);
@@ -27,7 +27,7 @@ DECLARE_CLASS_CODEGEN(BSML, CustomCellInfo, System::Object,
         static CustomCellInfo* construct(StringW text, StringW subText = nullptr, UnityEngine::Sprite* icon = nullptr);
 )
 
-DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomListTableData, UnityEngine::MonoBehaviour, classof(HMUI::TableView::IDataSource*),
+DECLARE_CLASS_CODEGEN_INTERFACES_EXPORT(BSML, CustomListTableData, UnityEngine::MonoBehaviour, classof(HMUI::TableView::IDataSource*),
 
     /* pls no touchy raw listStyle if you value your sanity */
     DECLARE_INSTANCE_FIELD(int, _listStyle);

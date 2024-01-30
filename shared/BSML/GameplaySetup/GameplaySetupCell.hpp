@@ -7,7 +7,7 @@
 #include "GameplaySetupMenu.hpp"
 #include "../Components/Settings/ToggleSetting.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, GameplaySetupCell, HMUI::TableCell,
+DECLARE_CLASS_CODEGEN_EXPORT(BSML, GameplaySetupCell, HMUI::TableCell,
     DECLARE_INSTANCE_FIELD(GameplaySetupMenu*, tab);
     DECLARE_INSTANCE_FIELD(ToggleSetting*, toggle);
 

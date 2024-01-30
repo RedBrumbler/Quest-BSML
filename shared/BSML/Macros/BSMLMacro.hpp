@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "../Parsing/BSMLNode.hpp"
 #include <map>
 
 namespace BSML {
-    class BSMLMacro : public BSMLNode {
+    class BSML_EXPORT BSMLMacro : public BSMLNode {
         public:
             BSMLMacro();
             using PropMap = std::map<std::string, std::vector<std::string>>;

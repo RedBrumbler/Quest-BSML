@@ -1,11 +1,12 @@
 #pragma once
 
+#include "../../_config.h"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 #include "System/Object.hpp"
 #include <map>
 
 namespace BSML {
-    struct BSMLValue {
+    struct BSML_EXPORT BSMLValue {
         std::string name;
         System::Object* host;
 

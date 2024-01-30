@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "ButtonTag.hpp"
 
 namespace BSML {
-    class PrimaryButtonTag : public ButtonTag {
+    class BSML_EXPORT PrimaryButtonTag : public ButtonTag {
         private:
             using Base = ButtonTag;
         public:

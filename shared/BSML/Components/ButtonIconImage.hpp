@@ -5,7 +5,7 @@
 #include "UnityEngine/UI/Image.hpp"
 #include "UnityEngine/Sprite.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, ButtonIconImage, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN_EXPORT(BSML, ButtonIconImage, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Image*, image);
 
     public:

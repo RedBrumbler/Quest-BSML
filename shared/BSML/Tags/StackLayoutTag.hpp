@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class StackLayoutTag : public BSMLTag {
+    class BSML_EXPORT StackLayoutTag : public BSMLTag {
         public:
             StackLayoutTag() : BSMLTag() {}
         protected:

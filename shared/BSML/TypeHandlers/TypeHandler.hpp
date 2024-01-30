@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../_config.h"
 #include "../../StringParseHelper.hpp"
 #include "../ComponentTypeWithData.hpp"
 #include "../Parsing/BSMLParserParams.hpp"
@@ -16,7 +17,7 @@
 #endif
 
 namespace BSML {
-    class TypeHandlerBase {
+    class BSML_EXPORT TypeHandlerBase {
         public:
             TypeHandlerBase() { RegisterTypeHandler(this); }
             ~TypeHandlerBase() { UnRegisterTypeHandler(this); }
@@ -53,7 +54,7 @@ namespace BSML {
 
     template<typename T>
     requires(std::is_convertible_v<T, UnityEngine::Component*>)
-    class TypeHandler : public TypeHandlerBase {
+    class BSML_EXPORT TypeHandler : public TypeHandlerBase {
         public:
             TypeHandler() : TypeHandlerBase() {};
 

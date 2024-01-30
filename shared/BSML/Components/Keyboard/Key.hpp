@@ -9,7 +9,7 @@ namespace BSML {
     class Keyboard;
 }
 
-DECLARE_CLASS_CODEGEN(BSML, Key, System::Object,
+DECLARE_CLASS_CODEGEN_EXPORT(BSML, Key, System::Object,
     DECLARE_INSTANCE_FIELD(StringW, name);
     DECLARE_INSTANCE_FIELD(StringW, value);
     DECLARE_INSTANCE_FIELD(StringW, shifted);

@@ -16,7 +16,7 @@
 #include "FloatingScreenHandleEventArgs.hpp"
 #include "Side.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, FloatingScreen, HMUI::Screen,
+DECLARE_CLASS_CODEGEN_EXPORT(BSML, FloatingScreen, HMUI::Screen,
     DECLARE_INSTANCE_FIELD(FloatingScreenMoverPointer*, screenMover);
     DECLARE_INSTANCE_FIELD(UnityEngine::GameObject*, handle);
 

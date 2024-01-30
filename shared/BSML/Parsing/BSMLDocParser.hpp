@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLParserParams.hpp"
 #include "tinyxml2/shared/tinyxml2.h"
 #include <map>
@@ -8,7 +9,7 @@
 namespace BSML {
     class BSMLNode;
     class BSMLNodeParserBase;
-    class BSMLDocParser {
+    class BSML_EXPORT BSMLDocParser {
         public:
             static void RegisterTag(BSMLNodeParserBase* parser);
             static void UnRegisterTag(BSMLNodeParserBase* parser);

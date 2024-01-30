@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "ModalTag.hpp"
 
 namespace BSML {
-    class ModalKeyboardTag : public ModalTag {
+    class BSML_EXPORT ModalKeyboardTag : public ModalTag {
         public:
             ModalKeyboardTag() : ModalTag() {}
         protected:

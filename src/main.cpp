@@ -1,6 +1,7 @@
 #include "BSML/MainThreadScheduler.hpp"
 #include "scotland2/shared/loader.hpp"
 #include "beatsaber-hook/shared/utils/typedefs.h"
+#include "_config.h"
 #include "hooking.hpp"
 #include "logging.hpp"
 
@@ -27,7 +28,7 @@ namespace BSML {
     }
 }
 
-extern "C" void setup(CModInfo* info) {
+BSML_EXPORT_FUNC void setup(CModInfo* info) {
     info->version = VERSION;
     info->id = MOD_ID;
     info->version_long = GIT_COMMIT;
@@ -38,7 +39,7 @@ extern "C" void setup(CModInfo* info) {
 static bool isLoaded = false;
 static bool isLateLoaded = false;
 
-extern "C" void load() {
+BSML_EXPORT_FUNC void load() {
     if (isLoaded) return;
     isLoaded = true;
 
@@ -54,7 +55,7 @@ static constexpr inline UnityEngine::HideFlags operator |(UnityEngine::HideFlags
     return UnityEngine::HideFlags(a.value__ | b.value__);
 }
 
-extern "C" void late_load() {
+BSML_EXPORT_FUNC void late_load() {
     if (isLateLoaded) return;
     isLateLoaded = true;
     // late load is on main thread and really early, great time to setup these singletons

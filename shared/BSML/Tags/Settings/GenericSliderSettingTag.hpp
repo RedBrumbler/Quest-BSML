@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../../_config.h"
 #include "../BSMLTag.hpp"
 #include "../../Components/Settings/SliderSettingBase.hpp"
 
 namespace BSML {
-    class GenericSliderSettingTagBase : public BSMLTag {
+    class BSML_EXPORT GenericSliderSettingTagBase : public BSMLTag {
         public:
             GenericSliderSettingTagBase() : BSMLTag() {}
         protected:
@@ -14,7 +15,7 @@ namespace BSML {
 
     template<typename T>
     requires(std::is_convertible_v<T, ::BSML::SliderSettingBase*>)
-    class GenericSliderSettingTag : public GenericSliderSettingTagBase {
+    class BSML_EXPORT GenericSliderSettingTag : public GenericSliderSettingTagBase {
         public:
             GenericSliderSettingTag() : GenericSliderSettingTagBase() {}
         protected:

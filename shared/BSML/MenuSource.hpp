@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../_config.h"
 #include "beatsaber-hook/shared/utils/il2cpp-type-check.hpp"
+
 namespace BSML {
-    enum class MenuSource {
+    enum class BSML_EXPORT MenuSource {
         BSMLContent,
         FlowCoordinator,
         ViewController,

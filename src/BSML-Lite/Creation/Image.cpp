@@ -56,7 +56,7 @@ namespace BSML::Lite {
         il2cpp_array_size_t size = instream.tellg();
         instream.seekg(0, instream.beg);
         ArrayW<uint8_t> bytes(size);
-        instream.read(reinterpret_cast<char*>(bytes->values), size);
+        instream.read(reinterpret_cast<char*>(bytes->_values), size);
         return ArrayToSprite(bytes);
     }
 
@@ -74,7 +74,7 @@ namespace BSML::Lite {
 
     UnityEngine::Sprite* VectorToSprite(const std::vector<uint8_t>& bytes) {
         ArrayW<uint8_t> arr(il2cpp_array_size_t(bytes.size()));
-        std::memcpy(arr->values, bytes.data(), bytes.size());
+        std::memcpy(arr->_values, bytes.data(), bytes.size());
         return ArrayToSprite(arr);
     }
 

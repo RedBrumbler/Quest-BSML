@@ -1,7 +1,8 @@
 #pragma once
 
+#include "../_config.h"
 #include "UnityEngine/UI/Button.hpp"
 
 namespace BSML::Helpers {
-    void SetButtonText(UnityEngine::UI::Button* button, StringW text);
+    BSML_EXPORT void SetButtonText(UnityEngine::UI::Button* button, StringW text);
 }

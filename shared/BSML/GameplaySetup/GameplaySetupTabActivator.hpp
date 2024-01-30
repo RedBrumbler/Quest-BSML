@@ -4,7 +4,7 @@
 #include "UnityEngine/MonoBehaviour.hpp"
 #include "../MenuSource.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, GameplaySetupTabActivator, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN_EXPORT(BSML, GameplaySetupTabActivator, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(MenuSource, menuSource);
     DECLARE_INSTANCE_FIELD(UnityEngine::MonoBehaviour*, mb);
     DECLARE_INSTANCE_FIELD(bool, _activatedBefore);

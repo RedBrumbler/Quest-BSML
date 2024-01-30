@@ -8,7 +8,7 @@
 
 namespace BSML {
     class TypeHandlerBase;
-    struct ComponentTypeWithData {
+    struct BSML_EXPORT ComponentTypeWithData {
         public:
             TypeHandlerBase* typeHandler;
             UnityEngine::Component* component;

@@ -6,7 +6,7 @@
 #include "HMUI/DropdownWithTableView.hpp"
 #include "HMUI/SimpleTextDropdown.hpp"
 
-DECLARE_CLASS_CUSTOM(BSML, DropdownListSetting, BSML::BaseSetting,
+DECLARE_CLASS_CUSTOM_EXPORT(BSML, DropdownListSetting, BSML::BaseSetting,
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(HMUI::SimpleTextDropdown*, dropdown);
     DECLARE_INSTANCE_FIELD(ListW<System::Object*>, values);

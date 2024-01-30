@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../_config.h"
 #include "../GameObjectWrapper.hpp"
 #include "../TransformWrapper.hpp"
 #include "HMUI/HoverHint.hpp"
@@ -12,7 +13,7 @@ namespace BSML::Lite {
     /// @param gameObject the object to add it to
     /// @param text the text to display
     /// @return the created hoverhint
-    HMUI::HoverHint* AddHoverHint(const GameObjectWrapper& parent, StringW text);
+    BSML_EXPORT HMUI::HoverHint* AddHoverHint(const GameObjectWrapper& parent, StringW text);
 
     /// @brief creates a floating screen
     /// @param screenSize the size of the screen
@@ -23,7 +24,7 @@ namespace BSML::Lite {
     /// @param createHandle whether there should be a handle
     /// @param handleSide side of the handle
     /// @return created object to parent to
-    BSML::FloatingScreen* CreateFloatingScreen(UnityEngine::Vector2 screenSize, UnityEngine::Vector3 position, UnityEngine::Vector3 rotation, float curvatureRadius = 0.0f, bool hasBackground = true, bool createHandle = true, BSML::Side handleSide = BSML::Side::Full);
+    BSML_EXPORT BSML::FloatingScreen* CreateFloatingScreen(UnityEngine::Vector2 screenSize, UnityEngine::Vector3 position, UnityEngine::Vector3 rotation, float curvatureRadius = 0.0f, bool hasBackground = true, bool createHandle = true, BSML::Side handleSide = BSML::Side::Full);
 
     /// @brief creates a popup rainbow loading bar thats not attatched to any UI
     /// @param position bars position
@@ -33,7 +34,7 @@ namespace BSML::Lite {
     /// @param subText1 subtext 1, text above the header
     /// @param subText2 subtext 2, text above subtext 1
     /// @return the created progress bar
-    BSML::ProgressBar* CreateProgressBar(UnityEngine::Vector3 position, UnityEngine::Vector3 rotation, UnityEngine::Vector3 scale,  StringW headerText, StringW subText1 = "", StringW subText2 = "");
+    BSML_EXPORT BSML::ProgressBar* CreateProgressBar(UnityEngine::Vector3 position, UnityEngine::Vector3 rotation, UnityEngine::Vector3 scale,  StringW headerText, StringW subText1 = "", StringW subText2 = "");
 
     /// @brief creates a popup rainbow loading bar thats not attatched to any UI
     /// @param position bars position
@@ -63,7 +64,7 @@ namespace BSML::Lite {
     /// @param values list of text values to give to the controller
     /// @param onCellWithIdxClicked callback called when a cell is clicked
     /// @return the created text segmented control
-    HMUI::TextSegmentedControl* CreateTextSegmentedControl(const TransformWrapper& parent, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::span<std::string_view> values, std::function<void(int)> onCellWithIdxClicked = nullptr);
+    BSML_EXPORT HMUI::TextSegmentedControl* CreateTextSegmentedControl(const TransformWrapper& parent, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::span<std::string_view> values, std::function<void(int)> onCellWithIdxClicked = nullptr);
 
     /// @brief creates a text segmented control like the one on the gameplay setup view controller
     /// @param parent what to parent it to
@@ -98,5 +99,5 @@ namespace BSML::Lite {
 
     /// @brief creates a Unity canvas gameobject that's setup for beat saber UI
     /// @return the created canvas gameobject
-    UnityEngine::GameObject* CreateCanvas();
+    BSML_EXPORT UnityEngine::GameObject* CreateCanvas();
 }

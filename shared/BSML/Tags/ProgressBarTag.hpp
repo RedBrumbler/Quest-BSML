@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class ProgressBarTag : public BSMLTag {
+    class BSML_EXPORT ProgressBarTag : public BSMLTag {
         private:
             using Base = BSMLTag;
         public:

@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "HMUI/IconSegmentedControl.hpp"
 
 namespace BSML {
-    class IconSegmentedControlHandler : public TypeHandler<HMUI::IconSegmentedControl*> {
+    class BSML_EXPORT IconSegmentedControlHandler : public TypeHandler<HMUI::IconSegmentedControl*> {
         public:
             using Base = TypeHandler<HMUI::IconSegmentedControl*>;
             IconSegmentedControlHandler() : Base() {}

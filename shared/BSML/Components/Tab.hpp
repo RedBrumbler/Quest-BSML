@@ -7,7 +7,7 @@ namespace BSML {
     class TabSelector;
 }
 
-DECLARE_CLASS_CODEGEN(BSML, Tab, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN_EXPORT(BSML, Tab, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(System::Object*, _selector);
     DECLARE_INSTANCE_FIELD(StringW, tabName);
     DECLARE_INSTANCE_FIELD(StringW, tabKey);

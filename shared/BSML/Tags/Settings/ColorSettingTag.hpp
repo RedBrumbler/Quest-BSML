@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../../_config.h"
 #include "../ModalColorPickerTag.hpp"
 
 namespace BSML {
-    class ColorSettingTag : public ModalColorPickerTag {
+    class BSML_EXPORT ColorSettingTag : public ModalColorPickerTag {
         private:
             using Base = ModalColorPickerTag;
         public:

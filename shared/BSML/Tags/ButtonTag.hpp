@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
 namespace BSML {
-    class ButtonTag : public BSMLTag {
+    class BSML_EXPORT ButtonTag : public BSMLTag {
         public:
             ButtonTag() : BSMLTag() {}
         protected:

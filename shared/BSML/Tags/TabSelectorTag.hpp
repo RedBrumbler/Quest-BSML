@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class TabSelectorTag : public BSMLTag {
+    class BSML_EXPORT TabSelectorTag : public BSMLTag {
         public:
             TabSelectorTag() : BSMLTag() {}
         protected:

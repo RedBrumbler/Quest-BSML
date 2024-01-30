@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "UnityEngine/UI/HorizontalOrVerticalLayoutGroup.hpp"
 
 namespace BSML {
-    class HorizontalOrVerticalLayoutGroupHandler : public TypeHandler<UnityEngine::UI::HorizontalOrVerticalLayoutGroup*> {
+    class BSML_EXPORT HorizontalOrVerticalLayoutGroupHandler : public TypeHandler<UnityEngine::UI::HorizontalOrVerticalLayoutGroup*> {
         public:
             using Base = TypeHandler<UnityEngine::UI::HorizontalOrVerticalLayoutGroup*>;
             HorizontalOrVerticalLayoutGroupHandler() : Base() {}
