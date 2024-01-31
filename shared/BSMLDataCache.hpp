@@ -9,7 +9,7 @@ namespace BSML::DataCache {
     /// @brief Registers an entry in the datacache.
     /// @param key the key to use in your BSML file if you want to use this data as a source
     /// @param value the entry to register
-    void RegisterEntry(std::string key, const Entry* value);
+    BSML_EXPORT void RegisterEntry(std::string key, const Entry* value);
 
     class BSML_EXPORT Entry {
         public:
