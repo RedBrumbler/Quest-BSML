@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 
 namespace BSML {
-    class TextHandler : public TypeHandler<TMPro::TextMeshProUGUI*> {
+    class BSML_EXPORT TextHandler : public TypeHandler<TMPro::TextMeshProUGUI*> {
         public:
             using Base = TypeHandler<TMPro::TextMeshProUGUI*>;
             TextHandler() : Base() {}

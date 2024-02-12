@@ -1,11 +1,12 @@
 #pragma once
 
+#include "../../_config.h"
 #include "../ComponentTypeWithData.hpp"
 #include "BSMLParserParams.hpp"
 #include "BSMLNode.hpp"
 
 namespace BSML {
-    class BSMLParser {
+    class BSML_EXPORT BSMLParser {
         public:
             BSMLParser();
             ~BSMLParser();

@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "UnityEngine/UI/LayoutGroup.hpp"
 
 namespace BSML {
-    class LayoutGroupHandler : public TypeHandler<UnityEngine::UI::LayoutGroup*> {
+    class BSML_EXPORT LayoutGroupHandler : public TypeHandler<UnityEngine::UI::LayoutGroup*> {
         public:
             using Base = TypeHandler<UnityEngine::UI::LayoutGroup*>;
             LayoutGroupHandler() : Base() {}

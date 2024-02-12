@@ -7,6 +7,7 @@
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
+#include "Zenject/DiContainer.hpp"
 
 using namespace UnityEngine;
 
@@ -26,14 +27,16 @@ namespace BSML {
         }
         return tabSelectorTagTemplate.ptr();
     }
+
     UnityEngine::GameObject* TabSelectorTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating TabSelector");
-        auto textSegmentedControl = Object::Instantiate(get_tabSelectorTagTemplate(), parent, false);
-        textSegmentedControl->dataSource = nullptr;
 
+        auto tabTemplate = get_tabSelectorTagTemplate();
+        auto diContainer = tabTemplate->_container;
+        auto textSegmentedControl = diContainer->InstantiatePrefabForComponent<HMUI::TextSegmentedControl*>(tabTemplate, parent);
         auto gameObject = textSegmentedControl->get_gameObject();
+
         gameObject->set_name("BSMLTabSelector");
-        textSegmentedControl->_container = get_tabSelectorTagTemplate()->_container;
 
         auto transform = gameObject->transform.cast<RectTransform>();
         transform->set_anchoredPosition({0, 0});

@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "UnityEngine/UI/RawImage.hpp"
 
 namespace BSML {
-    class RawImageHandler : public TypeHandler<UnityEngine::UI::RawImage*> {
+    class BSML_EXPORT RawImageHandler : public TypeHandler<UnityEngine::UI::RawImage*> {
         public:
             using Base = TypeHandler<UnityEngine::UI::RawImage*>;
             RawImageHandler() : Base() {}

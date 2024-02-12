@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../_config.h"
 #include "custom-types/shared/macros.hpp"
 #include "custom-types/shared/coroutine.hpp"
 #include "HMUI/FlowCoordinator.hpp"
@@ -12,7 +13,7 @@ namespace BSML {
         void AddMainMenuRegistration(MainMenuRegistration* reg);
     }
 
-    class MainMenuRegistration {
+    class BSML_EXPORT MainMenuRegistration {
         public:
             MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const System::Type* csType, const MenuSource registrationType);
             MainMenuRegistration(const std::string_view& title, const std::string_view& buttonText, const std::string_view& hoverHint, const std::function<void(HMUI::ViewController*, bool, bool, bool)> setupFunc);

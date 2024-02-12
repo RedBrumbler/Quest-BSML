@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../_config.h"
 #include "tinyxml2/shared/tinyxml2.h"
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@ namespace BSML {
     class BSMLParserParams;
     class BSMLDocParser;
     class BSMLParser;
-    class BSMLNode {
+    class BSML_EXPORT BSMLNode {
         public:
             BSMLNode();
             ~BSMLNode();
@@ -22,7 +23,7 @@ namespace BSML {
             virtual void HandleChildren(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const;
             bool valid() const;
             void AddChild(BSMLNode* child);
-            
+
             friend class ::BSML::BSMLDocParser;
             friend class ::BSML::BSMLNodeParserBase;
             friend class ::BSML::BSMLParser;

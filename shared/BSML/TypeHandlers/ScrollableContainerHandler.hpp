@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "../Components/ScrollableContainer.hpp"
 
 namespace BSML {
-    class ScrollableContainerHandler : public TypeHandler<BSML::ScrollableContainer*> {
+    class BSML_EXPORT ScrollableContainerHandler : public TypeHandler<BSML::ScrollableContainer*> {
         public:
             using Base = TypeHandler<BSML::ScrollableContainer*>;
             ScrollableContainerHandler() : Base() {}

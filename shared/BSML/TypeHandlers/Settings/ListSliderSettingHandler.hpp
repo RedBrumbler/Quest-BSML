@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../../_config.h"
 #include "../TypeHandler.hpp"
 #include "../../Components/Settings/ListSliderSetting.hpp"
 
 namespace BSML {
-    class ListSliderSettingHandler : public TypeHandler<BSML::ListSliderSetting*> {
+    class BSML_EXPORT ListSliderSettingHandler : public TypeHandler<BSML::ListSliderSetting*> {
         public:
             using Base = TypeHandler<BSML::ListSliderSetting*>;
             ListSliderSettingHandler() : Base() {}

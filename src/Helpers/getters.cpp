@@ -56,8 +56,7 @@ namespace BSML::Helpers {
     }
 
     SafePtr<DiContainer> diContainer;
-    DiContainer* GetDiContainer()
-    {
+    DiContainer* GetDiContainer() {
         if(!diContainer)
             diContainer = Resources::FindObjectsOfTypeAll<TextSegmentedControl*>()->FirstOrDefault([](TextSegmentedControl* x) { return x->get_transform()->get_parent()->get_name() == "PlayerStatisticsViewController" && x->_container; })->_container;
         if(!diContainer)
@@ -66,8 +65,7 @@ namespace BSML::Helpers {
     }
 
     SafePtrUnity<HoverHintController> hoverHintController;
-    HoverHintController* GetHoverHintController()
-    {
+    HoverHintController* GetHoverHintController() {
         if(!hoverHintController)
             hoverHintController = Resources::FindObjectsOfTypeAll<HoverHintController*>()->FirstOrDefault();
         if(!hoverHintController)
@@ -76,8 +74,7 @@ namespace BSML::Helpers {
     }
 
     SafePtr<IVRPlatformHelper> platformHelper;
-    IVRPlatformHelper* GetIVRPlatformHelper()
-    {
+    IVRPlatformHelper* GetIVRPlatformHelper() {
         if (!platformHelper)
             platformHelper = Resources::FindObjectsOfTypeAll<LevelCollectionTableView*>()->First()->GetComponentInChildren<ScrollView*>()->_platformHelper;
         if (!platformHelper)
@@ -119,8 +116,7 @@ namespace BSML::Helpers {
     }
 
     SafePtrUnity<MainFlowCoordinator> mainFlowCoordinator;
-    MainFlowCoordinator* GetMainFlowCoordinator()
-    {
+    MainFlowCoordinator* GetMainFlowCoordinator() {
         if (!mainFlowCoordinator)
             mainFlowCoordinator = Resources::FindObjectsOfTypeAll<MainFlowCoordinator*>()->FirstOrDefault();
         if(!mainFlowCoordinator)

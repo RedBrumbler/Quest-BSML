@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class ModalTag : public BSMLTag {
+    class BSML_EXPORT ModalTag : public BSMLTag {
         public:
             ModalTag() : BSMLTag() {}
         protected:

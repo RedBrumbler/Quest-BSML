@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../../_config.h"
 #include "../BSMLTag.hpp"
 #include "../../Components/Settings/IncDecSetting.hpp"
 
 namespace BSML {
-    class IncDecSettingTagBase : public BSMLTag {
+    class BSML_EXPORT IncDecSettingTagBase : public BSMLTag {
         public:
             IncDecSettingTagBase() : BSMLTag() {}
         protected:
@@ -14,7 +15,7 @@ namespace BSML {
 
     template<typename T>
     requires(std::is_convertible_v<T, ::BSML::IncDecSetting*>)
-    class IncDecSettingTag : public IncDecSettingTagBase {
+    class BSML_EXPORT IncDecSettingTag : public IncDecSettingTagBase {
         public:
             IncDecSettingTag() : IncDecSettingTagBase() {}
         protected:

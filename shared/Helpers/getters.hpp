@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../_config.h"
 #include "UnityEngine/Material.hpp"
 #include "VRUIControls/PhysicsRaycasterWithCache.hpp"
 #include "Zenject/DiContainer.hpp"
@@ -9,13 +10,13 @@
 #include "GlobalNamespace/MainFlowCoordinator.hpp"
 
 namespace BSML::Helpers {
-    VRUIControls::PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache();
-    Zenject::DiContainer* GetDiContainer();
-    HMUI::HoverHintController* GetHoverHintController();
+    BSML_EXPORT VRUIControls::PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache();
+    BSML_EXPORT Zenject::DiContainer* GetDiContainer();
+    BSML_EXPORT HMUI::HoverHintController* GetHoverHintController();
 
-    TMPro::TMP_FontAsset* GetMainTextFont();
-    UnityEngine::Material* GetMainUIFontMaterial();
-    UnityEngine::Material* GetUINoGlowMat();
-    GlobalNamespace::IVRPlatformHelper* GetIVRPlatformHelper();
-    GlobalNamespace::MainFlowCoordinator* GetMainFlowCoordinator();
+    BSML_EXPORT TMPro::TMP_FontAsset* GetMainTextFont();
+    BSML_EXPORT UnityEngine::Material* GetMainUIFontMaterial();
+    BSML_EXPORT UnityEngine::Material* GetUINoGlowMat();
+    BSML_EXPORT GlobalNamespace::IVRPlatformHelper* GetIVRPlatformHelper();
+    BSML_EXPORT GlobalNamespace::MainFlowCoordinator* GetMainFlowCoordinator();
 }

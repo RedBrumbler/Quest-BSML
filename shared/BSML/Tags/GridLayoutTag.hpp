@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class GridLayoutTag : public BSMLTag {
+    class BSML_EXPORT GridLayoutTag : public BSMLTag {
         public:
             GridLayoutTag() : BSMLTag() {}
         protected:

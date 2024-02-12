@@ -1,10 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
-namespace BSML
-{
-    class ScrollableContainerTag : public BSMLTag {
+namespace BSML {
+    class BSML_EXPORT ScrollableContainerTag : public BSMLTag {
         public:
             ScrollableContainerTag() : BSMLTag() {}
         protected:

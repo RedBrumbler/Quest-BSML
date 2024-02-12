@@ -1,7 +1,6 @@
 #pragma once
 
-#pragma once
-
+#include "../../../_config.h"
 #include "../TypeHandler.hpp"
 #include "../../Components/Settings/BaseSetting.hpp"
 
@@ -9,13 +8,13 @@
 // there are some issues with the way we have to do things.
 
 namespace BSML {
-    class BaseSettingHandler : public TypeHandler<BSML::BaseSetting*> {
+    class BSML_EXPORT BaseSettingHandler : public TypeHandler<BSML::BaseSetting*> {
         public:
             using Base = TypeHandler<BSML::BaseSetting*>;
             BaseSettingHandler() : Base() {}
 
             virtual int get_priority() const override;
-            
+
             virtual Base::PropMap get_props() const override;
             virtual Base::SetterMap get_setters() const override;
 

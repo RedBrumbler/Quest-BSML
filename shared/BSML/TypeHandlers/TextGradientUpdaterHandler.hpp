@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "../Components/TextGradientUpdater.hpp"
 
 namespace BSML {
-    class TextGradientUpdaterHandler : public TypeHandler<BSML::TextGradientUpdater*> {
+    class BSML_EXPORT TextGradientUpdaterHandler : public TypeHandler<BSML::TextGradientUpdater*> {
         public:
             using Base = TypeHandler<BSML::TextGradientUpdater*>;
             TextGradientUpdaterHandler() : Base() {}

@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class LoadingIndicatorTag : public BSMLTag {
+    class BSML_EXPORT LoadingIndicatorTag : public BSMLTag {
         public:
             LoadingIndicatorTag() : BSMLTag() {}
         protected:

@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "GlobalNamespace/LeaderboardTableView.hpp"
 
 namespace BSML {
-    class LeaderboardHandler : public TypeHandler<GlobalNamespace::LeaderboardTableView*> {
+    class BSML_EXPORT LeaderboardHandler : public TypeHandler<GlobalNamespace::LeaderboardTableView*> {
         public:
             using Base = TypeHandler<GlobalNamespace::LeaderboardTableView*>;
             LeaderboardHandler() : Base() {}

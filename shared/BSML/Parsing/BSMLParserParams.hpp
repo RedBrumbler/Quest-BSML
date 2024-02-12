@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../_config.h"
 #include "beatsaber-hook/shared/utils/typedefs.h"
 
 #include "UnityEngine/GameObject.hpp"
@@ -14,7 +15,7 @@
 #include <string>
 
 namespace BSML {
-    class BSMLParserParams {
+    class BSML_EXPORT BSMLParserParams {
         friend class BSMLTag;
         friend class BSMLMacro;
         friend class BSMLParser;

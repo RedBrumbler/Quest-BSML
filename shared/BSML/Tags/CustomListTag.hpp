@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class CustomListTag : public BSMLTag {
+    class BSML_EXPORT CustomListTag : public BSMLTag {
         public:
             CustomListTag() : BSMLTag() {}
             virtual void HandleChildren(UnityEngine::Transform* parent, BSMLParserParams& parserParams, std::vector<ComponentTypeWithData*>& componentInfo) const override;

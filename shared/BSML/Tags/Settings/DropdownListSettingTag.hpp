@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../../_config.h"
 #include "../BSMLTag.hpp"
 
 namespace BSML {
-    class DropdownListSettingTag : public BSMLTag {
+    class BSML_EXPORT DropdownListSettingTag : public BSMLTag {
         public:
             DropdownListSettingTag() : BSMLTag() {}
         protected:

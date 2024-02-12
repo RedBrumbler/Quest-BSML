@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TextTag.hpp"
 
 namespace BSML {
-    class GradientTextTag : public TextTag {
+    class BSML_EXPORT GradientTextTag : public TextTag {
         public:
             GradientTextTag() : TextTag() {}
         protected:

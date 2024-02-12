@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../_config.h"
 #include <vector>
 // this is just included because otherwise the SafePtr complains about conversion to unity object
 #include "beatsaber-hook/shared/utils/typedefs.h"
@@ -7,7 +8,7 @@
 
 namespace BSML {
     class FrameInfo;
-    class AnimationInfo {
+    class BSML_EXPORT AnimationInfo {
         public:
             ~AnimationInfo();
             bool isInitialized = false;
@@ -15,7 +16,7 @@ namespace BSML {
             std::vector<FrameInfo*> frames;
     };
 
-    class FrameInfo {
+    class BSML_EXPORT FrameInfo {
         public:
             int width, height, bpp;
             SafePtr<Array<uint8_t>> colors;

@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BackgroundTag.hpp"
 
 namespace BSML {
-    class TabTag : public BackgroundTag {
+    class BSML_EXPORT TabTag : public BackgroundTag {
         public:
             using Base = BackgroundTag;
             TabTag() : BackgroundTag() {}

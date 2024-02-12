@@ -1,13 +1,14 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "../Components/ButtonIconImage.hpp"
 
 namespace BSML {
-    class ButtonIconHandler : public TypeHandler<BSML::ButtonIconImage*> {
+    class BSML_EXPORT ButtonIconHandler : public TypeHandler<BSML::ButtonIconImage*> {
         public:
             using Base = TypeHandler<BSML::ButtonIconImage*>;
-            
+
             ButtonIconHandler() : Base() {}
 
             virtual Base::PropMap get_props() const override;

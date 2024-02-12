@@ -56,4 +56,3 @@ DECLARE_CLASS_CODEGEN(BSML, TextGradientUpdater, UnityEngine::MonoBehaviour,
     private:
         Gradient* gradient;
 )
-

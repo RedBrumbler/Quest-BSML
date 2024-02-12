@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "HMUI/InputFieldView.hpp"
 
 namespace BSML {
-    class InputFieldViewHandler : public TypeHandler<HMUI::InputFieldView*> {
+    class BSML_EXPORT InputFieldViewHandler : public TypeHandler<HMUI::InputFieldView*> {
         public:
             using Base = TypeHandler<HMUI::InputFieldView*>;
             InputFieldViewHandler() : Base() {}

@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class TextPageScrollViewTag : public BSMLTag {
+    class BSML_EXPORT TextPageScrollViewTag : public BSMLTag {
         public:
             TextPageScrollViewTag() : BSMLTag() {}
         protected:

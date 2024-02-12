@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "beatsaber-hook/shared/utils/il2cpp-type-check.hpp"
+
 namespace BSML {
-    enum class MenuType {
+    enum class BSML_EXPORT MenuType {
         None = 0,
         Solo = 1,
         Online = 2,

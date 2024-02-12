@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "../Components/CustomCellListTableData.hpp"
 
 namespace BSML {
-    class CustomCellListTableDataHandler : public TypeHandler<BSML::CustomCellListTableData*> {
+    class BSML_EXPORT CustomCellListTableDataHandler : public TypeHandler<BSML::CustomCellListTableData*> {
         public:
             using Base = TypeHandler<BSML::CustomCellListTableData*>;
             CustomCellListTableDataHandler() : Base() {}

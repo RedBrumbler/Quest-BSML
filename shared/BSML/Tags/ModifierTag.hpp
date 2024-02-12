@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class ModifierTag : public BSMLTag {
+    class BSML_EXPORT ModifierTag : public BSMLTag {
         public:
             ModifierTag() : BSMLTag() {}
         protected:

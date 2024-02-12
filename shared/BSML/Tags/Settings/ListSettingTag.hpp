@@ -1,11 +1,12 @@
 #pragma once
 
 
+#include "../../../_config.h"
 #include "../Settings/IncDecSettingTag.hpp"
 #include "../../Components/Settings/ListSetting.hpp"
 
 namespace BSML {
-    class ListSettingTag : public IncDecSettingTag<BSML::ListSetting*> {
+    class BSML_EXPORT ListSettingTag : public IncDecSettingTag<BSML::ListSetting*> {
     private:
         using Base = IncDecSettingTag<BSML::ListSetting*>;
     public:

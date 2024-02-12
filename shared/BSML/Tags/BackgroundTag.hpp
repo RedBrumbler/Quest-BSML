@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class BackgroundTag : public BSMLTag {
+    class BSML_EXPORT BackgroundTag : public BSMLTag {
         public:
             BackgroundTag() : BSMLTag() {}
         protected:

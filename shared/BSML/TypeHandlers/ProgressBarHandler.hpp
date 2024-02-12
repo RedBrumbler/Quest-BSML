@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "BSML/Components/ProgressBar.hpp"
 
 namespace BSML {
-    class ProgressBarHandler : public TypeHandler<ProgressBar*> {
+    class BSML_EXPORT ProgressBarHandler : public TypeHandler<ProgressBar*> {
         public:
             using Base = TypeHandler<ProgressBar*>;
             ProgressBarHandler() : Base() {}

@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class TextSegmentedControlTag : public BSMLTag {
+    class BSML_EXPORT TextSegmentedControlTag : public BSMLTag {
         public:
             TextSegmentedControlTag() : BSMLTag() {}
         protected:

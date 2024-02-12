@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 #include "HMUI/InputFieldView.hpp"
 
 namespace BSML {
-    class TextFieldTag : public BSMLTag {
+    class BSML_EXPORT TextFieldTag : public BSMLTag {
         public:
             TextFieldTag() : BSMLTag() {}
         protected:

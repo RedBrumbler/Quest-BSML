@@ -3,7 +3,7 @@
 #include "BSMLTag.hpp"
 
 namespace BSML {
-    class VerticalTag : public BSMLTag {
+    class BSML_EXPORT VerticalTag : public BSMLTag {
         public:
             VerticalTag() : BSMLTag() {}
         protected:

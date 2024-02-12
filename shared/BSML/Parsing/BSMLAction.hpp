@@ -1,11 +1,12 @@
 #pragma once
 
+#include "../../_config.h"
 #include "../../Helpers/delegates.hpp"
 #include <string>
 #include <map>
 
 namespace BSML {
-    class BSMLAction {
+    class BSML_EXPORT BSMLAction {
         public:
             BSMLAction(System::Object* host, const MethodInfo* methodInfo);
 

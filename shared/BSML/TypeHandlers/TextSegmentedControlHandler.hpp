@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "HMUI/TextSegmentedControl.hpp"
 
 namespace BSML {
-    class TextSegmentedControlHandler : public TypeHandler<HMUI::TextSegmentedControl*> {
+    class BSML_EXPORT TextSegmentedControlHandler : public TypeHandler<HMUI::TextSegmentedControl*> {
         public:
             using Base = TypeHandler<HMUI::TextSegmentedControl*>;
             TextSegmentedControlHandler() : Base() {}

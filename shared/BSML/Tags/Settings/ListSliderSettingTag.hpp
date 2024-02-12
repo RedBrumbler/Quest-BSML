@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../../_config.h"
 #include "../Settings/GenericSliderSettingTag.hpp"
 #include "../../Components/Settings/ListSliderSetting.hpp"
 
 namespace BSML {
-    class ListSliderSettingTag : public GenericSliderSettingTag<BSML::ListSliderSetting*> {
+    class BSML_EXPORT ListSliderSettingTag : public GenericSliderSettingTag<BSML::ListSliderSetting*> {
         private:
             using Base = GenericSliderSettingTag<BSML::ListSliderSetting*>;
         public:

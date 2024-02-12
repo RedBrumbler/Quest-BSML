@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "TypeHandler.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
 namespace BSML {
-    class ButtonHandler : public TypeHandler<UnityEngine::UI::Button*> {
+    class BSML_EXPORT ButtonHandler : public TypeHandler<UnityEngine::UI::Button*> {
         public:
             using Base = TypeHandler<UnityEngine::UI::Button*>;
             ButtonHandler() : Base() {}

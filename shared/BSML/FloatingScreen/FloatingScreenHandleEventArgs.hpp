@@ -1,11 +1,12 @@
 #pragma once
 
+#include "../../_config.h"
 #include "VRUIControls/VRPointer.hpp"
 #include "UnityEngine/Vector3.hpp"
 #include "UnityEngine/Quaternion.hpp"
 
 namespace BSML {
-    struct FloatingScreenHandleEventArgs {
+    struct BSML_EXPORT FloatingScreenHandleEventArgs {
         FloatingScreenHandleEventArgs(::VRUIControls::VRPointer* vrPointer, UnityEngine::Vector3 position, UnityEngine::Quaternion rotation) : vrPointer(vrPointer), position(position), rotation(rotation) {}
         const SafePtrUnity<::VRUIControls::VRPointer> vrPointer;
         const UnityEngine::Vector3 position;

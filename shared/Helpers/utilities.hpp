@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../_config.h"
 #include "UnityEngine/Texture2D.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Sprite.hpp"
@@ -18,32 +19,32 @@ namespace BSML::Utilities {
     };
 
     /// @brief Finds a sprite by name.
-    UnityEngine::Sprite* FindSpriteCached(StringW name);
+    BSML_EXPORT UnityEngine::Sprite* FindSpriteCached(StringW name);
 
     /// @brief Finds a texture by name.
-    UnityEngine::Texture* FindTextureCached(StringW name);
+    BSML_EXPORT UnityEngine::Texture* FindTextureCached(StringW name);
 
     /// @brief parses a HTML color from given string view
     /// @param str the string view
     /// @return the color, or nullopt
-    std::optional<UnityEngine::Color> ParseHTMLColorOpt(std::string_view str);
+    BSML_EXPORT std::optional<UnityEngine::Color> ParseHTMLColorOpt(std::string_view str);
 
     /// @brief parses a HTML color from given string view
     /// @param str the string view
     /// @return the color, or white if invalid
-    UnityEngine::Color ParseHMTMLColor(std::string_view str);
+    BSML_EXPORT UnityEngine::Color ParseHMTMLColor(std::string_view str);
 
     /// @brief parses a HTML color from given string view
     /// @param str the string view
     /// @return the color32, or nullopt
-    std::optional<UnityEngine::Color32> ParseHTMLColor32Opt(std::string_view str);
+    BSML_EXPORT std::optional<UnityEngine::Color32> ParseHTMLColor32Opt(std::string_view str);
 
     /// @brief parses a HTML color from given string view
     /// @param str the string view
     /// @return the color32, or white if invalid
-    UnityEngine::Color32 ParseHTMLColor32(std::string_view str);
+    BSML_EXPORT UnityEngine::Color32 ParseHTMLColor32(std::string_view str);
 
-    struct ScaleOptions {
+    struct BSML_EXPORT ScaleOptions {
         int width;
         int height;
         bool maintainRatio;
@@ -61,29 +62,29 @@ namespace BSML::Utilities {
     /// @param tex the texture to copy and downscale
     /// @param options the options to use for downscaling
     /// @return downscaled texture, or tex if it was not scaled
-    UnityEngine::Texture2D* DownScaleTexture(UnityEngine::Texture2D* tex, const ScaleOptions& options);
+    BSML_EXPORT UnityEngine::Texture2D* DownScaleTexture(UnityEngine::Texture2D* tex, const ScaleOptions& options);
 
     /// @brief Downscales a sprite using DownScaleTexture
     /// @param sprite the sprite to copy and downscale
     /// @param options the options to use for downscaling
     /// @return downscaled sprite
-    UnityEngine::Sprite* DownScaleSprite(UnityEngine::Sprite* sprite, const ScaleOptions& options);
+    BSML_EXPORT UnityEngine::Sprite* DownScaleSprite(UnityEngine::Sprite* sprite, const ScaleOptions& options);
 
     /// @brief Removes an image from the internal cache if it exists, make sure it's not used anymore!
     /// @param path the image to remove
     /// @return whether the path was in the cache
-    bool RemoveImage(StringW path);
+    BSML_EXPORT bool RemoveImage(StringW path);
 
     /// @brief sets the sprite from a path, this does not yet bother with animated textures so it will only work with base textures
     /// @param image the image to set the sprite on
     /// @param path the path, basegame name, or URI to an image
-    void SetImage(UnityEngine::UI::Image* image, StringW path);
+    BSML_EXPORT void SetImage(UnityEngine::UI::Image* image, StringW path);
 
     /// @brief sets the sprite from a path, this does not yet bother with animated textures so it will only work with base textures
     /// @param image the image to set the sprite on
     /// @param path the path, basegame name, or URI to an image
     /// @param cached whether to cache the resulting sprite or not
-    void SetImage(UnityEngine::UI::Image* image, StringW path, bool cached);
+    BSML_EXPORT void SetImage(UnityEngine::UI::Image* image, StringW path, bool cached);
 
     /// @brief sets the sprite from a path, this does not yet bother with animated textures so it will only work with base textures
     /// @param image the image to set the sprite on
@@ -91,7 +92,7 @@ namespace BSML::Utilities {
     /// @param loadingAnimation currently unused, but might eventually be used for a loading animation while stuff is downloading
     /// @param scaleOptions the scale options to use, if any
     /// @param onFinished a callback to call when the image is finished loading, if any
-    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished = nullptr);
+    BSML_EXPORT void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished = nullptr);
 
     /// @brief sets the sprite from a path, this does not yet bother with animated textures so it will only work with base textures
     /// @param image the image to set the sprite on
@@ -100,7 +101,7 @@ namespace BSML::Utilities {
     /// @param scaleOptions the scale options to use, if any
     /// @param onFinished a callback to call when the image is finished loading, if any
     /// @param onError a callback to call when there was an error
-    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError);
+    BSML_EXPORT void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError);
 
     /// @brief sets the sprite from a path, this does not yet bother with animated textures so it will only work with base textures
     /// @param image the image to set the sprite on
@@ -110,40 +111,40 @@ namespace BSML::Utilities {
     /// @param cached whether to set the image and cache it, or to skip caching it if loaded newly. only works for static images, not for animated images
     /// @param onFinished a callback to call when the image is finished loading, if any
     /// @param onError a callback to call when there was an error
-    void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError);
+    BSML_EXPORT void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError);
 
     /// @brief function to get data at a URI, this is not blocking as it dispatches a coroutine
     /// @param uri the URI to get data from
     /// @param onFinished what to do with the downloaded bytes, passed nullptr on fail
-    void DownloadData(StringW uri, std::function<void(ArrayW<uint8_t>)> onFinished = nullptr);
+    BSML_EXPORT void DownloadData(StringW uri, std::function<void(ArrayW<uint8_t>)> onFinished = nullptr);
 
     /// @brief function to get data from the key to data cache, this is blocking due to the data being available immediately
     /// @param key the key to get the data with
     /// @param onFinished what to do with the downloaded bytes, onFinished is ran with a nullptr argument if not found
-    void GetData(StringW key, std::function<void(ArrayW<uint8_t>)> onFinished = nullptr);
+    BSML_EXPORT void GetData(StringW key, std::function<void(ArrayW<uint8_t>)> onFinished = nullptr);
 
     /// @brief Function to load a sprite from a data array
     /// @param data the data to load the sprite from
     /// @param pixelsPerUnit the pixels per unit
     /// @return created sprite
-    UnityEngine::Sprite* LoadSpriteRaw(ArrayW<uint8_t> data, float pixelsPerUnit = 100.0f);
+    BSML_EXPORT UnityEngine::Sprite* LoadSpriteRaw(ArrayW<uint8_t> data, float pixelsPerUnit = 100.0f);
 
     /// @brief Function to load a sprite from a texture
     /// @param texture the texture to use
     /// @param pixelsPerUnit the pixels per unit
     /// @return created sprite
-    UnityEngine::Sprite* LoadSpriteFromTexture(UnityEngine::Texture2D* texture, float pixelsPerUnit = 100.0f);
+    BSML_EXPORT UnityEngine::Sprite* LoadSpriteFromTexture(UnityEngine::Texture2D* texture, float pixelsPerUnit = 100.0f);
 
     /// @brief Function to load a texture from a data array
     /// @param data the data to load the texture from
     /// @return created texture
-    UnityEngine::Texture2D* LoadTextureRaw(ArrayW<uint8_t> data);
+    BSML_EXPORT UnityEngine::Texture2D* LoadTextureRaw(ArrayW<uint8_t> data);
 
     /// @brief function to copy the values from other to comp
     /// @param comp the component to copy to
     /// @param other the component to copy from
     /// @return comp, or nullptr if types are different
-    UnityEngine::Component* GetCopyOfComponent(UnityEngine::Component* comp, UnityEngine::Component* other);
+    BSML_EXPORT UnityEngine::Component* GetCopyOfComponent(UnityEngine::Component* comp, UnityEngine::Component* other);
 
     /// @brief function to copy the values from other to comp, casted to the correct type
     /// @tparam T the type of the component
@@ -170,11 +171,11 @@ namespace BSML::Utilities {
     namespace ImageResources {
         /// @brief method that gets a blank sprite
         /// @return black texture to sprite
-        UnityEngine::Sprite* GetBlankSprite();
+        BSML_EXPORT UnityEngine::Sprite* GetBlankSprite();
 
         /// @brief method that gets a white pixel sprite
         /// @return white pixel to sprite
-        UnityEngine::Sprite* GetWhitePixel();
+        BSML_EXPORT UnityEngine::Sprite* GetWhitePixel();
     }
 }
 

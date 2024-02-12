@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include "BSMLTag.hpp"
 #include "ScrollViewTag.hpp"
 
 namespace BSML {
-    class SettingsContainerTag : public ScrollViewTag {
+    class BSML_EXPORT SettingsContainerTag : public ScrollViewTag {
         public:
             SettingsContainerTag() : ScrollViewTag() {}
         protected:

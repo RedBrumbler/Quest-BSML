@@ -36,6 +36,9 @@ namespace BSML {
 
     UnityEngine::GameObject* ScrollViewTag::CreateObject(UnityEngine::Transform* parent) const {
         HMUI::TextPageScrollView* textScrollView = UnityEngine::Object::Instantiate(get_scrollViewTemplate(), parent);
+        auto gameObject = textScrollView->gameObject;
+        gameObject->SetActive(false);
+
         textScrollView->set_name("BSMLScrollView");
         auto pageUpButton = textScrollView->_pageUpButton;
         auto pageDownButton = textScrollView->_pageDownButton;
@@ -45,7 +48,6 @@ namespace BSML {
         viewport->get_gameObject()->AddComponent<VRUIControls::VRGraphicRaycaster*>()->_physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
 
         UnityEngine::Object::Destroy(textScrollView->_text->get_gameObject());
-        UnityEngine::GameObject* gameObject = textScrollView->get_gameObject();
         UnityEngine::Object::Destroy(textScrollView);
         gameObject->set_active(false);
 

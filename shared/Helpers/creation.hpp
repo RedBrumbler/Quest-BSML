@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../_config.h"
 #include "../concepts.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "HMUI/FlowCoordinator.hpp"
@@ -16,7 +17,7 @@ namespace BSML::Helpers {
     /// @param anchoredPosition the position for the text
     /// @param sizeDelta the sizeDelta for the text
     /// @return the created text object
-    TMPro::TMP_Text* CreateText(System::Type* type, UnityEngine::Transform* parent, StringW text, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta = {60.0f, 10.0f});
+    BSML_EXPORT TMPro::TMP_Text* CreateText(System::Type* type, UnityEngine::Transform* parent, StringW text, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta = {60.0f, 10.0f});
 
     /// @brief creates a text object
     /// @tparam the type for the text object
@@ -34,7 +35,7 @@ namespace BSML::Helpers {
     /// @brief creates view controller with type
     /// @param type the type to use for the view controller
     /// @return the view controller
-    HMUI::ViewController* CreateViewController(System::Type* type);
+    BSML_EXPORT HMUI::ViewController* CreateViewController(System::Type* type);
 
     /// @brief creates view controller with type
     /// @tparam T the type to use for the view controller
@@ -48,7 +49,7 @@ namespace BSML::Helpers {
     /// @brief creates flow coordinator with type
     /// @param type the type to use for the flow coordinator
     /// @return the flow coordinator
-    HMUI::FlowCoordinator* CreateFlowCoordinator(System::Type* type);
+    BSML_EXPORT HMUI::FlowCoordinator* CreateFlowCoordinator(System::Type* type);
 
     /// @brief creates flow coordinator with type
     /// @tparam T the type to use for the flow coordinator
@@ -63,7 +64,7 @@ namespace BSML::Helpers {
     /// @param object the object to add the hoverhint to
     /// @param text the text to display in the hoverhint
     /// @return the hoverhint
-    HMUI::HoverHint* AddHoverHint(UnityEngine::GameObject* object, StringW text);
+    BSML_EXPORT HMUI::HoverHint* AddHoverHint(UnityEngine::GameObject* object, StringW text);
 
     /// @brief adds hoverhint to attached gameObject
     /// @tparam T the type of object

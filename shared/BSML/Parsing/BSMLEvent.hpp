@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../../_config.h"
 #include <functional>
 #include <vector>
 
 namespace BSML {
-    class BSMLEvent {
+    class BSML_EXPORT BSMLEvent {
         public:
             BSMLEvent() {};
             BSMLEvent(const std::function<void(void)>& func) { Add(func); };
