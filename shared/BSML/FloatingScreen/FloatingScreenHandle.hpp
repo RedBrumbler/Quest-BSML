@@ -6,10 +6,11 @@
 #include "UnityEngine/MeshRenderer.hpp"
 
 #include "UnityEngine/EventSystems/IPointerEnterHandler.hpp"
+#include "UnityEngine/EventSystems/IEventSystemHandler.hpp"
 #include "UnityEngine/EventSystems/IPointerExitHandler.hpp"
 #include "UnityEngine/EventSystems/PointerEventData.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(BSML, FloatingScreenHandle, UnityEngine::MonoBehaviour, std::vector<Il2CppClass*>({classof(::UnityEngine::EventSystems::IPointerEnterHandler*), classof(::UnityEngine::EventSystems::IPointerExitHandler*)}),
+DECLARE_CLASS_CODEGEN_INTERFACES(BSML, FloatingScreenHandle, UnityEngine::MonoBehaviour, std::vector<Il2CppClass*>({classof(::UnityEngine::EventSystems::IPointerEnterHandler*), classof(::UnityEngine::EventSystems::IPointerExitHandler*), classof(::UnityEngine::EventSystems::IEventSystemHandler*)}),
     DECLARE_INSTANCE_FIELD(UnityEngine::Material*, originalMaterial);
     DECLARE_INSTANCE_FIELD(UnityEngine::MeshRenderer*, renderer);
 
