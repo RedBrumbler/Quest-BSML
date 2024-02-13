@@ -88,6 +88,10 @@ namespace BSML::Lite {
             externalComponents->Add(layoutElement);
         }
 
+        auto localizedText = button->GetComponentInChildren<Polyglot::LocalizedTextMeshProUGUI*>();
+        if (localizedText && localizedText->m_CachedPtr) {
+            UnityEngine::Object::Destroy(localizedText);
+        }
         SetButtonText(button, buttonText);
 
         auto rect = button->transform.cast<UnityEngine::RectTransform>();
