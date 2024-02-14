@@ -44,6 +44,9 @@ namespace BSML::Lite {
             );
         }
 
+        // because during ListTag.CreateObject this is set to active false
+        list->tableView->gameObject->SetActive(true);
+
         return list;
     }
 
@@ -69,23 +72,37 @@ namespace BSML::Lite {
 
     BSML::CustomListTableData* CreateScrollableList(const TransformWrapper& parent, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::function<void(int)> onCellWithIdxClicked) {
         auto vertical = CreateVerticalLayoutGroup(parent);
+        auto layout = vertical->gameObject->AddComponent<UnityEngine::UI::LayoutElement*>();
         auto rect = vertical->rectTransform;
-        rect->set_anchoredPosition(anchoredPosition);
-        rect->set_sizeDelta(sizeDelta);
 
-        auto list = CreateList(rect.unsafePtr(), {}, {sizeDelta.x, sizeDelta.y - 16}, onCellWithIdxClicked);
+        rect->anchoredPosition = anchoredPosition;
+        rect->sizeDelta = sizeDelta;
+
+        vertical->childForceExpandHeight = false;
+        vertical->childControlHeight = false;
+        vertical->childScaleHeight = false;
+
+        layout->preferredHeight = sizeDelta.y;
+        layout->preferredWidth = sizeDelta.x;
+
+        auto list = CreateList(rect, {0, 0}, {sizeDelta.x, sizeDelta.y - 16}, onCellWithIdxClicked);
         auto pageUp = CreateClickableImage(vertical, get_carat_up(), [scrollView = list->tableView->scrollView.unsafePtr()](){
             if (scrollView && scrollView->m_CachedPtr) scrollView->PageUpButtonPressed();
         });
+        pageUp->preserveAspect = true;
         pageUp->highlightColor = {1.0, 1.0, 1.0, 0.5};
-        pageUp->get_transform()->SetAsFirstSibling();
+        pageUp->transform->SetAsFirstSibling();
         auto pageDown = CreateClickableImage(vertical, get_carat_down(), [scrollView = list->tableView->scrollView.unsafePtr()](){
             if (scrollView && scrollView->m_CachedPtr) scrollView->PageDownButtonPressed();
         });
+        pageDown->preserveAspect = true;
         pageDown->highlightColor = {1.0, 1.0, 1.0, 0.5};
 
-        pageUp->get_rectTransform()->set_sizeDelta({8.0f, 8.0f});
-        pageDown->get_rectTransform()->set_sizeDelta({8.0f, 8.0f});
+        pageUp->rectTransform->sizeDelta = {8.0f, 8.0f};
+        pageDown->rectTransform->sizeDelta = {8.0f, 8.0f};
+
+        pageUp->gameObject->SetActive(true);
+        pageDown->gameObject->SetActive(true);
 
         return list;
     }
@@ -96,8 +113,9 @@ namespace BSML::Lite {
         auto tableView = list->tableView;
         auto go = list->get_gameObject();
         UnityEngine::Object::DestroyImmediate(list);
+
         auto dataSource = go->AddComponent(type);
-        auto iDataSource = reinterpret_cast<HMUI::TableView::IDataSource*>(dataSource.unsafePtr());
+        auto iDataSource = dataSource.cast<HMUI::TableView::IDataSource>();
 
         auto finfo = il2cpp_functions::class_get_field_from_name(dataSource->klass, "tableView");
         if (finfo) // there is a field named tableView
@@ -111,8 +129,10 @@ namespace BSML::Lite {
         auto list = CreateScrollableList(parent, anchoredPosition, sizeDelta, onCellWithIdxClicked);
 
         auto tableView = list->tableView;
-        auto go = list->get_gameObject();
+        auto go = list->gameObject;
+
         UnityEngine::Object::DestroyImmediate(list);
+
         auto dataSource = go->AddComponent(type);
         auto iDataSource = reinterpret_cast<HMUI::TableView::IDataSource*>(dataSource.unsafePtr());
         auto finfo = il2cpp_functions::class_get_field_from_name(dataSource->klass, "tableView");
