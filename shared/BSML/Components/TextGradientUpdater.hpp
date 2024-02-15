@@ -1,12 +1,14 @@
 #pragma once
 
+#include "../../_config.h"
+#include "_config.h"
 #include "custom-types/shared/macros.hpp"
 #include "TMPro/TMP_Text.hpp"
 #include "UnityEngine/MonoBehaviour.hpp"
 
 namespace BSML {
     /// @brief Gradient class, if you want custom Gradient behaviour then implement your own class and set it on the GradientUpdater using the set_gradient method
-    class Gradient {
+    class BSML_EXPORT Gradient {
         public:
             /// @brief Sample the gradient represented by this instance
             /// @param t where to sample
@@ -17,7 +19,7 @@ namespace BSML {
     };
 
     /// @brief This type really only exists to speed up the math if you just input 2 colors, mostly for non-animated gradients
-    class SimpleTwoColorGradient : public Gradient {
+    class BSML_EXPORT SimpleTwoColorGradient : public Gradient {
         public:
             /// @brief Lerps between the start and end colors
             /// @param t lerp distance
@@ -28,7 +30,7 @@ namespace BSML {
     };
 
     /// @brief Color gradient that samples from the passed vector
-    class SimpleColorGradient : public Gradient {
+    class BSML_EXPORT SimpleColorGradient : public Gradient {
         public:
             /// @brief Lerps between the colors in the vector
             /// @param t lerp distance
