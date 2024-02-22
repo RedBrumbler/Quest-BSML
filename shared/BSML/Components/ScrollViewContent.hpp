@@ -10,6 +10,7 @@
 DECLARE_CLASS_CODEGEN(BSML, ScrollViewContent, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_FIELD(HMUI::ScrollView*, scrollView);
     DECLARE_INSTANCE_FIELD(bool, dirty);
+    DECLARE_INSTANCE_FIELD(UnityEngine::RectTransform*, content);
 
     DECLARE_INSTANCE_METHOD(void, Start);
     DECLARE_INSTANCE_METHOD(void, OnEnable);
@@ -18,6 +19,9 @@ DECLARE_CLASS_CODEGEN(BSML, ScrollViewContent, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_METHOD(void, UpdateScrollView);
 
     public:
-        custom_types::Helpers::Coroutine SetupScrollView();
+        __declspec(property(get=get_Content)) UnityEngine::RectTransform* Content;
+        UnityEngine::RectTransform* get_Content();
 
+        __declspec(property(get=get_rectTransform)) UnityEngine::RectTransform* rectTransform;
+        UnityEngine::RectTransform* get_rectTransform();
 )

@@ -49,7 +49,7 @@ namespace BSML {
 
         UnityEngine::Object::Destroy(textScrollView->_text->get_gameObject());
         UnityEngine::Object::Destroy(textScrollView);
-        gameObject->set_active(false);
+        gameObject->SetActive(false);
 
         BSML::ScrollView* scrollView = gameObject->AddComponent<BSML::ScrollView*>();
         scrollView->_pageUpButton = pageUpButton;
@@ -81,11 +81,12 @@ namespace BSML {
         rectTransform->set_anchorMax(UnityEngine::Vector2(1, 1));
         rectTransform->set_sizeDelta(UnityEngine::Vector2(0, 0));
         rectTransform->set_pivot(UnityEngine::Vector2(0.5f, 1));
-        parentObject->AddComponent<ScrollViewContent*>()->scrollView = scrollView;
 
         UnityEngine::GameObject* child = UnityEngine::GameObject::New_ctor();
         child->set_name("BSMLScrollViewContentContainer");
         child->get_transform()->SetParent(rectTransform, false);
+
+        parentObject->AddComponent<ScrollViewContent*>()->scrollView = scrollView;
 
         UnityEngine::UI::VerticalLayoutGroup* layoutGroup = child->AddComponent<UnityEngine::UI::VerticalLayoutGroup*>();
         layoutGroup->set_childControlHeight(false);

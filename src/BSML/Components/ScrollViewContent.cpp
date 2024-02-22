@@ -1,4 +1,5 @@
 #include "BSML/Components/ScrollViewContent.hpp"
+#include "logging.hpp"
 
 #include "HMUI/ScrollView.hpp"
 
@@ -13,8 +14,8 @@ DEFINE_TYPE(BSML, ScrollViewContent);
 
 namespace BSML {
     void ScrollViewContent::Start() {
-        UnityEngine::UI::LayoutRebuilder::ForceRebuildLayoutImmediate(static_cast<UnityEngine::RectTransform*>(transform.convert()));
-        StartCoroutine(custom_types::Helpers::CoroutineHelper::New(SetupScrollView()));
+        UnityEngine::UI::LayoutRebuilder::ForceRebuildLayoutImmediate(transform.cast<UnityEngine::RectTransform>());
+        dirty = true;
     }
 
     void ScrollViewContent::OnEnable() {
@@ -32,25 +33,22 @@ namespace BSML {
         }
     }
 
-    custom_types::Helpers::Coroutine ScrollViewContent::SetupScrollView() {
-        UnityEngine::RectTransform* rectTransform = static_cast<UnityEngine::RectTransform*>(transform->GetChild(0).convert());
-        while (rectTransform->sizeDelta.y == -1) {
-            co_yield nullptr;
-        }
-
-        while (!scrollView || !scrollView->m_CachedPtr) {
-            co_yield nullptr;
-        }
-        UpdateScrollView();
-        co_return;
-    }
-
     void ScrollViewContent::UpdateScrollView() {
         if (!scrollView || !scrollView->m_CachedPtr) {
             return;
         }
 
-        scrollView->SetContentSize(static_cast<UnityEngine::RectTransform*>(transform->GetChild(0).convert())->rect.height);
+        scrollView->SetContentSize(Content->rect.height);
         scrollView->RefreshButtons();
+    }
+
+    UnityEngine::RectTransform* ScrollViewContent::get_Content() {
+        if (content && content->m_CachedPtr) return content;
+        content = transform->GetChild(0).cast<UnityEngine::RectTransform>();
+        return content;
+    }
+
+    UnityEngine::RectTransform* ScrollViewContent::get_rectTransform() {
+        return transform.try_cast<UnityEngine::RectTransform>().value_or(nullptr);
     }
 }
