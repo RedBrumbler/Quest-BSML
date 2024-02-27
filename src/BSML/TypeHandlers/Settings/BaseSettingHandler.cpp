@@ -73,22 +73,22 @@ namespace BSML {
             if (setEventItr != data.end()) {
                 setEventName = setEventItr->second;
             }
-            parserParams.AddEvent(setEventName, 
-                [component, applyMinfo]{ 
-                    il2cpp_utils::RunMethod(component, applyMinfo); 
+            parserParams.AddEvent(setEventName,
+                [component, applyMinfo]{
+                    il2cpp_utils::RunMethod(component, applyMinfo);
                 }
             );
         }
-        
+
         if (receiveMinfo) {
             auto getEventItr = data.find("getEvent");
             std::string getEventName = "cancel";
             if (getEventItr != data.end()) {
                 getEventName = getEventItr->second;
             }
-            parserParams.AddEvent(getEventName, 
-                [component, receiveMinfo]{ 
-                    il2cpp_utils::RunMethod(component, receiveMinfo); 
+            parserParams.AddEvent(getEventName,
+                [component, receiveMinfo]{
+                    il2cpp_utils::RunMethod(component, receiveMinfo);
                 }
             );
         }
@@ -98,11 +98,11 @@ namespace BSML {
 
     void BaseSettingHandler::HandleTypeAfterChildren(const ComponentTypeWithData& componentType, BSMLParserParams& parserParams) {
         auto baseSetupMethodInfo = StringParseHelper("BaseSetup").asMethodInfo(componentType.component, 0);
-        if (baseSetupMethodInfo) il2cpp_utils::RunMethod(componentType.component, baseSetupMethodInfo);
-        
+        if (baseSetupMethodInfo) il2cpp_utils::RunMethodRethrow<void, false>(componentType.component, baseSetupMethodInfo);
+
         auto setupMethodInfo = StringParseHelper("Setup").asMethodInfo(componentType.component, 0);
-        if (setupMethodInfo) il2cpp_utils::RunMethod(componentType.component, setupMethodInfo);
-        
+        if (setupMethodInfo) il2cpp_utils::RunMethodRethrow<void, false>(componentType.component, setupMethodInfo);
+
         Base::HandleTypeAfterChildren(componentType, parserParams);
     }
 

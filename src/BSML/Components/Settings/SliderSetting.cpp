@@ -36,10 +36,10 @@ namespace BSML {
     void SliderSetting::Setup() {
         if (slider) {
             remappers[slider] = this;
-            text = slider->get_gameObject()->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
+            text = slider->gameObject->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
 
             // steps is range(max - min) divided by increments;
-            int steps = (slider->get_maxValue() - slider->get_minValue()) / increments;
+            int steps = (slider->maxValue - slider->minValue) / increments;
             slider->set_numberOfSteps(steps + 1);
             ReceiveValue();
 
@@ -84,8 +84,13 @@ namespace BSML {
     }
 
     void SliderSetting::ReceiveValue() {
-        if (!genericSetting) return;
-        set_Value(genericSetting->GetValue<float>());
+        if (genericSetting) {
+            if (isInt) {
+                set_Value(genericSetting->GetValue<int>());
+            } else {
+                set_Value(genericSetting->GetValue<float>());
+            }
+        }
     }
 
     StringW SliderSetting::TextForValue(float value) {
