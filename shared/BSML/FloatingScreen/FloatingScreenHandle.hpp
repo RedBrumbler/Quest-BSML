@@ -29,14 +29,13 @@ std::vector<Il2CppClass*>({
     classof(::UnityEngine::EventSystems::IPointerDownHandler*),
     classof(::UnityEngine::EventSystems::IPointerUpHandler*)
 }),
-    DECLARE_INSTANCE_FIELD(GlobalNamespace::VRController*, _grabbingController);
-    DECLARE_INSTANCE_FIELD(UnityEngine::Material*, _material);
-    DECLARE_INSTANCE_FIELD(UnityEngine::MeshRenderer*, _renderer);
+    DECLARE_INSTANCE_FIELD(UnityW<GlobalNamespace::VRController>, _grabbingController);
+    DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::Material>, _material);
+    DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::MeshRenderer>, _renderer);
     DECLARE_INSTANCE_FIELD(UnityEngine::Vector3, _grabPos);
     DECLARE_INSTANCE_FIELD(UnityEngine::Quaternion, _grabRot);
 
     DECLARE_INSTANCE_METHOD(void, Awake);
-    DECLARE_INSTANCE_FIELD(VRUIControls::VRInputModule*, vrInputModule);
     DECLARE_OVERRIDE_METHOD_MATCH(void, OnPointerEnter, &::UnityEngine::EventSystems::IPointerEnterHandler::OnPointerEnter, UnityEngine::EventSystems::PointerEventData* eventData);
     DECLARE_OVERRIDE_METHOD_MATCH(void, OnPointerExit, &::UnityEngine::EventSystems::IPointerExitHandler::OnPointerExit, UnityEngine::EventSystems::PointerEventData* eventData);
     DECLARE_OVERRIDE_METHOD_MATCH(void, OnPointerUp, &::UnityEngine::EventSystems::IPointerUpHandler::OnPointerUp, UnityEngine::EventSystems::PointerEventData* eventData);

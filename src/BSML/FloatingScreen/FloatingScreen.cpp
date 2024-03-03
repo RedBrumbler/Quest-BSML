@@ -3,7 +3,6 @@
 #include "Helpers/creation.hpp"
 #include "Helpers/getters.hpp"
 #include "Helpers/utilities.hpp"
-#include "logging.hpp"
 
 #include "HMUI/CurvedCanvasSettings.hpp"
 #include "HMUI/ImageView.hpp"

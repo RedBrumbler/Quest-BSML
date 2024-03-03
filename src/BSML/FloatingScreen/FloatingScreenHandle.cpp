@@ -1,7 +1,6 @@
 #include "BSML/FloatingScreen/FloatingScreenHandle.hpp"
 
 #include "UnityEngine/Shader.hpp"
-#include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Vector3.hpp"
 
 #include "UnityEngine/EventSystems/EventSystem.hpp"
@@ -47,11 +46,6 @@ namespace BSML {
     int FloatingScreenHandle::ColorId = 0;
     
     void FloatingScreenHandle::Awake() {
-        // Ensure we have a reference to the input module
-        if(!vrInputModule) {
-            vrInputModule = Object::FindObjectOfType<VRUIControls::VRInputModule*>();
-        }
-
         if (!shader) {
             shader = UnityEngine::Shader::Find("Custom/Glowing");
             if (!shader) {
@@ -78,10 +72,10 @@ namespace BSML {
     }
 
     void FloatingScreenHandle::OnPointerUp(UnityEngine::EventSystems::PointerEventData* eventData) {
-        auto currentEventSystem = UnityEngine::EventSystems::EventSystem::get_current();
-        if (!currentEventSystem || currentEventSystem->get_currentInputModule() != vrInputModule) {
-            return;
-        }
+        auto currentEventSystem = EventSystems::EventSystem::get_current();
+        if (!currentEventSystem) return;
+        auto vrInputModule = currentEventSystem->get_currentInputModule().try_cast<VRUIControls::VRInputModule>().value_or(nullptr);
+        if (!vrInputModule) return;
 
         _grabbingController = nullptr;
         auto pointer = vrInputModule->_vrPointer;
@@ -95,11 +89,11 @@ namespace BSML {
 
         auto go = raycast.get_gameObject();
         if (go != this->get_gameObject()) return;
-        
-        auto currentEventSystem = UnityEngine::EventSystems::EventSystem::get_current();
-        if (!currentEventSystem || currentEventSystem->get_currentInputModule() != vrInputModule) {
-            return;
-        }
+
+        auto currentEventSystem = EventSystems::EventSystem::get_current();
+        if (!currentEventSystem) return;
+        auto vrInputModule = currentEventSystem->get_currentInputModule().try_cast<VRUIControls::VRInputModule>().value_or(nullptr);
+        if (!vrInputModule) return;
 
         auto vrPointer = vrInputModule->_vrPointer;
         auto vrController = vrPointer->_lastSelectedVrController;
@@ -122,7 +116,7 @@ namespace BSML {
 
     void FloatingScreenHandle::Update() {
         // If we're not grabbing, don't do anything
-        if (_grabbingController == nullptr || _grabbingController->m_CachedPtr == nullptr) return;
+        if (!_grabbingController) return;
 
         _grabPos -= Vector3::get_forward() * (-_grabbingController->get_thumbstick().y * Time::get_unscaledDeltaTime());
         Vector3 targetPosition = _grabbingController->_viewAnchorTransform->get_transform()->TransformPoint(_grabPos);
@@ -137,11 +131,10 @@ namespace BSML {
     void FloatingScreenHandle::OnDestroy() {
         _grabbingController = nullptr;
         _floatingScreen = nullptr;
-        _grabbingController = nullptr;
     }
 
     void FloatingScreenHandle::UpdateMaterial() {
-        if (_floatingScreen->_highlightHandle && (_isHovering || _grabbingController != nullptr)) {
+        if (_floatingScreen->_highlightHandle && (_isHovering || _grabbingController)) {
             _material->SetColor(ColorId, HoverColor);
         } else {
             _material->SetColor(ColorId, DefaultColor);
