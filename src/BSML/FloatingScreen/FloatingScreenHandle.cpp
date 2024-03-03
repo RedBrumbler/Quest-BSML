@@ -1,31 +1,150 @@
 #include "BSML/FloatingScreen/FloatingScreenHandle.hpp"
 
 #include "UnityEngine/Shader.hpp"
+#include "UnityEngine/Resources.hpp"
+#include "UnityEngine/Vector3.hpp"
+
+#include "UnityEngine/EventSystems/EventSystem.hpp"
+#include "VRUIControls/VRInputModule.hpp"
+#include "UnityEngine/Quaternion.hpp"
+#include "BSML/FloatingScreen/FloatingScreen.hpp"
+
+#include "logging.hpp"
+#include "UnityEngine/Time.hpp"
 
 DEFINE_TYPE(BSML, FloatingScreenHandle);
 
+using namespace UnityEngine;
+
+static UnityEngine::Quaternion operator*(UnityEngine::Quaternion a, UnityEngine::Quaternion b) {
+    return UnityEngine::Quaternion::op_Multiply(a, b);
+}
+
+static bool operator==(UnityEngine::Quaternion a, UnityEngine::Quaternion b) {
+    return UnityEngine::Quaternion::op_Equality(a, b);
+}
+
+static Vector3 operator-(Vector3 a, Vector3 b) {
+    return Vector3::op_Subtraction(a,b);
+}
+
+static Vector3 operator+(Vector3 a, Vector3 b) {
+    return Vector3::op_Addition(a,b);
+}
+
+static Vector3 operator*(Vector3 a, float_t b) {
+    return Vector3::op_Multiply(a,b);
+}
+
+static Vector3 operator*(float_t a, Vector3 b) {
+    return Vector3::op_Multiply(a,b);
+}
+
+
+
 namespace BSML {
-    SafePtrUnity<UnityEngine::Material> FloatingScreenHandle::hoverMaterial;
-    UnityEngine::Material* FloatingScreenHandle::get_hoverMaterial() {
-        if (!hoverMaterial) {
-            auto shader = UnityEngine::Shader::Find("Hidden/Internal-DepthNormalsTexture");
-            hoverMaterial = UnityEngine::Material::New_ctor(shader);
+    SafePtrUnity<UnityEngine::Shader> FloatingScreenHandle::shader;
+    int FloatingScreenHandle::ColorId = 0;
+    
+    void FloatingScreenHandle::Awake() {
+        // Ensure we have a reference to the input module
+        if(!vrInputModule) {
+            vrInputModule = Object::FindObjectOfType<VRUIControls::VRInputModule*>();
         }
 
-        return hoverMaterial.ptr();
-    }
+        if (!shader) {
+            shader = UnityEngine::Shader::Find("Custom/Glowing");
+            if (!shader) {
+                ERROR("Failed to find shader for FloatingScreenHandle!");
+            }
 
-
-    void FloatingScreenHandle::Awake() {
-        renderer = GetComponent<UnityEngine::MeshRenderer*>();
-        originalMaterial = renderer->get_material();
+            ColorId = UnityEngine::Shader::PropertyToID("_Color");
+        }
+        
+        _renderer = GetComponent<UnityEngine::MeshRenderer*>();
+        _material = _renderer->get_material();
+        _material->set_shader(shader.ptr());
+        _material->SetColor(ColorId, DefaultColor);
     }
 
     void FloatingScreenHandle::OnPointerEnter(UnityEngine::EventSystems::PointerEventData* eventData) {
-        renderer->set_material(get_hoverMaterial());
+        _isHovering = true;
+        UpdateMaterial();
     }
 
     void FloatingScreenHandle::OnPointerExit(UnityEngine::EventSystems::PointerEventData* eventData) {
-        renderer->set_material(originalMaterial);
+        _isHovering = false;
+        UpdateMaterial();
+    }
+
+    void FloatingScreenHandle::OnPointerUp(UnityEngine::EventSystems::PointerEventData* eventData) {
+        auto currentEventSystem = UnityEngine::EventSystems::EventSystem::get_current();
+        if (!currentEventSystem || currentEventSystem->get_currentInputModule() != vrInputModule) {
+            return;
+        }
+
+        _grabbingController = nullptr;
+        auto pointer = vrInputModule->_vrPointer;
+        _floatingScreen->OnHandleReleased(pointer);
+        
+        UpdateMaterial();
+    }
+
+    void FloatingScreenHandle::OnPointerDown(UnityEngine::EventSystems::PointerEventData* eventData) {
+        auto raycast = eventData->pointerPressRaycast;
+
+        auto go = raycast.get_gameObject();
+        if (go != this->get_gameObject()) return;
+        
+        auto currentEventSystem = UnityEngine::EventSystems::EventSystem::get_current();
+        if (!currentEventSystem || currentEventSystem->get_currentInputModule() != vrInputModule) {
+            return;
+        }
+
+        auto vrPointer = vrInputModule->_vrPointer;
+        auto vrController = vrPointer->_lastSelectedVrController;
+        if (!vrController) return;
+
+        _grabbingController = vrController;
+        _grabPos = vrController->_viewAnchorTransform->InverseTransformPoint(
+                _floatingScreen->get_transform()->get_position()
+        );
+        _grabRot = Quaternion::Inverse(vrController->_viewAnchorTransform->get_rotation()) * _floatingScreen->get_transform()->get_rotation();
+
+        _floatingScreen->OnHandleGrab(vrPointer);
+
+        UpdateMaterial();
+    }
+
+    void FloatingScreenHandle::Init(FloatingScreen* floatingScreen) {
+        _floatingScreen = floatingScreen;
+    }
+
+    void FloatingScreenHandle::Update() {
+        // If we're not grabbing, don't do anything
+        if (_grabbingController == nullptr || _grabbingController->m_CachedPtr == nullptr) return;
+
+        _grabPos -= Vector3::get_forward() * (-_grabbingController->get_thumbstick().y * Time::get_unscaledDeltaTime());
+        Vector3 targetPosition = _grabbingController->_viewAnchorTransform->get_transform()->TransformPoint(_grabPos);
+        Quaternion targetRotation = _grabbingController->_viewAnchorTransform->get_transform()->get_rotation() * _grabRot;
+
+        _floatingScreen->get_transform()->SetPositionAndRotation(
+            Vector3::Lerp(_floatingScreen->get_transform()->get_position(), targetPosition, 10.0f * Time::get_unscaledDeltaTime()),
+            Quaternion::Lerp(_floatingScreen->get_transform()->get_rotation(), targetRotation, 5.0f * Time::get_unscaledDeltaTime())
+        );
+    }
+    
+    void FloatingScreenHandle::OnDestroy() {
+        _grabbingController = nullptr;
+        _floatingScreen = nullptr;
+        _grabbingController = nullptr;
+    }
+
+    void FloatingScreenHandle::UpdateMaterial() {
+        if (_floatingScreen->_highlightHandle && (_isHovering || _grabbingController != nullptr)) {
+            _material->SetColor(ColorId, HoverColor);
+        } else {
+            _material->SetColor(ColorId, DefaultColor);
+        }
     }
 }

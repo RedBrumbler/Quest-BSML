@@ -16,7 +16,6 @@
 #include "UnityEngine/UI/RectMask2D.hpp"
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 
-#include "VRPointerEnabledPatch.hpp"
 
 DEFINE_TYPE(BSML, FloatingScreen);
 
@@ -34,7 +33,10 @@ namespace BSML {
         components[3] = csTypeOf(VRUIControls::VRGraphicRaycaster*);
         components[4] = csTypeOf(HMUI::CurvedCanvasSettings*);
 
-        auto screen = UnityEngine::GameObject::New_ctor("BSMLFloatingScreen", components)->GetComponent<FloatingScreen*>();
+        auto screenGO = UnityEngine::GameObject::New_ctor("BSMLFloatingScreen", components);
+        screenGO->set_layer(5);
+        auto screen = screenGO->GetComponent<FloatingScreen*>();
+
         screen->GetComponent<VRUIControls::VRGraphicRaycaster*>()->_physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
 
         auto curvedCanvasSettings = screen->GetComponent<HMUI::CurvedCanvasSettings*>();
@@ -55,6 +57,7 @@ namespace BSML {
             components[1] = csTypeOf(HMUI::ImageView*);
 
             auto backGroundGo = UnityEngine::GameObject::New_ctor("bg", components);
+            backGroundGo->set_layer(5);
             backGroundGo->get_transform()->SetParent(canvas->get_transform(), false);
             auto rectTransform = backGroundGo->GetComponent<UnityEngine::RectTransform*>();
             rectTransform->set_sizeDelta(screenSize);
@@ -93,35 +96,20 @@ namespace BSML {
         return scr;
     }
 
-    void FloatingScreen::OnPointerCreated(VRUIControls::VRPointer* pointer) {
-        CreateHandle(pointer);
-    }
-
     void FloatingScreen::CreateHandle(VRUIControls::VRPointer* pointer) {
-        if (!pointer || !pointer->m_CachedPtr) {
-            pointer = UnityEngine::Resources::FindObjectsOfTypeAll<VRUIControls::VRPointer*>()->FirstOrDefault();
+        if (!(handle && handle->m_CachedPtr)) {
+            handle = UnityEngine::GameObject::CreatePrimitive(UnityEngine::PrimitiveType::Cube);
+            handle->get_transform()->SetParent(get_transform());
+            handle->get_transform()->set_localRotation(UnityEngine::Quaternion::get_identity());
+            handle->set_layer(5);
+            UpdateHandle();
+
+            // Add the handle component
+            auto screenhandle = handle->AddComponent<FloatingScreenHandle*>();
+            screenhandle->set_enabled(true);
+            screenhandle->Init(this);
         }
 
-        if (pointer && pointer->m_CachedPtr) {
-            bool pointerChanged = !(screenMover && screenMover->m_CachedPtr) || screenMover->get_gameObject() != pointer->get_gameObject();
-
-            if (pointerChanged) {
-                if (screenMover && screenMover->m_CachedPtr) UnityEngine::Object::Destroy(screenMover);
-                screenMover = pointer->get_gameObject()->AddComponent<FloatingScreenMoverPointer*>();
-            }
-
-            if (!(handle && handle->m_CachedPtr)) {
-                handle = UnityEngine::GameObject::CreatePrimitive(UnityEngine::PrimitiveType::Cube);
-                handle->get_transform()->SetParent(get_transform());
-                handle->get_transform()->set_localRotation(UnityEngine::Quaternion::get_identity());
-                UpdateHandle();
-                handle->AddComponent<FloatingScreenHandle*>()->set_enabled(false);
-            }
-
-            if (pointerChanged) screenMover->Init(this);
-        } else {
-            ERROR("Failed to get VR pointer, handle was not created!");
-        }
     }
 
     void FloatingScreen::OnHandleGrab(VRUIControls::VRPointer* pointer) {
@@ -164,7 +152,6 @@ namespace BSML {
 
     void FloatingScreen::OnDestroy() {
         _isBeingDestroyed = true;
-        VRPointerEnabledPatch::OnPointerEnabled -= {&FloatingScreen::OnPointerCreated, this};
     }
 
 
@@ -206,12 +193,8 @@ namespace BSML {
         if (_showHandle) {
             if (!handle || !handle->m_CachedPtr) CreateHandle();
             else handle->SetActive(true);
-
-            VRPointerEnabledPatch::OnPointerEnabled -= {&FloatingScreen::OnPointerCreated, this};
-            VRPointerEnabledPatch::OnPointerEnabled += {&FloatingScreen::OnPointerCreated, this};
         } else if (!_showHandle && handle && handle->m_CachedPtr) {
             handle->SetActive(false);
-            VRPointerEnabledPatch::OnPointerEnabled -= {&FloatingScreen::OnPointerCreated, this};
         }
     }
 
@@ -221,16 +204,6 @@ namespace BSML {
 
     void FloatingScreen::set_HighlightHandle(bool value) {
         _highlightHandle = value;
-        if (_highlightHandle) {
-            if (!get_ShowHandle()) {
-                set_ShowHandle(true);
-            }
-
-            handle->GetComponent<FloatingScreenHandle*>()->set_enabled(true);
-        } else {
-            if (handle && handle->m_CachedPtr)
-                handle->GetComponent<FloatingScreenHandle*>()->set_enabled(false);
-        }
     }
 
     Side FloatingScreen::get_HandleSide() {
