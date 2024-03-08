@@ -13,7 +13,7 @@
 #include "UnityEngine/UI/Toggle.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
 #include "GlobalNamespace/BoolSettingsController.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -50,7 +50,7 @@ namespace BSML {
         auto toggleSetting = go->AddComponent<ToggleSetting*>();
         HMUI::AnimatedSwitchView* animatedSwitchView = switchView->GetComponent<HMUI::AnimatedSwitchView*>();
 
-        Object::Destroy(nameText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        Object::Destroy(nameText->GetComponent<BGLib::Polyglot::LocalizedTextMeshProUGUI*>());
         toggleSetting->toggle = switchView->GetComponent<Toggle*>();
         toggleSetting->toggle->onValueChanged = UnityEngine::UI::Toggle::ToggleEvent::New_ctor();
         toggleSetting->toggle->set_interactable(true);

@@ -18,7 +18,7 @@
 
 #include "TMPro/TextMeshProUGUI.hpp"
 
-#include "GlobalNamespace/ReleaseInfoViewController.hpp"
+#include "GlobalNamespace/EulaDisplayViewController.hpp"
 
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 
@@ -29,7 +29,7 @@ namespace BSML {
     HMUI::TextPageScrollView* get_scrollViewTemplate() {
         static SafePtrUnity<HMUI::TextPageScrollView> scrollViewTemplate;
         if (!scrollViewTemplate) {
-            scrollViewTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>()->FirstOrDefault()->_textPageScrollView;
+            scrollViewTemplate = UnityEngine::Object::FindObjectOfType<GlobalNamespace::EulaDisplayViewController*>(true)->_textPageScrollView;
         }
         return scrollViewTemplate.ptr();
     }

@@ -10,11 +10,11 @@
 #include "UnityEngine/Vector3.hpp"
 #include "HMUI/UIKeyboardKey.hpp"
 #include "HMUI/HoverHint.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 
 DEFINE_TYPE(BSML, Key);
 
-using namespace Polyglot;
+using namespace BGLib::Polyglot;
 using namespace HMUI;
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -40,7 +40,7 @@ namespace BSML {
         auto button = self->button;
         UnityEngine::Object::Destroy(button->GetComponent<HMUI::UIKeyboardKey*>());
 
-        auto localizer = button->GetComponentInChildren<Polyglot::LocalizedTextMeshProUGUI*>(true);
+        auto localizer = button->GetComponentInChildren<BGLib::Polyglot::LocalizedTextMeshProUGUI*>(true);
         if (localizer) UnityEngine::Object::Destroy(localizer);
 
         auto textMesh = button->GetComponentInChildren<TMPro::TextMeshProUGUI*>(true);

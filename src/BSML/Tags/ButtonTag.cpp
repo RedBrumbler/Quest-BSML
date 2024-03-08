@@ -3,7 +3,7 @@
 #include "BSML/Components/ExternalComponents.hpp"
 #include "logging.hpp"
 
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
@@ -42,7 +42,7 @@ namespace BSML {
         externalComponents->Add(transform);
 
         auto textObject = button->get_transform()->Find("Content/Text")->get_gameObject();
-        Object::Destroy(textObject->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        Object::Destroy(textObject->GetComponent<BGLib::Polyglot::LocalizedTextMeshProUGUI*>());
 
         auto textMesh = textObject->GetComponent<TMPro::TextMeshProUGUI*>();
         textMesh->set_text("BSMLButton");

@@ -18,7 +18,7 @@
 #include "HMUI/TableView.hpp"
 #include "HMUI/TableCell.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 
 using namespace UnityEngine;
@@ -69,7 +69,7 @@ namespace BSML {
         dropdown->get_gameObject()->GetComponentInChildren<HMUI::ScrollView*>(true)->_platformHelper = Helpers::GetIVRPlatformHelper();
 
         auto labelObject = transform->Find("Label")->get_gameObject();
-        Object::Destroy(labelObject->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        Object::Destroy(labelObject->GetComponent<BGLib::Polyglot::LocalizedTextMeshProUGUI*>());
 
         auto textMesh = labelObject->GetComponent<HMUI::CurvedTextMeshPro*>();
         textMesh->set_text("BSMLDropdownSetting");

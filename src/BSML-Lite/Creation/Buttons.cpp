@@ -2,7 +2,7 @@
 #include "logging.hpp"
 
 #include "TMPro/TextMeshProUGUI.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "UnityEngine/UI/Image.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
@@ -58,7 +58,7 @@ namespace BSML::Lite {
             auto textT = button->transform->Find("Content/Text");
             if (textT) {
                 auto textObject = textT->gameObject;
-                auto localizer = textObject->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>();
+                auto localizer = textObject->GetComponent<BGLib::Polyglot::LocalizedTextMeshProUGUI*>();
                 if (localizer) UnityEngine::Object::Destroy(localizer);
 
                 auto textMesh = textObject->GetComponent<TMPro::TextMeshProUGUI*>();
@@ -88,7 +88,7 @@ namespace BSML::Lite {
             externalComponents->Add(layoutElement);
         }
 
-        auto localizedText = button->GetComponentInChildren<Polyglot::LocalizedTextMeshProUGUI*>();
+        auto localizedText = button->GetComponentInChildren<BGLib::Polyglot::LocalizedTextMeshProUGUI*>();
         if (localizedText && localizedText->m_CachedPtr) {
             UnityEngine::Object::Destroy(localizedText);
         }

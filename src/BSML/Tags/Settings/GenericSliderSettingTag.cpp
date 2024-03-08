@@ -13,7 +13,7 @@
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/Color.hpp"
 #include "HMUI/CustomFormatRangeValuesSlider.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -55,7 +55,7 @@ namespace BSML {
         sliderRect->set_anchoredPosition({0, 0});
 
         auto nameText = gameObject->get_transform()->Find("Title")->get_gameObject();
-        Object::Destroy(nameText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        Object::Destroy(nameText->GetComponent<BGLib::Polyglot::LocalizedTextMeshProUGUI*>());
 
         TMPro::TextMeshProUGUI* text = nameText->GetComponent<TMPro::TextMeshProUGUI*>();
         text->set_richText(true);
