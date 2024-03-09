@@ -1,4 +1,5 @@
 #include "BSML/Animations/AnimationLoader.hpp"
+#include "BSML/Animations/AnimationInfo.hpp"
 #include "BSML/Animations/GIF/GifDecoder.hpp"
 #include "logging.hpp"
 
@@ -15,6 +16,7 @@
 
 #include "BSML/SharedCoroutineStarter.hpp"
 #include "System/Func_1.hpp"
+#include <mutex>
 
 DEFINE_TYPE(BSML, AnimationLoader);
 
@@ -59,51 +61,48 @@ namespace BSML {
     custom_types::Helpers::Coroutine AnimationLoader::ProcessAnimationInfo(AnimationInfo* animationInfo, std::function<void(UnityEngine::Texture2D*, ArrayW<UnityEngine::Rect>, ArrayW<float>)> onProcessed) {
         DEBUG("ProcessAnimInfo");
         int textureSize = get_atlasSizeLimit(), width = 0, height = 0;
-        UnityEngine::Texture2D* texture = nullptr;
+        UnityEngine::Texture2D* resultTexture = nullptr;
         auto textureList = ArrayW<UnityEngine::Texture2D*>(animationInfo->frameCount);
         ArrayW<float> delays = ArrayW<float>(animationInfo->frameCount);
 
         float lastThrottleTime = UnityEngine::Time::get_realtimeSinceStartup();
 
-        for (int i = 0; i < animationInfo->frameCount; i++) {
-            DEBUG("Frame {}", i);
-            // while size less than or equal to i, wait
+        for (int currentFrameIndex = 0; currentFrameIndex < animationInfo->frameCount; currentFrameIndex++) {
+            DEBUG("Frame {}", currentFrameIndex);
+
+            // while the decoded frame count is larger or equal to the size of the vector, we can't be sure we're done decoding that frame
+            // decodedframes is indexed starting at 1 since it's a count, so <=
             bool throttled = false;
-            while (animationInfo->frames.size() <= i) {
+            while (animationInfo->decodedFrames <= currentFrameIndex) {
                 co_yield nullptr;
                 throttled = true;
             }
             if (throttled) lastThrottleTime = UnityEngine::Time::get_realtimeSinceStartup();
-            auto& currentFrameInfo = animationInfo->frames.at(i);
+            auto currentFrameInfo = animationInfo->GetFrame(currentFrameIndex);
 
-            if (!texture) {
-                textureSize = GetTextureSize(animationInfo, i);
+            if (!resultTexture) {
+                textureSize = GetTextureSize(animationInfo);
 
                 width = currentFrameInfo->width;
                 height = currentFrameInfo->height;
-                texture = UnityEngine::Texture2D::New_ctor(width, height);
+                resultTexture = UnityEngine::Texture2D::New_ctor(width, height);
             }
 
-            delays[i] = currentFrameInfo->delay;
+            delays[currentFrameIndex] = currentFrameInfo->delay;
 
             auto frameTexture = UnityEngine::Texture2D::New_ctor(currentFrameInfo->width, currentFrameInfo->height, UnityEngine::TextureFormat::RGBA32, false);
             frameTexture->set_wrapMode(UnityEngine::TextureWrapMode::Clamp);
             frameTexture->LoadRawTextureData(currentFrameInfo->colors.ptr());
 
-            textureList[i] = frameTexture;
-
+            textureList[currentFrameIndex] = frameTexture;
             if (UnityEngine::Time::get_realtimeSinceStartup() > lastThrottleTime + 0.0005f) {
                 co_yield nullptr;
                 lastThrottleTime = UnityEngine::Time::get_realtimeSinceStartup();
             }
-
-            // cleanup as we go
-            delete currentFrameInfo;
-            currentFrameInfo = nullptr;
         }
 
         // note to self, no longer readable = true means you can't encode the texture to png!
-        auto atlas = texture->PackTextures(textureList, 2, textureSize, true);
+        auto atlas = resultTexture->PackTextures(textureList, 2, textureSize, true);
 
         // cleanup
         for (auto t : textureList) {
@@ -112,14 +111,14 @@ namespace BSML {
         }
 
         if (onProcessed)
-            onProcessed(texture, atlas, delays);
+            onProcessed(resultTexture, atlas, delays);
 
         // we are now done with the animation info
         delete animationInfo;
         co_return;
     }
 
-    int AnimationLoader::GetTextureSize(AnimationInfo* animationInfo, int i) {
+    int AnimationLoader::GetTextureSize(AnimationInfo* animationInfo) {
         int testNum = 2, numFramesInRow = 0, numFramesInColumn = 0;
 
         while (true) {
@@ -135,8 +134,8 @@ namespace BSML {
             testNum += 2;
         }
 
-        int textureWidth = std::clamp(numFramesInRow * animationInfo->frames[i]->width, 0, get_atlasSizeLimit());
-        int textureHeight = std::clamp(numFramesInColumn * animationInfo->frames[i]->height, 0, get_atlasSizeLimit());
+        int textureWidth = std::clamp(numFramesInRow * animationInfo->width, 0, get_atlasSizeLimit());
+        int textureHeight = std::clamp(numFramesInColumn * animationInfo->height, 0, get_atlasSizeLimit());
         return std::max(textureWidth, textureHeight);
     }
 }
