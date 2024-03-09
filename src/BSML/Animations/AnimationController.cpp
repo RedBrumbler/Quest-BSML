@@ -39,7 +39,7 @@ namespace BSML {
     }
 
     bool AnimationController::CanUnregister(AnimationControllerData* animationData) {
-        return animationData ? animationData->IsBeingUsed() : true;
+        return animationData ? !animationData->IsBeingUsed() : true;
     }
 
     bool AnimationController::TryGetAnimationControllerData(StringW key, AnimationControllerData*& out) {

@@ -33,8 +33,12 @@ namespace BSML {
     }
 
     void AnimationStateUpdater::OnDestroy() {
-        if (_controllerData && image) {
-            _controllerData->get_activeImages()->Remove(image);
+        if (_controllerData) {
+            if (image) {
+                _controllerData->get_activeImages()->Remove(image);
+            }
+
+            _controllerData->Remove(this);
         }
     }
 }
