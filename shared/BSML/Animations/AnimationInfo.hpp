@@ -6,7 +6,7 @@
 #include "UnityEngine/Object.hpp"
 
 #include <memory>
-#include <queue>
+#include <vector>
 
 namespace BSML {
     class FrameInfo;
