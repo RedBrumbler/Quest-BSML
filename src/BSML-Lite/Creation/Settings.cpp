@@ -45,6 +45,8 @@ namespace BSML::Lite {
 
         textField->set_text(currentValue);
 
+        textField->_placeholderText->GetComponent<TMPro::TextMeshProUGUI*>()->set_text(settingsName);
+
         return textField;
     }
 

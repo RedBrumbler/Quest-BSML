@@ -38,7 +38,10 @@ namespace BSML::Lite {
         auto go = BSML::SettingsContainerTag{}.CreateObject(parent);
         auto externalComponents = go->GetComponent<BSML::ExternalComponents*>();
         auto scrollTransform = externalComponents->Get<UnityEngine::RectTransform*>();
-        scrollTransform->set_sizeDelta(UnityEngine::Vector2(0.0f, 0.0f));
+        scrollTransform->set_anchorMin(UnityEngine::Vector2(0.0f, 0.0f));
+        scrollTransform->set_anchorMax(UnityEngine::Vector2(1.0f, 1.0f));
+        scrollTransform->set_anchoredPosition(UnityEngine::Vector2(2.0f, 6.0f));
+        scrollTransform->set_sizeDelta(UnityEngine::Vector2(0.0f, -20.0f));
         return go;
     }
 
