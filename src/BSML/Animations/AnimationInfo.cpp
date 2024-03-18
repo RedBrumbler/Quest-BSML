@@ -2,7 +2,7 @@
 
 namespace BSML {
     AnimationInfo::~AnimationInfo() {
-        frames.clear();
+        while(!frames.empty()) frames.pop();
     }
 
     FrameInfo::FrameInfo(int width, int height, int bpp)
