@@ -6,7 +6,7 @@
 #include "UnityEngine/Object.hpp"
 
 #include <memory>
-#include <vector>
+#include <queue>
 
 namespace BSML {
     class FrameInfo;
@@ -26,21 +26,23 @@ namespace BSML {
             /// @brief height of the animation
             int height = 0;
 
-            /// @brief gets a frame at idx, can throw if idx out of bounds
-            std::shared_ptr<FrameInfo> GetFrame(size_t idx) {
+            /// @brief gets the next decoded frame
+            std::shared_ptr<FrameInfo> PopNextFrame() {
                 std::lock_guard<std::mutex> lock(framesAccessMutex);
-                return frames.at(idx);
+                auto frame = frames.front();
+                frames.pop();
+                return frame;
             }
 
             /// @brief adds a frame to the frames vector, though adding frames after frameCount should be impossible
             std::shared_ptr<FrameInfo> AddFrame(int width, int height) {
                 std::lock_guard<std::mutex> lock(framesAccessMutex);
-                return frames.emplace_back(std::make_shared<FrameInfo>(width, height));
+                return frames.emplace(std::make_shared<FrameInfo>(width, height));
             }
 
         private:
             std::mutex framesAccessMutex;
-            std::vector<std::shared_ptr<FrameInfo>> frames;
+            std::queue<std::shared_ptr<FrameInfo>> frames;
     };
 
     class BSML_EXPORT FrameInfo {

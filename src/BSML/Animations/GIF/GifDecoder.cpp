@@ -77,11 +77,11 @@ namespace BSML {
 
             DEBUG("iterating gif frames");
             for (const auto& gifFrame : gifReader) {
-                auto currentFrame = animationInfo->AddFrame(gifFrame.width(), gifFrame.height());
+                auto outputFrameInfo = animationInfo->AddFrame(gifFrame.width(), gifFrame.height());
 
                 const uint8_t* pixels = (const uint8_t*)gifFrame.pixels();
                 // get end of the data
-                uint8_t* colorData = currentFrame->colors.ptr()->_values + currentFrame->colors->get_Length();
+                uint8_t* colorData = outputFrameInfo->colors.ptr()->_values + outputFrameInfo->colors->get_Length();
                 int height = gifFrame.height();
                 int rowSize = sizeof(uint32_t) * gifFrame.width();
                 // we need to iterate the given data in reverse due to unity's texture system
@@ -96,7 +96,7 @@ namespace BSML {
                 }
 
                 // delay in millis
-                currentFrame->delay = gifFrame.rawDuration().milliseconds();
+                outputFrameInfo->delay = gifFrame.rawDuration().milliseconds();
 
                 // increase decoded frame count
                 animationInfo->decodedFrames++;

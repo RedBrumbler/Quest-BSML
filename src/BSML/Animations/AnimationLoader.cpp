@@ -78,7 +78,7 @@ namespace BSML {
                 throttled = true;
             }
             if (throttled) lastThrottleTime = UnityEngine::Time::get_realtimeSinceStartup();
-            auto currentFrameInfo = animationInfo->GetFrame(currentFrameIndex);
+            auto currentFrameInfo = animationInfo->PopNextFrame();
 
             if (!resultTexture) {
                 textureSize = GetTextureSize(animationInfo);
