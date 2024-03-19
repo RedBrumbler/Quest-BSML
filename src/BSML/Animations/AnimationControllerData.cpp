@@ -64,12 +64,15 @@ namespace BSML {
     }
 
     void AnimationControllerData::Finalize() {
-        if (sprite && sprite->m_CachedPtr) {
-            BSML::MainThreadScheduler::Schedule([sprite = this->sprite](){
-                UnityEngine::Object::DestroyImmediate(sprite->texture);
+        BSML::MainThreadScheduler::Schedule([sprite = this->sprite](){
+            if (sprite && sprite->m_CachedPtr) {
+                auto tex = sprite->texture;
+                if (tex && tex->m_CachedPtr) {
+                    UnityEngine::Object::DestroyImmediate(tex);
+                }
                 UnityEngine::Object::DestroyImmediate(sprite);
-            });
-        }
+            }
+        });
         sprite = nullptr;
 
         auto objectFinalize = il2cpp_utils::il2cpp_type_check::MetadataGetter<&System::Object::Finalize>::methodInfo();
