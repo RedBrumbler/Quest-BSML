@@ -1,7 +1,7 @@
 #include "BSML/Tags/TextFieldTag.hpp"
 
 #include "BSML/Components/ExternalComponents.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Vector2.hpp"
@@ -38,7 +38,7 @@ namespace BSML {
 
         fieldView->Awake();
 
-        Object::Destroy(fieldView->_placeholderText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        Object::Destroy(fieldView->_placeholderText->GetComponent<BGLib::Polyglot::LocalizedTextMeshProUGUI*>());
         auto text = fieldView->_placeholderText->GetComponent<TMPro::TextMeshProUGUI*>();
         auto externalComponents = go->AddComponent<ExternalComponents*>();
         externalComponents->Add(text);

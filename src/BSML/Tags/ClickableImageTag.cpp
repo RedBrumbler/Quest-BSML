@@ -47,7 +47,7 @@ namespace BSML {
     GlobalNamespace::HapticFeedbackManager* get_imageHapticFeedbackManager() {
         static SafePtrUnity<GlobalNamespace::HapticFeedbackManager> imageHapticFeedbackManager;
         if (!imageHapticFeedbackManager) {
-            imageHapticFeedbackManager = UnityEngine::Object::FindObjectOfType<GlobalNamespace::HapticFeedbackManager*>();
+            imageHapticFeedbackManager = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::HapticFeedbackManager*>()->First();
         }
         return imageHapticFeedbackManager.ptr();
     }

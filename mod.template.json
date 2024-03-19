@@ -6,7 +6,7 @@
     "author": "RedBrumbler",
     "version": "${version}",
     "packageId": "com.beatgames.beatsaber",
-    "packageVersion": "1.34.2_7115288407",
+    "packageVersion": "1.35.0_8016709773",
     "coverImage": "cover.png",
     "description": "Library that parses BeatSaber Markup Language to create UI elements",
     "dependencies": [],

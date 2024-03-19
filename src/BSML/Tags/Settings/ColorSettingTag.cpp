@@ -16,7 +16,7 @@
 #include "UnityEngine/Vector2.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
 #include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 
 #include "TMPro/TextMeshProUGUI.hpp"
 
@@ -72,7 +72,7 @@ namespace BSML {
         colorSetting->editButton = buttons->LastOrDefault();
 
         auto nameText = gameObject->get_transform()->Find("NameText")->get_gameObject();
-        Object::Destroy(nameText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        Object::Destroy(nameText->GetComponent<BGLib::Polyglot::LocalizedTextMeshProUGUI*>());
 
         auto text = nameText->GetComponent<TMPro::TextMeshProUGUI*>();
         text->set_text("BSMLColorSetting");

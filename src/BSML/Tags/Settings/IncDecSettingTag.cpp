@@ -9,7 +9,7 @@
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
@@ -52,7 +52,7 @@ namespace BSML {
 
         // text stuff
         auto nameText = transform->Find("NameText")->get_gameObject();
-        Object::Destroy(nameText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        Object::Destroy(nameText->GetComponent<BGLib::Polyglot::LocalizedTextMeshProUGUI*>());
 
         TMPro::TextMeshProUGUI* text = nameText->GetComponent<TMPro::TextMeshProUGUI*>();
         text->set_richText(true);

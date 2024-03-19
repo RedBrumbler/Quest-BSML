@@ -7,39 +7,41 @@
 class Hooks
 {
 private:
-    inline static std::vector<void (*)(Logger& logger)> installFuncs;
+    inline static std::vector<void (*)()> installFuncs;
 
 public:
-    static void AddInstallFunc(void (*installFunc)(Logger& logger))
+    static void AddInstallFunc(void (*installFunc)())
     {
         installFuncs.push_back(installFunc);
     }
 
-    static inline void InstallHooks(Logger& logger)
+    static inline void InstallHooks()
     {
         for (auto& func : installFuncs)
-            func(logger);
+            func();
     }
 };
 
-#define AUTO_INSTALL_ORIG(name_)                                               \
-    struct Auto_Hook_##name_                                                   \
-    {                                                                          \
-        Auto_Hook_##name_()                                                    \
-        {                                                                      \
-            ::Hooks::AddInstallFunc(::Hooking::InstallOrigHook<Hook_##name_>); \
-        }                                                                      \
-    };                                                                         \
+#define AUTO_INSTALL_ORIG(name_)                                                                    \
+    struct Auto_Hook_##name_                                                                        \
+    {                                                                                               \
+        static void Auto_Hook_##name_##_Install() {                                                 \
+            static constexpr auto logger = Paper::ConstLoggerContext(MOD_ID "_Install_" #name_);    \
+            ::Hooking::InstallOrigHook<Hook_##name_>(logger);                                       \
+        }                                                                                           \
+        Auto_Hook_##name_() { ::Hooks::AddInstallFunc(Auto_Hook_##name_##_Install); }               \
+    };                                                                                              \
     static Auto_Hook_##name_ Auto_Hook_Instance_##name_;
 
-#define AUTO_INSTALL(name_)                                                \
-    struct Auto_Hook_##name_                                               \
-    {                                                                      \
-        Auto_Hook_##name_()                                                \
-        {                                                                  \
-            ::Hooks::AddInstallFunc(::Hooking::InstallHook<Hook_##name_>); \
-        }                                                                  \
-    };                                                                     \
+#define AUTO_INSTALL(name_)                                                                         \
+    struct Auto_Hook_##name_                                                                        \
+    {                                                                                               \
+        static void Auto_Hook_##name_##_Install() {                                                 \
+            static constexpr auto logger = Paper::ConstLoggerContext(MOD_ID "_Install_" #name_);    \
+            ::Hooking::InstallHook<Hook_##name_>(logger);                                           \
+        }                                                                                           \
+        Auto_Hook_##name_() { ::Hooks::AddInstallFunc(Auto_Hook_##name_##_Install); }               \
+    };                                                                                              \
     static Auto_Hook_##name_ Auto_Hook_Instance_##name_;
 
 #define MAKE_AUTO_HOOK_MATCH(name_, mPtr, retval, ...)                                                                                              \

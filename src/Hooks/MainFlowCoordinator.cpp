@@ -7,7 +7,7 @@
 #include "BSML/Settings/BSMLSettings.hpp"
 #include "BSML/GameplaySetup/GameplaySetup.hpp"
 
-#include "Polyglot/Localization.hpp"
+#include "BGLib/Polyglot/Localization.hpp"
 
 MAKE_AUTO_HOOK_MATCH(MainFlowCoordinator_DidActivate, &GlobalNamespace::MainFlowCoordinator::DidActivate, void, GlobalNamespace::MainFlowCoordinator* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
     INFO("MainFlowCoordinator_DidActivate");
@@ -47,14 +47,14 @@ MAKE_AUTO_HOOK_ORIG_MATCH(MainFlowCoordinator_TopViewControllerWillChange, &Glob
 
 	if (newViewController->Equals(self->_playerOptionsViewController)) {
         static ConstString BUTTON_PLAYER_OPTIONS("BUTTON_PLAYER_OPTIONS");
-        self->SetTitle(Polyglot::Localization::Get(BUTTON_PLAYER_OPTIONS), animationType);
+        self->SetTitle(BGLib::Polyglot::Localization::Get(BUTTON_PLAYER_OPTIONS), animationType);
         self->set_showBackButton(true);
 		return;
 	}
 
 	if (newViewController->Equals(self->_optionsViewController)) {
         static ConstString LABEL_OPTIONS("LABEL_OPTIONS");
-        self->SetTitle(Polyglot::Localization::Get(LABEL_OPTIONS), animationType);
+        self->SetTitle(BGLib::Polyglot::Localization::Get(LABEL_OPTIONS), animationType);
         self->set_showBackButton(true);
 		return;
 	}
