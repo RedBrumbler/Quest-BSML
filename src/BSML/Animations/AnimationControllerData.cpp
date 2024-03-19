@@ -62,11 +62,17 @@ namespace BSML {
         return self;
     }
 
-    void AnimationControllerData::Dispose() {
+    void AnimationControllerData::Finalize() {
         if (sprite && sprite->m_CachedPtr) {
-            UnityEngine::Object::DestroyImmediate(sprite->get_texture());
+            UnityEngine::Object::DestroyImmediate(sprite->texture);
             UnityEngine::Object::DestroyImmediate(sprite);
+            sprite = nullptr;
         }
+
+        auto objectFinalize = il2cpp_utils::il2cpp_type_check::MetadataGetter<&System::Object::Finalize>::methodInfo();
+        il2cpp_utils::RunMethodRethrow<void, false>(this, objectFinalize);
+
+        this->~AnimationControllerData();
     }
 
     ListW<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {

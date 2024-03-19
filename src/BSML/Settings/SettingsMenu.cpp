@@ -13,9 +13,14 @@
 DEFINE_TYPE(BSML, SettingsMenu);
 
 namespace BSML {
-    void SettingsMenu::Dispose() {
+    void SettingsMenu::Finalize() {
         // clear parser params
         parserParams = nullptr;
+
+        auto objectFinalize = il2cpp_utils::il2cpp_type_check::MetadataGetter<&System::Object::Finalize>::methodInfo();
+        il2cpp_utils::RunMethodRethrow<void, false>(this, objectFinalize);
+
+        this->~SettingsMenu();
     }
 
     bool SettingsMenu::get_didSetup() {

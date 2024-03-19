@@ -2,12 +2,11 @@
 
 #include "custom-types/shared/macros.hpp"
 #include "../Parsing/BSMLParserParams.hpp"
-#include "System/IDisposable.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "HMUI/SelectableCell.hpp"
 #include "HMUI/TableCell.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomCellTableCell, HMUI::TableCell, classof(System::IDisposable*),
+DECLARE_CLASS_CODEGEN(BSML, CustomCellTableCell, HMUI::TableCell,
     DECLARE_INSTANCE_FIELD(System::Object*, dataObject);
     DECLARE_INSTANCE_FIELD(ListW<UnityEngine::GameObject*>, selectedTags);
     DECLARE_INSTANCE_FIELD(ListW<UnityEngine::GameObject*>, hoveredTags);
@@ -19,7 +18,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomCellTableCell, HMUI::TableCell, cla
     DECLARE_INSTANCE_METHOD(void, Reused);
 
     DECLARE_CTOR(ctor);
-    DECLARE_OVERRIDE_METHOD_MATCH(void, Dispose, &System::IDisposable::Dispose);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, Finalize, &System::Object::Finalize);
 
     public:
         std::shared_ptr<BSMLParserParams> parserParams;

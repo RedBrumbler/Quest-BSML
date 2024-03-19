@@ -1,7 +1,6 @@
 #pragma once
 
 #include "custom-types/shared/macros.hpp"
-#include "System/IDisposable.hpp"
 #include "UnityEngine/Sprite.hpp"
 #include "UnityEngine/Rect.hpp"
 #include "UnityEngine/Material.hpp"
@@ -11,7 +10,7 @@ namespace BSML {
     class AnimationStateUpdater;
 }
 
-DECLARE_CLASS_CODEGEN_INTERFACES(BSML, AnimationControllerData, System::Object, classof(System::IDisposable*),
+DECLARE_CLASS_CODEGEN(BSML, AnimationControllerData, System::Object,
     DECLARE_INSTANCE_FIELD(UnityEngine::Sprite*, sprite);
     DECLARE_INSTANCE_FIELD(int, uvIndex);
     DECLARE_INSTANCE_FIELD(ArrayW<UnityEngine::Rect>, uvs);
@@ -29,7 +28,7 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, AnimationControllerData, System::Object, 
     DECLARE_INSTANCE_METHOD(void, set_isPlaying, bool value);
 
     DECLARE_DEFAULT_CTOR();
-    DECLARE_OVERRIDE_METHOD_MATCH(void, Dispose, &System::IDisposable::Dispose);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, Finalize, &System::Object::Finalize);
     public:
         __declspec(property(get=get_activeImages)) ListW<UnityEngine::UI::Image*> activeImages;
         bool Add(AnimationStateUpdater* animationStateUpdater);
