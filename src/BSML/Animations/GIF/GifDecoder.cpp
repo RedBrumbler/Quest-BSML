@@ -3,9 +3,6 @@
 
 #include "Helpers/delegates.hpp"
 
-#include "System/Threading/Tasks/Task.hpp"
-#include "System/Func_1.hpp"
-#include "System/Func_1.hpp"
 #include "UnityEngine/WaitUntil.hpp"
 
 #include "gif-lib/shared/gif_lib.h"
@@ -46,13 +43,11 @@ namespace BSML {
 
     custom_types::Helpers::Coroutine GifDecoder::Process(ArrayW<uint8_t> data, std::function<void(AnimationInfo*)> onFinished, std::function<void()> onError) {
         auto animationInfo = new AnimationInfo();
-        auto taskDelegate = MakeSystemAction(
-            [data, animationInfo, onError]() {
-                GifDecoder::ProcessingThread(data, animationInfo, onError);
-            }
-        );
 
-        System::Threading::Tasks::Task::Run(taskDelegate);
+        il2cpp_utils::il2cpp_aware_thread(
+            static_cast<void(*)(ArrayW<uint8_t>, AnimationInfo*, std::function<void()>)>(&GifDecoder::ProcessingThread),
+            data, animationInfo, onError
+        ).detach();
 
         while (!animationInfo->isInitialized) co_yield nullptr;
 
@@ -76,16 +71,17 @@ namespace BSML {
             int width = gifReader.width(), height = gifReader.height(), frameCount = gifReader.frameCount();
 
             animationInfo->frameCount = frameCount;
-            animationInfo->frames.reserve(frameCount);
             animationInfo->isInitialized = true;
+            animationInfo->width = width;
+            animationInfo->height = height;
 
             DEBUG("iterating gif frames");
             for (const auto& gifFrame : gifReader) {
-                auto currentFrame = new FrameInfo(gifFrame.width(), gifFrame.height());
+                auto outputFrameInfo = animationInfo->AddFrame(gifFrame.width(), gifFrame.height());
 
                 const uint8_t* pixels = (const uint8_t*)gifFrame.pixels();
                 // get end of the data
-                uint8_t* colorData = currentFrame->colors.ptr()->_values + currentFrame->colors->get_Length();
+                uint8_t* colorData = outputFrameInfo->colors.ptr()->_values + outputFrameInfo->colors->get_Length();
                 int height = gifFrame.height();
                 int rowSize = sizeof(uint32_t) * gifFrame.width();
                 // we need to iterate the given data in reverse due to unity's texture system
@@ -100,9 +96,10 @@ namespace BSML {
                 }
 
                 // delay in millis
-                currentFrame->delay = gifFrame.rawDuration().milliseconds();
-                // add to end of vector
-                animationInfo->frames.emplace_back(currentFrame);
+                outputFrameInfo->delay = gifFrame.rawDuration().milliseconds();
+
+                // increase decoded frame count
+                animationInfo->decodedFrames++;
             }
         } catch (EasyGifReader::Error gifError) {
             ERROR("Gif error: {}", errToString(gifError));

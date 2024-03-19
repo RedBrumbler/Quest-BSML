@@ -99,7 +99,6 @@ namespace BSML {
     bool BSMLSettings::TryAddSettingsMenu(std::string_view name, std::string_view content_key, System::Object* host, bool enableExtraButtons) {
         auto menu = SettingsMenu::Make_new(name, content_key, host, enableExtraButtons);
         if (!TryAddSettingsMenu(menu)) {
-            menu->Finalize();
             return false;
         }
         return true;
@@ -108,7 +107,6 @@ namespace BSML {
     bool BSMLSettings::TryAddSettingsMenu(System::Type* csType, std::string_view name, MenuSource menuType, bool showExtraButtons) {
         auto menu = SettingsMenu::Make_new(name, csType, menuType, showExtraButtons);
         if (!TryAddSettingsMenu(menu)) {
-            menu->Finalize();
             return false;
         }
         return true;
@@ -117,7 +115,6 @@ namespace BSML {
     bool BSMLSettings::TryAddSettingsMenu(std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate, std::string_view name, bool showExtraButtons) {
         auto menu = SettingsMenu::Make_new(name, viewControllerDidActivate, showExtraButtons);
         if (!TryAddSettingsMenu(menu)) {
-            menu->Finalize();
             return false;
         }
         return true;

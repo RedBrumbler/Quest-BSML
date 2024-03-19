@@ -11,13 +11,10 @@
 #include "UnityEngine/Quaternion.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "VRUIControls/VRPointer.hpp"
-
-#include "FloatingScreenMoverPointer.hpp"
 #include "FloatingScreenHandleEventArgs.hpp"
 #include "Side.hpp"
 
 DECLARE_CLASS_CODEGEN(BSML, FloatingScreen, HMUI::Screen,
-    DECLARE_INSTANCE_FIELD(FloatingScreenMoverPointer*, screenMover);
     DECLARE_INSTANCE_FIELD(UnityEngine::GameObject*, handle);
 
     DECLARE_INSTANCE_METHOD(UnityEngine::RectTransform*, get_rectTransform);
@@ -59,7 +56,6 @@ DECLARE_CLASS_CODEGEN(BSML, FloatingScreen, HMUI::Screen,
         }
         static FloatingScreen* CreateFloatingScreen(UnityEngine::Vector2 screenSize, bool createHandle, UnityEngine::Vector3 position, UnityEngine::Quaternion rotation, float curvatureRadius = 0.0f, bool hasBackground = false);
     private:
-        void OnPointerCreated(VRUIControls::VRPointer* pointer);
         void CreateHandle(VRUIControls::VRPointer* pointer = nullptr);
         static FloatingScreen* CreateFloatingScreenWithViewcontroller(Il2CppReflectionType* vcType, UnityEngine::Vector2 screenSize, bool createHandle, UnityEngine::Vector3 position, UnityEngine::Quaternion rotation, float curvatureRadius = 0.0f, bool hasBackground = false);
         static SafePtrUnity<UnityEngine::Material> _fogMaterial;

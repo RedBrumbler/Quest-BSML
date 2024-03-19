@@ -1,4 +1,5 @@
 #include "BSML/Animations/AnimationControllerData.hpp"
+#include "BSML/MainThreadScheduler.hpp"
 #include "logging.hpp"
 
 #include "Helpers/utilities.hpp"
@@ -62,13 +63,19 @@ namespace BSML {
         return self;
     }
 
-    void AnimationControllerData::dtor() {
+    void AnimationControllerData::Finalize() {
         if (sprite && sprite->m_CachedPtr) {
-            UnityEngine::Object::DestroyImmediate(sprite->get_texture());
-            UnityEngine::Object::DestroyImmediate(sprite);
+            BSML::MainThreadScheduler::Schedule([sprite = this->sprite](){
+                UnityEngine::Object::DestroyImmediate(sprite->texture);
+                UnityEngine::Object::DestroyImmediate(sprite);
+            });
         }
+        sprite = nullptr;
 
-        Finalize();
+        auto objectFinalize = il2cpp_utils::il2cpp_type_check::MetadataGetter<&System::Object::Finalize>::methodInfo();
+        il2cpp_utils::RunMethodRethrow<void, false>(this, objectFinalize);
+
+        this->~AnimationControllerData();
     }
 
     ListW<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {

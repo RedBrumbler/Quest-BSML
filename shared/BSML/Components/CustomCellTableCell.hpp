@@ -18,7 +18,7 @@ DECLARE_CLASS_CODEGEN(BSML, CustomCellTableCell, HMUI::TableCell,
     DECLARE_INSTANCE_METHOD(void, Reused);
 
     DECLARE_CTOR(ctor);
-    DECLARE_SIMPLE_DTOR();
+    DECLARE_OVERRIDE_METHOD_MATCH(void, Finalize, &System::Object::Finalize);
 
     public:
         std::shared_ptr<BSMLParserParams> parserParams;

@@ -34,7 +34,7 @@ namespace BSML {
         auto fieldView = go->GetComponent<HMUI::InputFieldView*>();
         fieldView->_useGlobalKeyboard = true;
         fieldView->_textLengthLimit = 128;
-        fieldView->_keyboardPositionOffset =  Vector3(1337.0f, 1337.0f, 1337.0f);
+        fieldView->_keyboardPositionOffset =  Vector3(0, 0, 0);
 
         fieldView->Awake();
 

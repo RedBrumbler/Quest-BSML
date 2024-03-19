@@ -28,7 +28,7 @@ DECLARE_CLASS_CODEGEN(BSML, AnimationControllerData, System::Object,
     DECLARE_INSTANCE_METHOD(void, set_isPlaying, bool value);
 
     DECLARE_DEFAULT_CTOR();
-    DECLARE_DTOR(dtor);
+    DECLARE_OVERRIDE_METHOD_MATCH(void, Finalize, &System::Object::Finalize);
     public:
         __declspec(property(get=get_activeImages)) ListW<UnityEngine::UI::Image*> activeImages;
         bool Add(AnimationStateUpdater* animationStateUpdater);

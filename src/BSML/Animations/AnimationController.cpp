@@ -1,5 +1,8 @@
 #include "BSML/Animations/AnimationController.hpp"
+#include "BSML/Animations/AnimationControllerData.hpp"
+#include "BSML/Animations/AnimationLoader.hpp"
 #include "logging.hpp"
+#include "assets.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "System/Collections/Generic/KeyValuePair_2.hpp"
@@ -14,6 +17,7 @@ namespace BSML {
             instance = UnityEngine::GameObject::New_ctor()->AddComponent<AnimationController*>();
             instance->get_gameObject()->set_name("AnimationController");
             UnityEngine::Object::DontDestroyOnLoad(instance->get_gameObject());
+            instance->InitializeLoadingAnimation();
         }
         return instance.ptr();
     }
@@ -39,7 +43,8 @@ namespace BSML {
     }
 
     bool AnimationController::CanUnregister(AnimationControllerData* animationData) {
-        return animationData ? animationData->IsBeingUsed() : true;
+        if (animationData == loadingAnimation) return false;
+        return animationData ? !animationData->IsBeingUsed() : true;
     }
 
     bool AnimationController::TryGetAnimationControllerData(StringW key, AnimationControllerData*& out) {
@@ -70,7 +75,11 @@ namespace BSML {
     }
 
     void AnimationController::InitializeLoadingAnimation() {
-        // /shrug
+        BSML::AnimationLoader::Process(AnimationLoader::AnimationType::GIF, Assets::loading_gif,
+            [this](UnityEngine::Texture2D* tex, ArrayW<UnityEngine::Rect> uvs, ArrayW<float> delays){
+                loadingAnimation = AnimationControllerData::Make_new(tex, uvs, delays);
+            }
+        );
     }
 
     void AnimationController::Update() {

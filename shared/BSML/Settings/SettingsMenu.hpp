@@ -24,7 +24,7 @@ DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo,
         DECLARE_INSTANCE_METHOD(bool, get_didSetup);
 
         DECLARE_DEFAULT_CTOR();
-        DECLARE_SIMPLE_DTOR();
+        DECLARE_OVERRIDE_METHOD_MATCH(void, Finalize, &System::Object::Finalize);
 
     public:
         static SettingsMenu* Make_new(std::string_view name, std::string_view content_key, System::Object* host, bool enableExtraButtons = false);

@@ -261,11 +261,7 @@ namespace BSML::Utilities {
     void SetAndLoadImageAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
         auto animationController = AnimationController::get_instance();
 
-        auto stateUpdater = image->get_gameObject()->AddComponent<AnimationStateUpdater*>();
-        stateUpdater->image = image;
-
-        if (loadingAnimation && false)
-            stateUpdater->set_controllerData(animationController->loadingAnimation);
+        auto stateUpdater = image->gameObject->GetComponent<AnimationStateUpdater*>();
 
         // check if we already have it, union because easier
         union {
@@ -273,6 +269,7 @@ namespace BSML::Utilities {
             AnimationControllerData* animationControllerData;
         };
         if (animationController->registeredAnimations->TryGetValue(path, byref(data))) {
+            stateUpdater->enabled = true;
             stateUpdater->set_controllerData(animationControllerData);
             if (onFinished) onFinished();
         } else {
@@ -292,6 +289,7 @@ namespace BSML::Utilities {
                     data,
                     [stateUpdater, path, onFinished, animationController](auto tex, auto uvs, auto delays){
                         auto controllerData = animationController->Register(path, tex, uvs, delays);
+                        stateUpdater->enabled = true;
                         stateUpdater->set_controllerData(controllerData);
                         if (onFinished) onFinished();
                     },
@@ -310,8 +308,9 @@ namespace BSML::Utilities {
     }
 
     void SetAndLoadImageNonAnimated(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::pair<bool, System::Uri*> uri, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
+        auto stateUpdater = image->GetComponent<AnimationStateUpdater*>();
         auto errorType = uri.first ? ImageLoadError::NetworkError : ImageLoadError::GetDataError;
-        auto onDataFinished = [path, onFinished, onError, errorType, image, scaleOptions, cached](ArrayW<uint8_t> data) {
+        auto onDataFinished = [path, onFinished, onError, errorType, image, stateUpdater, scaleOptions, cached](ArrayW<uint8_t> data) {
             // somehow data was failed to be gotten
             if (!data) {
                 if (onError) onError(errorType);
@@ -327,9 +326,15 @@ namespace BSML::Utilities {
                         texture = scaledTexture;
                     }
                 }
+
                 auto sprite = LoadSpriteFromTexture(texture);
                 sprite->get_texture()->set_wrapMode(TextureWrapMode::Clamp);
+
+                stateUpdater->set_controllerData(nullptr);
+                stateUpdater->enabled = false;
+
                 image->set_sprite(sprite);
+
                 if (cached) get_bsmlSetImageCache()->Add(path, sprite);
             }
 
@@ -350,14 +355,26 @@ namespace BSML::Utilities {
     }
 
     void SetImage(UnityEngine::UI::Image* image, StringW path, bool loadingAnimation, ScaleOptions scaleOptions, bool cached, std::function<void()> onFinished, std::function<void(ImageLoadError)> onError) {
-                if (!image) {
+        if (!image) {
             ERROR("Can't set null image!");
             return;
         }
 
-        auto oldStateUpdater = image->GetComponent<AnimationStateUpdater*>();
-        if (oldStateUpdater) {
-            Object::DestroyImmediate(oldStateUpdater);
+        auto animationController = AnimationController::get_instance();
+        auto stateUpdater = image->GetComponent<AnimationStateUpdater*>();
+
+        if (!stateUpdater) {
+            stateUpdater = image->gameObject->AddComponent<AnimationStateUpdater*>();
+        }
+
+        stateUpdater->image = image;
+
+        if (loadingAnimation) {
+            stateUpdater->enabled = true;
+            stateUpdater->set_controllerData(animationController->loadingAnimation);
+        } else {
+            stateUpdater->set_controllerData(nullptr);
+            stateUpdater->set_enabled(false);
         }
 
         if (path->get_Length() > 1 && path[0] == '#') { // it's a base game sprite that is requested
@@ -372,6 +389,9 @@ namespace BSML::Utilities {
         UnityEngine::Sprite* sprite = nullptr;
         if (get_bsmlSetImageCache()->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr) {
             // we got a sprite, use it
+            stateUpdater->set_controllerData(nullptr);
+            stateUpdater->enabled = false;
+
             image->set_sprite(sprite);
             if (onFinished) onFinished();
             return;
@@ -379,8 +399,6 @@ namespace BSML::Utilities {
             INFO("Removing {} from cache as the attached sprite was invalid", path);
             get_bsmlSetImageCache()->Remove(path);
         }
-
-        auto animationController = AnimationController::get_instance();
 
         System::Uri* uri = nullptr;
         bool isUri = System::Uri::TryCreate(path, System::UriKind::Absolute, byref(uri));
