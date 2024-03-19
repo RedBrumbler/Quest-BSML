@@ -1,6 +1,6 @@
 #include "Helpers/extension.hpp"
 
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "TMPro/TMP_Text.hpp"
 
 
@@ -10,7 +10,7 @@ using namespace UnityEngine::UI;
 
 namespace BSML::Helpers {
     void SetButtonText(Button* button, StringW text) {
-            auto localizer = button->GetComponentInChildren<Polyglot::LocalizedTextMeshProUGUI*>(true);
+            auto localizer = button->GetComponentInChildren<BGLib::Polyglot::LocalizedTextMeshProUGUI*>(true);
             if (localizer)
                 Object::DestroyImmediate(localizer);
 

@@ -11,7 +11,7 @@
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/Object.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 #include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
 #include "GlobalNamespace/StepValuePicker.hpp"
 
@@ -53,7 +53,7 @@ namespace BSML {
         stringSetting->boundingBox = valuePick.cast<RectTransform>();
 
         auto nameText = gameObject->get_transform()->Find("NameText")->get_gameObject();
-        Object::Destroy(nameText->GetComponent<Polyglot::LocalizedTextMeshProUGUI*>());
+        Object::Destroy(nameText->GetComponent<BGLib::Polyglot::LocalizedTextMeshProUGUI*>());
 
         auto text = nameText->GetComponent<TMPro::TextMeshProUGUI*>();
         text->set_text("BSMLStringSetting");

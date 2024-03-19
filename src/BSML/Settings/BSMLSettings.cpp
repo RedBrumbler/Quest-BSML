@@ -14,7 +14,7 @@
 #include "UnityEngine/WaitForFixedUpdate.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/TextureWrapMode.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 
 #include "BSML/SharedCoroutineStarter.hpp"
 #include "GlobalNamespace/OptionsViewController.hpp"
@@ -157,7 +157,7 @@ namespace BSML {
         }
 
         button = UnityEngine::Object::Instantiate(optionsViewController->_settingsButton, optionsViewController->get_transform()->Find("Wrapper"));
-        button->GetComponentInChildren<Polyglot::LocalizedTextMeshProUGUI*>()->set_Key("Mod Settings");
+        button->GetComponentInChildren<BGLib::Polyglot::LocalizedTextMeshProUGUI*>()->set_Key("Mod Settings");
         auto onClick = UnityEngine::UI::Button::ButtonClickedEvent::New_ctor();
         button->set_onClick(onClick);
         onClick->AddListener(MakeUnityAction(this, ___PresentSettings_MethodRegistrator.get()));

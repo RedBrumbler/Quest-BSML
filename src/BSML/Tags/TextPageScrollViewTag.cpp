@@ -8,7 +8,7 @@
 #include "HMUI/ScrollView.hpp"
 #include "HMUI/TextPageScrollView.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
-#include "GlobalNamespace/ReleaseInfoViewController.hpp"
+#include "GlobalNamespace/EulaDisplayViewController.hpp"
 
 namespace BSML {
     static BSMLNodeParser<TextPageScrollViewTag> textPageScrollViewTagParser({"text-page", "page"});
@@ -16,7 +16,7 @@ namespace BSML {
     HMUI::TextPageScrollView* get_textPageTemplate() {
         static SafePtrUnity<HMUI::TextPageScrollView> textPageTemplate;
         if (!textPageTemplate) {
-            textPageTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::ReleaseInfoViewController*>()->First()->_textPageScrollView;
+            textPageTemplate = UnityEngine::Object::FindObjectOfType<GlobalNamespace::EulaDisplayViewController*>(true)->_textPageScrollView;
         }
         return textPageTemplate.ptr();
     }
