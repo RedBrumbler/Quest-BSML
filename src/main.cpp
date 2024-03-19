@@ -21,19 +21,20 @@ using namespace BSML;
 
 modloader::ModInfo modInfo{MOD_ID, VERSION, GIT_COMMIT};
 
-namespace BSML {
-    Logger& Logging::getLogger() {
-        static Logger* logger = new Logger(modInfo, LoggerOptions(false, true));
-        return *logger;
-    }
-}
-
 BSML_EXPORT_FUNC void setup(CModInfo* info) {
     info->version = VERSION;
     info->id = MOD_ID;
     info->version_long = GIT_COMMIT;
 
     modInfo.assign(*info);
+}
+
+MAKE_HOOK(abort_hook, nullptr, void) {
+    static constexpr auto logger = Paper::ConstLoggerContext("BSML-Abort");
+    logger.info("abort called");
+    logger.Backtrace(40);
+
+    abort_hook();
 }
 
 static bool isLoaded = false;
@@ -48,7 +49,13 @@ BSML_EXPORT_FUNC void load() {
     if (!LoadConfig())
         SaveConfig();
     custom_types::Register::AutoRegister();
-    Hooks::InstallHooks(BSML::Logging::getLogger());
+    Hooks::InstallHooks();
+
+    auto libc = dlopen("libc.so", RTLD_NOW);
+    auto abrt = dlsym(libc, "abort");
+
+    static constexpr auto logger = Paper::ConstLoggerContext("BSML_Install_abort_hook");
+    INSTALL_HOOK_DIRECT(logger, abort_hook, abrt);
 }
 
 static constexpr inline UnityEngine::HideFlags operator |(UnityEngine::HideFlags a, UnityEngine::HideFlags b) {
