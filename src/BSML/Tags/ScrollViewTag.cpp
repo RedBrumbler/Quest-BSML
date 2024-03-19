@@ -29,7 +29,7 @@ namespace BSML {
     HMUI::TextPageScrollView* get_scrollViewTemplate() {
         static SafePtrUnity<HMUI::TextPageScrollView> scrollViewTemplate;
         if (!scrollViewTemplate) {
-            scrollViewTemplate = UnityEngine::Object::FindObjectOfType<GlobalNamespace::EulaDisplayViewController*>(true)->_textPageScrollView;
+            scrollViewTemplate =  UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::EulaDisplayViewController*>()->First()->_textPageScrollView;
         }
         return scrollViewTemplate.ptr();
     }
