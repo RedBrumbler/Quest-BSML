@@ -1,4 +1,5 @@
 #include "BSML/Animations/AnimationControllerData.hpp"
+#include "BSML/MainThreadScheduler.hpp"
 #include "logging.hpp"
 
 #include "Helpers/utilities.hpp"
@@ -64,10 +65,12 @@ namespace BSML {
 
     void AnimationControllerData::Finalize() {
         if (sprite && sprite->m_CachedPtr) {
-            UnityEngine::Object::DestroyImmediate(sprite->texture);
-            UnityEngine::Object::DestroyImmediate(sprite);
-            sprite = nullptr;
+            BSML::MainThreadScheduler::Schedule([sprite = this->sprite](){
+                UnityEngine::Object::DestroyImmediate(sprite->texture);
+                UnityEngine::Object::DestroyImmediate(sprite);
+            });
         }
+        sprite = nullptr;
 
         auto objectFinalize = il2cpp_utils::il2cpp_type_check::MetadataGetter<&System::Object::Finalize>::methodInfo();
         il2cpp_utils::RunMethodRethrow<void, false>(this, objectFinalize);
