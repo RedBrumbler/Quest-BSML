@@ -13,6 +13,11 @@
 DEFINE_TYPE(BSML, SettingsMenu);
 
 namespace BSML {
+    void SettingsMenu::Dispose() {
+        // clear parser params
+        parserParams = nullptr;
+    }
+
     bool SettingsMenu::get_didSetup() {
         return viewController && viewController->m_CachedPtr || flowCoordinator && flowCoordinator->m_CachedPtr;
     }

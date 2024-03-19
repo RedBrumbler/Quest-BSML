@@ -62,13 +62,11 @@ namespace BSML {
         return self;
     }
 
-    void AnimationControllerData::dtor() {
+    void AnimationControllerData::Dispose() {
         if (sprite && sprite->m_CachedPtr) {
             UnityEngine::Object::DestroyImmediate(sprite->get_texture());
             UnityEngine::Object::DestroyImmediate(sprite);
         }
-
-        Finalize();
     }
 
     ListW<UnityEngine::UI::Image*> AnimationControllerData::get_activeImages() {

@@ -3,11 +3,12 @@
 #include "custom-types/shared/macros.hpp"
 #include "HMUI/FlowCoordinator.hpp"
 #include "HMUI/ViewController.hpp"
+#include "System/IDisposable.hpp"
 #include "../Components/CustomListTableData.hpp"
 #include "../Parsing/BSMLParserParams.hpp"
 #include "../MenuSource.hpp"
 
-DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo,
+DECLARE_CLASS_CUSTOM_INTERFACES(BSML, SettingsMenu, CustomCellInfo, std::vector<Il2CppClass*>({classof(System::IDisposable*)}),
     public:
         DECLARE_INSTANCE_FIELD(StringW, name);
         DECLARE_INSTANCE_FIELD(StringW, content_key);
@@ -24,7 +25,7 @@ DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo,
         DECLARE_INSTANCE_METHOD(bool, get_didSetup);
 
         DECLARE_DEFAULT_CTOR();
-        DECLARE_SIMPLE_DTOR();
+        DECLARE_OVERRIDE_METHOD_MATCH(void, Dispose, &System::IDisposable::Dispose);
 
     public:
         static SettingsMenu* Make_new(std::string_view name, std::string_view content_key, System::Object* host, bool enableExtraButtons = false);

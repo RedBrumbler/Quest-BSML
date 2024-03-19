@@ -9,6 +9,11 @@ namespace BSML {
         neitherTags = ListW<UnityEngine::GameObject*>::New();
     }
 
+    void CustomCellTableCell::Dispose() {
+        // clear saved shared ptr
+        parserParams = nullptr;
+    }
+
     void CustomCellTableCell::Reused() {
         if (dataObject) il2cpp_utils::RunMethod(dataObject, "Reused", this);
     }
