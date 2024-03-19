@@ -264,7 +264,7 @@ namespace BSML::Utilities {
         auto stateUpdater = image->get_gameObject()->AddComponent<AnimationStateUpdater*>();
         stateUpdater->image = image;
 
-        if (loadingAnimation && false)
+        if (loadingAnimation)
             stateUpdater->set_controllerData(animationController->loadingAnimation);
 
         // check if we already have it, union because easier
