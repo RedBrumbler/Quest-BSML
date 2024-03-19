@@ -33,7 +33,6 @@ namespace BSML {
             Init();
             auto btn = MenuButton::Make_new(text, hoverHint, onClick);
             if (RegisterMenuButton(btn)) return btn;
-            btn->Finalize();
             return nullptr;
         }
 
