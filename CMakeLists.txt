@@ -48,9 +48,14 @@ add_compile_definitions(GIT_MODIFIED=${GIT_MODIFIED})
 # compile definitions used
 add_compile_definitions(VERSION=\"${MOD_VERSION}\")
 add_compile_definitions(MOD_ID=\"${MOD_ID}\")
-add_compile_definitions(MAKE_DOCS=${MAKE_DOCS})
 add_compile_definitions(UNITY_2021)
 add_compile_definitions(CORDL_RUNTIME_FIELD_NULL_CHECKS)
+
+if (DEFINED MAKE_DOCS)
+    add_compile_definitions(MAKE_DOCS=${MAKE_DOCS})
+else()
+    add_compile_definitions(MAKE_DOCS=false)
+endif()
 
 # recursively get all src files
 RECURSE_FILES(cpp_file_list ${SOURCE_DIR}/*.cpp)
