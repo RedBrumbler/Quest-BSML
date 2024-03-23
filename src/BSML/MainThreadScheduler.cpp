@@ -42,35 +42,40 @@ namespace BSML {
     }
 
     void MainThreadScheduler::Update() {
-        // acquire lock
-        std::lock_guard<std::mutex> scheduledMethodsLock(scheduledMethodsMutex);
-        // run through our backlog
-        while (!scheduledMethods.empty()) {
-            scheduledMethods.front()();
-            scheduledMethods.pop();
+        {
+            // acquire lock
+            std::lock_guard<std::mutex> scheduledMethodsLock(scheduledMethodsMutex);
+            // run through our backlog
+            while (!scheduledMethods.empty()) {
+                scheduledMethods.front()();
+                scheduledMethods.pop();
+            }
+
+            // aqcuire lock
+            std::lock_guard<std::mutex> nextFrameMethodsLock(nextFrameScheduledMethodsMutex);
+            // push all the nextframe methods onto the scheduled methods queue
+            while(!nextFrameScheduledMethods.empty()) {
+                scheduledMethods.push(nextFrameScheduledMethods.front());
+                nextFrameScheduledMethods.pop();
+            }
+        }
+        {
+            // get delta time to use in decreasing timers
+            auto delta = UnityEngine::Time::get_deltaTime();
+            // aqcuire lock for time scheduled methods
+            std::lock_guard<std::mutex> scheduledAfterTimeLock(scheduledAfterTimeMethodsMutex);
+            // decrease all the timers
+            for(auto& [time, func] : scheduledAfterTimeMethods) {
+                time -= delta;
+            }
+
+            // if a timer hit below 0, we can invoke the method and remove it
+            while(scheduledAfterTimeMethods.front().first <= 0.0f) {
+                scheduledAfterTimeMethods.front().second();
+                scheduledAfterTimeMethods.erase(scheduledAfterTimeMethods.begin());
+            }
         }
 
-        // aqcuire lock
-        std::lock_guard<std::mutex> nextFrameMethodsLock(nextFrameScheduledMethodsMutex);
-        // push all the nextframe methods onto the scheduled methods queue
-        while(!nextFrameScheduledMethods.empty()) {
-            scheduledMethods.push(nextFrameScheduledMethods.front());
-            nextFrameScheduledMethods.pop();
-        }
-
-        // get delta time to use in decreasing timers
-        auto delta = UnityEngine::Time::get_deltaTime();
-        // aqcuire lock for time scheduled methods
-        std::lock_guard<std::mutex> scheduledAfterTimeLock(scheduledAfterTimeMethodsMutex);
-        // decrease all the timers
-        for(auto& [time, func] : scheduledAfterTimeMethods) {
-            time -= delta;
-        }
-
-        // if a timer hit below 0, we can invoke the method and remove it
-        while(scheduledAfterTimeMethods.front().first <= 0.0f) {
-            scheduledAfterTimeMethods.front().second();
-            scheduledAfterTimeMethods.erase(scheduledAfterTimeMethods.begin());
         }
     }
 }
