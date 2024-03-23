@@ -12,6 +12,8 @@ namespace BSML {
     std::mutex MainThreadScheduler::nextFrameScheduledMethodsMutex;
     std::vector<std::pair<float, std::function<void()>>> MainThreadScheduler::scheduledAfterTimeMethods;
     std::mutex MainThreadScheduler::scheduledAfterTimeMethodsMutex;
+    std::vector<std::tuple<bool, std::function<bool()>, std::function<void()>>> MainThreadScheduler::scheduledUntilMethods;
+    std::mutex MainThreadScheduler::scheduledUntilMethodsMutex;
 
     bool MainThreadScheduler::CurrentThreadIsMainThread() {
         // unity icall for whether this is the main thread
@@ -39,6 +41,11 @@ namespace BSML {
         std::lock_guard<std::mutex> lock(scheduledAfterTimeMethodsMutex);
         scheduledAfterTimeMethods.emplace_back(time, method);
         std::stable_sort(scheduledAfterTimeMethods.begin(), scheduledAfterTimeMethods.end(), [](auto const& a, auto const& b){ return a.first < b.first; });
+    }
+
+    void MainThreadScheduler::ScheduleUntil(std::function<bool()> until, std::function<void()> method) {
+        std::lock_guard<std::mutex> lock(scheduledUntilMethodsMutex);
+        scheduledUntilMethods.emplace_back(false, until, method);
     }
 
     void MainThreadScheduler::Update() {
@@ -76,6 +83,31 @@ namespace BSML {
             }
         }
 
+        {
+            // aqcuire lock
+            std::lock_guard<std::mutex> lock(scheduledUntilMethodsMutex);
+
+            // go through the collection and see if there are any methods we can invoke
+            bool anyInvoked = false;
+            for (auto& [invoked, until, method] : scheduledUntilMethods) {
+                if (invoked) continue;
+                if (!until()) continue;
+
+                method();
+                invoked = true;
+                anyInvoked = true;
+            }
+
+            // if anything was invoked we need to remove those
+            if (anyInvoked) {
+                decltype(scheduledUntilMethods) newVec;
+                newVec.reserve(scheduledUntilMethods.size());
+                for (auto& v : scheduledUntilMethods) {
+                    if (std::get<0>(v)) continue;
+                    newVec.emplace_back(std::move(v));
+                }
+                scheduledUntilMethods = std::move(newVec);
+            }
         }
     }
 }

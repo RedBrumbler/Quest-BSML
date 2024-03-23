@@ -4,6 +4,7 @@
 
 #include "UnityEngine/MonoBehaviour.hpp"
 #include <queue>
+#include <tuple>
 
 DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
     private:
@@ -13,6 +14,8 @@ DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
         static std::mutex nextFrameScheduledMethodsMutex;
         static std::vector<std::pair<float, std::function<void()>>> scheduledAfterTimeMethods;
         static std::mutex scheduledAfterTimeMethodsMutex;
+        static std::vector<std::tuple<bool, std::function<bool()>, std::function<void()>>> scheduledUntilMethods;
+        static std::mutex scheduledUntilMethodsMutex;
 
     public:
         /// @brief schedule a method to be called on the main thread, or if you are on the main thread right now immediately
@@ -38,6 +41,9 @@ DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
         static void ScheduleAfterTime(float time, T instance, void (U::*method)()) {
             ScheduleAfterTime(time, std::bind(method, instance));
         }
+
+        /// @brief schedule a method that waits until the until method returns true
+        static void ScheduleUntil(std::function<bool()> until, std::function<void()> method);
 
         /// @brief method that checks whether the thread it's called from is the main thread
         static bool CurrentThreadIsMainThread();
