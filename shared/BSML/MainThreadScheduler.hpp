@@ -45,6 +45,9 @@ DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
         /// @brief schedule a method that waits until the until method returns true
         static void ScheduleUntil(std::function<bool()> until, std::function<void()> method);
 
+        /// @brief method to use to await a shared future to complete execution, and execute method on finished
+        /// @param future the future to await
+        /// @param method the method to execute
         template<typename T>
         static void AwaitFuture(std::shared_future<T> future, std::function<void()> method) {
             static auto AwaitFuture = [](std::shared_future<T> future) {
@@ -54,6 +57,10 @@ DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
             ScheduleUntil(std::bind(AwaitFuture, future), method);
         }
 
+        /// @brief method to use to await a shared future to complete execution, and binding an instance method to execute when finished
+        /// @param future the future to await
+        /// @param method the instance method to execute
+        /// @param instance the instance to use for the instance method
         template<typename T, typename U, typename V>
         requires(std::is_invocable_v<void(U::*)(), V*>)
         static void AwaitFuture(std::shared_future<T> future, void(U::*method)(), V* instance) {
@@ -68,6 +75,9 @@ DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
             ScheduleUntil(std::bind(AwaitFuture, future), std::bind(InvokeMethod, method, instance));
         }
 
+        /// @brief method to use to await a shared future to complete execution, the future result is passed into the method
+        /// @param future the future to await
+        /// @param method the method to execute when the future completes
         template<typename T>
         requires(!std::is_same_v<T, void>)
         static void AwaitFuture(std::shared_future<T> future, std::function<void(T)> method) {
@@ -82,6 +92,10 @@ DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
             ScheduleUntil(std::bind(AwaitFuture, future), std::bind(InvokeMethod, method));
         }
 
+        /// @brief method to use to await a shared future to complete execution, and binding an instance method to execute when finished, the future result is passed into the method
+        /// @param future the future to await
+        /// @param method the instance method to execute
+        /// @param instance the instance to use for the instance method
         template<typename T, typename U, typename V>
         requires(std::is_invocable_v<void(U::*)(T), V*, T> && !std::is_same_v<T, void>)
         static void AwaitFuture(std::shared_future<T> future, void(U::* method)(T), V* instance) {
