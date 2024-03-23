@@ -77,7 +77,7 @@ namespace BSML {
             }
 
             // if a timer hit below 0, we can invoke the method and remove it
-            while(scheduledAfterTimeMethods.front().first <= 0.0f) {
+            while(!scheduledAfterTimeMethods.empty() && scheduledAfterTimeMethods.front().first <= 0.0f) {
                 scheduledAfterTimeMethods.front().second();
                 scheduledAfterTimeMethods.erase(scheduledAfterTimeMethods.begin());
             }
