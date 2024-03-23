@@ -1,11 +1,13 @@
 #include "Helpers/getters.hpp"
 #include "logging.hpp"
+#include "hooking.hpp"
 
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "GlobalNamespace/MainMenuViewController.hpp"
 #include "GlobalNamespace/LevelCollectionTableView.hpp"
+#include "GlobalNamespace/MainSettingsMenuViewControllersInstaller.hpp"
 #include "VRUIControls/VRGraphicRaycaster.hpp"
 #include "HMUI/TextSegmentedControl.hpp"
 #include "HMUI/ScrollView.hpp"
@@ -21,17 +23,17 @@ using namespace GlobalNamespace;
 #define CacheNotFoundWarningLog(type) WARNING("Can't find '{}'! (This shouldn't happen and can cause unexpected behaviour)", #type)
 
 namespace BSML::Helpers {
-    SafePtr<UnityEngine::UI::Button> soloButton;
+    SafePtrUnity<UnityEngine::UI::Button> soloButton;
     bool TryGetSoloButton(UnityEngine::UI::Button*& button) {
         if(!soloButton) {
-            auto container = GetDiContainer();
-            soloButton = container->Resolve<MainMenuViewController*>()->_soloButton;
+            auto vc = UnityEngine::Resources::FindObjectsOfTypeAll<MainMenuViewController*>()->First();
+            soloButton = vc->_soloButton;
         }
         if(!soloButton)
-            CacheNotFoundWarningLog(PhysicsRaycasterWithCache);
+            CacheNotFoundWarningLog(SoloButton);
 
         button = soloButton.ptr();
-        return button != nullptr;
+        return soloButton;
     }
 
     bool TryGetUITextTemplate(TMPro::TextMeshProUGUI*& textMesh) {
@@ -40,16 +42,18 @@ namespace BSML::Helpers {
             textMesh = nullptr;
             return false;
         }
-
-        textMesh = soloButton->transform->Find("Text")->GetComponent<TMPro::TextMeshProUGUI*>();
+        auto transform = soloButton->transform;
+        auto text = transform->Find("Text");
+        textMesh = text->GetComponent<TMPro::TextMeshProUGUI*>();
         return textMesh;
     }
 
     SafePtr<PhysicsRaycasterWithCache> physicsRaycaster;
     PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache()
     {
-        if(!physicsRaycaster)
+        if(!physicsRaycaster) {
             physicsRaycaster = Resources::FindObjectsOfTypeAll<MainMenuViewController*>()->First()->GetComponent<VRGraphicRaycaster*>()->_physicsRaycaster;
+        }
         if(!physicsRaycaster)
             CacheNotFoundWarningLog(PhysicsRaycasterWithCache);
         return physicsRaycaster.ptr();
@@ -123,4 +127,14 @@ namespace BSML::Helpers {
             CacheNotFoundWarningLog(MainFlowCoordinator);
         return mainFlowCoordinator.ptr();
     }
+}
+
+MAKE_AUTO_HOOK_MATCH(
+    MainSettingsMenuViewControllersInstaller_InstallBindings,
+    &GlobalNamespace::MainSettingsMenuViewControllersInstaller::InstallBindings,
+    void,
+    GlobalNamespace::MainSettingsMenuViewControllersInstaller* self
+) {
+    BSML::Helpers::diContainer = self->get_Container();
+    MainSettingsMenuViewControllersInstaller_InstallBindings(self);
 }
