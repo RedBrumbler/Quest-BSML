@@ -6,6 +6,7 @@
 #include "UnityEngine/EventSystems/EventSystem.hpp"
 #include "VRUIControls/VRInputModule.hpp"
 #include "UnityEngine/Quaternion.hpp"
+#include "UnityEngine/Resources.hpp"
 #include "BSML/FloatingScreen/FloatingScreen.hpp"
 
 #include "logging.hpp"
@@ -44,17 +45,17 @@ static Vector3 operator*(float_t a, Vector3 b) {
 namespace BSML {
     SafePtrUnity<UnityEngine::Shader> FloatingScreenHandle::shader;
     int FloatingScreenHandle::ColorId = 0;
-    
+
     void FloatingScreenHandle::Awake() {
         if (!shader) {
-            shader = UnityEngine::Shader::Find("Custom/Glowing");
+            shader = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::Shader*>()->First([](auto x){ return x->name == u"Custom/Glowing"; });
             if (!shader) {
                 ERROR("Failed to find shader for FloatingScreenHandle!");
             }
 
             ColorId = UnityEngine::Shader::PropertyToID("_Color");
         }
-        
+
         _renderer = GetComponent<UnityEngine::MeshRenderer*>();
         _material = _renderer->get_material();
         _material->set_shader(shader.ptr());
@@ -80,7 +81,7 @@ namespace BSML {
         _grabbingController = nullptr;
         auto pointer = vrInputModule->_vrPointer;
         _floatingScreen->OnHandleReleased(pointer);
-        
+
         UpdateMaterial();
     }
 
@@ -127,7 +128,7 @@ namespace BSML {
             Quaternion::Lerp(_floatingScreen->get_transform()->get_rotation(), targetRotation, 5.0f * Time::get_unscaledDeltaTime())
         );
     }
-    
+
     void FloatingScreenHandle::OnDestroy() {
         _grabbingController = nullptr;
         _floatingScreen = nullptr;
