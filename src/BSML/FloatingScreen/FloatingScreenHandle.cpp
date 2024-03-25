@@ -48,7 +48,8 @@ namespace BSML {
 
     void FloatingScreenHandle::Awake() {
         if (!shader) {
-            shader = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::Shader*>()->First([](auto x){ return x->name == "Custom/Glowing"; });
+            using namespace std::string_view_literals;
+            shader = UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::Shader*>()->First([](auto x){ return x->name == "Custom/Glowing"sv; });
             if (!shader) {
                 ERROR("Failed to find shader for FloatingScreenHandle!");
             }
