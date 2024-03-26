@@ -60,7 +60,9 @@ namespace BSML {
         if (stackLayoutGroup)
             externalComponents->Add(stackLayoutGroup);
 
-        auto layoutElement = gameObject->AddComponent<LayoutElement*>();
+        auto layoutElement = gameObject->GetComponent<LayoutElement*>();
+        if (!layoutElement) layoutElement = gameObject->AddComponent<LayoutElement*>();
+
         layoutElement->set_preferredWidth(30.0f);
         externalComponents->Add(layoutElement);
 

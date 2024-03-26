@@ -83,7 +83,9 @@ namespace BSML::Lite {
             if (stackLayoutGroup)
                 externalComponents->Add(stackLayoutGroup);
 
-            auto layoutElement = gameObject->AddComponent<UnityEngine::UI::LayoutElement*>();
+            auto layoutElement = gameObject->GetComponent<UnityEngine::UI::LayoutElement*>();
+            if (!layoutElement) layoutElement = gameObject->AddComponent<UnityEngine::UI::LayoutElement*>();
+
             layoutElement->set_preferredWidth(30.0f);
             externalComponents->Add(layoutElement);
         }
