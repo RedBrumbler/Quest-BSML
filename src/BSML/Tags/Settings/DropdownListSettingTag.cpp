@@ -30,7 +30,7 @@ namespace BSML {
     GameObject* get_dropdownTemplate() {
         static SafePtrUnity<GameObject> dropdownTemplate;
         if (!dropdownTemplate) {
-            dropdownTemplate = Resources::FindObjectsOfTypeAll<HMUI::SimpleTextDropdown*>()->FirstOrDefault([](auto x){
+            dropdownTemplate = Resources::FindObjectsOfTypeAll<HMUI::SimpleTextDropdown*>()->First([](auto x){
                 auto parent = x->get_transform()->get_parent();
                 if (!parent) return false;
                 return parent->get_name() == "NormalLevels";
@@ -39,28 +39,17 @@ namespace BSML {
         return dropdownTemplate.ptr();
     }
 
-    GameObject* get_safePrefab() {
-        static SafePtrUnity<GameObject> safePrefab;
-        if (!safePrefab) {
-            safePrefab = Object::Instantiate(get_dropdownTemplate());
-            Object::DontDestroyOnLoad(safePrefab.ptr());
-            safePrefab->SetActive(false);
-            safePrefab->set_name("BSMLDropdownListPrefab");
-        }
-        return safePrefab.ptr();
-    }
-
     UnityEngine::GameObject* DropdownListSettingTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating DropdownListSetting");
 
-        auto gameObject = Object::Instantiate(get_safePrefab(), parent, false);
+        auto gameObject = Helpers::GetDiContainer()->InstantiatePrefab(get_dropdownTemplate(), parent);
         auto transform = gameObject->transform.cast<RectTransform>();
         auto externalComponents = gameObject->AddComponent<ExternalComponents*>();
         externalComponents->Add(transform);
 
         gameObject->set_name("BSMLDropdownList");
         auto dropdown = gameObject->GetComponentInChildren<HMUI::SimpleTextDropdown*>(true);
-        dropdown->get_gameObject()->SetActive(false);
+        dropdown->gameObject->SetActive(false);
         gameObject->SetActive(false);
 
         dropdown->set_name("Dropdown");
@@ -84,9 +73,6 @@ namespace BSML {
         dropdownListSetting->dropdown = dropdown;
         externalComponents->Add(dropdownListSetting);
 
-        dropdown->get_gameObject()->SetActive(true);
-        gameObject->SetActive(true);
-
         dropdown->_tableView->_preallocatedCells = Array<HMUI::TableView::CellsGroup*>::NewLength(0);
         dropdown->_tableView->_visibleCells->Clear();
 
@@ -95,6 +81,9 @@ namespace BSML {
         for (int i = childCount - 1; i >= 0; i--) {
             cont->GetChild(i)->get_gameObject()->SetActive(false);
         }
+
+        dropdown->gameObject->SetActive(true);
+        gameObject->SetActive(true);
 
         return gameObject;
     }
