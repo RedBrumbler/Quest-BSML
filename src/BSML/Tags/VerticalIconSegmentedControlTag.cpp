@@ -29,7 +29,7 @@ namespace BSML {
         auto verticalIconSegmentedControlTemplate = get_verticalIconSegmentedControlTemplate();
         auto gameObject = Helpers::GetDiContainer()->InstantiatePrefab(verticalIconSegmentedControlTemplate, parent);
         auto verticalIconSegmentedControl = gameObject->GetComponent<HMUI::IconSegmentedControl*>();
-        verticalIconSegmentedControl->dataSource = nullptr;
+        verticalIconSegmentedControl->_dataSource = nullptr;
 
         gameObject->set_name("BSMLVerticalIconSegmentedControl");
 

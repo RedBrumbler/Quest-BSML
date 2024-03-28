@@ -34,7 +34,7 @@ namespace BSML {
         auto textSegmentedControlTemplate = get_textSegmentedControlTemplate();
         auto gameObject = Helpers::GetDiContainer()->InstantiatePrefab(textSegmentedControlTemplate, parent);
         auto textSegmentedControl = gameObject->GetComponent<HMUI::TextSegmentedControl*>();
-        textSegmentedControl->dataSource = nullptr;
+        textSegmentedControl->_dataSource = nullptr;
 
         gameObject->set_name("BSMLTextSegmentedControl");
 

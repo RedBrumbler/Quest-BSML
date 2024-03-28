@@ -36,7 +36,7 @@ namespace BSML {
         gameObject->set_name("BSMLIconSegmentedControl");
 
         auto iconSegmentedControl = gameObject->GetComponent<HMUI::IconSegmentedControl*>();
-        iconSegmentedControl->dataSource = nullptr;
+        iconSegmentedControl->_dataSource = nullptr;
 
         auto transform = gameObject->transform.cast<RectTransform>();
         transform->set_anchoredPosition({0, 0});
