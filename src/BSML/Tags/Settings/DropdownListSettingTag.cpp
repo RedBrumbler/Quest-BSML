@@ -53,9 +53,6 @@ namespace BSML {
         gameObject->SetActive(false);
 
         dropdown->set_name("Dropdown");
-        dropdown->get_gameObject()->GetComponentInChildren<VRUIControls::VRGraphicRaycaster*>(true)->_physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
-        dropdown->get_gameObject()->GetComponentInChildren<HMUI::ModalView*>(true)->_container = Helpers::GetDiContainer();
-        dropdown->get_gameObject()->GetComponentInChildren<HMUI::ScrollView*>(true)->_platformHelper = Helpers::GetIVRPlatformHelper();
 
         auto labelObject = transform->Find("Label")->get_gameObject();
         Object::Destroy(labelObject->GetComponent<BGLib::Polyglot::LocalizedTextMeshProUGUI*>());

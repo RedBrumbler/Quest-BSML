@@ -35,17 +35,15 @@ namespace BSML {
     UnityEngine::GameObject* ModalTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating Modal");
         auto modalViewTemplate = get_modalViewTemplate();
-        auto copy = Object::Instantiate(modalViewTemplate, parent, false);
+        auto copy = Helpers::GetDiContainer()->InstantiatePrefab(modalViewTemplate, parent);
         auto gameObject = copy->get_gameObject();
         gameObject->SetActive(false);
         gameObject->set_name("BSMLModalView");
         // we use our own custom modalView type, this differs from PC BSML but it just makes it easier to set things up
-        auto modalView = gameObject->AddComponent<BSML::ModalView*>();
-
+        auto modalView = Helpers::GetDiContainer()->InstantiateComponent<BSML::ModalView*>(gameObject);
 
         modalView->_presentPanelAnimations = modalViewTemplate->_presentPanelAnimations;
         modalView->_dismissPanelAnimation = modalViewTemplate->_dismissPanelAnimation;
-        modalView->_container = Helpers::GetDiContainer();
         gameObject->GetComponent<VRGraphicRaycaster*>()->_physicsRaycaster = Helpers::GetPhysicsRaycasterWithCache();
 
         Object::DestroyImmediate(gameObject->GetComponent<TableView*>());

@@ -1,4 +1,5 @@
 #include "BSML/Tags/IconSegmentedControlTag.hpp"
+#include "Helpers/getters.hpp"
 #include "logging.hpp"
 
 #include "BSML/Components/TabSelector.hpp"
@@ -30,13 +31,12 @@ namespace BSML {
     UnityEngine::GameObject* IconSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating IconSegmentedControl");
 
-        auto iconSegmentedControlTemplate = get_iconSegmentedControlTemplate();
-        auto iconSegmentedControl = Object::Instantiate(iconSegmentedControlTemplate, parent, false);
-        iconSegmentedControl->dataSource = nullptr;
-
-        auto gameObject = iconSegmentedControl->get_gameObject();
+        auto gameObject = Helpers::GetDiContainer()->InstantiatePrefab(get_iconSegmentedControlTemplate(), parent);
+        gameObject->SetActive(false);
         gameObject->set_name("BSMLIconSegmentedControl");
-        iconSegmentedControl->_container = iconSegmentedControlTemplate->_container;
+
+        auto iconSegmentedControl = gameObject->GetComponent<HMUI::IconSegmentedControl*>();
+        iconSegmentedControl->dataSource = nullptr;
 
         auto transform = gameObject->transform.cast<RectTransform>();
         transform->set_anchoredPosition({0, 0});
