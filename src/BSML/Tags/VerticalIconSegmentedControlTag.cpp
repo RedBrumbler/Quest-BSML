@@ -1,4 +1,5 @@
 #include "BSML/Tags/VerticalIconSegmentedControlTag.hpp"
+#include "Helpers/getters.hpp"
 #include "logging.hpp"
 
 #include "HMUI/IconSegmentedControl.hpp"
@@ -26,12 +27,11 @@ namespace BSML {
     UnityEngine::GameObject* VerticalIconSegmentedControlTag::CreateObject(UnityEngine::Transform* parent) const {
         DEBUG("Creating VerticalIconSegmentedControl");
         auto verticalIconSegmentedControlTemplate = get_verticalIconSegmentedControlTemplate();
-        auto verticalIconSegmentedControl = Object::Instantiate(verticalIconSegmentedControlTemplate, parent, false);
-        verticalIconSegmentedControl->dataSource = nullptr;
+        auto gameObject = Helpers::GetDiContainer()->InstantiatePrefab(verticalIconSegmentedControlTemplate, parent);
+        auto verticalIconSegmentedControl = gameObject->GetComponent<HMUI::IconSegmentedControl*>();
+        verticalIconSegmentedControl->_dataSource = nullptr;
 
-        auto gameObject = verticalIconSegmentedControl->get_gameObject();
         gameObject->set_name("BSMLVerticalIconSegmentedControl");
-        verticalIconSegmentedControl->_container = verticalIconSegmentedControlTemplate->_container;
 
         auto transform = gameObject->transform.cast<RectTransform>();
         transform->set_anchorMin({0.5f, 0.5f});

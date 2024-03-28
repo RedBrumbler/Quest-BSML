@@ -1,5 +1,6 @@
 #include "BSML/Tags/TextSegmentedControlTag.hpp"
 #include "logging.hpp"
+#include "Helpers/getters.hpp"
 
 #include "BSML/Components/TabSelector.hpp"
 #include "HMUI/TextSegmentedControl.hpp"
@@ -31,12 +32,11 @@ namespace BSML {
         DEBUG("Creating TextSegmentedControl");
 
         auto textSegmentedControlTemplate = get_textSegmentedControlTemplate();
-        auto textSegmentedControl = Object::Instantiate(textSegmentedControlTemplate, parent, false);
-        textSegmentedControl->dataSource = nullptr;
+        auto gameObject = Helpers::GetDiContainer()->InstantiatePrefab(textSegmentedControlTemplate, parent);
+        auto textSegmentedControl = gameObject->GetComponent<HMUI::TextSegmentedControl*>();
+        textSegmentedControl->_dataSource = nullptr;
 
-        auto gameObject = textSegmentedControl->get_gameObject();
         gameObject->set_name("BSMLTextSegmentedControl");
-        textSegmentedControl->_container = textSegmentedControlTemplate->_container;
 
         auto transform = gameObject->transform.cast<RectTransform>();
         transform->set_anchoredPosition({0, 0});
