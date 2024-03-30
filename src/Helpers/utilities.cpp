@@ -334,8 +334,8 @@ namespace BSML::Utilities {
                 stateUpdater->enabled = false;
 
                 image->set_sprite(sprite);
-
-                if (cached) get_bsmlSetImageCache()->Add(path, sprite);
+                // if while we were loading, someone else added this key already, we skip adding (could be weird but like, I don't want crashes)
+                if (cached && !get_bsmlSetImageCache()->ContainsKey(path)) get_bsmlSetImageCache()->TryAdd(path, sprite);
             }
 
             if (onFinished)
