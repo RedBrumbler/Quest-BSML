@@ -36,7 +36,8 @@ namespace BSML {
             {"pivotY", {"pivot-y"}},
             {"hoverHint", {"hover-hint"}},
             {"hoverHintKey", {"hover-hint-key"}},
-            {"active", {"active"}}
+            {"active", {"active"}},
+            {"localScale", {"local-scale", "scale" }},
         };
     }
 
@@ -52,9 +53,10 @@ namespace BSML {
             {"sizeDeltaY",      [](auto component, auto value){ component->set_sizeDelta(UnityEngine::Vector2(component->get_sizeDelta().x, value)); }},
             {"pivotX",          [](auto component, auto value){ component->set_pivot(UnityEngine::Vector2(value, component->get_pivot().y)); }},
             {"pivotY",          [](auto component, auto value){ component->set_pivot(UnityEngine::Vector2(component->get_pivot().x, value)); }},
-            {"hoverHint",       [](auto component, auto value){ AddHoverHint(component, value); }},
-            {"hoverHintKey",    [](auto component, auto value){ AddHoverHintKey(component, value); }},
-            {"active",          [](auto component, auto value){ component->get_gameObject()->SetActive(value); }}
+            {"hoverHint",      [](auto component, auto value){ AddHoverHint(component, value); }},
+            {"hoverHintKey",   [](auto component, auto value){ AddHoverHintKey(component, value); }},
+            {"active",         [](auto component, auto value){ component->get_gameObject()->SetActive(value); }},
+            {"localScale",          [](auto component, auto value){ float v = value; component->localScale = {v, v, v}; }}
         };
     }
 }
