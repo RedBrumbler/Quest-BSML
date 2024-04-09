@@ -5,20 +5,19 @@
 // splits this view into a vector of views into the different parts
 std::vector<std::string_view> StringParseHelper::split(char split) const {
     std::vector<std::string_view> parts;
-    auto view = *this;
     std::size_t start = 0, end;
-    while((end = view.find(start, split)) != std::string::npos) {
-        auto part = view.substr(start, end);
+    while((end = this->find(split, start)) != std::string::npos) {
+        auto part = this->substr(start, end - start);
         start = end + 1;
         // if empty, skip
         if (part.empty()) continue;
         // if only whitespace, skip this part
-        if (std::find_if(part.begin(), part.end(), [](auto c){ return !isspace(c); }) == part.end()) continue;
+        if (std::find_if(part.begin(), part.end(), [](auto c){ return !std::isspace(c); }) == part.end()) continue;
 
         parts.emplace_back(part);
     }
 
-    parts.emplace_back(view.substr(start, end));
+    parts.emplace_back(this->substr(start));
     return parts;
 }
 /// makes a string thats lowercase
