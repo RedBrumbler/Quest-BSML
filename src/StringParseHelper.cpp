@@ -2,6 +2,25 @@
 #include "Helpers/utilities.hpp"
 #include "logging.hpp"
 
+// splits this view into a vector of views into the different parts
+std::vector<std::string_view> StringParseHelper::split(char split) const {
+    std::vector<std::string_view> parts;
+    auto view = *this;
+    std::size_t start = 0, end;
+    while((end = view.find(start, split)) != std::string::npos) {
+        auto part = view.substr(start, end);
+        start = end + 1;
+        // if empty, skip
+        if (part.empty()) continue;
+        // if only whitespace, skip this part
+        if (std::find_if(part.begin(), part.end(), [](auto c){ return !isspace(c); }) == part.end()) continue;
+
+        parts.emplace_back(part);
+    }
+
+    parts.emplace_back(view.substr(start, end));
+    return parts;
+}
 /// makes a string thats lowercase
 std::string StringParseHelper::toLower() const {
     std::string ret{data(), size()};
@@ -50,6 +69,70 @@ std::optional<UnityEngine::Color> StringParseHelper::tryParseColor() const {
 }
 std::optional<UnityEngine::Color32> StringParseHelper::tryParseColor32() const {
     return BSML::Utilities::ParseHTMLColor32Opt(*this);
+}
+std::optional<UnityEngine::Vector2> StringParseHelper::tryParseVector2(float defaultValue) const {
+    auto parts = split(' ');
+    switch (parts.size()) {
+        case 1: {
+            auto v = tryParseFloat().value_or(defaultValue);
+            return UnityEngine::Vector2{v, v};
+        } break;
+        case 2: {
+            auto x = StringParseHelper(parts[0]).tryParseFloat().value_or(defaultValue);
+            auto y = StringParseHelper(parts[1]).tryParseFloat().value_or(defaultValue);
+            return UnityEngine::Vector2{x, y};
+        } break;
+        default: return std::nullopt;
+    }
+}
+std::optional<UnityEngine::Vector3> StringParseHelper::tryParseVector3(float defaultValue) const {
+    auto parts = split(' ');
+    switch (parts.size()) {
+        case 1: {
+            auto v = tryParseFloat().value_or(defaultValue);
+            return UnityEngine::Vector3{v, v, v};
+        } break;
+        case 2: {
+            auto x = StringParseHelper(parts[0]).tryParseFloat().value_or(defaultValue);
+            auto y = StringParseHelper(parts[1]).tryParseFloat().value_or(defaultValue);
+            return UnityEngine::Vector3{x, y, defaultValue};
+        } break;
+        case 3: {
+            auto x = StringParseHelper(parts[0]).tryParseFloat().value_or(defaultValue);
+            auto y = StringParseHelper(parts[1]).tryParseFloat().value_or(defaultValue);
+            auto z = StringParseHelper(parts[2]).tryParseFloat().value_or(defaultValue);
+            return UnityEngine::Vector3{x, y, z};
+        } break;
+        default: return std::nullopt;
+    }
+}
+std::optional<UnityEngine::Vector4> StringParseHelper::tryParseVector4(float defaultValue) const {
+    auto parts = split(' ');
+    switch (parts.size()) {
+        case 1: {
+            auto v = tryParseFloat().value_or(defaultValue);
+            return UnityEngine::Vector4{v, v, v, v};
+        } break;
+        case 2: {
+            auto x = StringParseHelper(parts[0]).tryParseFloat().value_or(defaultValue);
+            auto y = StringParseHelper(parts[1]).tryParseFloat().value_or(defaultValue);
+            return UnityEngine::Vector4{x, y, x, y};
+        } break;
+        case 3: {
+            auto x = StringParseHelper(parts[0]).tryParseFloat().value_or(defaultValue);
+            auto y = StringParseHelper(parts[1]).tryParseFloat().value_or(defaultValue);
+            auto z = StringParseHelper(parts[2]).tryParseFloat().value_or(defaultValue);
+            return UnityEngine::Vector4{x, y, z, defaultValue};
+        } break;
+        case 4: {
+            auto x = StringParseHelper(parts[0]).tryParseFloat().value_or(defaultValue);
+            auto y = StringParseHelper(parts[1]).tryParseFloat().value_or(defaultValue);
+            auto z = StringParseHelper(parts[2]).tryParseFloat().value_or(defaultValue);
+            auto w = StringParseHelper(parts[3]).tryParseFloat().value_or(defaultValue);
+            return UnityEngine::Vector4{x, y, z, defaultValue};
+        } break;
+        default: return std::nullopt;
+    }
 }
 const MethodInfo* minfo_from_name_in_parents(Il2CppClass* klass, const char* name, int argc) {
     if (!klass) return nullptr;
@@ -124,6 +207,30 @@ StringParseHelper::operator UnityEngine::Color32() const {
     if (!result.has_value()) {
         ERROR("Could not parse color from input '{}'", *this);
         return {0, 255, 255, 255, 255};
+    }
+    return result.value();
+}
+StringParseHelper::operator UnityEngine::Vector2() const {
+    auto result = tryParseVector2();
+    if (!result.has_value()) {
+        ERROR("Could not parse Vector2 from input '{}'", *this);
+        return {0, 0};
+    }
+    return result.value();
+}
+StringParseHelper::operator UnityEngine::Vector3() const {
+    auto result = tryParseVector3();
+    if (!result.has_value()) {
+        ERROR("Could not parse Vector3 from input '{}'", *this);
+        return {0, 0, 0};
+    }
+    return result.value();
+}
+StringParseHelper::operator UnityEngine::Vector4() const {
+    auto result = tryParseVector4();
+    if (!result.has_value()) {
+        ERROR("Could not parse Vector4 from input '{}'", *this);
+        return {0, 0, 0, 0};
     }
     return result.value();
 }

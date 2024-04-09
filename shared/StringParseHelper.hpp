@@ -5,7 +5,9 @@
 #include "beatsaber-hook/shared/utils/typedefs.h"
 #include "UnityEngine/Color.hpp"
 #include "UnityEngine/Color32.hpp"
-
+#include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/Vector3.hpp"
+#include "UnityEngine/Vector4.hpp"
 
 struct BSML_EXPORT StringParseHelper : std::string_view {
     // pass the normal constructors through to the base, these are the only ones we need
@@ -46,6 +48,18 @@ struct BSML_EXPORT StringParseHelper : std::string_view {
     /// @return Color32 or white if invalid color string
     operator UnityEngine::Color32() const;
 
+    /// @brief string as vector2
+    /// @return Vector2 or 0, 0 if invalid vector2 string
+    operator UnityEngine::Vector2() const;
+
+    /// @brief string as vector3
+    /// @return Vector3 or 0, 0, 0 if invalid vector3 string
+    operator UnityEngine::Vector3() const;
+
+    /// @brief string as vector4
+    /// @return Vector4 or 0, 0, 0, 0 if invalid vector4 string
+    operator UnityEngine::Vector4() const;
+
     /* -- parsing methods -- */
     /// @brief try to parse a bool
     /// @return optional containing bool value, or nullopt if invalid bool string
@@ -70,6 +84,18 @@ struct BSML_EXPORT StringParseHelper : std::string_view {
     /// @brief try to parse a color32
     /// @return optional containing color32 value, or nullopt if invalid color string
     std::optional<UnityEngine::Color32> tryParseColor32() const;
+
+    /// @brief try to parse a vector2
+    /// @return optional containing vector2 value, or nullopt if invalid vector2 string
+    std::optional<UnityEngine::Vector2> tryParseVector2(float defaultValue = 0) const;
+
+    /// @brief try to parse a vector3
+    /// @return optional containing vector3 value, or nullopt if invalid vector2 string
+    std::optional<UnityEngine::Vector3> tryParseVector3(float defaultValue = 0) const;
+
+    /// @brief try to parse a vector4
+    /// @return optional containing vector4 value, or nullopt if invalid vector2 string
+    std::optional<UnityEngine::Vector4> tryParseVector4(float defaultValue = 0) const;
 
     /* -- reflection methods -- */
     /// @brief use the string for a method lookup in host->klass
@@ -100,4 +126,8 @@ struct BSML_EXPORT StringParseHelper : std::string_view {
     /// @brief a method to make the string view this helper refers to an uppercase string
     /// @return string of this helper, uppercase
     std::string toUpper() const;
+
+    /// @brief a method to split this string view into different views of the various parts of it
+    /// @return vector of parts splitting this string view by split
+    std::vector<std::string_view> split(char split) const;
 };
