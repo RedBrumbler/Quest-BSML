@@ -8,8 +8,10 @@ namespace BSML {
         return {
             {"cellSizeX", {"cell-size-x"}},
             {"cellSizeY", {"cell-size-y"}},
+            {"cellSize", {"cell-size"}},
             {"spacingX", {"spacing-x"}},
-            {"spacingY", {"spacing-y"}}
+            {"spacingY", {"spacing-y"}},
+            {"spacing", {"spacing"}}
         };
     }
 
@@ -17,8 +19,10 @@ namespace BSML {
         return {
             {"cellSizeX",   [](auto component, auto value){ component->set_cellSize(UnityEngine::Vector2(value, component->get_cellSize().y)); }},
             {"cellSizeY",   [](auto component, auto value){ component->set_cellSize(UnityEngine::Vector2(component->get_cellSize().x, value)); }},
+            {"cellSize",    [](auto component, auto value){ component->set_cellSize(value); }},
             {"spacingX",    [](auto component, auto value){ component->set_spacing(UnityEngine::Vector2(value, component->get_spacing().y)); }},
-            {"spacingY",    [](auto component, auto value){ component->set_spacing(UnityEngine::Vector2(component->get_spacing().x, value)); }}
+            {"spacingY",    [](auto component, auto value){ component->set_spacing(UnityEngine::Vector2(component->get_spacing().x, value)); }},
+            {"spacing",     [](auto component, auto value){ component->set_spacing(value); }}
         };
     }
 }
