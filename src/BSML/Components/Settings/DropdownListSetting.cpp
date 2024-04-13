@@ -109,7 +109,7 @@ namespace BSML {
         }
 
         if (index == values.size())
-            index = values.size() - 1;
+            index = 0;
 
         dropdown->SelectCellWithIdx(index);
 
