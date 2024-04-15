@@ -47,7 +47,7 @@
       },
       {
         "id": "bs-cordl",
-        "versionRange": "^3600.0.0",
+        "versionRange": "^3601.0.0",
         "additionalData": {}
       },
       {
@@ -142,13 +142,13 @@
     {
       "dependency": {
         "id": "custom-types",
-        "versionRange": "=0.17.6",
+        "versionRange": "=0.17.7",
         "additionalData": {
-          "soLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.17.6/libcustom-types.so",
-          "debugSoLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.17.6/debug_libcustom-types.so",
+          "soLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.17.7/libcustom-types.so",
+          "debugSoLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.17.7/debug_libcustom-types.so",
           "overrideSoName": "libcustom-types.so",
-          "modLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.17.6/CustomTypes.qmod",
-          "branchName": "version/v0_17_6",
+          "modLink": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.17.7/CustomTypes.qmod",
+          "branchName": "version/v0_17_7",
           "compileOptions": {
             "cppFlags": [
               "-Wno-invalid-offsetof"
@@ -157,7 +157,7 @@
           "cmake": true
         }
       },
-      "version": "0.17.6"
+      "version": "0.17.7"
     },
     {
       "dependency": {
@@ -176,10 +176,10 @@
     {
       "dependency": {
         "id": "bs-cordl",
-        "versionRange": "=3600.0.0",
+        "versionRange": "=3601.0.0",
         "additionalData": {
           "headersOnly": true,
-          "branchName": "version/v3600_0_0",
+          "branchName": "version/v3601_0_0",
           "compileOptions": {
             "includePaths": [
               "include"
@@ -194,7 +194,7 @@
           }
         }
       },
-      "version": "3600.0.0"
+      "version": "3601.0.0"
     },
     {
       "dependency": {
