@@ -83,7 +83,7 @@
       ],
       "qmod": [
         "pwsh ./scripts/build.ps1 -clean",
-        "qpm qmod build --isLibrary true",
+        "qpm qmod build",
         "pwsh ./scripts/createqmod.ps1 BSML -clean"
       ]
     }
