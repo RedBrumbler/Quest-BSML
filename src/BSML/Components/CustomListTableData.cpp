@@ -52,6 +52,11 @@ namespace BSML {
                     authorText->get_rectTransform()->set_anchorMax({2, 0.5f});
                 }
 
+                auto rt = nameText->rectTransform;
+                auto offsetMax = rt->offsetMax;
+                offsetMax.y = rt->offsetMin.y + 6.5f; // default is 5.74
+                rt->offsetMax = offsetMax;
+
                 nameText->set_text(cellInfo->text);
                 authorText->set_text(cellInfo->subText ? cellInfo->subText : "");
                 tableCell->_coverImage->set_sprite(cellInfo->icon ? cellInfo->icon : blackSprite);
