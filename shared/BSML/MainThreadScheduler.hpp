@@ -87,7 +87,7 @@ DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
             };
 
             static auto InvokeMethod = [](std::shared_future<T> future, std::function<void(T)> method){
-                std::invoke(method, std::forward<T>(future.get()));
+                std::invoke(method, future.get());
             };
 
             ScheduleUntil(std::bind(AwaitFuture, future), std::bind(InvokeMethod, future, method));
