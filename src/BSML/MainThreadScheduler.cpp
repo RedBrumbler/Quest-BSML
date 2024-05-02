@@ -62,10 +62,12 @@ namespace BSML {
                 if (willBeInvoked) continue;
                 if (!until()) continue;
 
-                // we got a method, push it onto the queue of methods that will already be invoked this frame
-                scheduledMethods.emplace(method);
                 willBeInvoked = true;
                 invokedCount++;
+
+                // we got a method, push it onto the queue of methods that will already be invoked this frame
+                std::unique_lock lock(scheduledMethodsMutex);
+                scheduledMethods.emplace(method);
             }
 
             if (invokedCount > 0) {
@@ -95,18 +97,19 @@ namespace BSML {
 
             // if a timer hit below 0, we can add the method to the collection that will be invoked this frame
             while(!scheduledAfterTimeMethods.empty() && scheduledAfterTimeMethods.front().first <= 0.0f) {
+                std::unique_lock lock(scheduledMethodsMutex);
                 scheduledMethods.emplace(scheduledAfterTimeMethods.front().second);
+                lock.unlock();
                 scheduledAfterTimeMethods.erase(scheduledAfterTimeMethods.begin());
             }
         }
 
         {
-            // acquire lock and swap with empty vector so we can release the lock during execution
-            std::queue<std::function<void()>> methodsToExecute;
+            decltype(scheduledMethods) methodsToExecute;
+
+            // acquire lock and swap with empty queue so we can release the lock during execution
             std::unique_lock scheduledMethodsLock(scheduledMethodsMutex);
             methodsToExecute.swap(scheduledMethods);
-
-            // make sure that during invoke, the lock is free
             scheduledMethodsLock.unlock();
 
             // run through our backlog
@@ -115,15 +118,17 @@ namespace BSML {
                 methodsToExecute.pop();
             }
 
-            // aqcuire lock
-            std::queue<std::function<void()>> methodsToExecuteNextFrame;
+            decltype(nextFrameScheduledMethods) methodsToExecuteNextFrame;
+
+            // aqcuire lock and swap with empty queue so we can release the lock
             std::unique_lock<std::mutex> nextFrameMethodsLock(nextFrameScheduledMethodsMutex);
             methodsToExecuteNextFrame.swap(nextFrameScheduledMethods);
             nextFrameMethodsLock.unlock();
 
+            // aqcuire lock for scheduled methods because we are editing that
             scheduledMethodsLock.lock();
             // push all the nextframe methods onto the scheduled methods queue so they will be executed next frame
-            while(!nextFrameScheduledMethods.empty()) {
+            while(!methodsToExecuteNextFrame.empty()) {
                 scheduledMethods.push(methodsToExecuteNextFrame.front());
                 methodsToExecuteNextFrame.pop();
             }
