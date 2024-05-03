@@ -17,7 +17,7 @@ namespace BSML::Lite {
     /// @param anchoredPosition position of the anchor relative to the parent
     /// @param sizeDelta how much smaller this thing is relative to the parent
     /// @return The created text
-    BSML_EXPORT HMUI::CurvedTextMeshPro* CreateText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, float fontSize, UnityEngine::Vector2 anchoredPosition = {}, UnityEngine::Vector2 sizeDelta = {});
+    BSML_EXPORT HMUI::CurvedTextMeshPro* CreateText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, float fontSize, UnityEngine::Vector2 anchoredPosition = {0, 0}, UnityEngine::Vector2 sizeDelta = {0, 0});
 
     /// @brief Creates text which is parented to the passed parent
     /// @param parent parent transform to parent text to
@@ -26,7 +26,7 @@ namespace BSML::Lite {
     /// @param anchoredPosition position of the anchor relative to the parent
     /// @param sizeDelta how much smaller this thing is relative to the parent
     /// @return The created text
-    static inline HMUI::CurvedTextMeshPro* CreateText(const TransformWrapper& parent, StringW text, float fontSize, UnityEngine::Vector2 anchoredPosition = {}, UnityEngine::Vector2 sizeDelta = {}) {
+    static inline HMUI::CurvedTextMeshPro* CreateText(const TransformWrapper& parent, StringW text, float fontSize, UnityEngine::Vector2 anchoredPosition = {0, 0}, UnityEngine::Vector2 sizeDelta = {0, 0}) {
         return CreateText(parent, text, TMPro::FontStyles::Italic, fontSize, anchoredPosition, sizeDelta);
     }
 
@@ -37,7 +37,7 @@ namespace BSML::Lite {
     /// @param anchoredPosition position of the anchor relative to the parent
     /// @param sizeDelta how much smaller this thing is relative to the parent
     /// @return The created text
-    static inline HMUI::CurvedTextMeshPro* CreateText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, UnityEngine::Vector2 anchoredPosition = {}, UnityEngine::Vector2 sizeDelta = {}) {
+    static inline HMUI::CurvedTextMeshPro* CreateText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, UnityEngine::Vector2 anchoredPosition = {0, 0}, UnityEngine::Vector2 sizeDelta = {0, 0}) {
         return CreateText(parent, text, fontStyle, 4, anchoredPosition, sizeDelta);
     }
 
@@ -47,7 +47,7 @@ namespace BSML::Lite {
     /// @param anchoredPosition position of the anchor relative to the parent
     /// @param sizeDelta how much smaller this thing is relative to the parent
     /// @return The created text
-    static inline HMUI::CurvedTextMeshPro* CreateText(const TransformWrapper& parent, StringW text, UnityEngine::Vector2 anchoredPosition = {}, UnityEngine::Vector2 sizeDelta = {}) {
+    static inline HMUI::CurvedTextMeshPro* CreateText(const TransformWrapper& parent, StringW text, UnityEngine::Vector2 anchoredPosition = {0, 0}, UnityEngine::Vector2 sizeDelta = {0, 0}) {
         return CreateText(parent, text, TMPro::FontStyles::Italic, 4, anchoredPosition, sizeDelta);
     }
 
@@ -106,7 +106,7 @@ namespace BSML::Lite {
     /// @param onClick what gets ran when it is clicked
     /// @return The created text
     static inline BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, float fontSize, UnityEngine::Vector2 anchoredPosition, std::function<void()> onClick = nullptr) {
-        return CreateClickableText(parent, text, fontStyle, fontSize, anchoredPosition, {}, onClick);
+        return CreateClickableText(parent, text, fontStyle, fontSize, anchoredPosition, {0, 0}, onClick);
     }
 
     /// @brief Creates Clickable text which is parented to the passed parent
@@ -117,7 +117,7 @@ namespace BSML::Lite {
     /// @param onClick what gets ran when it is clicked
     /// @return The created text
     static inline BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, UnityEngine::Vector2 anchoredPosition, std::function<void()> onClick = nullptr) {
-        return CreateClickableText(parent, text, fontStyle, 4, anchoredPosition, {}, onClick);
+        return CreateClickableText(parent, text, fontStyle, 4, anchoredPosition, {0, 0}, onClick);
     }
 
     /// @brief Creates Clickable text which is parented to the passed parent
@@ -128,7 +128,7 @@ namespace BSML::Lite {
     /// @param onClick what gets ran when it is clicked
     /// @return The created text
     static inline BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, float fontSize, UnityEngine::Vector2 anchoredPosition, std::function<void()> onClick = nullptr) {
-        return CreateClickableText(parent, text, TMPro::FontStyles::Italic, fontSize, anchoredPosition, {}, onClick);
+        return CreateClickableText(parent, text, TMPro::FontStyles::Italic, fontSize, anchoredPosition, {0, 0}, onClick);
     }
 
     /// @brief Creates Clickable text which is parented to the passed parent
@@ -138,7 +138,7 @@ namespace BSML::Lite {
     /// @param onClick what gets ran when it is clicked
     /// @return The created text
     static inline BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, UnityEngine::Vector2 anchoredPosition, std::function<void()> onClick = nullptr) {
-        return CreateClickableText(parent, text, TMPro::FontStyles::Italic, 4, {}, anchoredPosition, onClick);
+        return CreateClickableText(parent, text, TMPro::FontStyles::Italic, 4, anchoredPosition, {0, 0}, onClick);
     }
 
     /// @brief Creates Clickable text which is parented to the passed parent
@@ -149,7 +149,7 @@ namespace BSML::Lite {
     /// @param onClick what gets ran when it is clicked
     /// @return The created text
     static inline BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, float fontSize, std::function<void()> onClick = nullptr) {
-        return CreateClickableText(parent, text, fontStyle, fontSize, {}, {}, onClick);
+        return CreateClickableText(parent, text, fontStyle, fontSize, {0, 0}, {0, 0}, onClick);
     }
 
     /// @brief Creates Clickable text which is parented to the passed parent
@@ -159,7 +159,7 @@ namespace BSML::Lite {
     /// @param onClick what gets ran when it is clicked
     /// @return The created text
     static inline BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, std::function<void()> onClick = nullptr) {
-        return CreateClickableText(parent, text, fontStyle, 4, {}, {}, onClick);
+        return CreateClickableText(parent, text, fontStyle, 4, {0, 0}, {0, 0}, onClick);
     }
 
     /// @brief Creates Clickable text which is parented to the passed parent
@@ -169,7 +169,7 @@ namespace BSML::Lite {
     /// @param onClick what gets ran when it is clicked
     /// @return The created text
     static inline BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, float fontSize, std::function<void()> onClick = nullptr) {
-        return CreateClickableText(parent, text, TMPro::FontStyles::Italic, fontSize, {}, {}, onClick);
+        return CreateClickableText(parent, text, TMPro::FontStyles::Italic, fontSize, {0, 0}, {0, 0}, onClick);
     }
 
     /// @brief Creates Clickable text which is parented to the passed parent
@@ -178,6 +178,6 @@ namespace BSML::Lite {
     /// @param onClick what gets ran when it is clicked
     /// @return The created text
     static inline BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, std::function<void()> onClick = nullptr) {
-        return CreateClickableText(parent, text, TMPro::FontStyles::Italic, 4, {}, {}, onClick);
+        return CreateClickableText(parent, text, TMPro::FontStyles::Italic, 4, {0, 0}, {0, 0}, onClick);
     }
 }

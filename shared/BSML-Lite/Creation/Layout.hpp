@@ -56,7 +56,7 @@ namespace BSML::Lite {
     /// @param dismissOnBlockerClicked whether to auto dismiss when the blocker (outside) is clicked
     /// @return created modal
     static inline BSML::ModalView* CreateModal(const TransformWrapper& parent, UnityEngine::Vector2 sizeDelta, std::function<void()> onBlockerClicked, bool dismissOnBlockerClicked = true) {
-        return CreateModal(parent, {}, sizeDelta, onBlockerClicked, dismissOnBlockerClicked);
+        return CreateModal(parent, {0, 0}, sizeDelta, onBlockerClicked, dismissOnBlockerClicked);
     }
 
     /// @brief creates a modal that can be used to display information
@@ -65,7 +65,7 @@ namespace BSML::Lite {
     /// @param dismissOnBlockerClicked whether to auto dismiss when the blocker (outside) is clicked
     /// @return created modal
     static inline BSML::ModalView* CreateModal(const TransformWrapper& parent, std::function<void()> onBlockerClicked, bool dismissOnBlockerClicked = true) {
-        return CreateModal(parent, {}, {30.0f, 40.0f}, onBlockerClicked, dismissOnBlockerClicked);
+        return CreateModal(parent, {0, 0}, {30.0f, 40.0f}, onBlockerClicked, dismissOnBlockerClicked);
     }
 
     /// @brief creates a modal that can be used to display information
@@ -73,7 +73,7 @@ namespace BSML::Lite {
     /// @param dismissOnBlockerClicked whether to auto dismiss when the blocker (outside) is clicked
     /// @return created modal
     static inline BSML::ModalView* CreateModal(const TransformWrapper& parent, bool dismissOnBlockerClicked = true) {
-        return CreateModal(parent, {}, {30.0f, 40.0f}, nullptr, dismissOnBlockerClicked);
+        return CreateModal(parent, {0, 0}, {30.0f, 40.0f}, nullptr, dismissOnBlockerClicked);
     }
 
     /// @brief creates a scrollable container for the given modal, with exact fit

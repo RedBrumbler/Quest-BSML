@@ -43,7 +43,7 @@ namespace BSML::Lite {
     /// @param onValueChange callback ran when the value changes
     /// @return the created string setting
     static inline HMUI::InputFieldView* CreateStringSetting(const TransformWrapper& parent, StringW settingsName, StringW currentValue, std::function<void(StringW)> onValueChange = nullptr) {
-        return CreateStringSetting(parent, settingsName, currentValue, {}, {0, 0, 0}, onValueChange);
+        return CreateStringSetting(parent, settingsName, currentValue, {0, 0}, {0, 0, 0}, onValueChange);
     }
 
     /// @brief Creates a toggle that looks like the modifier buttons seen in the gameplay setup menu
@@ -53,7 +53,7 @@ namespace BSML::Lite {
     /// @param iconSprite the sprite for the icon
     /// @param onClick what to run when the button is clicked
     /// @param anchoredPosition the position of the button
-    BSML_EXPORT UnityEngine::UI::Toggle* CreateModifierButton(const TransformWrapper& parent, StringW buttonText, bool currentValue, UnityEngine::Sprite* iconSprite, std::function<void(bool)> onClick = nullptr, UnityEngine::Vector2 anchoredPosition = {});
+    BSML_EXPORT UnityEngine::UI::Toggle* CreateModifierButton(const TransformWrapper& parent, StringW buttonText, bool currentValue, UnityEngine::Sprite* iconSprite, std::function<void(bool)> onClick = nullptr, UnityEngine::Vector2 anchoredPosition = {0, 0});
 
     /// @brief Creates a toggle that looks like the modifier buttons seen in the gameplay setup menu
     /// @param parent what to parent it to
@@ -61,7 +61,7 @@ namespace BSML::Lite {
     /// @param currentValue is the toggle true or false at this moment
     /// @param onClick what to run when the button is clicked
     /// @param anchoredPosition the position of the button
-    static inline UnityEngine::UI::Toggle* CreateModifierButton(const TransformWrapper& parent, StringW buttonText, bool currentValue, std::function<void(bool)> onClick = nullptr, UnityEngine::Vector2 anchoredPosition = {}) {
+    static inline UnityEngine::UI::Toggle* CreateModifierButton(const TransformWrapper& parent, StringW buttonText, bool currentValue, std::function<void(bool)> onClick = nullptr, UnityEngine::Vector2 anchoredPosition = {0, 0}) {
         return CreateModifierButton(parent, buttonText, currentValue, nullptr, onClick, anchoredPosition);
     }
 
@@ -93,7 +93,7 @@ namespace BSML::Lite {
     /// @param onValueChange what to run when the value is changed
     /// @return the created increment setting
     static inline BSML::IncrementSetting* CreateIncrementSetting(const TransformWrapper& parent, StringW label, int decimals, float increment, float currentValue, bool hasMin, bool hasMax, float minValue, float maxValue, std::function<void(float)> onValueChange = nullptr) {
-        return CreateIncrementSetting(parent, label, decimals, increment, currentValue, hasMin, hasMax, minValue, maxValue, {}, onValueChange);
+        return CreateIncrementSetting(parent, label, decimals, increment, currentValue, hasMin, hasMax, minValue, maxValue, {0, 0}, onValueChange);
     }
 
     /// @brief Creates an incerement setting, meaning a float value with arrows to go up and down
@@ -122,7 +122,7 @@ namespace BSML::Lite {
     /// @param onValueChange what to run when the value is changed
     /// @return the created increment setting
     static inline BSML::IncrementSetting* CreateIncrementSetting(const TransformWrapper& parent, StringW label, int decimals, float increment, float currentValue, float minValue, float maxValue, std::function<void(float)> onValueChange = nullptr) {
-        return CreateIncrementSetting(parent, label, decimals, increment, currentValue, true, true, minValue, maxValue, {}, onValueChange);
+        return CreateIncrementSetting(parent, label, decimals, increment, currentValue, true, true, minValue, maxValue, {0, 0}, onValueChange);
     }
 
     /// @brief Creates an incerement setting, meaning a float value with arrows to go up and down
@@ -147,7 +147,7 @@ namespace BSML::Lite {
     /// @param onValueChange what to run when the value is changed
     /// @return the created increment setting
     static inline BSML::IncrementSetting* CreateIncrementSetting(const TransformWrapper& parent, StringW label, int decimals, float increment, float currentValue, std::function<void(float)> onValueChange = nullptr) {
-        return CreateIncrementSetting(parent, label, decimals, increment, currentValue, false, false, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), {}, onValueChange);
+        return CreateIncrementSetting(parent, label, decimals, increment, currentValue, false, false, std::numeric_limits<float>::min(), std::numeric_limits<float>::max(), {0, 0}, onValueChange);
     }
 
     /// @brief Creates a slider setting
@@ -201,7 +201,7 @@ namespace BSML::Lite {
     /// @param applyValueTime the amount of seconds to wait after the user stopped interacting to call the callback
     /// @param onValueChange callback called after the user has not interacted with the slider for applyValueTime
     static inline BSML::SliderSetting* CreateSliderSetting(const TransformWrapper& parent, StringW label, float increment, float currentValue, float minValue, float maxValue, float applyValueTime, std::function<void(float)> onValueChange = nullptr) {
-        return CreateSliderSetting(parent, label, increment, currentValue, minValue, maxValue, applyValueTime, {}, onValueChange);
+        return CreateSliderSetting(parent, label, increment, currentValue, minValue, maxValue, applyValueTime, {0, 0}, onValueChange);
     }
 
     /// @brief Creates a slider setting
@@ -213,7 +213,7 @@ namespace BSML::Lite {
     /// @param maxValue the maximum value for the slider
     /// @param onValueChange callback called after the user has not interacted with the slider for 1 second
     static inline BSML::SliderSetting* CreateSliderSetting(const TransformWrapper& parent, StringW label, float increment, float currentValue, float minValue, float maxValue, std::function<void(float)> onValueChange = nullptr) {
-        return CreateSliderSetting(parent, label, increment, currentValue, minValue, maxValue, 1.0f, {}, onValueChange);
+        return CreateSliderSetting(parent, label, increment, currentValue, minValue, maxValue, 1.0f, {0, 0}, onValueChange);
     }
 
     /// @brief creates a dropdown menu to select from a set of pre-known strings (like an enum)
@@ -274,7 +274,7 @@ namespace BSML::Lite {
     /// @param onToggle what to do when the toggle is clicked
     /// @return the created toggle
     inline BSML::ToggleSetting* CreateToggle(const TransformWrapper& parent, StringW text, bool currentValue, std::function<void(bool)> onToggle = nullptr) {
-        return CreateToggle(parent, text, currentValue, {}, onToggle);
+        return CreateToggle(parent, text, currentValue, {0, 0}, onToggle);
     }
 
     /// @brief creates a toggle to turn things off / on
@@ -293,6 +293,6 @@ namespace BSML::Lite {
     /// @param onToggle what to do when the toggle is clicked
     /// @return the created toggle
     inline BSML::ToggleSetting* CreateToggle(const TransformWrapper& parent, StringW text, std::function<void(bool)> onToggle = nullptr) {
-        return CreateToggle(parent, text, false, {}, onToggle);
+        return CreateToggle(parent, text, false, {0, 0}, onToggle);
     }
 }
