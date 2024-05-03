@@ -17,7 +17,7 @@ namespace BSML::Lite {
     /// @param anchoredPosition position of the anchor relative to the parent
     /// @param sizeDelta how much smaller this thing is relative to the parent
     /// @return the created image view
-    BSML_EXPORT HMUI::ImageView* CreateImage(const TransformWrapper& parent, UnityEngine::Sprite* sprite, UnityEngine::Vector2 anchoredPosition = {}, UnityEngine::Vector2 sizeDelta = {});
+    BSML_EXPORT HMUI::ImageView* CreateImage(const TransformWrapper& parent, UnityEngine::Sprite* sprite, UnityEngine::Vector2 anchoredPosition = {0, 0}, UnityEngine::Vector2 sizeDelta = {0, 0});
 
     /// @brief Create an image
     /// @param parent what to parent it to
@@ -26,7 +26,7 @@ namespace BSML::Lite {
     /// @param anchoredPosition position of the anchor relative to the parent
     /// @param sizeDelta how much smaller this thing is relative to the parent
     /// @return the created image view
-    BSML_EXPORT BSML::ClickableImage* CreateClickableImage(const TransformWrapper& parent, UnityEngine::Sprite* sprite, std::function<void()> onClick = nullptr, UnityEngine::Vector2 anchoredPosition = {}, UnityEngine::Vector2 sizeDelta = {});
+    BSML_EXPORT BSML::ClickableImage* CreateClickableImage(const TransformWrapper& parent, UnityEngine::Sprite* sprite, std::function<void()> onClick = nullptr, UnityEngine::Vector2 anchoredPosition = {0, 0}, UnityEngine::Vector2 sizeDelta = {0, 0});
 
     /// @brief Create a raw image
     /// @param parent what to parent it to
@@ -34,7 +34,7 @@ namespace BSML::Lite {
     /// @param anchoredPosition position of the anchor relative to the parent
     /// @param sizeDelta how much smaller this thing is relative to the parent
     /// @return the created image view
-    BSML_EXPORT UnityEngine::UI::RawImage* CreateRawImage(const TransformWrapper& parent, UnityEngine::Texture* texture, UnityEngine::Vector2 anchoredPosition = {}, UnityEngine::Vector2 sizeDelta = {});
+    BSML_EXPORT UnityEngine::UI::RawImage* CreateRawImage(const TransformWrapper& parent, UnityEngine::Texture* texture, UnityEngine::Vector2 anchoredPosition = {0, 0}, UnityEngine::Vector2 sizeDelta = {0, 0});
 
     /// @brief loads a sprite from a file path
     /// @param filePath path

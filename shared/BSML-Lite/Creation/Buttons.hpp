@@ -26,7 +26,7 @@ namespace BSML::Lite {
     /// @param onClick what to run when it's clicked
     /// @return created button
     static inline UnityEngine::UI::Button* CreateUIButton(const TransformWrapper& parent, StringW buttonText, const std::string_view& buttonTemplate, UnityEngine::Vector2 anchoredPosition, std::function<void()> onClick = nullptr) {
-        return CreateUIButton(parent, buttonText, buttonTemplate, anchoredPosition, {}, onClick);
+        return CreateUIButton(parent, buttonText, buttonTemplate, anchoredPosition, {0, 0}, onClick);
     }
 
     /// @brief Create a button with text

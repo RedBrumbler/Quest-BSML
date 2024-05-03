@@ -20,7 +20,7 @@ namespace BSML::Lite {
     /// @param onCellWithIdxClicked the callback called when a cell is clicked
     /// @return created table data to add data to
     static inline BSML::CustomListTableData* CreateList(const TransformWrapper& parent, UnityEngine::Vector2 sizeDelta, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return CreateList(parent,  {}, sizeDelta, onCellWithIdxClicked);
+        return CreateList(parent,  {0, 0}, sizeDelta, onCellWithIdxClicked);
     }
 
     /// @brief creates a custom list based on the level/pack/simple lists
@@ -28,7 +28,7 @@ namespace BSML::Lite {
     /// @param onCellWithIdxClicked the callback called when a cell is clicked
     /// @return created table data to add data to
     static inline BSML::CustomListTableData* CreateList(const TransformWrapper& parent, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return CreateList(parent,  {}, {35.0f, 60.0f}, onCellWithIdxClicked);
+        return CreateList(parent,  {0, 0}, {35.0f, 60.0f}, onCellWithIdxClicked);
     }
 
     /// @brief creates a custom list based on the level/pack/simple lists
@@ -45,7 +45,7 @@ namespace BSML::Lite {
     /// @param onCellWithIdxClicked the callback called when a cell is clicked
     /// @return created table data to add data to
     static inline BSML::CustomListTableData* CreateScrollableList(const TransformWrapper& parent, UnityEngine::Vector2 sizeDelta, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return CreateScrollableList(parent, {}, sizeDelta, onCellWithIdxClicked);
+        return CreateScrollableList(parent, {0, 0}, sizeDelta, onCellWithIdxClicked);
     }
 
     /// @brief creates a custom list based on the level/pack/simple lists
@@ -53,7 +53,7 @@ namespace BSML::Lite {
     /// @param onCellWithIdxClicked the callback called when a cell is clicked
     /// @return created table data to add data to
     static inline BSML::CustomListTableData* CreateScrollableList(const TransformWrapper& parent, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return CreateScrollableList(parent, {}, {}, onCellWithIdxClicked);
+        return CreateScrollableList(parent, {0, 0}, {35.0f, 60.0f}, onCellWithIdxClicked);
     }
 
     /// @brief creates a List with a custom HMUI::TableView::IDataSource
@@ -96,7 +96,7 @@ namespace BSML::Lite {
     template<TableView_IDataSource T>
     requires(std::is_convertible_v<T, UnityEngine::MonoBehaviour*>)
     T CreateCustomSourceList(const TransformWrapper& parent, UnityEngine::Vector2 sizeDelta, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return reinterpret_cast<T>(CreateCustomSourceList(csTypeOf(T), parent, {}, sizeDelta, onCellWithIdxClicked));
+        return reinterpret_cast<T>(CreateCustomSourceList(csTypeOf(T), parent, {0, 0}, sizeDelta, onCellWithIdxClicked));
     }
 
     /// @brief creates a List with a custom HMUI::TableView::IDataSource
@@ -106,7 +106,7 @@ namespace BSML::Lite {
     template<TableView_IDataSource T>
     requires(std::is_convertible_v<T, UnityEngine::MonoBehaviour*>)
     T CreateCustomSourceList(const TransformWrapper& parent, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return reinterpret_cast<T>(CreateCustomSourceList(csTypeOf(T), parent, {}, {35.0f, 60.0f}, onCellWithIdxClicked));
+        return reinterpret_cast<T>(CreateCustomSourceList(csTypeOf(T), parent, {0, 0}, {35.0f, 60.0f}, onCellWithIdxClicked));
     }
 
     /// @brief creates a List with a custom IDataSource
@@ -140,7 +140,7 @@ namespace BSML::Lite {
     template<TableView_IDataSource T>
     requires(std::is_convertible_v<T, UnityEngine::MonoBehaviour*>)
     T CreateScrollableCustomSourceList(const TransformWrapper& parent, UnityEngine::Vector2 sizeDelta, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return reinterpret_cast<T>(CreateScrollableCustomSourceList(csTypeOf(T), parent, {}, sizeDelta, onCellWithIdxClicked));
+        return reinterpret_cast<T>(CreateScrollableCustomSourceList(csTypeOf(T), parent, {0, 0}, sizeDelta, onCellWithIdxClicked));
     }
 
     /// @brief creates a List with a custom IDataSource
@@ -151,6 +151,6 @@ namespace BSML::Lite {
     template<TableView_IDataSource T>
     requires(std::is_convertible_v<T, UnityEngine::MonoBehaviour*>)
     T CreateScrollableCustomSourceList(const TransformWrapper& parent, std::function<void(int)> onCellWithIdxClicked = nullptr) {
-        return reinterpret_cast<T>(CreateScrollableCustomSourceList(csTypeOf(T), parent, {}, {}, onCellWithIdxClicked));
+        return reinterpret_cast<T>(CreateScrollableCustomSourceList(csTypeOf(T), parent, {0, 0}, {35.0f, 65.0f}, onCellWithIdxClicked));
     }
 }
