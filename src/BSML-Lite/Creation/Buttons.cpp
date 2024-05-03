@@ -121,6 +121,11 @@ namespace BSML::Lite {
         auto rect = button->transform.cast<UnityEngine::RectTransform>();
         rect->set_anchoredPosition(anchoredPosition);
         rect->set_sizeDelta(sizeDelta);
+        auto layoutElement = button->GetComponent<UnityEngine::UI::LayoutElement*>();
+        if (layoutElement) {
+            if (sizeDelta.x != 0) layoutElement->preferredWidth = sizeDelta.x;
+            if (sizeDelta.y != 0) layoutElement->preferredHeight = sizeDelta.y;
+        }
 
         button->set_onClick(UnityEngine::UI::Button::ButtonClickedEvent::New_ctor());
         if (onClick)
