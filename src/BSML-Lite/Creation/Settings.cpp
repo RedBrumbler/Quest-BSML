@@ -211,14 +211,15 @@ namespace BSML::Lite {
 
         auto rect = go->transform.cast<UnityEngine::RectTransform>();
         rect->set_anchoredPosition(anchoredPosition);
+
+        toggle->set_Value(currentValue);
+
         if (onToggle) {
             toggle->toggle->onValueChanged = UnityEngine::UI::Toggle::ToggleEvent::New_ctor();
             toggle->toggle->onValueChanged->AddListener(
                 custom_types::MakeDelegate<UnityEngine::Events::UnityAction_1<bool>*>(onToggle)
             );
         }
-
-        toggle->set_Value(currentValue);
 
         return toggle;
     }
