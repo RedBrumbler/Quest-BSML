@@ -25,7 +25,7 @@ namespace BSML::Lite {
         return t;
     }
 
-    BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, float fontSize, std::function<void()> onClick, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta) {
+    BSML::ClickableText* CreateClickableText(const TransformWrapper& parent, StringW text, TMPro::FontStyles fontStyle, float fontSize, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, std::function<void()> onClick) {
         auto go = BSML::ClickableTextTag{}.CreateObject(parent);
         auto t = go->GetComponent<BSML::ClickableText*>();
         t->set_text(text);
