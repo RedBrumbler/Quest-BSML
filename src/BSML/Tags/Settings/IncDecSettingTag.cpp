@@ -10,17 +10,17 @@
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
-#include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
+#include "GlobalNamespace/FormattedFloatListSettingsController.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
 
 namespace BSML {
-    GlobalNamespace::FormattedFloatListSettingsValueController* get_incdecValueControllerTemplate() {
-        static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsValueController> incdecValueControllerTemplate;
+    GlobalNamespace::FormattedFloatListSettingsController* get_incdecValueControllerTemplate() {
+        static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsController> incdecValueControllerTemplate;
         if (!incdecValueControllerTemplate) {
-            incdecValueControllerTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>()->First([](auto x){ return x->get_name() == "VRRenderingScale";});
+            incdecValueControllerTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsController*>()->First([](auto x){ return x->get_name() == "VRRenderingScale";});
         }
         return incdecValueControllerTemplate.ptr();
     }

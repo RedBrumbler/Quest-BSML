@@ -32,7 +32,10 @@
           "qpm qmod build",
           "pwsh ./scripts/createqmod.ps1 BSML -clean"
         ]
-      }
+      },
+      "qmodIncludeDirs": [],
+      "qmodIncludeFiles": [],
+      "qmodOutput": null
     },
     "dependencies": [
       {
@@ -47,7 +50,7 @@
       },
       {
         "id": "bs-cordl",
-        "versionRange": "^3601.0.0",
+        "versionRange": "^3602.0.0",
         "additionalData": {}
       },
       {
@@ -177,10 +180,10 @@
     {
       "dependency": {
         "id": "bs-cordl",
-        "versionRange": "=3601.0.0",
+        "versionRange": "=3602.0.0",
         "additionalData": {
           "headersOnly": true,
-          "branchName": "version/v3601_0_0",
+          "branchName": "version/v3602_0_0",
           "compileOptions": {
             "includePaths": [
               "include"
@@ -195,7 +198,7 @@
           }
         }
       },
-      "version": "3601.0.0"
+      "version": "3602.0.0"
     },
     {
       "dependency": {

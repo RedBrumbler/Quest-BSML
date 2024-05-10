@@ -15,7 +15,7 @@
 #include "UnityEngine/UI/Toggle.hpp"
 #include "UnityEngine/Vector2.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
-#include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
+#include "GlobalNamespace/FormattedFloatListSettingsController.hpp"
 #include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
 
 #include "TMPro/TextMeshProUGUI.hpp"
@@ -26,10 +26,10 @@ using namespace UnityEngine::UI;
 namespace BSML {
     static BSMLNodeParser<ColorSettingTag> colorSettingTagParser({"color-setting"});
 
-    GlobalNamespace::FormattedFloatListSettingsValueController* get_baseSettings() {
-        static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsValueController> baseSettings;
+    GlobalNamespace::FormattedFloatListSettingsController* get_baseSettings() {
+        static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsController> baseSettings;
         if (!baseSettings) {
-            baseSettings = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>()->FirstOrDefault([](auto x){ return x->get_name() == "VRRenderingScale"; });
+            baseSettings = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsController*>()->FirstOrDefault([](auto x){ return x->get_name() == "VRRenderingScale"; });
         }
         return baseSettings.ptr();
     }
