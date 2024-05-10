@@ -12,7 +12,7 @@
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/Object.hpp"
 #include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
-#include "GlobalNamespace/FormattedFloatListSettingsValueController.hpp"
+#include "GlobalNamespace/FormattedFloatListSettingsController.hpp"
 #include "GlobalNamespace/StepValuePicker.hpp"
 
 using namespace UnityEngine;
@@ -20,10 +20,10 @@ using namespace UnityEngine::UI;
 
 namespace BSML {
     static BSMLNodeParser<StringSettingTag> stringSettingTagParser({"string-setting"});
-    GlobalNamespace::FormattedFloatListSettingsValueController* get_stringValueControllerTemplate() {
-        static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsValueController> stringValueControllerTemplate;
+    GlobalNamespace::FormattedFloatListSettingsController* get_stringValueControllerTemplate() {
+        static SafePtrUnity<GlobalNamespace::FormattedFloatListSettingsController> stringValueControllerTemplate;
         if (!stringValueControllerTemplate) {
-            stringValueControllerTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsValueController*>()->FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "VRRenderingScale"; });
+            stringValueControllerTemplate = Resources::FindObjectsOfTypeAll<GlobalNamespace::FormattedFloatListSettingsController*>()->FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "VRRenderingScale"; });
         }
         return stringValueControllerTemplate.ptr();
     }

@@ -12,8 +12,8 @@
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/Toggle.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
-#include "GlobalNamespace/BoolSettingsController.hpp"
 #include "BGLib/Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "GlobalNamespace/SwitchSettingsController.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -44,8 +44,8 @@ namespace BSML {
 
         auto nameText = transform->Find("NameText")->get_gameObject();
         auto switchView = transform->Find("SwitchView")->get_gameObject();
-        Object::Destroy(go->GetComponent<GlobalNamespace::BoolSettingsController*>());
-
+        Object::Destroy(go->GetComponent<GlobalNamespace::SwitchSettingsController*>());
+        
         go->set_name("BSMLToggle");
         auto toggleSetting = go->AddComponent<ToggleSetting*>();
         HMUI::AnimatedSwitchView* animatedSwitchView = switchView->GetComponent<HMUI::AnimatedSwitchView*>();
