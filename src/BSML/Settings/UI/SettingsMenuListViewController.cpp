@@ -23,9 +23,9 @@ namespace BSML {
         }
 
         DEBUG("Update Data: {}", fmt::ptr(list));
-        if (list && list->m_CachedPtr) {
+        if (list && list->m_CachedPtr.m_value) {
             list->data = BSMLSettings::get_instance()->get_settingsMenus();
-            if (list->tableView && list->tableView->m_CachedPtr) {
+            if (list->tableView && list->tableView->m_CachedPtr.m_value) {
                 list->tableView->ReloadData();
             }
         }

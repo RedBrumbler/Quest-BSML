@@ -24,7 +24,7 @@ namespace BSML {
 
     void MenuButton::set_interactable(bool value) {
         _interactable = value;
-        if (menuButton && menuButton->m_CachedPtr) {
+        if (menuButton && menuButton->m_CachedPtr.m_value) {
             menuButton->set_interactable(value);
         }
     }

@@ -59,7 +59,7 @@ namespace BSML {
     }
 
     void TextGradientUpdater::LateUpdate() {
-        if (text && text->m_CachedPtr && gradient) {
+        if (text && text->m_CachedPtr.m_value && gradient) {
             // TODO: check if it's possible to implement something where the colors only get set once if scrollSpeed == 0
             auto textInfo = text->get_textInfo();
             auto characterCount = textInfo->characterCount;

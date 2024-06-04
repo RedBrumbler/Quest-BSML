@@ -53,14 +53,14 @@ namespace BSML {
 
     void MenuButtons::Setup() {
         DEBUG("Setup");
-        if (!menuButtonsViewController || !menuButtonsViewController->m_CachedPtr) {
+        if (!menuButtonsViewController || !menuButtonsViewController->m_CachedPtr.m_value) {
             DEBUG("Making View Controller");
             menuButtonsViewController = Helpers::CreateViewController<MenuButtonsViewController*>();
             menuButtonsViewController->buttons = get_buttons();
         }
 
         auto coroStarter = BSML::SharedCoroutineStarter::get_instance();
-        if (presentViewCoroutine && presentViewCoroutine->m_Ptr) {
+        if (presentViewCoroutine && presentViewCoroutine->m_Ptr.m_value) {
             coroStarter->StopCoroutine(presentViewCoroutine);
         }
 
@@ -68,12 +68,12 @@ namespace BSML {
     }
 
     void MenuButtons::Refresh() {
-        if (!menuButtonsViewController || !menuButtonsViewController->m_CachedPtr) return;
+        if (!menuButtonsViewController || !menuButtonsViewController->m_CachedPtr.m_value) return;
         menuButtonsViewController->RefreshView();
     }
 
     void MenuButtons::ShowView(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
-        if (!leftScreen || !leftScreen->m_CachedPtr) {
+        if (!leftScreen || !leftScreen->m_CachedPtr.m_value) {
             leftScreen = UnityEngine::Resources::FindObjectsOfTypeAll<HMUI::Screen*>()->FirstOrDefault([](auto x){ return x->get_gameObject()->get_name() == "LeftScreen"; });
         }
 

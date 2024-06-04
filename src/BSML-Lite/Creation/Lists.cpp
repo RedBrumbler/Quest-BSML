@@ -87,13 +87,13 @@ namespace BSML::Lite {
 
         auto list = CreateList(rect, {0, 0}, {sizeDelta.x, sizeDelta.y - 16}, onCellWithIdxClicked);
         auto pageUp = CreateClickableImage(vertical, get_carat_up(), [scrollView = list->tableView->scrollView.unsafePtr()](){
-            if (scrollView && scrollView->m_CachedPtr) scrollView->PageUpButtonPressed();
+            if (scrollView && scrollView->m_CachedPtr.m_value) scrollView->PageUpButtonPressed();
         });
         pageUp->preserveAspect = true;
         pageUp->highlightColor = {1.0, 1.0, 1.0, 0.5};
         pageUp->transform->SetAsFirstSibling();
         auto pageDown = CreateClickableImage(vertical, get_carat_down(), [scrollView = list->tableView->scrollView.unsafePtr()](){
-            if (scrollView && scrollView->m_CachedPtr) scrollView->PageDownButtonPressed();
+            if (scrollView && scrollView->m_CachedPtr.m_value) scrollView->PageDownButtonPressed();
         });
         pageDown->preserveAspect = true;
         pageDown->highlightColor = {1.0, 1.0, 1.0, 0.5};

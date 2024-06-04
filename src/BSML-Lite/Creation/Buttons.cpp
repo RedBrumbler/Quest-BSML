@@ -91,7 +91,7 @@ namespace BSML::Lite {
         }
 
         auto localizedText = button->GetComponentInChildren<BGLib::Polyglot::LocalizedTextMeshProUGUI*>();
-        if (localizedText && localizedText->m_CachedPtr) {
+        if (localizedText && localizedText->m_CachedPtr.m_value) {
             UnityEngine::Object::Destroy(localizedText);
         }
         SetButtonText(button, buttonText);

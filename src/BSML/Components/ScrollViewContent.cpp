@@ -34,7 +34,7 @@ namespace BSML {
     }
 
     void ScrollViewContent::UpdateScrollView() {
-        if (!scrollView || !scrollView->m_CachedPtr) {
+        if (!scrollView || !scrollView->m_CachedPtr.m_value) {
             return;
         }
 
@@ -43,7 +43,7 @@ namespace BSML {
     }
 
     UnityEngine::RectTransform* ScrollViewContent::get_Content() {
-        if (content && content->m_CachedPtr) return content;
+        if (content && content->m_CachedPtr.m_value) return content;
         content = transform->GetChild(0).cast<UnityEngine::RectTransform>();
         return content;
     }

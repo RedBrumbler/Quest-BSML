@@ -107,7 +107,7 @@ namespace BSML {
         ArrayW<::UnityEngine::Rect> atlas(atlasSafe.ptr());
         // cleanup
         for (auto t : textureList) {
-            if (t && t->m_CachedPtr)
+            if (t && t->m_CachedPtr.m_value)
                 UnityEngine::Object::DestroyImmediate(t);
         }
 

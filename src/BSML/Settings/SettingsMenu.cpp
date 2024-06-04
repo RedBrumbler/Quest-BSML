@@ -24,7 +24,7 @@ namespace BSML {
     }
 
     bool SettingsMenu::get_didSetup() {
-        return viewController && viewController->m_CachedPtr || flowCoordinator && flowCoordinator->m_CachedPtr;
+        return viewController && viewController->m_CachedPtr.m_value || flowCoordinator && flowCoordinator->m_CachedPtr.m_value;
     }
 
     HMUI::ViewController* SettingsMenu::get_viewController() {

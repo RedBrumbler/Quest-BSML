@@ -36,7 +36,7 @@ namespace BSML {
     }
 
     void ProgressBar::Update() {
-        if (!canvas || !canvas->m_CachedPtr || !canvas->get_enabled()) return;
+        if (!canvas || !canvas->m_CachedPtr.m_value || !canvas->get_enabled()) return;
         float pong = UnityEngine::Time::get_time() * 0.35f;
 
         float graph = std::fmod(pong, 2);

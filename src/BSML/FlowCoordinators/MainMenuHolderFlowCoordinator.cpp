@@ -84,7 +84,7 @@ namespace BSML {
     }
 
     void MainMenuRegistration::OnGameDidRestart() {
-        if (viewController && viewController->m_CachedPtr) {
+        if (viewController && viewController->m_CachedPtr.m_value) {
             UnityEngine::Object::DestroyImmediate(viewController);
         }
 
@@ -111,7 +111,7 @@ namespace BSML {
     }
 
     void MainMenuRegistration::PresentWithFlowCoordinator(HMUI::FlowCoordinator* presentOn) {
-        if (!flowCoordinator || !flowCoordinator->m_CachedPtr) {
+        if (!flowCoordinator || !flowCoordinator->m_CachedPtr.m_value) {
             flowCoordinator = BSML::Helpers::CreateFlowCoordinator(const_cast<System::Type*>(csType));
         }
 
@@ -119,7 +119,7 @@ namespace BSML {
     }
 
     void MainMenuRegistration::PresentWithViewController(HMUI::FlowCoordinator* presentOn) {
-        if (!viewController || !viewController->m_CachedPtr) {
+        if (!viewController || !viewController->m_CachedPtr.m_value) {
             viewController = BSML::Helpers::CreateViewController(const_cast<System::Type*>(csType));
         }
 
@@ -130,7 +130,7 @@ namespace BSML {
     }
 
     void MainMenuRegistration::PresentWithMethod(HMUI::FlowCoordinator* presentOn) {
-        if (!viewController || !viewController->m_CachedPtr) {
+        if (!viewController || !viewController->m_CachedPtr.m_value) {
             viewController = BSML::Helpers::CreateViewController(const_cast<System::Type*>(csType));
             viewController->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(viewController, setupFunc));
         }

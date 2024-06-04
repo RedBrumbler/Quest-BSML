@@ -57,7 +57,7 @@ namespace BSML::Utilities {
 
         UnityEngine::Sprite* sprite = nullptr;
 
-        if (spriteCache->TryGetValue(name, byref(sprite)) && sprite && sprite->m_CachedPtr)
+        if (spriteCache->TryGetValue(name, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value)
             return sprite;
 
         for (auto x : Resources::FindObjectsOfTypeAll<Sprite*>())
@@ -82,7 +82,7 @@ namespace BSML::Utilities {
 
         UnityEngine::Texture* texture = nullptr;
 
-        if (textureCache->TryGetValue(name, byref(texture)) && texture && texture->m_CachedPtr)
+        if (textureCache->TryGetValue(name, byref(texture)) && texture && texture->m_CachedPtr.m_value)
             return texture;
 
         for (auto x : Resources::FindObjectsOfTypeAll<Texture*>())
@@ -252,7 +252,7 @@ namespace BSML::Utilities {
         UnityEngine::Sprite* img = nullptr;
         if (cache->TryGetValue(path, byref(img))) {
             cache->Remove(path);
-            if (img && img->m_CachedPtr) UnityEngine::Object::DestroyImmediate(img);
+            if (img && img->m_CachedPtr.m_value) UnityEngine::Object::DestroyImmediate(img);
             return true;
         }
         return false;
@@ -387,7 +387,7 @@ namespace BSML::Utilities {
         }
 
         UnityEngine::Sprite* sprite = nullptr;
-        if (get_bsmlSetImageCache()->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr) {
+        if (get_bsmlSetImageCache()->TryGetValue(path, byref(sprite)) && sprite && sprite->m_CachedPtr.m_value) {
             // we got a sprite, use it
             stateUpdater->set_controllerData(nullptr);
             stateUpdater->enabled = false;

@@ -65,9 +65,9 @@ namespace BSML {
 
     void AnimationControllerData::Finalize() {
         BSML::MainThreadScheduler::Schedule([sprite = this->sprite](){
-            if (sprite && sprite->m_CachedPtr) {
+            if (sprite && sprite->m_CachedPtr.m_value) {
                 auto tex = sprite->texture;
-                if (tex && tex->m_CachedPtr) {
+                if (tex && tex->m_CachedPtr.m_value) {
                     UnityEngine::Object::DestroyImmediate(tex);
                 }
                 UnityEngine::Object::DestroyImmediate(sprite);

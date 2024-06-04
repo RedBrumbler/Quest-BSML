@@ -41,7 +41,7 @@ namespace BSML {
 
     void ModSettingsFlowCoordinator::ShowInitial() {
         DEBUG("Showing Initial");
-        if (activeController && activeController->m_CachedPtr) {
+        if (activeController && activeController->m_CachedPtr.m_value) {
             return;
         }
 
@@ -60,7 +60,7 @@ namespace BSML {
                 menu->parserParams->AddEvent("back", std::bind(&ModSettingsFlowCoordinator::Back, this));
         }
 
-        if (bottomButtons && bottomButtons->m_CachedPtr) {
+        if (bottomButtons && bottomButtons->m_CachedPtr.m_value) {
             auto btns = bottomButtons->GetComponentsInChildren<UnityEngine::UI::Button*>();
             for (auto btn : btns) {
                 btn->set_interactable(menu->enableExtraButtons);
@@ -84,12 +84,12 @@ namespace BSML {
                 submenuStack->Clear();
         }
 
-        bool wasActive = activeController && activeController->m_CachedPtr;
+        bool wasActive = activeController && activeController->m_CachedPtr.m_value;
         if (wasActive)
             PopViewControllerFromNavigationController(navigationController, nullptr, true);
         auto delegate = MakeSystemAction([&isPresenting = this->isPresenting, bottomButtons = this->bottomButtons, navigationController = this->navigationController]{
             isPresenting = false;
-            if (bottomButtons && bottomButtons->m_CachedPtr) {
+            if (bottomButtons && bottomButtons->m_CachedPtr.m_value) {
                 bottomButtons->SetAsLastSibling();
             }
         });
