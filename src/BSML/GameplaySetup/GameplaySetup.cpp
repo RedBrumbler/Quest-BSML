@@ -154,7 +154,7 @@ namespace BSML {
     }
 
     void GameplaySetup::SetTabVisibility(std::string_view name, bool isVisible) {
-        if (!gameplaySetupViewController || !gameplaySetupViewController->m_CachedPtr || !gameplaySetupViewController->get_isActiveAndEnabled()) {
+        if (!gameplaySetupViewController || !gameplaySetupViewController->m_CachedPtr.m_value || !gameplaySetupViewController->get_isActiveAndEnabled()) {
             return;
         }
 
@@ -181,7 +181,7 @@ namespace BSML {
         INFO("Getting Cell");
         auto cell = modsList->tableView->DequeueReusableCellForIdentifier(reuseIdentifier).try_cast<GameplaySetupCell>().value_or(nullptr);
 
-        if (!cell || !cell->m_CachedPtr) {
+        if (!cell || !cell->m_CachedPtr.m_value) {
             cell = UnityEngine::GameObject::New_ctor("GameplaySetupCell")->AddComponent<GameplaySetupCell*>();
             cell->set_interactable(true);
             cell->set_reuseIdentifier(reuseIdentifier);
@@ -225,7 +225,7 @@ namespace BSML {
 
     void GameplaySetup::set_loaded(bool value) {
         _loaded = value;
-        if (modsList && modsList->m_CachedPtr) modsList->get_gameObject()->SetActive(value);
-        if (loading && loading->m_CachedPtr) loading->get_gameObject()->SetActive(!value);
+        if (modsList && modsList->m_CachedPtr.m_value) modsList->get_gameObject()->SetActive(value);
+        if (loading && loading->m_CachedPtr.m_value) loading->get_gameObject()->SetActive(!value);
     }
 }

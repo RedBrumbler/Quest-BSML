@@ -57,7 +57,7 @@ namespace BSML::Lite {
         auto text = externalComponents->Get<TMPro::TextMeshProUGUI*>();
         text->set_text(buttonText);
 
-        if (iconSprite && iconSprite->m_CachedPtr) {
+        if (iconSprite && iconSprite->m_CachedPtr.m_value) {
             auto img = externalComponents->Get<HMUI::ImageView*>();
             img->set_sprite(iconSprite);
         }

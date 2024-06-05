@@ -38,7 +38,7 @@ namespace BSML {
         return settingsMenus;
     }
     ModSettingsFlowCoordinator* BSMLSettings::get_modSettingsFlowCoordinator() {
-        if (!modSettingsFlowCoordinator || !modSettingsFlowCoordinator->m_CachedPtr) {
+        if (!modSettingsFlowCoordinator || !modSettingsFlowCoordinator->m_CachedPtr.m_value) {
             modSettingsFlowCoordinator = Helpers::CreateFlowCoordinator<ModSettingsFlowCoordinator*>();
         }
         return modSettingsFlowCoordinator;
@@ -49,17 +49,17 @@ namespace BSML {
         auto menus = get_settingsMenus();
         for (auto& cell : menus) {
             auto menu = reinterpret_cast<BSML::SettingsMenu*>(cell);
-            if (menu->viewController && menu->viewController->m_CachedPtr) {
+            if (menu->viewController && menu->viewController->m_CachedPtr.m_value) {
                 UnityEngine::Object::DestroyImmediate(menu->viewController->get_gameObject());
             }
         }
 
         auto starter = BSML::SharedCoroutineStarter::get_instance();
-        if (addButtonCoroutine && addButtonCoroutine->m_Ptr) {
+        if (addButtonCoroutine && addButtonCoroutine->m_Ptr.m_value) {
             starter->StopCoroutine(addButtonCoroutine);
         }
 
-        if (!button || !button->m_CachedPtr) {
+        if (!button || !button->m_CachedPtr.m_value) {
             addButtonCoroutine = starter->StartCoroutine(custom_types::Helpers::CoroutineHelper::New(AddButtonToMainScreen()));
         }
 
@@ -90,7 +90,7 @@ namespace BSML {
             menu->Setup();
         }
 
-        if (button && button->m_CachedPtr) {
+        if (button && button->m_CachedPtr.m_value) {
             button->get_gameObject()->SetActive(true);
         }
         return true;

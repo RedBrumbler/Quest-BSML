@@ -96,7 +96,7 @@ namespace BSML {
     }
 
     void FloatingScreen::CreateHandle(VRUIControls::VRPointer* pointer) {
-        if (!(handle && handle->m_CachedPtr)) {
+        if (!(handle && handle->m_CachedPtr.m_value)) {
             handle = UnityEngine::GameObject::CreatePrimitive(UnityEngine::PrimitiveType::Cube);
             handle->get_transform()->SetParent(get_transform());
             handle->get_transform()->set_localRotation(UnityEngine::Quaternion::get_identity());
@@ -120,7 +120,7 @@ namespace BSML {
     }
 
     void FloatingScreen::UpdateHandle() {
-        if (!handle || !handle->m_CachedPtr) return;
+        if (!handle || !handle->m_CachedPtr.m_value) return;
         auto screenSize = get_ScreenSize();
         switch (get_HandleSide())
         {
@@ -190,9 +190,9 @@ namespace BSML {
     void FloatingScreen::set_ShowHandle(bool value) {
         _showHandle = value;
         if (_showHandle) {
-            if (!handle || !handle->m_CachedPtr) CreateHandle();
+            if (!handle || !handle->m_CachedPtr.m_value) CreateHandle();
             else handle->SetActive(true);
-        } else if (!_showHandle && handle && handle->m_CachedPtr) {
+        } else if (!_showHandle && handle && handle->m_CachedPtr.m_value) {
             handle->SetActive(false);
         }
     }

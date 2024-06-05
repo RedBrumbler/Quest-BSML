@@ -61,7 +61,7 @@ namespace BSML::Lite {
     }
 
     UnityEngine::Sprite* TextureToSprite(UnityEngine::Texture2D* tex) {
-        return (tex && tex->m_CachedPtr) ? UnityEngine::Sprite::Create(tex, UnityEngine::Rect(0.0f, 0.0f, (float)tex->get_width(), (float)tex->get_height()), UnityEngine::Vector2(0.5f,0.5f), 100.0f, 1u, UnityEngine::SpriteMeshType::FullRect, UnityEngine::Vector4(0.0f, 0.0f, 0.0f, 0.0f), false) : nullptr;
+        return (tex && tex->m_CachedPtr.m_value) ? UnityEngine::Sprite::Create(tex, UnityEngine::Rect(0.0f, 0.0f, (float)tex->get_width(), (float)tex->get_height()), UnityEngine::Vector2(0.5f,0.5f), 100.0f, 1u, UnityEngine::SpriteMeshType::FullRect, UnityEngine::Vector4(0.0f, 0.0f, 0.0f, 0.0f), false) : nullptr;
     }
 
     UnityEngine::Sprite* Base64ToSprite(const std::string_view& base64Str) {

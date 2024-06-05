@@ -81,7 +81,7 @@ namespace BSML {
     }
 
     void GameplaySetupMenu::SetVisible(bool isVisible) {
-        if (tab && tab->m_CachedPtr) tab->set_isVisible(isVisible && get_visible());
+        if (tab && tab->m_CachedPtr.m_value) tab->set_isVisible(isVisible && get_visible());
     }
 
     bool GameplaySetupMenu::IsMenuType(MenuType toCheck) {

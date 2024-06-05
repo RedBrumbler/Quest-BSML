@@ -85,7 +85,7 @@ namespace BSML {
     }
 
     VRUIControls::VRPointer* ClickableText::get_vrPointer() {
-        if (_vrPointer && _vrPointer->m_CachedPtr) {
+        if (_vrPointer && _vrPointer->m_CachedPtr.m_value) {
             return _vrPointer;
         } else {
             _vrPointer = nullptr;
