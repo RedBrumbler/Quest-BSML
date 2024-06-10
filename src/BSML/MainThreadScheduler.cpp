@@ -74,7 +74,7 @@ namespace BSML {
                 // if anything was invoked we need to remove those
                 // lock collection while we are changing its contents
                 lock.lock();
-                scheduledUntilMethods.reserve(iterationVector.size() - invokedCount);
+                scheduledUntilMethods.reserve(scheduledUntilMethods.size() + iterationVector.size() - invokedCount);
                 for (auto& v : iterationVector) {
                     // if the first value of the tuple is true, that means it will be invoked and it should not be kept
                     if (std::get<0>(v)) continue;
@@ -82,9 +82,9 @@ namespace BSML {
                 }
                 lock.unlock();
             } else {
-                // nothing was invoked, swap back
                 lock.lock();
-                scheduledUntilMethods.swap(iterationVector);
+                // nothing was invoked, but things could've been added in the meantime so insert the "old" values into main vector
+                scheduledUntilMethods.insert(scheduledUntilMethods.begin(), iterationVector.begin(), iterationVector.end());
                 lock.unlock();
             }
         }
