@@ -81,6 +81,11 @@ namespace BSML {
                     scheduledUntilMethods.emplace_back(std::move(v));
                 }
                 lock.unlock();
+            } else {
+                // nothing was invoked, swap back
+                lock.lock();
+                scheduledUntilMethods.swap(iterationVector);
+                lock.unlock();
             }
         }
 
