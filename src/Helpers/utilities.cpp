@@ -319,6 +319,11 @@ namespace BSML::Utilities {
 
             if (data.size() > 0) {
                 auto texture = LoadTextureRaw(data);
+                if (!texture) {
+                    ERROR("Failed to load texture from data");
+                    return;
+                }
+
                 if (scaleOptions.shouldScale) {
                     auto scaledTexture = DownScaleTexture(texture, scaleOptions);
                     if (scaledTexture != texture) {
@@ -328,6 +333,11 @@ namespace BSML::Utilities {
                 }
 
                 auto sprite = LoadSpriteFromTexture(texture);
+                if (!sprite) {
+                    ERROR("Failed to load sprite from texture");
+                    return;
+                }
+
                 sprite->get_texture()->set_wrapMode(TextureWrapMode::Clamp);
 
                 stateUpdater->set_controllerData(nullptr);
