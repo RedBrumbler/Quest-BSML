@@ -15,7 +15,8 @@ namespace BSML::Utilities {
         NetworkError,
         GetDataError,
         GifParsingError,
-        Unknown
+        Unknown,
+        ImageParsingError
     };
 
     /// @brief Finds a sprite by name.

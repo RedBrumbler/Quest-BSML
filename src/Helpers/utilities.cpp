@@ -321,6 +321,7 @@ namespace BSML::Utilities {
                 auto texture = LoadTextureRaw(data);
                 if (!texture) {
                     ERROR("Failed to load texture from data");
+                    if (onError) onError(ImageLoadError::ImageParsingError);
                     return;
                 }
 
@@ -335,6 +336,7 @@ namespace BSML::Utilities {
                 auto sprite = LoadSpriteFromTexture(texture);
                 if (!sprite) {
                     ERROR("Failed to load sprite from texture");
+                    if (onError) onError(ImageLoadError::ImageParsingError);
                     return;
                 }
 
