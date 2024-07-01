@@ -13,12 +13,14 @@ namespace BSML {
     std::shared_ptr<BSMLParser> BSMLParser::parse(std::string_view str) {
         auto parser = std::make_shared<BSMLParser>();
         tinyxml2::XMLDocument doc;
-        auto error = doc.Parse(str.data());
+
+        // we use the data & size here so even if the string view is not null terminated it works right/if it's a view into part of a string it doesn't read too far
+        auto error = doc.Parse(str.data(), str.size());
         if (error != tinyxml2::XML_SUCCESS) {
             ERROR("Error parsing BSML document: {}", tinyxml2::XMLDocument::ErrorIDToName(error));
             DEBUG("Printing the XML file:\n{}", str);
             std::string validString = fmt::format("<vertical bg='round-rect-panel' pad='5' spacing='4' pref-height='20' vertical-fit='PreferredSize'><text font-size='6' text='ERROR PARSING BSML FILE' align='Center'/><text text='{}' align='Center'/></vertical>", tinyxml2::XMLDocument::ErrorIDToName(error));
-            doc.Parse(validString.c_str());
+            doc.Parse(validString.c_str(), validString.size());
         }
 
         auto root = parser->root;
