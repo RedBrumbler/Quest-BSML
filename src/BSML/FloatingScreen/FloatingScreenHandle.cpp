@@ -16,28 +16,34 @@ DEFINE_TYPE(BSML, FloatingScreenHandle);
 
 using namespace UnityEngine;
 
-static UnityEngine::Quaternion operator*(UnityEngine::Quaternion a, UnityEngine::Quaternion b) {
-    return UnityEngine::Quaternion::op_Multiply(a, b);
+static inline UnityEngine::Quaternion operator*(UnityEngine::Quaternion lhs, UnityEngine::Quaternion rhs)
+{
+    return UnityEngine::Quaternion(
+        lhs.w * rhs.x + lhs.x * rhs.w + lhs.y * rhs.z - lhs.z * rhs.y,
+        lhs.w * rhs.y + lhs.y * rhs.w + lhs.z * rhs.x - lhs.x * rhs.z,
+        lhs.w * rhs.z + lhs.z * rhs.w + lhs.x * rhs.y - lhs.y * rhs.x,
+        lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z);
 }
 
-static bool operator==(UnityEngine::Quaternion a, UnityEngine::Quaternion b) {
+static inline bool operator==(UnityEngine::Quaternion a, UnityEngine::Quaternion b) {
     return UnityEngine::Quaternion::op_Equality(a, b);
 }
 
-static Vector3 operator-(Vector3 a, Vector3 b) {
-    return Vector3::op_Subtraction(a,b);
+static inline Vector3 operator-(Vector3 a,Vector3 b) {
+    return UnityEngine::Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 
-static Vector3 operator+(Vector3 a, Vector3 b) {
-    return Vector3::op_Addition(a,b);
+static inline Vector3 operator+(Vector3 a, Vector3 b) {
+    return Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
-static Vector3 operator*(Vector3 a, float_t b) {
-    return Vector3::op_Multiply(a,b);
+static inline Vector3 operator*(Vector3 a, float_t d) {
+    return Vector3(a.x * d, a.y * d, a.z * d);
 }
 
-static Vector3 operator*(float_t a, Vector3 b) {
-    return Vector3::op_Multiply(a,b);
+static inline Vector3 operator*(float_t d, Vector3 a)
+{
+    return Vector3(a.x * d, a.y * d, a.z * d);
 }
 
 
