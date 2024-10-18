@@ -40,7 +40,7 @@ namespace BSML::Lite {
         auto texts = ListW<StringW>::New();
         texts->EnsureCapacity(values.size());
         for (const auto& text : values) texts->Add(text);
-        textSegmentedControl->SetTexts(*texts);
+        textSegmentedControl->SetTexts(*texts, nullptr);
 
         if (onCellWithIdxClicked) {
             textSegmentedControl->add_didSelectCellEvent(
