@@ -52,7 +52,7 @@ namespace BSML {
             case MenuSource::Method:
                 viewController = Helpers::CreateViewController<HMUI::ViewController*>();
                 SetupViewControllerTransform(viewController);
-                viewController->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(viewController, viewControllerDidActivate));
+                viewController->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*, false>(viewController, viewControllerDidActivate));
                 break;
             case MenuSource::Component:
                 throw std::runtime_error("Invalid menusource passed to settings menu!");

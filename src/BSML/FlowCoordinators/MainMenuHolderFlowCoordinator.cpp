@@ -132,7 +132,7 @@ namespace BSML {
     void MainMenuRegistration::PresentWithMethod(HMUI::FlowCoordinator* presentOn) {
         if (!viewController || !viewController->m_CachedPtr.m_value) {
             viewController = BSML::Helpers::CreateViewController(const_cast<System::Type*>(csType));
-            viewController->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(viewController, setupFunc));
+            viewController->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*, false>(viewController, setupFunc));
         }
 
         auto fc = MainMenuHolderFlowCoordinator::get_instance();
