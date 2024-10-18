@@ -7,7 +7,7 @@
 #include <tuple>
 #include <type_traits>
 
-DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour) {
     private:
         static std::queue<std::function<void()>> scheduledMethods;
         static std::mutex scheduledMethodsMutex;
@@ -115,4 +115,4 @@ DECLARE_CLASS_CODEGEN(BSML, MainThreadScheduler, UnityEngine::MonoBehaviour,
         static bool CurrentThreadIsMainThread();
 
     DECLARE_INSTANCE_METHOD(void, Update);
-)
+};

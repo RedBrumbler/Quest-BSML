@@ -11,7 +11,7 @@
 #include "GameplaySetupCell.hpp"
 #include "MenuType.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, System::Object, classof(HMUI::TableView::IDataSource*),
+DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, System::Object, HMUI::TableView::IDataSource*) {
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::LayoutGroup*, layoutGroup);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::GameplaySetupViewController*, gameplaySetupViewController);
     DECLARE_INSTANCE_FIELD(bool, listParsed);
@@ -57,4 +57,4 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, GameplaySetup, System::Object, classof(HM
         HMUI::TableView::IDataSource* i_DataSource();
     private:
         static SafePtr<GameplaySetup> instance;
-)
+};

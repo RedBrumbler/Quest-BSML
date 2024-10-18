@@ -185,7 +185,7 @@ namespace BSML::Utilities {
 template <> struct fmt::formatter<::BSML::Utilities::ImageLoadError> : formatter<string_view> {
     // parse is inherited from formatter<string_view>.
     template <typename FormatContext>
-    auto format(::BSML::Utilities::ImageLoadError e, FormatContext& ctx) {
+    auto format(::BSML::Utilities::ImageLoadError e, FormatContext& ctx) const {
         switch(e) {
             case ::BSML::Utilities::ImageLoadError::None:
                 return formatter<string_view>::format("None", ctx);

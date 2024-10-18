@@ -8,7 +8,7 @@
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
-DECLARE_CLASS_CUSTOM(BSML, StringSetting, BSML::BaseSetting,
+DECLARE_CLASS_CUSTOM(BSML, StringSetting, BSML::BaseSetting) {
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, text);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, editButton);
@@ -35,4 +35,4 @@ DECLARE_CLASS_CUSTOM(BSML, StringSetting, BSML::BaseSetting,
 
     public:
         std::function<StringW(StringW)> formatter = nullptr;
-)
+};

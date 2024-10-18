@@ -9,7 +9,7 @@ namespace BSML {
     class Keyboard;
 }
 
-DECLARE_CLASS_CODEGEN(BSML, Key, System::Object,
+DECLARE_CLASS_CODEGEN(BSML, Key, System::Object) {
     DECLARE_INSTANCE_FIELD(StringW, name);
     DECLARE_INSTANCE_FIELD(StringW, value);
     DECLARE_INSTANCE_FIELD(StringW, shifted);
@@ -31,4 +31,4 @@ DECLARE_CLASS_CODEGEN(BSML, Key, System::Object,
         static Key* construct(Keyboard* kb, UnityEngine::Vector2 position, StringW text, float width, float height, UnityEngine::Color color);
 
         std::function<void(Key*)> keyAction = nullptr;
-)
+};

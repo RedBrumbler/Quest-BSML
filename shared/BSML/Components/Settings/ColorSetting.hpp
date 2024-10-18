@@ -5,7 +5,7 @@
 #include "../../GenericSettingWrapper.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
-DECLARE_CLASS_CUSTOM(BSML, ColorSetting, BSML::BaseSetting,
+DECLARE_CLASS_CUSTOM(BSML, ColorSetting, BSML::BaseSetting) {
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, editButton);
     DECLARE_INSTANCE_FIELD(ModalColorPicker*, modalColorPicker);
@@ -28,4 +28,4 @@ DECLARE_CLASS_CUSTOM(BSML, ColorSetting, BSML::BaseSetting,
 
     DECLARE_CTOR(ctor);
 
-)
+};

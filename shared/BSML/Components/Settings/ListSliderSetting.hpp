@@ -4,7 +4,7 @@
 #include "SliderSettingBase.hpp"
 #include <map>
 
-DECLARE_CLASS_CUSTOM(BSML, ListSliderSetting, BSML::SliderSettingBase,
+DECLARE_CLASS_CUSTOM(BSML, ListSliderSetting, BSML::SliderSettingBase) {
     DECLARE_INSTANCE_METHOD(void, Setup);
     DECLARE_INSTANCE_METHOD(void, OnDestroy);
     DECLARE_INSTANCE_METHOD(void, ReceiveValue);
@@ -26,4 +26,4 @@ DECLARE_CLASS_CUSTOM(BSML, ListSliderSetting, BSML::SliderSettingBase,
         /* set a formatter if you want to give your own format to the setting */
         std::function<StringW(System::Object*)> formatter = nullptr;
 
-)
+};

@@ -6,7 +6,7 @@
 #include "HMUI/SelectableCell.hpp"
 #include "HMUI/TableCell.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, CustomCellTableCell, HMUI::TableCell,
+DECLARE_CLASS_CODEGEN(BSML, CustomCellTableCell, HMUI::TableCell) {
     DECLARE_INSTANCE_FIELD(System::Object*, dataObject);
     DECLARE_INSTANCE_FIELD(ListW<UnityEngine::GameObject*>, selectedTags);
     DECLARE_INSTANCE_FIELD(ListW<UnityEngine::GameObject*>, hoveredTags);
@@ -23,4 +23,4 @@ DECLARE_CLASS_CODEGEN(BSML, CustomCellTableCell, HMUI::TableCell,
     public:
         std::shared_ptr<BSMLParserParams> parserParams;
         void SetupPostParse(const BSMLParserParams& parserParams);
-)
+};

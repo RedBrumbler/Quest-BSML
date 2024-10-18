@@ -21,14 +21,8 @@ namespace BSML {
     class FloatingScreen;
 }
 
-DECLARE_CLASS_CODEGEN_INTERFACES(BSML, FloatingScreenHandle, UnityEngine::MonoBehaviour, 
-std::vector<Il2CppClass*>({
-    classof(::UnityEngine::EventSystems::IPointerEnterHandler*), 
-    classof(::UnityEngine::EventSystems::IPointerExitHandler*), 
-    classof(::UnityEngine::EventSystems::IEventSystemHandler*), 
-    classof(::UnityEngine::EventSystems::IPointerDownHandler*),
-    classof(::UnityEngine::EventSystems::IPointerUpHandler*)
-}),
+DECLARE_CLASS_CODEGEN_INTERFACES(BSML, FloatingScreenHandle, UnityEngine::MonoBehaviour, UnityEngine::EventSystems::IPointerEnterHandler*, UnityEngine::EventSystems::IPointerExitHandler*, UnityEngine::EventSystems::IEventSystemHandler*, UnityEngine::EventSystems::IPointerDownHandler*,UnityEngine::EventSystems::IPointerUpHandler*) {
+
     DECLARE_INSTANCE_FIELD(UnityW<GlobalNamespace::VRController>, _grabbingController);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::Material>, _material);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::MeshRenderer>, _renderer);
@@ -57,4 +51,4 @@ std::vector<Il2CppClass*>({
         static inline UnityEngine::Color HoverColor  = UnityEngine::Color(1.0f, 1.0f, 0.0f, 1.0f);
     protected:
         FloatingScreen* _floatingScreen;
-)
+};

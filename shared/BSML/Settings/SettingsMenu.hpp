@@ -7,7 +7,7 @@
 #include "../Parsing/BSMLParserParams.hpp"
 #include "../MenuSource.hpp"
 
-DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo,
+DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo) {
     public:
         DECLARE_INSTANCE_FIELD(StringW, name);
         DECLARE_INSTANCE_FIELD(StringW, content_key);
@@ -36,4 +36,4 @@ DECLARE_CLASS_CUSTOM(BSML, SettingsMenu, CustomCellInfo,
         std::function<void(HMUI::ViewController*, bool, bool, bool)> viewControllerDidActivate;
 
         static void SetupViewControllerTransform(HMUI::ViewController* viewController);
-)
+};

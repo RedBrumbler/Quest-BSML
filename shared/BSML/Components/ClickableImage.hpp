@@ -15,7 +15,7 @@
 
 #include "beatsaber-hook/shared/utils/typedefs-wrappers.hpp"
 
-DECLARE_CLASS_CODEGEN_INTERFACES(BSML, ClickableImage, HMUI::ImageView, std::vector<Il2CppClass*>({classof(UnityEngine::EventSystems::IPointerClickHandler*), classof(UnityEngine::EventSystems::IPointerEnterHandler*), classof(UnityEngine::EventSystems::IPointerExitHandler*), classof(UnityEngine::EventSystems::IEventSystemHandler*)}),
+DECLARE_CLASS_CODEGEN_INTERFACES(BSML, ClickableImage, HMUI::ImageView, UnityEngine::EventSystems::IPointerClickHandler*, UnityEngine::EventSystems::IPointerEnterHandler*, UnityEngine::EventSystems::IPointerExitHandler*, UnityEngine::EventSystems::IEventSystemHandler*) {
     DECLARE_INSTANCE_METHOD(void, set_highlightColor, UnityEngine::Color color);
     DECLARE_INSTANCE_METHOD(UnityEngine::Color, get_highlightColor);
     DECLARE_INSTANCE_METHOD(void, set_defaultColor, UnityEngine::Color color);
@@ -51,4 +51,4 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, ClickableImage, HMUI::ImageView, std::vec
 
         VRUIControls::VRPointer* get_vrPointer();
         __declspec(property(get=get_vrPointer)) VRUIControls::VRPointer* vrPointer;
-)
+};

@@ -3,7 +3,7 @@
 #include "custom-types/shared/macros.hpp"
 #include "System/Object.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, System::Object,
+DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, System::Object) {
     DECLARE_INSTANCE_FIELD(System::Object*, host);
     DECLARE_INSTANCE_FIELD(System::Object*, onChangeHost);
     DECLARE_INSTANCE_FIELD(bool, applyOnChange); /* default: true */
@@ -97,4 +97,4 @@ DECLARE_CLASS_CODEGEN(BSML, GenericSettingWrapper, System::Object,
                 il2cpp_utils::RunMethod(get_onChangeHost(), onChangeInfo, value);
             }
         }
-)
+};

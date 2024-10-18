@@ -14,7 +14,7 @@
 #include "FloatingScreenHandleEventArgs.hpp"
 #include "Side.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, FloatingScreen, HMUI::Screen,
+DECLARE_CLASS_CODEGEN(BSML, FloatingScreen, HMUI::Screen) {
     DECLARE_INSTANCE_FIELD(UnityEngine::GameObject*, handle);
 
     DECLARE_INSTANCE_METHOD(UnityEngine::RectTransform*, get_rectTransform);
@@ -59,4 +59,4 @@ DECLARE_CLASS_CODEGEN(BSML, FloatingScreen, HMUI::Screen,
         void CreateHandle(VRUIControls::VRPointer* pointer = nullptr);
         static FloatingScreen* CreateFloatingScreenWithViewcontroller(Il2CppReflectionType* vcType, UnityEngine::Vector2 screenSize, bool createHandle, UnityEngine::Vector3 position, UnityEngine::Quaternion rotation, float curvatureRadius = 0.0f, bool hasBackground = false);
         static SafePtrUnity<UnityEngine::Material> _fogMaterial;
-)
+};

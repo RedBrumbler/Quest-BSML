@@ -8,7 +8,7 @@
 #include "UnityEngine/Coroutine.hpp"
 #include "UI/ModSettingsFlowCoordinator.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, BSMLSettings, System::Object,
+DECLARE_CLASS_CODEGEN(BSML, BSMLSettings, System::Object) {
     DECLARE_INSTANCE_FIELD(bool, isInitialized);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, button);
     DECLARE_INSTANCE_FIELD(UnityEngine::Sprite*, normal);
@@ -35,4 +35,4 @@ DECLARE_CLASS_CODEGEN(BSML, BSMLSettings, System::Object,
         void TryAddBSMLMenu();
         custom_types::Helpers::Coroutine AddButtonToMainScreen();
         static SafePtr<BSMLSettings> instance;
-)
+};

@@ -3,7 +3,7 @@
 #include "custom-types/shared/macros.hpp"
 #include "IncDecSetting.hpp"
 
-DECLARE_CLASS_CUSTOM(BSML, ListSetting, BSML::IncDecSetting,
+DECLARE_CLASS_CUSTOM(BSML, ListSetting, BSML::IncDecSetting) {
     DECLARE_INSTANCE_METHOD(void, Setup);
     DECLARE_INSTANCE_METHOD(void, IncButtonPressed);
     DECLARE_INSTANCE_METHOD(void, DecButtonPressed);
@@ -24,4 +24,4 @@ DECLARE_CLASS_CUSTOM(BSML, ListSetting, BSML::IncDecSetting,
     public:
         /* set a formatter if you want to give your own format to the setting */
         std::function<StringW(System::Object*)> formatter = nullptr;
-)
+};

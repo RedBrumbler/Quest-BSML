@@ -7,7 +7,7 @@
 
 #include "UnityEngine/MonoBehaviour.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, ScrollViewContent, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, ScrollViewContent, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_FIELD(HMUI::ScrollView*, scrollView);
     DECLARE_INSTANCE_FIELD(bool, dirty);
     DECLARE_INSTANCE_FIELD(UnityEngine::RectTransform*, content);
@@ -24,4 +24,4 @@ DECLARE_CLASS_CODEGEN(BSML, ScrollViewContent, UnityEngine::MonoBehaviour,
 
         __declspec(property(get=get_rectTransform)) UnityEngine::RectTransform* rectTransform;
         UnityEngine::RectTransform* get_rectTransform();
-)
+};

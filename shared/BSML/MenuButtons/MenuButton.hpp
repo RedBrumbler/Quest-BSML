@@ -5,7 +5,7 @@
 #include "UnityEngine/UI/Button.hpp"
 #include <functional>
 
-DECLARE_CLASS_CODEGEN(BSML, MenuButton, System::Object,
+DECLARE_CLASS_CODEGEN(BSML, MenuButton, System::Object) {
     DECLARE_INSTANCE_FIELD(StringW, text);
     DECLARE_INSTANCE_FIELD(StringW, hoverHint);
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Button*, menuButton);
@@ -20,4 +20,4 @@ DECLARE_CLASS_CODEGEN(BSML, MenuButton, System::Object,
 
     private:
         std::function<void(void)> onClick;
-)
+};

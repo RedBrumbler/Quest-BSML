@@ -4,7 +4,7 @@
 #include "UnityEngine/MonoBehaviour.hpp"
 #include <string>
 
-DECLARE_CLASS_CODEGEN(BSML, HotReloadFileWatcher, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, HotReloadFileWatcher, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_FIELD(System::Object*, host);
     DECLARE_INSTANCE_FIELD(bool, runCheck);
     DECLARE_INSTANCE_FIELD(int, lastFileEdit);
@@ -19,4 +19,4 @@ DECLARE_CLASS_CODEGEN(BSML, HotReloadFileWatcher, UnityEngine::MonoBehaviour,
 
     public:
         std::string filePath;
-)
+};

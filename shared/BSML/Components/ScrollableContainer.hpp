@@ -5,7 +5,7 @@
 #include "UnityEngine/Vector3.hpp"
 #include "System/Action.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, ScrollableContainer, HMUI::ScrollView,
+DECLARE_CLASS_CODEGEN(BSML, ScrollableContainer, HMUI::ScrollView) {
     DECLARE_INSTANCE_FIELD(bool, alignBottom);
     DECLARE_INSTANCE_FIELD(bool, maskOverflow);
     DECLARE_INSTANCE_FIELD(float, contentHeight);
@@ -42,4 +42,4 @@ DECLARE_CLASS_CODEGEN(BSML, ScrollableContainer, HMUI::ScrollView,
 
     public:
         float get_maxPosition();
-)
+};

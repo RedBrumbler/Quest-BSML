@@ -9,7 +9,7 @@
 
 #include <string>
 
-DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomCellListTableData, UnityEngine::MonoBehaviour, classof(HMUI::TableView::IDataSource*),
+DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomCellListTableData, UnityEngine::MonoBehaviour, HMUI::TableView::IDataSource*) {
     DECLARE_INSTANCE_FIELD(ListW<System::Object*>, data);
     DECLARE_INSTANCE_FIELD(float, cellSize);
     DECLARE_INSTANCE_FIELD(bool, clickableCells);
@@ -26,4 +26,4 @@ DECLARE_CLASS_CODEGEN_INTERFACES(BSML, CustomCellListTableData, UnityEngine::Mon
     public:
         std::string bsmlString;
         HMUI::TableView::IDataSource* i_IDataSource();
-)
+};

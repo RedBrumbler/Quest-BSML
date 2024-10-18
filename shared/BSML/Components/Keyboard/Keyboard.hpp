@@ -8,7 +8,7 @@
 #include "Key.hpp"
 #include <functional>
 
-DECLARE_CLASS_CODEGEN(BSML, Keyboard, System::Object,
+DECLARE_CLASS_CODEGEN(BSML, Keyboard, System::Object) {
     DECLARE_INSTANCE_FIELD(ListW<Key*>, keys);
     DECLARE_INSTANCE_FIELD(Key*, dummy);
 
@@ -59,4 +59,4 @@ DECLARE_CLASS_CODEGEN(BSML, Keyboard, System::Object,
         Key* AddKey(StringW keyLabel, StringW shifted, float width = 12.0f, float height = 10.0f);
         void EmitKey(float& spacing, float& width, StringW& label, StringW& key, bool& space, StringW& newValue, float& height, int& color);
         bool ReadFloat(StringW data, int& position, float& result);
-)
+};

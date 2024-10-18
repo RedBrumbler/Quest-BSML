@@ -11,7 +11,7 @@
 template<typename T>
 using Stack = System::Collections::Generic::Stack_1<T>;
 
-DECLARE_CLASS_CODEGEN(BSML, ModSettingsFlowCoordinator, HMUI::FlowCoordinator,
+DECLARE_CLASS_CODEGEN(BSML, ModSettingsFlowCoordinator, HMUI::FlowCoordinator) {
     DECLARE_INSTANCE_FIELD(bool, isAnimating);
     DECLARE_INSTANCE_FIELD(bool, isPresenting);
 
@@ -37,4 +37,4 @@ DECLARE_CLASS_CODEGEN(BSML, ModSettingsFlowCoordinator, HMUI::FlowCoordinator,
     protected:
         std::shared_ptr<BSMLParserParams> parserParams;
         void EmitEventToAll(std::string_view ev);
-)
+};
