@@ -94,7 +94,7 @@ namespace BSML {
         ShowView(false, false, false);
         auto vc = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::MainMenuViewController*>()->FirstOrDefault();
         std::function<void(bool, bool, bool)> fun = std::bind(&MenuButtons::ShowView, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-        vc->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*, false>(fun));
+        vc->add_didActivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(fun));
 
         presentViewCoroutine = nullptr;
         co_return;
