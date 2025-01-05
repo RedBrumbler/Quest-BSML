@@ -55,14 +55,14 @@ namespace BSML {
         modsList->tableView->SetDataSource(this->i_DataSource(), false);
         listParsed = false;
 
-        auto didActivate = MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(
+        auto didActivate = custom_types::MakeDelegate<HMUI::ViewController::DidActivateDelegate*>(
             std::function<void(bool, bool, bool)>(
             [this](bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
             this->GameplaySetupDidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
         }));
         gameplaySetupViewController->add_didActivateEvent(didActivate);
 
-        auto didDeactivate = MakeDelegate<HMUI::ViewController::DidDeactivateDelegate*>(
+        auto didDeactivate = custom_types::MakeDelegate<HMUI::ViewController::DidDeactivateDelegate*>(
             std::function<void(bool, bool)>(
             [this](bool removedFromHierarchy, bool screenSystemDisabling) {
             this->GameplaySetupDidDeactivate(removedFromHierarchy, screenSystemDisabling);

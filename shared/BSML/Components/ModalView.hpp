@@ -3,7 +3,7 @@
 #include "custom-types/shared/macros.hpp"
 #include "HMUI/ModalView.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, ModalView, HMUI::ModalView,
+DECLARE_CLASS_CODEGEN(BSML, ModalView, HMUI::ModalView) {
     DECLARE_INSTANCE_FIELD(bool, moveToCenter);
     DECLARE_INSTANCE_FIELD(bool, dismissOnBlockerClicked);
     DECLARE_INSTANCE_METHOD(void, Awake);
@@ -15,4 +15,4 @@ DECLARE_CLASS_CODEGEN(BSML, ModalView, HMUI::ModalView,
 
     public:
         std::function<void(void)> onHide;
-)
+};

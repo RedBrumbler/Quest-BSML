@@ -46,7 +46,7 @@ namespace BSML {
             }
 
             if (texts->get_Count() > 0) {
-                textControl->SetTexts(*reinterpret_cast<System::Collections::Generic::List_1<StringW>*>(texts.convert()));
+                textControl->SetTexts(*reinterpret_cast<System::Collections::Generic::List_1<StringW>*>(texts.convert()), nullptr);
             } else {
                 ERROR("TextSegmentedControl needs to have at least 1 value!");
                 ERROR("This means BSML could not find field '{0}' or method 'get_{0}'", dataItr->second);

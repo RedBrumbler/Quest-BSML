@@ -6,7 +6,7 @@
 #include "../MenuSource.hpp"
 #include <string>
 
-DECLARE_CLASS_CODEGEN(BSML, GameplaySetupMenu, System::Object,
+DECLARE_CLASS_CODEGEN(BSML, GameplaySetupMenu, System::Object) {
     DECLARE_INSTANCE_FIELD(StringW, name);
     DECLARE_INSTANCE_FIELD(StringW, content_key);
     DECLARE_INSTANCE_FIELD(System::Object*, host);
@@ -32,4 +32,4 @@ DECLARE_CLASS_CODEGEN(BSML, GameplaySetupMenu, System::Object,
 
         DECLARE_DEFAULT_CTOR();
         std::function<void(UnityEngine::GameObject*, bool)> didActivate;
-)
+};

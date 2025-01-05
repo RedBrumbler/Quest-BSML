@@ -6,7 +6,7 @@
 #include "HMUI/DropdownWithTableView.hpp"
 #include "HMUI/SimpleTextDropdown.hpp"
 
-DECLARE_CLASS_CUSTOM(BSML, DropdownListSetting, BSML::BaseSetting,
+DECLARE_CLASS_CUSTOM(BSML, DropdownListSetting, BSML::BaseSetting) {
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(HMUI::SimpleTextDropdown*, dropdown);
     DECLARE_INSTANCE_FIELD(ListW<System::Object*>, values);
@@ -31,4 +31,4 @@ DECLARE_CLASS_CUSTOM(BSML, DropdownListSetting, BSML::BaseSetting,
     public:
         std::function<void(System::Object*)> onChange = nullptr;
         std::function<StringW(System::Object*)> formatter = nullptr;
-)
+};

@@ -6,7 +6,7 @@
 
 #include "AnimationControllerData.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, AnimationStateUpdater, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, AnimationStateUpdater, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_FIELD(UnityEngine::UI::Image*, image);
     DECLARE_INSTANCE_FIELD_PRIVATE(AnimationControllerData*, _controllerData);
     DECLARE_INSTANCE_METHOD(AnimationControllerData*, get_controllerData);
@@ -15,4 +15,4 @@ DECLARE_CLASS_CODEGEN(BSML, AnimationStateUpdater, UnityEngine::MonoBehaviour,
     DECLARE_INSTANCE_METHOD(void, OnEnable);
     DECLARE_INSTANCE_METHOD(void, OnDisable);
     DECLARE_INSTANCE_METHOD(void, OnDestroy);
-)
+};

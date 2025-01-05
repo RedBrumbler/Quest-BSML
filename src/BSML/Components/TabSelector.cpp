@@ -148,7 +148,7 @@ namespace BSML {
             DEBUG("tab Text added: {}", val);
         }
 
-        textSegmentedControl->SetTexts(*texts);
+        textSegmentedControl->SetTexts(*texts, nullptr);
     }
 
     void TabSelector::PageLeft() {

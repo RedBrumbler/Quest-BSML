@@ -7,7 +7,7 @@
 #include "MenuButtonsViewController.hpp"
 #include "UnityEngine/Coroutine.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, MenuButtons, System::Object,
+DECLARE_CLASS_CODEGEN(BSML, MenuButtons, System::Object) {
     DECLARE_INSTANCE_FIELD(MenuButtonsViewController*, menuButtonsViewController);
     DECLARE_INSTANCE_FIELD(HMUI::Screen*, leftScreen);
     DECLARE_INSTANCE_FIELD(ListW<System::Object*>, _buttons);
@@ -26,4 +26,4 @@ DECLARE_CLASS_CODEGEN(BSML, MenuButtons, System::Object,
         custom_types::Helpers::Coroutine PresentView();
     protected:
         static SafePtr<MenuButtons> instance;
-)
+};

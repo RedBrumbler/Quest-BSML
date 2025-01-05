@@ -13,7 +13,7 @@
 #include "Keyboard.hpp"
 
 
-DECLARE_CLASS_CODEGEN(BSML, ModalKeyboard, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, ModalKeyboard, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(ModalView*, modalView);
     DECLARE_INSTANCE_FIELD(Keyboard*, keyboard);
@@ -27,4 +27,4 @@ DECLARE_CLASS_CODEGEN(BSML, ModalKeyboard, UnityEngine::MonoBehaviour,
 
     public:
         std::function<void(StringW)> onEnter = nullptr;
-)
+};

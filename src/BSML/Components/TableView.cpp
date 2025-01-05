@@ -3,7 +3,14 @@
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/RectTransform.hpp"
 
+#include "HMUI/FloatRectOffset.hpp"
+
 DEFINE_TYPE(BSML, TableView);
+
+void BSML::TableView::ctor() {
+    INVOKE_BASE_CTOR(classof(HMUI::TableView*));
+    _padding = HMUI::FloatRectOffset::New_ctor();
+}
 
 void BSML::TableView::ReloadData() {
     if (get_tableType() == TableType::Horizontal) {

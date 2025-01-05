@@ -7,7 +7,7 @@
 #include "System/Collections/IEnumerator.hpp"
 
 // equivalent to shared coroutine starter
-DECLARE_CLASS_CODEGEN(BSML, SharedCoroutineStarter, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, SharedCoroutineStarter, UnityEngine::MonoBehaviour) {
         DECLARE_INSTANCE_METHOD(void, Awake);
     private:
         static SafePtrUnity<UnityEngine::MonoBehaviour> instance;
@@ -18,4 +18,4 @@ DECLARE_CLASS_CODEGEN(BSML, SharedCoroutineStarter, UnityEngine::MonoBehaviour,
         static UnityEngine::Coroutine* StartCoroutine(::System::Collections::IEnumerator* enumerator);
         static UnityEngine::Coroutine* StartCoroutine(custom_types::Helpers::Coroutine coroutine);
 
-)
+};

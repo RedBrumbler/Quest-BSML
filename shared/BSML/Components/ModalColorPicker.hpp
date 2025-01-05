@@ -9,7 +9,7 @@
 #include "UnityEngine/UI/Image.hpp"
 #include "../GenericSettingWrapper.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, ModalColorPicker, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, ModalColorPicker, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_FIELD(GenericSettingWrapper*, genericSetting);
     DECLARE_INSTANCE_FIELD(System::Object*, host);
     DECLARE_INSTANCE_FIELD(BSML::ModalView*, modalView);
@@ -41,4 +41,4 @@ DECLARE_CLASS_CODEGEN(BSML, ModalColorPicker, UnityEngine::MonoBehaviour,
         const MethodInfo* onCancelInfo = nullptr;
         const MethodInfo* onDoneInfo = nullptr;
         const MethodInfo* colorChangeInfo = nullptr;
-)
+};

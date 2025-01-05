@@ -4,7 +4,7 @@
 #include "UnityEngine/MonoBehaviour.hpp"
 #include "UnityEngine/Component.hpp"
 
-DECLARE_CLASS_CODEGEN(BSML, ExternalComponents, UnityEngine::MonoBehaviour,
+DECLARE_CLASS_CODEGEN(BSML, ExternalComponents, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_FIELD(ListW<UnityEngine::Component*>, components);
 
     DECLARE_INSTANCE_METHOD(void, Add, UnityEngine::Component* component);
@@ -19,4 +19,4 @@ DECLARE_CLASS_CODEGEN(BSML, ExternalComponents, UnityEngine::MonoBehaviour,
         T Get() const {
             return reinterpret_cast<T>(GetByType(static_cast<Il2CppReflectionType*>(csTypeOf(T))));
         }
-);
+};

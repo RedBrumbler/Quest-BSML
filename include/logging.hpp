@@ -4,12 +4,12 @@
 #include "beatsaber-hook/shared/utils/typedefs-string.hpp"
 #include <string_view>
 
-#include "paper/shared/logger.hpp"
+#include "paper2_scotland2/shared/logger.hpp"
 
 template <> struct fmt::formatter<::StringW> : formatter<string_view> {
     // parse is inherited from formatter<string_view>.
     template <typename FormatContext>
-    auto format(StringW s, FormatContext& ctx) {
+    auto format(StringW s, FormatContext& ctx) const {
         return formatter<string_view>::format(s ? static_cast<std::string>(s) : "NULL", ctx);
     }
 };
