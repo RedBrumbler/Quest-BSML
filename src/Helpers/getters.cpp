@@ -6,6 +6,7 @@
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "GlobalNamespace/MainMenuViewController.hpp"
+#include "GlobalNamespace/HealthWarningViewController.hpp"
 #include "GlobalNamespace/LevelCollectionTableView.hpp"
 #include "GlobalNamespace/MainSettingsMenuViewControllersInstaller.hpp"
 #include "VRUIControls/VRGraphicRaycaster.hpp"
@@ -23,36 +24,71 @@ using namespace GlobalNamespace;
 #define CacheNotFoundWarningLog(type) WARNING("Can't find '{}'! (This shouldn't happen and can cause unexpected behaviour)", #type)
 
 namespace BSML::Helpers {
-    SafePtrUnity<UnityEngine::UI::Button> soloButton;
-    bool TryGetSoloButton(UnityEngine::UI::Button*& button) {
-        if(!soloButton) {
-            auto vc = UnityEngine::Resources::FindObjectsOfTypeAll<MainMenuViewController*>()->First();
-            soloButton = vc->_soloButton;
+    SafePtrUnity<TMPro::TextMeshProUGUI> soloButtonTextMesh;
+    bool TryGetSoloButtonTextMesh(TMPro::TextMeshProUGUI*& textMesh)
+    {
+        if(!soloButtonTextMesh) {
+            auto vc = UnityEngine::Resources::FindObjectsOfTypeAll<MainMenuViewController*>();
+            if (vc->get_Length() != 0) {
+                auto transform = vc->First()->_soloButton->transform;
+                auto text = transform->Find("Text");
+                textMesh = text->GetComponent<TMPro::TextMeshProUGUI *>();
+                return textMesh;
+            }
+            if(!soloButtonTextMesh)
+                CacheNotFoundWarningLog(soloButtonTextMesh);
         }
-        if(!soloButton)
-            CacheNotFoundWarningLog(SoloButton);
-
-        button = soloButton.ptr();
-        return soloButton;
+        if (soloButtonTextMesh)
+            textMesh = soloButtonTextMesh.ptr();
+        return soloButtonTextMesh;
     }
 
-    bool TryGetUITextTemplate(TMPro::TextMeshProUGUI*& textMesh) {
-        UnityEngine::UI::Button* soloButton;
-        if (!TryGetSoloButton(soloButton)) {
-            textMesh = nullptr;
-            return false;
+    SafePtrUnity<TMPro::TextMeshProUGUI> healthAndSafetyTextMesh;
+    bool TryGetHealthAndSafetyTextMesh(TMPro::TextMeshProUGUI*& textMesh)
+    {
+        if(!healthAndSafetyTextMesh) {
+            auto vc = UnityEngine::Resources::FindObjectsOfTypeAll<HealthWarningViewController*>();
+            if (vc->get_Length() != 0)
+                healthAndSafetyTextMesh = vc->First()->_healthAndSafetyTextMesh;
+            if(!healthAndSafetyTextMesh)
+                CacheNotFoundWarningLog(HealthAndSafetyTextMesh);
         }
-        auto transform = soloButton->transform;
-        auto text = transform->Find("Text");
-        textMesh = text->GetComponent<TMPro::TextMeshProUGUI*>();
-        return textMesh;
+        if (healthAndSafetyTextMesh)
+            textMesh = healthAndSafetyTextMesh.ptr();
+        return healthAndSafetyTextMesh;
+    }
+
+    bool TryGetUITextTemplate(TMPro::TextMeshProUGUI *&textMesh)
+    {
+        textMesh = nullptr;
+        if (TryGetSoloButtonTextMesh(textMesh))
+            return true;
+        if (TryGetHealthAndSafetyTextMesh(textMesh))
+            return true;
+        return false;
     }
 
     SafePtr<PhysicsRaycasterWithCache> physicsRaycaster;
-    PhysicsRaycasterWithCache* GetPhysicsRaycasterWithCache()
+    PhysicsRaycasterWithCache *GetPhysicsRaycasterWithCache()
     {
-        if(!physicsRaycaster) {
-            physicsRaycaster = Resources::FindObjectsOfTypeAll<MainMenuViewController*>()->First()->GetComponent<VRGraphicRaycaster*>()->_physicsRaycaster;
+        if (physicsRaycaster)
+            return physicsRaycaster.ptr();
+
+        if (!physicsRaycaster) {
+            auto vc = Resources::FindObjectsOfTypeAll<MainMenuViewController *>();
+            if (vc->get_Length() != 0) {
+                auto raycaster = vc->First()->GetComponent<VRGraphicRaycaster *>();
+                if (raycaster)
+                    physicsRaycaster = raycaster->_physicsRaycaster;
+            }
+        }
+        if (!physicsRaycaster) {
+            auto vc = Resources::FindObjectsOfTypeAll<HealthWarningViewController *>();
+            if (vc->get_Length() != 0) {
+                auto raycaster = vc->First()->GetComponent<VRGraphicRaycaster *>();
+                if (raycaster)
+                    physicsRaycaster = raycaster->_physicsRaycaster;
+            }
         }
         if(!physicsRaycaster)
             CacheNotFoundWarningLog(PhysicsRaycasterWithCache);
