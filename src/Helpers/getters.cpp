@@ -29,8 +29,10 @@ namespace BSML::Helpers {
             auto vc = UnityEngine::Resources::FindObjectsOfTypeAll<MainMenuViewController*>()->First();
             soloButton = vc->_soloButton;
         }
-        if(!soloButton)
+        if(!soloButton) {
             CacheNotFoundWarningLog(SoloButton);
+            return false;
+        }
 
         button = soloButton.ptr();
         return soloButton;
@@ -54,8 +56,10 @@ namespace BSML::Helpers {
         if(!physicsRaycaster) {
             physicsRaycaster = Resources::FindObjectsOfTypeAll<MainMenuViewController*>()->First()->GetComponent<VRGraphicRaycaster*>()->_physicsRaycaster;
         }
-        if(!physicsRaycaster)
+        if(!physicsRaycaster) {
             CacheNotFoundWarningLog(PhysicsRaycasterWithCache);
+            return nullptr;
+        }
         return physicsRaycaster.ptr();
     }
 
@@ -63,8 +67,10 @@ namespace BSML::Helpers {
     DiContainer* GetDiContainer() {
         if(!diContainer)
             diContainer = Resources::FindObjectsOfTypeAll<TextSegmentedControl*>()->FirstOrDefault([](TextSegmentedControl* x) { return x->get_transform()->get_parent()->get_name() == "PlayerStatisticsViewController" && x->_container; })->_container;
-        if(!diContainer)
+        if(!diContainer) {
             CacheNotFoundWarningLog(DiContainer);
+            return nullptr;
+        }
         return diContainer.ptr();
     }
 
@@ -72,8 +78,10 @@ namespace BSML::Helpers {
     HoverHintController* GetHoverHintController() {
         if(!hoverHintController)
             hoverHintController = Resources::FindObjectsOfTypeAll<HoverHintController*>()->FirstOrDefault();
-        if(!hoverHintController)
+        if(!hoverHintController) {
             CacheNotFoundWarningLog(HoverHintController);
+            return nullptr;
+        }
         return hoverHintController.ptr();
     }
 
@@ -81,8 +89,10 @@ namespace BSML::Helpers {
     IVRPlatformHelper* GetIVRPlatformHelper() {
         if (!platformHelper)
             platformHelper = Resources::FindObjectsOfTypeAll<LevelCollectionTableView*>()->First()->GetComponentInChildren<ScrollView*>()->_platformHelper;
-        if (!platformHelper)
+        if (!platformHelper) {
             CacheNotFoundWarningLog(IVRPlatformHelper);
+            return nullptr;
+        }
         return platformHelper.ptr();
     }
 
@@ -93,8 +103,10 @@ namespace BSML::Helpers {
             mainTextFont = textMesh->font;
             mainTextFont->boldSpacing = 2.2f;
         }
-        if(!mainTextFont)
+        if(!mainTextFont) {
             CacheNotFoundWarningLog(TMP_FontAsset);
+            return nullptr;
+        }
         return mainTextFont.ptr();
     }
 
@@ -104,8 +116,10 @@ namespace BSML::Helpers {
         if (!mainUIFontMaterial && TryGetUITextTemplate(textMesh)) {
             mainUIFontMaterial = textMesh->fontSharedMaterial;
         }
-        if(!mainUIFontMaterial)
+        if(!mainUIFontMaterial) {
             CacheNotFoundWarningLog(Material);
+            return nullptr;
+        } 
         return mainUIFontMaterial.ptr();
     }
 
@@ -114,8 +128,10 @@ namespace BSML::Helpers {
         if (!noGlowUIMat) {
             noGlowUIMat = Resources::FindObjectsOfTypeAll<Material*>()->FirstOrDefault([](auto x){ return x->get_name() == "UINoGlow"; });
         }
-        if(!noGlowUIMat)
+        if(!noGlowUIMat) {
             CacheNotFoundWarningLog(Material);
+            return nullptr;
+        }
         return noGlowUIMat.ptr();
     }
 
@@ -123,8 +139,10 @@ namespace BSML::Helpers {
     MainFlowCoordinator* GetMainFlowCoordinator() {
         if (!mainFlowCoordinator)
             mainFlowCoordinator = Resources::FindObjectsOfTypeAll<MainFlowCoordinator*>()->FirstOrDefault();
-        if(!mainFlowCoordinator)
+        if(!mainFlowCoordinator) {
             CacheNotFoundWarningLog(MainFlowCoordinator);
+            return nullptr;
+        }
         return mainFlowCoordinator.ptr();
     }
 }
